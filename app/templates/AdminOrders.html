@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Orders Received - Admin - Sarkin Mota Autos</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='admin-orders.css') }}"
+    />
+
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+  </head>
+  <body>
+    <!-- LEFT SIDEBAR -->
+
+    <!-- MAIN CONTENT -->
+    <div class="page-container">
+      <div class="container">
+        <a
+          href="{{ url_for('admin.dashboard') }}"
+          class="back-link"
+          style="display: block; margin-bottom: 1rem"
+          >← Back to Admin Dashboard</a
+        >
+
+        <div class="stats-row">
+          <div class="stat-card">
+            <div class="label">Total Orders</div>
+            <div class="value">{{ total_orders }}</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="label">Active Orders</div>
+            <div class="value">{{ active_orders }}</div>
+          </div>
+        </div>
+
+        {% if orders %} {% if orders %}
+        <div class="table-wrapper">
+          <table class="orders-table">
+            <thead>
+              <tr>
+                <th>Car</th>
+                <th>Buyer</th>
+                <th>Offer Amount</th>
+                <th>Listed Price</th>
+                <th>Status</th>
+                <th>Payment</th>
+                <th>Date</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {% for order in orders %}
+              <tr>
+                <!-- CAR -->
+                <td>
+                  <div class="car-info">
+                    {{ order.year or '?' }} {{ order.make or '?' }} {{
+                    order.model or '?' }}
+                  </div>
+
+                  <div class="car-details">
+                    Listed: {{ order.listed_price | currency }}
+                  </div>
+                </td>
+
+                <!-- BUYER -->
+                <td>
+                  <div class="buyer-info">
+                    {{ order.buyer_name or 'Deleted User' }}
+                  </div>
+
+                  <div class="buyer-email">{{ order.buyer_email or '-' }}</div>
+                </td>
+
+                <!-- OFFER -->
+                <td class="amount">{{ order.order_amount | currency }}</td>
+
+                <!-- LISTED PRICE -->
+                <td class="amount">{{ order.listed_price | currency }}</td>
+
+                <!-- STATUS -->
+                <td>
+                  <span class="badge badge-{{ order.status }}">
+                    {{ order.status|capitalize }}
+                  </span>
+                </td>
+
+                <!-- PAYMENT -->
+                <td>
+                  {% if order.payment_status %}
+
+                  <span class="badge badge-{{ order.payment_status }}">
+                    {{ order.payment_status|capitalize }}
+                  </span>
+
+                  {% if order.payment_reference %}
+                  <div class="buyer-email" style="margin-top: 6px">
+                    {{ order.payment_reference }}
+                  </div>
+                  {% endif %} {% else %}
+
+                  <span class="buyer-email"> No payment </span>
+
+                  {% endif %}
+                </td>
+
+                <!-- DATE -->
+                <td>
+                  {{ order.created_at|date('Y-m-d') if order.created_at else
+                  'N/A' }}
+                </td>
+
+                <!-- ACTIONS -->
+                <td class="actions-cell">
+                  {% if order.status == 'pending' %}
+
+                  <form
+                    action="{{ url_for('admin.accept_order', order_id=order.id) }}"
+                    method="POST"
+                  >
+                    <input
+                      type="hidden"
+                      name="csrf_token"
+                      value="{{ csrf_token() }}"
+                    />
+
+                    <button type="submit" class="btn btn-accept btn-sm">
+                      Accept
+                    </button>
+                  </form>
+
+                  <form
+                    action="{{ url_for('admin.reject_order', order_id=order.id) }}"
+                    method="POST"
+                  >
+                    <input
+                      type="hidden"
+                      name="csrf_token"
+                      value="{{ csrf_token() }}"
+                    />
+
+                    <button type="submit" class="btn btn-reject btn-sm">
+                      Reject
+                    </button>
+                  </form>
+
+                  {% elif order.status == 'confirmed' %}
+
+                  <form
+                    action="{{ url_for('admin.cancel_order', order_id=order.id) }}"
+                    method="POST"
+                  >
+                    <input
+                      type="hidden"
+                      name="csrf_token"
+                      value="{{ csrf_token() }}"
+                    />
+
+                    <button type="submit" class="btn btn-danger btn-sm">
+                      Cancel
+                    </button>
+                  </form>
+
+                  {% endif %} {% if order.payment_id and order.payment_status !=
+                  'paid' %}
+
+                  <form
+                    action="{{ url_for('payments.admin_mark_payment_paid', payment_id=order.payment_id) }}"
+                    method="POST"
+                    onsubmit="
+                      return confirm(
+                        'Mark this payment as paid after confirming it in the bank account?',
+                      );
+                    "
+                  >
+                    <input
+                      type="hidden"
+                      name="csrf_token"
+                      value="{{ csrf_token() }}"
+                    />
+
+                    <button type="submit" class="btn btn-accept btn-sm">
+                      Mark Paid
+                    </button>
+                  </form>
+
+                  {% endif %}
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+
+        {% else %}
+
+        <div class="empty-state">
+          <p>No orders found.</p>
+        </div>
+
+        {% endif %} {% else %}
+        <div class="empty-state">
+          <p>No orders found.</p>
+        </div>
+        {% endif %}
+
+        <!-- PAGINATION -->
+        {% if pagination %}
+        <div class="pagination">
+          {% if pagination.has_prev %}
+          <a
+            href="{{ url_for('admin.orders', page=pagination.prev_num) }}"
+            class="btn"
+            >← Previous
+          </a>
+          {% else %}
+          <span class="btn" disabled>← Previous</span>
+          {% endif %}
+
+          <span> Page {{ pagination.page }} of {{ pagination.pages }} </span>
+
+          {% if pagination.has_next %}
+          <a
+            href="{{ url_for('admin.orders', page=pagination.next_num) }}"
+            class="btn"
+            >Next →
+          </a>
+          {% else %}
+          <span class="btn" disabled>Next →</span>
+          {% endif %}
+        </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <script>
+      lucide.createIcons({
+        width: 20,
+        height: 20,
+      });
+
+      document.addEventListener("DOMContentLoaded", function () {
+        const sidebarToggle = document.querySelector(".sidebar h2");
+        if (sidebarToggle) {
+          sidebarToggle.addEventListener("click", function () {
+            document.querySelector(".sidebar").classList.toggle("collapsed");
+          });
+        }
+      });
+    </script>
+  </body>
+</html>

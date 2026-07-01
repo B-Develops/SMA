@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Listings - Sarkin Mota Autos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='1.css') }}" />
+  <style>
+    :root {
+      --color-bg-primary: #0a192f;
+      --color-bg-secondary: #020c1b;
+      --color-accent-red: #e53e3e;
+      --color-accent-gold: #d69e2e;
+      --color-text-primary: #f7fafc;
+      --color-text-secondary: #a0aec0;
+      --color-card-bg: #112240;
+      --border-soft: rgba(255, 255, 255, 0.08);
+    }
+    
+    * { box-sizing: border-box; }
+    
+    body {
+      margin: 0;
+      font-family: "Inter", system-ui, sans-serif;
+      background: var(--color-bg-primary);
+      color: var(--color-text-primary);
+      min-height: 100vh;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+    
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border-soft);
+    }
+    
+    h1 {
+      font-size: 1.75rem;
+      font-weight: 700;
+      margin: 0;
+    }
+    
+    .btn {
+      padding: 0.6rem 1rem;
+      border-radius: 0.5rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      border: none;
+      font-size: 0.9rem;
+      transition: all 0.2s;
+    }
+    
+    .btn-primary {
+      background: var(--color-accent-red);
+      color: #fff;
+    }
+    
+    .btn-primary:hover {
+      background: #c53030;
+    }
+    
+    .btn-outline {
+      background: transparent;
+      border: 1px solid var(--border-soft);
+      color: var(--color-text-secondary);
+    }
+    
+    .btn-outline:hover {
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--color-text-primary);
+    }
+    
+    .btn-danger {
+      background: transparent;
+      border: 1px solid var(--color-accent-red);
+      color: var(--color-accent-red);
+    }
+    
+    .btn-danger:hover {
+      background: var(--color-accent-red);
+      color: #fff;
+    }
+    
+    .stats-row {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+    
+    .stat-card {
+      background: var(--color-card-bg);
+      border: 1px solid var(--border-soft);
+      border-radius: 0.75rem;
+      padding: 1.25rem;
+      min-width: 140px;
+    }
+    
+    .stat-card .label {
+      font-size: 0.8rem;
+      color: var(--color-text-secondary);
+      margin-bottom: 0.25rem;
+    }
+    
+    .stat-card .value {
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+    
+    .listings-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    
+    .listings-table th,
+    .listings-table td {
+      text-align: left;
+      padding: 1rem;
+      border-bottom: 1px solid var(--border-soft);
+    }
+    
+    .listings-table th {
+      font-weight: 600;
+      color: var(--color-text-secondary);
+      font-size: 0.85rem;
+      text-transform: uppercase;
+    }
+    
+    .car-info {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    
+    .car-info img {
+      width: 60px;
+      height: 45px;
+      object-fit: cover;
+      border-radius: 0.4rem;
+      background: #1a365d;
+    }
+    
+    .car-name {
+      font-weight: 600;
+    }
+    
+    .car-year {
+      font-size: 0.85rem;
+      color: var(--color-text-secondary);
+    }
+    
+    .status-badge {
+      display: inline-block;
+      padding: 0.25rem 0.6rem;
+      border-radius: 1rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+    
+    .status-active {
+      background: rgba(72, 187, 120, 0.15);
+      color: #48bb78;
+    }
+    
+    .status-sold {
+      background: rgba(214, 158, 46, 0.15);
+      color: var(--color-accent-gold);
+    }
+    
+    .actions {
+      display: flex;
+      gap: 0.5rem;
+    }
+    
+    .empty-state {
+      text-align: center;
+      padding: 4rem 2rem;
+      color: var(--color-text-secondary);
+    }
+    
+    .empty-state h2 {
+      margin-bottom: 0.5rem;
+    }
+    
+    .flash-messages {
+      margin-bottom: 1.5rem;
+    }
+    
+    .flash {
+      padding: 0.75rem 1rem;
+      border-radius: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    .flash-success {
+      background: rgba(72, 187, 120, 0.15);
+      color: #48bb78;
+    }
+    
+    .flash-error {
+      background: rgba(229, 62, 62, 0.15);
+      color: var(--color-accent-red);
+    }
+    
+    @media (max-width: 768px) {
+      .listings-table th:nth-child(3),
+      .listings-table td:nth-child(3) {
+        display: none;
+      }
+      
+      .page-header {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: flex-start;
+      }
+    }
+          body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background-image:
+          linear-gradient(rgba(9, 23, 44, 0.72), rgba(2, 12, 27, 0.82)),
+          url("../static/login-bg.png");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        z-index: -2;
+      }
+   </style>
+</head>
+  <body>
+    <div class="container">
+    <div class="page-header">
+      <h1>My Listings</h1>
+      <a href="{{ url_for('cars.list_car') }}" class="btn btn-primary">+ New Listing</a>
+    </div>
+    
+    <div class="flash-messages">
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, message in messages %}
+            <div class="flash flash-{{ category }}">{{ message }}</div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+    </div>
+    
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="label">Total Listings</div>
+        <div class="value">{{ stats.total }}</div>
+      </div>
+      <div class="stat-card">
+        <div class="label">Active</div>
+        <div class="value">{{ stats.active }}</div>
+      </div>
+      <div class="stat-card">
+        <div class="label">Sold</div>
+        <div class="value">{{ stats.sold }}</div>
+      </div>
+    </div>
+    
+    {% if listings %}
+    <table class="listings-table">
+      <thead>
+        <tr>
+          <th>Car</th>
+          <th>Price</th>
+          <th>Bids</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for car in listings %}
+        <tr>
+          <td>
+            <div class="car-info">
+              <img src="{{ car.image_url or '/static/Assets/images/' + car.make + '.png' }}" alt="{{ car.make }}" onerror="this.src='/static/Assets/images/Toyota.png'">
+              <div>
+                <div class="car-name">{{ car.year }} {{ car.make }} {{ car.model }}</div>
+                <div class="car-year">{{ car.condition|title }} • {{ car.mileage|default(0)|int }} km</div>
+              </div>
+            </div>
+          </td>
+          <td>{{ car.price | currency }}</td>
+          <td>{{ car.order_count }}</td>
+          <td>
+            <span class="status-badge status-{{ car.status }}">{{ car.status }}</span>
+          </td>
+          <td>
+            <div class="actions">
+              <a href="{{ url_for('cars.edit_car', car_id=car.id) }}" class="btn btn-outline">Edit</a>
+               {% if car.status == 'active' %}
+               <form action="{{ url_for('cars.mark_car_sold', car_id=car.id) }}" method="POST" style="display:inline;">
+                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <button type="submit" class="btn btn-outline" onclick="return confirm('Mark as sold?')">Sold</button>
+              </form>
+              {% endif %}
+              <form action="{{ url_for('cars.delete_car', car_id=car.id) }}" method="POST" style="display:inline;">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <button type="submit" class="btn btn-danger" onclick="return confirm('Delete this listing? This cannot be undone.')">Delete</button>
+              </form>
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <div class="empty-state">
+      <h2>No Listings Yet</h2>
+      <p>You haven't listed any cars for sale yet.</p>
+      <a href="{{ url_for('cars.list_car') }}" class="btn btn-primary" style="margin-top:1rem;">Create Your First Listing</a>
+    </div>
+    {% endif %}
+  </div>
+</body>
+</html>

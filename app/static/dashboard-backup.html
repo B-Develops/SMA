@@ -1,0 +1,872 @@
+﻿<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Sarkin Mota Autos – User Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+      /* ==========================================================
+         ROOT VARIABLES — CHANGE GLOBAL COLORS / SIZES HERE
+      ========================================================== */
+      :root {
+        --bg-dark: #182f5a;
+        --bg-card: #111827;
+        --primary-red: #e63946;
+        --text-light: #e5e7eb;
+        --text-muted: #9ca3af;
+        --border-soft: rgba(255, 255, 255, 0.06);
+
+        /* === MAIN CONTENT WIDTH (CHANGE 1200px HERE IF NEEDED) === */
+        --content-max-width: 1200px;
+
+        /* === CARD ROUNDNESS / SHADOW CONTROL === */
+        --radius-md: 0.9rem;
+        --radius-lg: 1.2rem;
+        --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.35);
+
+        --color-bg-secondary: #112240;
+        --color-text-secondary: #a0aec0;
+        --color-accent-gold: #d69e2e;
+        --color-bg-primary: #0a192f;
+        --color-bg-secondary: #020c1b;
+        --color-accent-red: #e53e3e;
+        --color-accent-gold: #d69e2e;
+        --color-text-primary: #f7fafc;
+        --color-text-secondary: #a0aec0ab;
+        --color-card-bg: #112240;
+        --border-soft: rgba(255, 255, 255, 0.08);
+        --accent-red: #e53e3e;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: "Inter", sans-serif;
+        background: var(--bg-dark);
+        color: var(--text-light);
+        min-height: 100vh;
+        display: flex;
+      }
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background-image:
+          linear-gradient(rgba(9, 23, 44, 0.85), rgba(2, 12, 27, 0.9)),
+          url("static/login-bg.png");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        z-index: -2;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      /* ==========================================================
+         LEFT SIDEBAR — FLUSH TO SCREEN EDGE
+         (WIDTH CAN BE CHANGED HERE)
+      ========================================================== */
+      aside.sidebar {
+        width: 280px; /* ← CHANGE SIDEBAR WIDTH HERE */
+        background: #0a192fa6;
+        border-right: 1px solid var(--border-soft);
+        padding: 2rem 1.5rem;
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        backdrop-filter: blur(6px) saturate(120%);
+        -webkit-backdrop-filter: blur(6px) saturate(120%);
+      }
+
+      .sidebar h2 {
+        color: var(--primary-red);
+        font-size: 1.4rem;
+        margin-bottom: 2rem;
+        font-weight: 700;
+      }
+
+      .nav-item {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.75rem 0.9rem;
+        border-radius: var(--radius-md);
+        color: var(--text-muted);
+        cursor: pointer;
+        margin-bottom: 0.4rem;
+        transition: 0.25s ease;
+        text-decoration: none;
+      }
+
+      .nav-item.active,
+      .nav-item:hover {
+        background: var(--primary-red);
+        color: white;
+      }
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+      /* ==========================================================
+         MAIN AREA (EVERYTHING EXCEPT SIDEBAR)
+         ALIGNED TO 1200px
+      ========================================================== */
+      .main-wrapper {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+
+      header.topbar {
+        background: #0b1220;
+        border-bottom: 1px solid var(--border-soft);
+      }
+
+      .topbar-inner {
+        max-width: var(--content-max-width);
+        margin: 0 auto;
+        padding: 1.2rem 2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .logo {
+        font-weight: 800;
+        font-size: 1.3rem;
+      }
+
+      .logo span {
+        color: var(--primary-red);
+      }
+
+      .top-actions {
+        display: flex;
+        gap: 1.5rem;
+        align-items: center;
+        color: var(--text-muted);
+      }
+
+      /* ==========================================================
+         PAGE CONTENT CONTAINER (1200px)
+      ========================================================== */
+      main {
+        max-width: var(--content-max-width);
+        margin: 0 auto;
+        padding: 2.5rem 2rem 4rem;
+        width: 100%;
+      }
+
+      /* ==========================================================
+         WELCOME CARD
+         (BACKGROUND IMAGE CAN BE CHANGED BELOW)
+      ========================================================== */
+      .welcome-card {
+        position: relative;
+        border-radius: var(--radius-lg);
+        overflow: hidden;
+        min-height: 260px; /* ← CHANGE HERO HEIGHT HERE */
+        margin-bottom: 2.5rem;
+        box-shadow: var(--shadow-soft);
+      }
+
+      .welcome-card::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: url("https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2")
+          center / cover no-repeat;
+        filter: brightness(0.45);
+      }
+
+      .welcome-content {
+        position: relative;
+        z-index: 1;
+        padding: 3rem;
+        max-width: 700px;
+      }
+
+      .welcome-content h1 {
+        font-size: 2.6rem;
+        font-weight: 800;
+        margin-bottom: 0.6rem;
+      }
+
+      .welcome-content p {
+        color: var(--text-muted);
+        margin-bottom: 1.6rem;
+        font-size: 1.05rem;
+      }
+
+      .btn-primary {
+        background: var(--primary-red);
+        color: white;
+        padding: 0.75rem 1.4rem;
+        border-radius: 999px;
+        border: none;
+        font-weight: 600;
+        cursor: pointer;
+      }
+
+      /* ==========================================================
+         STATS CARDS (BELOW WELCOME CARD)
+         CARD SIZE CAN BE TUNED HERE
+      ========================================================== */
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 3rem;
+      }
+
+      .stat-card {
+        background: var(--bg-card);
+        border-radius: var(--radius-md);
+        padding: 1.5rem;
+        box-shadow: var(--shadow-soft);
+      }
+
+      .stat-card span {
+        color: var(--text-muted);
+        font-size: 0.9rem;
+      }
+
+      .stat-card h3 {
+        font-size: 2rem;
+        margin-top: 0.5rem;
+        color: var(--primary-red);
+      }
+
+      /* ==========================================================
+         RESPONSIVE
+      ========================================================== */
+      @media (max-width: 900px) {
+        aside.sidebar {
+          display: none;
+        }
+      }
+      h2 {
+        margin-left: 16px;
+      }
+      header {
+        background-color: rgba(10, 25, 47, 0.95);
+        position: sticky;
+        top: 0;
+        z-index: 999;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      }
+
+      nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 72px;
+      }
+
+      .logo {
+        font-weight: 800;
+        font-size: 1.4rem;
+        color: var(--color-accent-red);
+        letter-spacing: 0.03em;
+      }
+
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+      }
+
+      .nav-links a {
+        font-weight: 500;
+        color: var(--color-text-secondary);
+      }
+
+      .nav-links a:hover {
+        color: var(--color-text-primary);
+      }
+
+      .nav-search {
+        position: relative;
+      }
+
+      .nav-search input {
+        background-color: var(--color-bg-secondary);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        color: var(--color-text-primary);
+        padding: 0.5rem 0.75rem;
+        border-radius: 4px;
+        font-size: 0.9rem;
+      }
+      .nav-actions {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+        font-size: 0.9rem;
+      }
+
+      .nav-actions a {
+        color: var(--text-muted);
+        font-weight: 500;
+      }
+
+      .btn-auth {
+        padding: 0.45rem 0.9rem;
+        border-radius: 6px;
+        font-weight: 600;
+        border: 1px solid var(--border-soft);
+      }
+
+      .btn-signup {
+        background: var(--accent-red);
+        border-color: var(--accent-red);
+        color: #ffffff;
+      }
+      /* =====================
+         CSS RESET & VARIABLES
+         ===================== */
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      :root {
+        --color-bg-primary: #081527; /* Deep indigo */
+        --color-bg-secondary: #020c1b;
+        --color-accent-red: #e53e3e; /* Crimson red */
+        --color-accent-gold: #d69e2e; /* Subtle gold */
+        --color-text-primary: #f7fafc;
+        --color-text-secondary: #a0aec0;
+        --color-card-bg: #112240;
+        --max-width: 1200px;
+        --transition-base: 0.3s ease;
+        --bg-main: #0a192f;
+        --bg-card: #112240;
+        --bg-header: #020c1b;
+        --text-main: #f7fafc;
+        --text-muted: #a0aec0;
+        --accent-red: #e53e3e;
+        --accent-gold: #d69e2e;
+        --border-soft: rgba(255, 255, 255, 0.08);
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        font-family:
+          "Inter",
+          system-ui,
+          -apple-system,
+          BlinkMacSystemFont,
+          sans-serif;
+        background-color: var(--color-bg-primary);
+        color: var(--color-text-primary);
+        line-height: 1.5;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      button {
+        font-family: inherit;
+        cursor: pointer;
+      }
+
+      .container {
+        max-width: var(--max-width);
+        margin: 0 auto;
+        padding: 0 1.25rem;
+      }
+
+      .section {
+        padding: 4rem 0;
+      }
+
+      @media (max-width: 768px) {
+        .section {
+          padding: 3rem 0;
+        }
+      }
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 3rem;
+      }
+
+      .stat-card {
+        background: var(--bg-card);
+        border-radius: var(--radius-md);
+        padding: 1.5rem;
+        box-shadow: var(--shadow-soft);
+        transition: var(--transition);
+      }
+
+      .stat-card:hover {
+        transform: translateY(-4px);
+      }
+
+      .stat-card h3 {
+        color: var(--primary-red);
+        font-size: 2rem;
+      }
+
+      /* ================= SECTIONS ================= */
+      .section {
+        margin-bottom: 0;
+      }
+
+      .section h2 {
+        margin-bottom: 1.5rem;
+        padding-left: 0.75rem;
+        border-left: 3px solid var(--primary-red);
+      }
+
+      /* ================= CAR CARDS ================= */
+      .car-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 1.5rem;
+      }
+
+      .car-card {
+        background: var(--bg-card);
+        border-radius: var(--radius-md);
+        overflow: hidden;
+        box-shadow: var(--shadow-soft);
+        transition: var(--transition);
+      }
+
+      .car-card:hover {
+        transform: translateY(-6px);
+      }
+
+      .car-card img {
+        width: 100%;
+        height: 170px;
+        object-fit: cover;
+      }
+
+      .car-body {
+        padding: 1rem;
+      }
+
+      .verified {
+        color: var(--accent-gold);
+        font-size: 0.8rem;
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+      }
+
+      .price {
+        color: var(--primary-red);
+        font-weight: 700;
+        margin: 0.4rem 0;
+      }
+
+      /* ================= TABLE ================= */
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        background: var(--bg-card);
+        border-radius: var(--radius-md);
+        overflow: hidden;
+      }
+
+      th,
+      td {
+        padding: 0.9rem;
+        border-bottom: 1px solid var(--border-soft);
+        text-align: left;
+      }
+
+      th {
+        color: var(--text-muted);
+        font-size: 0.85rem;
+      }
+
+      .status-leading {
+        color: #22c55e;
+        font-weight: 600;
+      }
+
+      .status-outbid {
+        color: var(--primary-red);
+        font-weight: 600;
+      }
+      footer {
+        background-color: #020c1b;
+        padding: 2rem 0;
+        font-size: 0.9rem;
+        color: var(--color-text-secondary);
+        margin-top: auto;
+      }
+
+      footer .footer-inner {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 1rem;
+      }
+
+      footer span {
+        color: var(--color-accent-gold);
+      } /* ===== SIDEBAR COLLAPSE TOGGLE ===== */
+      /* ===== SIDEBAR COLLAPSE (FOR EXISTING MARKUP) ===== */
+      /* ===== SIDEBAR COLLAPSE (FOR EXISTING MARKUP) ===== */
+      aside.sidebar {
+        transition:
+          width 0.3s ease,
+          padding 0.3s ease;
+      }
+
+      aside.sidebar.collapsed {
+        width: 80px;
+        padding: 2rem 0.85rem;
+      }
+
+      aside.sidebar.collapsed .nav-item {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 12px;
+      }
+
+      aside.sidebar.collapsed .nav-item i[data-lucide],
+      aside.sidebar.collapsed .nav-item svg {
+        margin: 0 !important;
+        font-size: 3rem !important;
+      }
+      .nav-item svg {
+        width: 24px;
+        height: 24px;
+        flex-shrink: 0;
+      }
+
+      aside.sidebar.collapsed .nav-item svg {
+        width: 36px;
+        height: 36px;
+      }
+      aside.sidebar.collapsed .nav-item {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 0; /* hides the text */
+      }
+
+      aside.sidebar.collapsed h2 {
+        font-size: 0; /* hides the text */
+      }
+      aside.sidebar.collapsed .nav-item svg {
+        width: 24px;
+        height: 24px;
+      }
+      aside.sidebar.collapsed .nav-item {
+        justify-content: center;
+      }
+
+      aside.sidebar.collapsed h2 span {
+        display: none;
+      }
+
+      aside.sidebar.collapsed .nav-item span {
+        display: none;
+      }
+      button {
+        border-radius: 1px;
+        font-size: 16px;
+        font-weight: 300;
+      }
+
+      .men {
+        display: flex;
+        gap: 0.75rem;
+        align-items: center;
+        color: var(--text-muted);
+        text-decoration: none;
+        font-size: 24px;
+      }
+      button {
+        border-radius: 1px;
+        font-size: 16px;
+        font-weight: 300;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- LEFT SIDEBAR -->
+    <aside class="sidebar">
+      <h2 id="sidebarToggle" style="cursor: pointer" class="men">
+        <i data-lucide="menu"></i>
+      </h2>
+
+      <a href="#D" class="nav-item active">
+        <i data-lucide="layout-dashboard"></i> Dashboard
+      </a>
+      <a href="#AO" class="nav-item">
+        <i data-lucide="shopping-bag"></i> My Orders
+      </a>
+      <a href="#SC" class="nav-item"> <i data-lucide="heart"></i> Watchlist </a>
+      {% if current_user.role == 'admin' %}
+      <a href="/cars/my-listings" class="nav-item">
+        <i data-lucide="car"></i> My Listings
+      </a>
+      {% endif %}
+      <a href="/profile" class="nav-item">
+        <i data-lucide="settings"></i> Profile
+      </a>
+      <a href="/help" class="nav-item">
+        <i data-lucide="help-circle"></i> Help
+      </a>
+      <a
+        href="/admin"
+        class="nav-item"
+        style="background: rgba(214, 158, 46, 0.2); color: #f6e05e"
+      >
+        <i data-lucide="shield"></i> Admin
+      </a>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <div class="main-wrapper" id="D">
+      <!-- TOP BAR -->
+      <header role="banner">
+        <div class="container">
+          <nav aria-label="Main navigation">
+            <div class="logo">Sarkin Mota Autos</div>
+            <div class="nav-actions">
+              <a href="{{ url_for('profiles.about') }}">About</a>
+              <a
+                href="{{ url_for('auth.logout') }}"
+                class="btn-auth"
+                style="color: white"
+                >Sign Out</a
+              >
+              <a
+                href="{{ url_for('cars.browse_cars') }}"
+                class="btn-auth btn-signup"
+                style="color: white; font-weight: 500"
+                >Browse Cars</a
+              >
+            </div>
+          </nav>
+        </div>
+      </header>
+      <!-- PAGE CONTENT -->
+      <main>
+        <!-- WELCOME CARD -->
+        <section class="welcome-card">
+          <div class="welcome-content">
+            <h1>Welcome back, <span id="user-name">{{ name }}</span></h1>
+            <p>
+              Your dream ride is just an order away. Track orders, manage
+              listings, and explore premium cars.
+            </p>
+            <a
+              href="{{ url_for('cars.browse_cars') }}"
+              class="btn-primary"
+              style="border-radius: 12px"
+            >
+              Browse Cars
+            </a>
+          </div>
+        </section>
+
+        <!-- STATS -->
+        <section class="stats-grid">
+          <div class="stat-card">
+            <span>Active Orders</span>
+            <h3>{{ stats.pending_orders + stats.confirmed_orders }}</h3>
+          </div>
+          <div class="stat-card">
+            <span>Saved Cars</span>
+            <h3>{{ saved_cars|length }}</h3>
+          </div>
+          <div class="stat-card">
+            <span>Notifications</span>
+            <h3>{{ unread_count if unread_count is defined else '0' }}</h3>
+          </div>
+        </section>
+
+        <!-- ACTIVE ORDERS -->
+        <section class="section" id="AO">
+          <h2>My Orders</h2>
+          {% if active_orders %}
+          <table>
+            <tr>
+              <th>Car</th>
+              <th>Order Amount</th>
+              <th>Listed Price</th>
+              <th>Date</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+            {% for order in active_orders %}
+            <tr>
+              <td>
+                {{ order['year'] }} {{ order['make'] }} {{ order['model'] }}
+              </td>
+              <td>₦{{ "%.2f"|format(order['order_amount']|float) }}</td>
+              <td>₦{{ "%.2f"|format(order['listed_price']|float) }}</td>
+              <td>
+                {{ order['created_at'][:10] if order['created_at'] else 'N/A' }}
+              </td>
+              <td class="status-leading">{{ order['status']|capitalize }}</td>
+              <td>
+                {% if order.status in ['pending', 'confirmed'] %}
+                <form
+                  action="{{ url_for('orders.cancel_order', order_id=order.id) }}"
+                  method="POST"
+                  style="display: inline"
+                >
+                  <input
+                    type="hidden"
+                    name="csrf_token"
+                    value="{{ csrf_token() }}"
+                  />
+                  <button
+                    type="submit"
+                    style="
+                      background: #e63946;
+                      color: white;
+                      border: none;
+                      padding: 0.4rem 0.8rem;
+                      border-radius: 4px;
+                      cursor: pointer;
+                    "
+                  >
+                    Cancel
+                  </button>
+                </form>
+                {% else %}
+                <span style="color: var(--text-muted)">-</span>
+                {% endif %}
+              </td>
+            </tr>
+            {% endfor %}
+          </table>
+          {% else %}
+          <p style="color: #9ca3af; text-align: center; padding: 2rem">
+            No orders yet.
+            <a href="{{ url_for('cars.browse_cars') }}" style="color: #e63946"
+              >Browse cars</a
+            >
+            to place an order!
+          </p>
+          {% endif %}
+        </section>
+
+        <section class="section">
+          <h2>Hot Auctions Ending Soon</h2>
+          <div class="car-grid">
+            <div class="car-card">
+              <img
+                src="https://images.unsplash.com/photo-1619767886558-efdc259cde1a"
+              />
+              <div class="car-body">
+                <div class="verified">
+                  <i data-lucide="check-circle"></i> Verified
+                </div>
+                <h4>Mercedes-Benz C300</h4>
+                <p>2.0L Turbo • 38,000 KM</p>
+                <div class="price">₦18,200,000</div>
+                <button class="btn-primary" style="border-radius: 12px">
+                  View Details
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- SAVED CARS -->
+        <section class="section" id="SC">
+          <h2>My Watchlist</h2>
+          {% if saved_cars %}
+          <div class="car-grid">
+            {% for saved in saved_cars %}
+            <div class="car-card">
+              <div class="car-body">
+                <div class="verified">
+                  <i data-lucide="heart" style="color: #e63946"></i> Saved
+                </div>
+                <h4>{{ saved.year }} {{ saved.make }} {{ saved.model }}</h4>
+                <div class="price">₦{{ "%.2f"|format(saved.price|float) }}</div>
+                <form action="/cars/{{ saved.car_id }}/unsave" method="POST">
+                  <input
+                    type="hidden"
+                    name="csrf_token"
+                    value="{{ csrf_token() }}"
+                  />
+                  <button
+                    type="submit"
+                    style="
+                      background: transparent;
+                      border: 1px solid #e63946;
+                      color: #e63946;
+                      padding: 0.5rem 1rem;
+                      border-radius: 6px;
+                      cursor: pointer;
+                      margin-top: 0.5rem;
+                      width: 100%;
+                    "
+                  >
+                    Remove
+                  </button>
+                </form>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+          {% else %}
+          <p style="color: #9ca3af; text-align: center; padding: 2rem">
+            No saved cars yet.
+            <a href="{{ url_for('cars.browse_cars') }}" style="color: #e63946"
+              >Browse cars</a
+            >
+            to add to your watchlist!
+          </p>
+          {% endif %}
+        </section>
+      </main>
+      <footer role="contentinfo">
+        <div class="container footer-inner">
+          <div>© 2019–2026 Sarkin Mota Autos. All rights reserved.</div>
+          <div>Founded by <span>Dr. Aliyu Mohammad (Sarkin Mota)</span></div>
+        </div>
+      </footer>
+      <!-- FOOTER (EDIT FREELY) -->
+    </div>
+
+    <script>
+      lucide.createIcons();
+
+      document
+        .getElementById("sidebarToggle")
+        .addEventListener("click", function () {
+          document.querySelector(".sidebar").classList.toggle("collapsed");
+        });
+    </script>
+  </body>
+</html>
+

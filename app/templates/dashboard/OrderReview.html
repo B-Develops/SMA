@@ -1,0 +1,499 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Review Order – Sarkin Mota Autos</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='dashboard.css') }}" />
+
+    <style>
+      :root {
+        --bg-main: #0a192f;
+        --bg-card: #112240;
+        --bg-header: #020c1b;
+        --text-main: #f7fafc;
+        --text-muted: #a0aec0;
+        --accent-red: #e53e3e;
+        --accent-gold: #d69e2e;
+        --border-soft: rgba(255, 255, 255, 0.08);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Inter", system-ui, sans-serif;
+        background: var(--bg-main);
+        color: var(--text-main);
+        line-height: 1.6;
+      }
+
+      header {
+        background: var(--bg-header);
+        border-bottom: 1px solid var(--border-soft);
+        sticky: top;
+        z-index: 100;
+      }
+
+      .nav {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 1.25rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 72px;
+      }
+
+      .logo {
+        font-weight: 800;
+        font-size: 1.4rem;
+        color: var(--accent-red);
+        letter-spacing: 0.03em;
+      }
+
+      .nav-actions {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+      }
+
+      .nav-actions a {
+        color: var(--text-muted);
+        font-weight: 500;
+        text-decoration: none;
+      }
+
+      main {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 3rem 1.5rem;
+      }
+
+      h1 {
+        font-size: 2rem;
+        font-weight: 800;
+        margin-bottom: 0.5rem;
+        text-align: center;
+      }
+
+      .subtitle {
+        text-align: center;
+        color: var(--text-muted);
+        margin-bottom: 2.5rem;
+        font-size: 1rem;
+      }
+
+      .review-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border-soft);
+        border-radius: 12px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        backdrop-filter: blur(10px);
+      }
+
+      .review-section {
+        margin-bottom: 2rem;
+      }
+
+      .review-section:last-child {
+        margin-bottom: 0;
+      }
+
+      .section-title {
+        font-weight: 700;
+        font-size: 0.95rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--accent-gold);
+        margin-bottom: 1rem;
+        padding-bottom: 0.75rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      }
+
+      .review-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.75rem 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+      }
+
+      .review-row:last-child {
+        border-bottom: none;
+      }
+
+      .review-label {
+        color: var(--text-muted);
+        font-size: 0.95rem;
+        font-weight: 500;
+      }
+
+      .review-value {
+        font-weight: 600;
+        font-size: 0.95rem;
+      }
+
+      .price-value {
+        color: var(--accent-red);
+        font-weight: 700;
+        font-size: 1.1rem;
+      }
+
+      .car-details {
+        background: rgba(0, 0, 0, 0.2);
+        padding: 1.25rem;
+        border-radius: 8px;
+        margin-bottom: 1.5rem;
+      }
+
+      .car-title {
+        font-size: 1.25rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+      }
+
+      .car-price {
+        font-size: 1.5rem;
+        font-weight: 800;
+        color: var(--accent-red);
+        margin-bottom: 1rem;
+      }
+
+      .car-info {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.75rem;
+        font-size: 0.9rem;
+        color: var(--text-muted);
+      }
+
+      .trust-message {
+        background: rgba(72, 187, 120, 0.1);
+        border-left: 3px solid #48bb78;
+        padding: 1rem;
+        border-radius: 6px;
+        margin-bottom: 2rem;
+        font-size: 0.95rem;
+        color: #9ae6b4;
+      }
+
+      .warning-message {
+        background: rgba(237, 137, 54, 0.1);
+        border-left: 3px solid var(--accent-gold);
+        padding: 1rem;
+        border-radius: 6px;
+        margin-bottom: 2rem;
+        font-size: 0.9rem;
+        color: var(--accent-gold);
+      }
+
+      .actions {
+        display: flex;
+        gap: 1rem;
+        margin-top: 2.5rem;
+      }
+
+      .btn {
+        flex: 1;
+        padding: 1rem;
+        border-radius: 10px;
+        font-weight: 600;
+        font-size: 1rem;
+        border: none;
+        cursor: pointer;
+        transition: all 0.25s ease;
+      }
+
+      .btn-confirm {
+        background: var(--accent-red);
+        color: white;
+        border: 1px solid var(--accent-red);
+      }
+
+      .btn-confirm:hover {
+        background: #c53030;
+        transform: translateY(-2px);
+        box-shadow: 0 12px 28px rgba(229, 62, 62, 0.35);
+      }
+
+      .btn-cancel {
+        background: transparent;
+        color: var(--text-muted);
+        border: 1px solid var(--border-soft);
+      }
+
+      .btn-cancel:hover {
+        background: rgba(255, 255, 255, 0.05);
+        color: var(--text-main);
+      }
+
+      .payment-info {
+        background: rgba(16, 185, 129, 0.08);
+        padding: 1.25rem;
+        border-radius: 8px;
+        border: 1px solid rgba(16, 185, 129, 0.2);
+        margin-bottom: 1.5rem;
+      }
+
+      .payment-info-title {
+        font-weight: 700;
+        margin-bottom: 0.75rem;
+        color: #10b981;
+      }
+
+      .payment-info-text {
+        font-size: 0.95rem;
+        color: var(--text-muted);
+        line-height: 1.6;
+      }
+
+      footer {
+        background: var(--bg-header);
+        border-top: 1px solid var(--border-soft);
+        padding: 2rem;
+        text-align: center;
+        font-size: 0.85rem;
+        color: var(--text-muted);
+        margin-top: 4rem;
+      }
+
+      @media (max-width: 600px) {
+        main {
+          padding: 2rem 1rem;
+        }
+
+        h1 {
+          font-size: 1.5rem;
+        }
+
+        .car-info {
+          grid-template-columns: 1fr;
+        }
+
+        .actions {
+          flex-direction: column;
+        }
+
+        .btn {
+          width: 100%;
+          min-height: 44px;
+          font-size: 1rem;
+        }
+
+        .review-card {
+          padding: 1.5rem;
+        }
+
+        .review-row {
+          flex-direction: column;
+          gap: 0.5rem;
+        }
+
+        .review-label,
+        .review-value {
+          width: 100%;
+        }
+
+        .payment-info {
+          padding: 1rem;
+        }
+
+        .payment-info-text {
+          font-size: 0.9rem;
+        }
+
+
+  </head>
+
+  <body>
+    <main>
+      <h1>Review Your Order</h1>
+      <p class="subtitle">Please verify all details before confirming</p>
+
+      <!-- TRUST MESSAGE -->
+      <div class="trust-message">
+        ✓ Your payment information is secure and encrypted. We never store full
+        card details.
+      </div>
+
+      <!-- CAR DETAILS -->
+      <div class="review-card">
+        <div class="section-title">Vehicle Details</div>
+        <div class="car-details">
+          <div class="car-title">
+            {{ car.year }} {{ car.make }} {{ car.model }}
+          </div>
+          <div class="car-price">{{ car.price | currency }}</div>
+          <div class="car-info">
+            <div>
+              <strong>Mileage:</strong> {{ car.mileage|default('N/A') }} KM
+            </div>
+            <div>
+              <strong>Transmission:</strong> {{
+              car.transmission|default('Automatic') }}
+            </div>
+            <div>
+              <strong>Condition:</strong> {{ car.condition|default('Used')|title
+              }}
+            </div>
+            <div><strong>Year:</strong> {{ car.year|default('N/A') }}</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ORDER DETAILS -->
+      <div class="review-card">
+        <div class="section-title">Order Summary</div>
+
+        <div class="review-row">
+          <span class="review-label">Your Offer Amount</span>
+          <span class="review-value price-value"
+            >{{ order_amount | currency }}</span
+          >
+        </div>
+
+        <div class="review-row">
+          <span class="review-label">Listed Price</span>
+          <span class="review-value"
+            >{{ car.price | currency }}</span
+          >
+        </div>
+
+        {% if order_amount|float < car.price|float %}
+        <div class="review-row" style="color: var(--accent-gold)">
+          <span class="review-label">Your Discount</span>
+          <span class="review-value"
+            >−{{ (car.price|float - order_amount|float) | currency }}</span
+          >
+        </div>
+        {% endif %} {% if payment_method %}
+        <div class="review-row">
+          <span class="review-label">Payment Method</span>
+          <span class="review-value">{{ payment_method|title }}</span>
+        </div>
+        {% endif %}
+      </div>
+
+      <!-- DELIVERY INFO -->
+      {% if delivery_address %}
+      <div class="review-card">
+        <div class="section-title">Delivery Address</div>
+        <div class="review-row">
+          <span class="review-label">Address</span>
+          <span class="review-value">{{ delivery_address }}</span>
+        </div>
+      </div>
+      {% else %}
+      <div class="review-card">
+        <div class="section-title">Delivery Address (Optional)</div>
+        <p
+          style="
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin: 0 0 1rem 0;
+          "
+        >
+          Not provided. The seller will contact you to arrange delivery.
+        </p>
+      </div>
+      {% endif %}
+
+      <!-- PAYMENT INFO -->
+      <div class="payment-info">
+        <div class="payment-info-title">📋 What Happens Next?</div>
+        <div class="payment-info-text">
+          1. You'll receive a confirmation email with your order number<br />
+          2. The seller has 24 hours to review and accept your offer<br />
+          3. Once accepted, payment will be processed securely<br />
+          4. You can track your order status anytime in your dashboard
+        </div>
+      </div>
+
+      <!-- ADD NOTES SECTION -->
+      {% if notes %}
+      <div class="review-card">
+        <div class="section-title">Your Message to Seller</div>
+        <div class="review-row">
+          <span
+            class="review-value"
+            style="font-style: italic; color: var(--text-muted); width: 100%"
+          >
+            "{{ notes }}"
+          </span>
+        </div>
+      </div>
+      {% endif %}
+
+      <!-- ACTIONS -->
+      <form
+        method="POST"
+        action="{{ url_for('cars.place_order', car_id=car.id) }}"
+        style="display: inline; width: 100%"
+        id="confirmOrderForm"
+      >
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+        <input type="hidden" name="order_amount" value="{{ order_amount }}" />
+        <input
+          type="hidden"
+          name="payment_method"
+          value="{{ payment_method }}"
+        />
+        {% if delivery_address %}<input
+          type="hidden"
+          name="delivery_address"
+          value="{{ delivery_address }}"
+        />{% endif %} {% if notes %}<input
+          type="hidden"
+          name="notes"
+          value="{{ notes }}"
+        />{% endif %}
+
+        <div class="actions">
+          <button
+            type="button"
+            class="btn btn-cancel"
+            onclick="window.history.back()"
+          >
+            Edit Order
+          </button>
+          <button type="submit" class="btn btn-confirm" id="confirmBtn">
+            <span id="confirmBtnText">Confirm & Place Order</span>
+            <span
+              id="confirmBtnLoader"
+              style="display: none; margin-left: 0.5rem"
+              >⏳</span
+            >
+          </button>
+        </div>
+      </form>
+
+      <script>
+        const confirmOrderForm = document.getElementById("confirmOrderForm");
+        const confirmBtn = document.getElementById("confirmBtn");
+        const confirmBtnText = document.getElementById("confirmBtnText");
+        const confirmBtnLoader = document.getElementById("confirmBtnLoader");
+
+        confirmOrderForm.addEventListener("submit", (e) => {
+          confirmBtn.disabled = true;
+          confirmBtnText.textContent = "Processing...";
+          confirmBtnLoader.style.display = "inline";
+          confirmBtn.style.opacity = "0.7";
+        });
+      </script>
+    </main>
+
+    <footer>
+      <div>© 2019–2026 Sarkin Mota Autos. All rights reserved.</div>
+    </footer>
+  </body>
+</html>

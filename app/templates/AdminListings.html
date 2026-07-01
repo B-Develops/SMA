@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Manage Listings - Admin - Sarkin Mota Autos</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='admin-listings.css') }}"
+    />
+
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+  </head>
+  <body>
+    <div class="page-wrapper">
+      <main class="page-container">
+        <!-- ========================= -->
+        <!-- PAGE HEADER -->
+        <!-- ========================= -->
+
+        <header class="page-header">
+          <a href="{{ url_for('admin.dashboard') }}" class="back-link">
+            ← Back to Dashboard
+          </a>
+
+          <h1>Manage Listings</h1>
+
+          <p>View, manage and moderate all vehicle listings on the platform.</p>
+        </header>
+
+        <!-- ========================= -->
+        <!-- STATS -->
+        <!-- ========================= -->
+
+        <section class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-title">Total Listings</div>
+
+            <h2>{{ total_listings }}</h2>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-title">Active Listings</div>
+
+            <h2>{{ active_listings }}</h2>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-title">Sold Listings</div>
+
+            <h2>{{ sold_listings }}</h2>
+          </div>
+        </section>
+
+        <!-- ========================= -->
+        <!-- TOOLBAR -->
+        <!-- ========================= -->
+
+        <section class="toolbar">
+          <div class="search-box">
+            <i data-lucide="search"></i>
+
+            <input type="text" placeholder="Search listings..." />
+          </div>
+
+          <div class="toolbar-actions">
+            <select>
+              <option>All Status</option>
+              <option>Active</option>
+              <option>Pending</option>
+              <option>Sold</option>
+            </select>
+
+            <select>
+              <option>Newest First</option>
+              <option>Oldest First</option>
+              <option>Highest Price</option>
+              <option>Lowest Price</option>
+            </select>
+          </div>
+        </section>
+
+        <!-- ========================= -->
+        <!-- TABLE CARD -->
+        <!-- ========================= -->
+
+        <section class="table-card">
+          {% if listings %}
+
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Vehicle</th>
+                <th>Seller</th>
+                <th>Price</th>
+                <th>Status</th>
+                <th>Listed</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {% for car in listings %}
+
+              <tr>
+                <!-- VEHICLE -->
+
+                <td>
+                  <div class="vehicle-card">
+                    {% if car.image_url %}
+
+                    <img
+                      src="{{ url_for('static', filename=car.image_url) }}"
+                      alt="{{ car.make }}"
+                      class="car-image"
+                    />
+
+                    {% else %}
+
+                    <div class="car-image placeholder">N/A</div>
+
+                    {% endif %}
+
+                    <div class="vehicle-details">
+                      <div class="vehicle-name">
+                        {{ car.year }} {{ car.make }} {{ car.model }}
+                      </div>
+
+                      <div class="vehicle-meta">
+                        {{ car.mileage|int }} mi • {{ car.transmission }}
+                      </div>
+                    </div>
+                  </div>
+                </td>
+
+                <!-- SELLER -->
+
+                <td>
+                  <div class="seller-name">{{ car.seller_name }}</div>
+
+                  <div class="seller-email">{{ car.seller_email }}</div>
+                </td>
+
+                <!-- PRICE -->
+
+                <td>
+                  <strong class="price"> {{ car.price | currency }} </strong>
+                </td>
+
+                <!-- STATUS -->
+
+                <td>
+                  <span
+                    class="badge
+        {{ 'badge-active' if car.status == 'active'
+        else 'badge-sold' if car.status == 'sold'
+        else 'badge-pending' }}"
+                  >
+                    {{ car.status|capitalize }}
+                  </span>
+                </td>
+
+                <!-- DATE -->
+
+                <td>
+                  {{ car.created_at|date('Y-m-d') if car.created_at else 'N/A'
+                  }}
+                </td>
+
+                <!-- ACTIONS -->
+
+                <td class="actions-cell">
+                  <form
+                    action="{{ url_for('admin.delete_listing', listing_id=car.id) }}"
+                    method="POST"
+                  >
+                    <input
+                      type="hidden"
+                      name="csrf_token"
+                      value="{{ csrf_token() }}"
+                    />
+
+                    <button
+                      type="submit"
+                      class="btn btn-danger btn-sm"
+                      onclick="return confirm('Delete this listing?');"
+                    >
+                      Delete
+                    </button>
+                  </form>
+                </td>
+              </tr>
+
+              {% endfor %}
+            </tbody>
+          </table>
+
+          {% else %}
+
+          <div class="empty-state">
+            <p>No listings found.</p>
+          </div>
+
+          {% endif %}
+        </section>
+        <!-- ========================= -->
+        <!-- PAGINATION -->
+        <!-- ========================= -->
+
+        {% if pagination %}
+
+        <section class="pagination">
+          {% if pagination.has_prev %}
+
+          <a
+            href="{{ url_for('admin.listings', page=pagination.prev_num) }}"
+            class="btn"
+          >
+            ← Previous
+          </a>
+
+          {% else %}
+
+          <span class="btn disabled"> ← Previous </span>
+
+          {% endif %}
+
+          <span class="pagination-info">
+            Page {{ pagination.page }} of {{ pagination.pages }}
+          </span>
+
+          {% if pagination.has_next %}
+
+          <a
+            href="{{ url_for('admin.listings', page=pagination.next_num) }}"
+            class="btn"
+          >
+            Next →
+          </a>
+
+          {% else %}
+
+          <span class="btn disabled"> Next → </span>
+
+          {% endif %}
+        </section>
+
+        {% endif %}
+      </main>
+    </div>
+
+    <script>
+      lucide.createIcons({
+        width: 20,
+        height: 20,
+      });
+
+      document.addEventListener("DOMContentLoaded", function () {
+        const sidebarToggle = document.querySelector(".sidebar h2");
+
+        if (sidebarToggle) {
+          sidebarToggle.addEventListener("click", function () {
+            document.querySelector(".sidebar").classList.toggle("collapsed");
+          });
+        }
+      });
+    </script>
+  </body>
+</html>

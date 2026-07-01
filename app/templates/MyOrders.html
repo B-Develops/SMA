@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Orders – Sarkin Mota Autos</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='my-orders.css') }}"
+    />
+
+    <style></style>
+  </head>
+  <body>
+    <div class="container">
+      <a href="{{ url_for('dashboard') }}" class="back-link">← Back to Dashboard</a>
+
+      <div class="page-header">
+        <h1>My Orders</h1>
+      </div>
+
+      <!-- Navigation Tabs -->
+      <nav class="nav-tabs">
+        <a href="{{ url_for('dashboard') }}" class="nav-tab">Dashboard</a>
+        <a href="{{ url_for('orders.my_orders') }}" class="nav-tab active"
+          >Orders</a
+        >
+        <a href="{{ url_for('profiles.saved_cars') }}" class="nav-tab"
+          >Saved Cars</a
+        >
+      </nav>
+
+      {% if orders %}
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Car</th>
+            <th>Order Amount</th>
+            <th>Listed Price</th>
+            <th>Status</th>
+            <th>Payment</th>
+            <th>Date</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for order in orders %}
+          <tr>
+            <td>
+              <div class="car-details">
+                {% if order.car and order.car.image_url %}
+                <img
+                  src="{{ url_for('static', filename=order.car.image_url) }}"
+                  alt="{{ order.car.make }}"
+                  class="car-image"
+                />
+                {% else %}
+                <div
+                  class="car-image"
+                  style="
+                    background: var(--color-bg-secondary);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                  "
+                >
+                  <span style="font-size: 0.6rem">N/A</span>
+                </div>
+                {% endif %}
+                <div class="car-info">
+                  {% if order.car %}
+                  <span class="car-title"
+                    >{{ order.car.year }} {{ order.car.make }} {{
+                    order.car.model }}</span
+                  >
+                  <span class="car-meta"
+                    >{{ order.car.transmission or 'Automatic' }} • {{
+                    order.car.mileage|int }} km</span
+                  >
+                  {% else %}
+                  <span class="car-title">Deleted Car</span>
+                  <span class="car-meta">N/A</span>
+                  {% endif %}
+                </div>
+              </div>
+            </td>
+            <td class="order-amount">{{ order.order_amount | currency }}</td>
+            <td>
+              {% if order.car %}
+              <span class="listed-price"
+                >{{ order.listed_price | currency }}</span
+              >
+              {% else %}
+              <span class="listed-price">N/A</span>
+              {% endif %}
+            </td>
+            <td>
+              <span
+                class="badge {{ 'badge-pending' if order.status == 'pending' else 'badge-confirmed' if order.status == 'confirmed' else 'badge-cancelled' if order.status == 'cancelled' else 'badge-completed' if order.status == 'completed' else '' }}"
+              >
+                {{ order.status|capitalize }}
+              </span>
+            </td>
+            <td>
+              {% set latest_payment = order.latest_payment %}
+              {% if latest_payment %}
+                <span
+                  class="badge"
+                  style="
+                    background: rgba(72, 187, 120, 0.16);
+                    color: #9ae6b4;
+                  "
+                >
+                  {{ latest_payment.status|capitalize }}
+                </span>
+              {% else %}
+                <span style="color: var(--color-text-secondary); font-size: 0.85rem">No payment</span>
+              {% endif %}
+            </td>
+            <td>
+              {{ order.created_at.strftime('%Y-%m-%d') if order.created_at else
+              'N/A' }}
+            </td>
+            <td>
+              {% set latest_payment = order.latest_payment %}
+              {% if order.status == 'confirmed' and (not latest_payment or latest_payment.status != 'paid') %}
+                <a
+                  href="{{ url_for('payments.payment_page', order_id=order.id) }}"
+                  class="btn btn-primary btn-sm"
+                  style="
+                    background: var(--color-accent-red);
+                    border-color: var(--color-accent-red);
+                    color: white;
+                  "
+                >
+                  Pay Now
+                </a>
+              {% elif latest_payment and latest_payment.status == 'paid' %}
+                <span style="color: var(--color-text-secondary); font-size: 0.85rem">Paid</span>
+              {% else %}
+                <span style="color: var(--color-text-secondary); font-size: 0.85rem">Waiting</span>
+              {% endif %}
+            </td>
+              {% if order.status in ['pending', 'confirmed'] %}
+              <form
+                action="{{ url_for('orders.cancel_order', order_id=order.id) }}"
+                method="POST"
+                style="display: inline"
+              >
+                <input
+                  type="hidden"
+                  name="csrf_token"
+                  value="{{ csrf_token() }}"
+                />
+                <button
+                  type="submit"
+                  class="btn btn-danger btn-sm"
+                  onclick="
+                    return confirm(
+                      'Are you sure you want to cancel this order?',
+                    );
+                  "
+                >
+                  Cancel
+                </button>
+              </form>
+              {% else %}
+              <span
+                style="color: var(--color-text-secondary); font-size: 0.85rem"
+                >-</span
+              >
+              {% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% else %}
+      <div class="empty-state">
+        <h2>No Orders Yet</h2>
+        <p>You haven't placed any orders. Start shopping!</p>
+        <a
+          href="{{ url_for('cars.browse_cars') }}"
+          style="color: var(--color-accent-red)"
+          >Browse Available Cars</a
+        >
+      </div>
+      {% endif %}
+    </div>
+  </body>
+</html>

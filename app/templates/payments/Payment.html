@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Payment - Sarkin Mota Autos</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg-primary: #0a192f;
+        --bg-secondary: #020c1b;
+        --bg-card: #112240;
+        --accent-red: #e53e3e;
+        --accent-gold: #d69e2e;
+        --accent-green: #48bb78;
+        --text-primary: #f7fafc;
+        --text-secondary: #a0aec0;
+        --border-soft: rgba(255, 255, 255, 0.08);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: "Inter", system-ui, sans-serif;
+        background:
+          radial-gradient(circle at top left, rgba(229, 62, 62, 0.14), transparent 35%),
+          var(--bg-primary);
+        color: var(--text-primary);
+      }
+
+      header {
+        border-bottom: 1px solid var(--border-soft);
+        background: rgba(2, 12, 27, 0.88);
+        backdrop-filter: blur(10px);
+      }
+
+      .nav {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 1.25rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .logo {
+        color: var(--accent-red);
+        font-weight: 800;
+        letter-spacing: 0.04em;
+        text-decoration: none;
+      }
+
+      .nav a {
+        color: var(--text-secondary);
+        text-decoration: none;
+        font-size: 0.9rem;
+      }
+
+      main {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 3rem 1.25rem 4rem;
+      }
+
+      .page-header {
+        margin-bottom: 2rem;
+      }
+
+      h1 {
+        margin: 0 0 0.5rem;
+        font-size: 2rem;
+      }
+
+      .subtitle {
+        margin: 0;
+        color: var(--text-secondary);
+      }
+
+      .card {
+        background: rgba(17, 34, 64, 0.72);
+        border: 1px solid var(--border-soft);
+        border-radius: 16px;
+        padding: 1.5rem;
+        margin-bottom: 1.25rem;
+        backdrop-filter: blur(12px);
+      }
+
+      .row {
+        display: flex;
+        justify-content: space-between;
+        gap: 1rem;
+        padding: 0.85rem 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      }
+
+      .row:last-child {
+        border-bottom: none;
+      }
+
+      .label {
+        color: var(--text-secondary);
+      }
+
+      .value {
+        font-weight: 700;
+        text-align: right;
+      }
+
+      .amount {
+        color: var(--accent-red);
+        font-size: 1.5rem;
+      }
+
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        border-radius: 999px;
+        padding: 0.35rem 0.75rem;
+        font-size: 0.8rem;
+        font-weight: 700;
+        text-transform: capitalize;
+      }
+
+      .badge.pending {
+        background: rgba(160, 174, 192, 0.15);
+        color: #cbd5e1;
+      }
+
+      .badge.paid,
+      .badge.completed {
+        background: rgba(72, 187, 120, 0.15);
+        color: #9ae6b4;
+      }
+
+      .badge.failed,
+      .badge.cancelled {
+        background: rgba(229, 62, 62, 0.15);
+        color: #fc8181;
+      }
+
+      .notice {
+        border-radius: 12px;
+        padding: 1rem;
+        margin-bottom: 1.25rem;
+        border: 1px solid var(--border-soft);
+        color: var(--text-secondary);
+      }
+
+      .notice.info {
+        background: rgba(66, 153, 225, 0.1);
+        border-color: rgba(66, 153, 225, 0.3);
+      }
+
+      .notice.warning {
+        background: rgba(214, 158, 46, 0.1);
+        border-color: rgba(214, 158, 46, 0.3);
+      }
+
+      .notice.success {
+        background: rgba(72, 187, 120, 0.1);
+        border-color: rgba(72, 187, 120, 0.3);
+      }
+
+      .btn {
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 44px;
+        border: 1px solid var(--border-soft);
+        border-radius: 10px;
+        padding: 0.75rem 1.25rem;
+        background: transparent;
+        color: var(--text-primary);
+        text-decoration: none;
+        cursor: pointer;
+        font-weight: 700;
+      }
+
+      .btn.primary {
+        background: var(--accent-red);
+        border-color: var(--accent-red);
+      }
+
+      .btn.danger {
+        background: rgba(229, 62, 62, 0.16);
+        border-color: rgba(229, 62, 62, 0.45);
+        color: #fc8181;
+      }
+
+      .btn.secondary {
+        color: var(--text-secondary);
+      }
+
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+        margin-top: 1.5rem;
+      }
+
+      code {
+        color: var(--accent-gold);
+        word-break: break-all;
+      }
+
+      @media (max-width: 640px) {
+        .row {
+          flex-direction: column;
+          gap: 0.25rem;
+        }
+
+        .value {
+          text-align: left;
+        }
+
+        .actions {
+          flex-direction: column;
+        }
+
+        .btn {
+          width: 100%;
+        }
+
+
+  </head>
+    <body>
+    <main>
+      <div class="page-header">
+        <h1>Payment</h1>
+        <p class="subtitle">Payment is linked to this exact order, user, and car.</p>
+      </div>
+
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, message in messages %}
+            <div class="notice {{ 'success' if category == 'success' else 'warning' if category == 'warning' else 'info' }}">
+              {{ message }}
+            </div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+
+      <div class="card">
+        <div class="row">
+          <span class="label">Order</span>
+          <span class="value">#{{ order.id }}</span>
+        </div>
+        <div class="row">
+          <span class="label">Vehicle</span>
+          <span class="value">{{ car.year }} {{ car.make }} {{ car.model }}</span>
+        </div>
+        <div class="row">
+          <span class="label">Buyer</span>
+          <span class="value">{{ current_user.email }}</span>
+        </div>
+        <div class="row">
+          <span class="label">Amount</span>
+          <span class="value amount">{{ payment.amount | currency }}</span>
+        </div>
+        <div class="row">
+          <span class="label">Order Status</span>
+          <span class="badge {{ order.status }}">{{ order.status|capitalize }}</span>
+        </div>
+        <div class="row">
+          <span class="label">Payment Status</span>
+          <span class="badge {{ payment.status }}">{{ payment.status|capitalize }}</span>
+        </div>
+        <div class="row">
+          <span class="label">Payment Reference</span>
+          <span class="value"><code>{{ payment.provider_reference or 'Not generated yet' }}</code></span>
+        </div>
+      </div>
+
+      {% if payment.status == 'paid' %}
+        <div class="notice success">
+          This payment has already been completed.
+        </div>
+      {% elif order.status != 'confirmed' %}
+        <div class="notice warning">
+          This order is still {{ order.status }}. Admin must accept the order before payment can be initialized.
+        </div>
+      {% elif payment.provider == 'unset' %}
+        <div class="notice info">
+          A payment record has been created for this order. Connect Paystack, Flutterwave, or a bank-transfer workflow to this scaffold when the payment method is ready.
+        </div>
+        <form method="POST" action="{{ url_for('payments.initialize_payment', order_id=order.id) }}">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+          <button type="submit" class="btn primary">Prepare Payment Placeholder</button>
+        </form>
+      {% else %}
+        <div class="notice info">
+          Payment is pending with provider: {{ payment.provider }}.
+        </div>
+      {% endif %}
+
+      {% if current_user.role == 'admin' and payment.status != 'paid' %}
+        <div class="card">
+          <h2>Admin Manual Verification</h2>
+          <p class="subtitle">Use this only when you have confirmed the money in the account.</p>
+          <form method="POST" action="{{ url_for('payments.admin_mark_payment_paid', payment_id=payment.id) }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+            <button type="submit" class="btn danger">Mark Payment as Paid</button>
+          </form>
+        </div>
+      {% endif %}
+
+      <div class="actions">
+        <a href="{{ url_for('orders.my_orders') }}" class="btn secondary">Back to Orders</a>
+        <a href="{{ url_for('cars.browse_cars') }}" class="btn secondary">Continue Shopping</a>
+      </div>
+    </main>
+  </body>
+</html>

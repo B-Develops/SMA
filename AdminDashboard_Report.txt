@@ -1,0 +1,102 @@
+======================================================================
+SARKIN MOTA AUTOS - ADMIN DASHBOARD REPORT
+Generated on: 2026-03-22 13:27:05
+======================================================================
+
+--------------------------------------------------
+STATISTICS OVERVIEW
+--------------------------------------------------
+Total Users:           6
+Admin Users:            1
+Total Listings:         8
+Active Listings:        8
+Cars Sold:              0
+Total Bids:             0
+Active Bids:            0
+Average Price:          ₦19,375,000.00
+
+--------------------------------------------------
+ADMIN ACCOUNTS
+--------------------------------------------------
+
+Admin #1:
+  Name:         Administrator
+  Email:        admin@sarkinmota.com
+  Role:         admin
+  Created:      2026-02-27 16:37:06
+
+--------------------------------------------------
+RECENT LISTINGS (Last 5)
+--------------------------------------------------
+
+Listing #1:
+  Car:          2022 Toyota Camry
+  Seller:       Basheer Test User
+  Price:        ₦15,000,000.00
+  Status:       active
+  Listed:       2026-02-27 16:24:30
+
+Listing #2:
+  Car:          2021 Toyota Corolla
+  Seller:       Basheer Test User
+  Price:        ₦12,000,000.00
+  Status:       active
+  Listed:       2026-02-27 16:24:30
+
+Listing #3:
+  Car:          2023 Honda Accord
+  Seller:       Basheer Test User
+  Price:        ₦18,500,000.00
+  Status:       active
+  Listed:       2026-02-27 16:24:30
+
+Listing #4:
+  Car:          2020 Honda Civic
+  Seller:       Basheer Test User
+  Price:        ₦11,000,000.00
+  Status:       active
+  Listed:       2026-02-27 16:24:30
+
+Listing #5:
+  Car:          2021 Ford Mustang
+  Seller:       Basheer Test User
+  Price:        ₦25,000,000.00
+  Status:       active
+  Listed:       2026-02-27 16:24:30
+
+--------------------------------------------------
+ALL LISTINGS SUMMARY
+--------------------------------------------------
+
+Total: 8 listings
+
+1. 2022 Toyota Camry - ₦15,000,000 (active)
+2. 2021 Toyota Corolla - ₦12,000,000 (active)
+3. 2023 Honda Accord - ₦18,500,000 (active)
+4. 2020 Honda Civic - ₦11,000,000 (active)
+5. 2021 Ford Mustang - ₦25,000,000 (active)
+6. 2022 BMW 3 Series - ₦28,000,000 (active)
+7. 2023 Mercedes C-Class - ₦32,000,000 (active)
+8. 2021 Nissan Altima - ₦13,500,000 (active)
+
+--------------------------------------------------
+ALL USERS SUMMARY
+--------------------------------------------------
+
+Total: 6 users
+
+1. test1 (user) - 2026-03-14 19:18:20
+2. Basheer  (user) - 2026-03-06 21:52:10
+3. Basheer (user) - 2026-02-27 20:13:56
+4. test1 (user) - 2026-02-27 16:46:35
+5. Administrator (admin) - 2026-02-27 16:37:06
+6. Basheer Test User (user) - 2026-02-27 16:24:30
+
+--------------------------------------------------
+ALL BIDS SUMMARY
+--------------------------------------------------
+No bids found.
+
+======================================================================
+END OF REPORT
+======================================================================

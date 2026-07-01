@@ -1,0 +1,291 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sarkin Mota Autos – Trusted Nigerian Car Marketplace</title>
+
+    <!-- Google Font -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='about.css') }}" />
+
+    <style>
+      :root {
+        --bg: #0a192f;
+        --bg-soft: #001122;
+        --card: #0f223d;
+        --border: rgba(255, 255, 255, 0.08);
+
+        --text-main: #e2e8f0;
+        --text-muted: #a0aec0;
+
+        --red: #e53e3e;
+        --red-dark: #c53030;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: "Inter", sans-serif;
+        background: var(--bg);
+        color: var(--text-main);
+        line-height: 1.65;
+      }
+
+      main {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 4.5rem 1.25rem 6rem;
+      }
+
+      /* ---------- HERO ---------- */
+      .hero {
+        text-align: center;
+        margin-bottom: 4.5rem;
+      }
+
+      .hero h1 {
+        font-size: clamp(2.2rem, 5vw, 3.2rem);
+        font-weight: 800;
+        margin-bottom: 1rem;
+      }
+
+      .hero p {
+        max-width: 720px;
+        margin: 0 auto;
+        font-size: 1.05rem;
+        color: var(--text-muted);
+      }
+
+      /* ---------- FOUNDER ---------- */
+      .founder {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 2.75rem;
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: 2rem;
+        margin-bottom: 5rem;
+      }
+
+      .avatar {
+        width: 72px;
+        height: 72px;
+        border-radius: 50%;
+        background: var(--red);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 800;
+        font-size: 1.4rem;
+        color: #fff;
+        flex-shrink: 0;
+      }
+
+      .founder h2 {
+        font-size: 1.45rem;
+        font-weight: 700;
+        margin-bottom: 0.25rem;
+      }
+
+      .founder span {
+        display: block;
+        color: var(--red);
+        font-size: 0.9rem;
+        font-weight: 600;
+        margin-bottom: 0.9rem;
+      }
+
+      .founder p {
+        color: var(--text-muted);
+      }
+
+      /* ---------- STORY ---------- */
+      .story {
+        max-width: 850px;
+        margin: 0 auto 5rem;
+        text-align: center;
+      }
+
+      .story h3 {
+        font-size: 2rem;
+        font-weight: 800;
+        margin-bottom: 1.25rem;
+      }
+
+      .story p {
+        color: var(--text-muted);
+        font-size: 1.05rem;
+      }
+
+      /* ---------- VALUES ---------- */
+      .values {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 1.75rem;
+        margin-bottom: 5.5rem;
+      }
+
+      .value-card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 2.2rem;
+        transition:
+          transform 0.25s ease,
+          box-shadow 0.25s ease;
+      }
+
+      .value-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 18px 45px rgba(0, 0, 0, 0.4);
+      }
+
+      .value-card h4 {
+        color: var(--red);
+        font-size: 1.1rem;
+        font-weight: 700;
+        margin-bottom: 0.6rem;
+      }
+
+      .value-card p {
+        color: var(--text-muted);
+        font-size: 0.95rem;
+      }
+
+      /* ---------- CTA ---------- */
+      .cta {
+        background: linear-gradient(135deg, #0f223d, #001122);
+        border: 1px solid var(--border);
+        border-radius: 18px;
+        padding: 3.5rem 2rem;
+        text-align: center;
+      }
+
+      .cta h3 {
+        font-size: 2.1rem;
+        font-weight: 800;
+        margin-bottom: 1rem;
+      }
+
+      .cta p {
+        color: var(--text-muted);
+        margin-bottom: 2rem;
+      }
+
+      .cta a {
+        display: inline-block;
+        background: var(--red);
+        color: #fff;
+        text-decoration: none;
+        padding: 0.9rem 2rem;
+        border-radius: 999px;
+        font-weight: 600;
+        transition:
+          background 0.25s ease,
+          transform 0.25s ease;
+      }
+
+      .cta a:hover {
+        background: var(--red-dark);
+        transform: translateY(-2px);
+      }
+
+      @media (max-width: 720px) {
+        .founder {
+          grid-template-columns: 1fr;
+        }
+      }
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background-image:
+          linear-gradient(rgba(9, 23, 44, 0.85), rgba(2, 12, 27, 0.9)),
+          url("../static/login-bg.png");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        z-index: -2;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <!-- HERO -->
+      <section class="hero">
+        <h1>About Sarkin Mota Autos</h1>
+        <p>
+          Sarkin Mota Autos is a trusted Nigerian car dealership built on
+          transparency, quality vehicles, and nationwide delivery.
+        </p>
+      </section>
+
+      <!-- FOUNDER -->
+      <section class="founder">
+        <div class="avatar">AM</div>
+        <div>
+          <h2>Dr. Aliyu Mohammad (Al-Amin)</h2>
+          <span>Founder & CEO</span>
+          <p>
+            Sarkin Mota Autos was founded in 2019 by Dr. Aliyu Mohammad, widely
+            known as Sarkin Mota — “King of Cars”. Based in Abuja, the business
+            grew through trust, consistency, and digital innovation to serve
+            customers across Nigeria.
+          </p>
+        </div>
+      </section>
+
+      <!-- STORY -->
+      <section class="story">
+        <h3>Our Story</h3>
+        <p>
+          What started as a physical car dealership in Abuja evolved into a
+          nationwide online platform during the COVID-19 period. Through
+          transparent listings, verified vehicles, and social media engagement,
+          Sarkin Mota Autos continues to help Nigerians buy cars with
+          confidence.
+        </p>
+      </section>
+
+      <!-- VALUES -->
+      <section class="values">
+        <div class="value-card">
+          <h4>Nationwide Delivery</h4>
+          <p>Safe and reliable vehicle delivery to every part of Nigeria.</p>
+        </div>
+
+        <div class="value-card">
+          <h4>Verified Vehicles</h4>
+          <p>Every car is inspected and confirmed before being listed.</p>
+        </div>
+
+        <div class="value-card">
+          <h4>Transparent Pricing</h4>
+          <p>No hidden fees — clear and honest pricing always.</p>
+        </div>
+
+        <div class="value-card">
+          <h4>Customer Trust</h4>
+          <p>Built on long-term relationships and satisfied customers.</p>
+        </div>
+      </section>
+
+      <!-- CTA -->
+      <section class="cta">
+        <h3>Experience the Sarkin Mota Difference</h3>
+        <p>Browse quality cars and buy with confidence today.</p>
+        <a href="{{ url_for('cars.browse_cars') }}">Browse Our Cars</a>
+      </section>
+    </main>
+  </body>
+</html>

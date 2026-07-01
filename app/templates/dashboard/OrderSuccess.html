@@ -1,0 +1,503 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Order Confirmed – Sarkin Mota Autos</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='dashboard.css') }}" />
+
+    <style>
+      :root {
+        --bg-main: #0a192f;
+        --bg-card: #112240;
+        --bg-header: #020c1b;
+        --text-main: #f7fafc;
+        --text-muted: #a0aec0;
+        --accent-red: #e53e3e;
+        --accent-gold: #d69e2e;
+        --accent-green: #48bb78;
+        --border-soft: rgba(255, 255, 255, 0.08);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Inter", system-ui, sans-serif;
+        background: var(--bg-main);
+        color: var(--text-main);
+        line-height: 1.6;
+      }
+
+      header {
+        background: var(--bg-header);
+        border-bottom: 1px solid var(--border-soft);
+        sticky: top;
+        z-index: 100;
+      }
+
+      .nav {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 1.25rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 72px;
+      }
+
+      .logo {
+        font-weight: 800;
+        font-size: 1.4rem;
+        color: var(--accent-red);
+        letter-spacing: 0.03em;
+      }
+
+      .nav-actions {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+      }
+
+      .nav-actions a {
+        color: var(--text-muted);
+        font-weight: 500;
+        text-decoration: none;
+      }
+
+      main {
+        max-width: 700px;
+        margin: 0 auto;
+        padding: 3rem 1.5rem;
+      }
+
+      .success-container {
+        text-align: center;
+      }
+
+      .success-icon {
+        width: 80px;
+        height: 80px;
+        background: rgba(72, 187, 120, 0.2);
+        border: 2px solid var(--accent-green);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 2rem;
+        font-size: 2.5rem;
+        animation: scaleIn 0.5s ease;
+      }
+
+      @keyframes scaleIn {
+        from {
+          opacity: 0;
+          transform: scale(0.8);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+
+      h1 {
+        font-size: 2.5rem;
+        font-weight: 800;
+        margin-bottom: 0.5rem;
+        animation: fadeInUp 0.6s ease 0.1s backwards;
+      }
+
+      .subtitle {
+        color: var(--text-muted);
+        font-size: 1.1rem;
+        margin-bottom: 2.5rem;
+        animation: fadeInUp 0.6s ease 0.2s backwards;
+      }
+
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .order-number {
+        background: rgba(72, 187, 120, 0.1);
+        border: 1px solid rgba(72, 187, 120, 0.3);
+        border-radius: 8px;
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+        animation: fadeInUp 0.6s ease 0.3s backwards;
+      }
+
+      .order-number-label {
+        font-size: 0.9rem;
+        color: var(--text-muted);
+        margin-bottom: 0.5rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+
+      .order-number-value {
+        font-size: 2rem;
+        font-weight: 800;
+        color: var(--accent-green);
+        font-family: "Courier New", monospace;
+      }
+
+      .confirmation-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border-soft);
+        border-radius: 12px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        text-align: left;
+        backdrop-filter: blur(10px);
+        animation: fadeInUp 0.6s ease 0.4s backwards;
+      }
+
+      .card-title {
+        font-weight: 700;
+        font-size: 1.1rem;
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+      }
+
+      .card-icon {
+        font-size: 1.5rem;
+      }
+
+      .confirmation-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.75rem 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+      }
+
+      .confirmation-row:last-child {
+        border-bottom: none;
+      }
+
+      .row-label {
+        color: var(--text-muted);
+        font-size: 0.95rem;
+      }
+
+      .row-value {
+        font-weight: 600;
+        font-size: 0.95rem;
+      }
+
+      .amount-value {
+        color: var(--accent-red);
+        font-weight: 700;
+        font-size: 1.1rem;
+      }
+
+      .next-steps {
+        background: rgba(16, 185, 129, 0.08);
+        border-left: 4px solid var(--accent-green);
+        padding: 1.5rem;
+        border-radius: 8px;
+        margin-bottom: 2rem;
+        animation: fadeInUp 0.6s ease 0.5s backwards;
+      }
+
+      .next-steps-title {
+        font-weight: 700;
+        margin-bottom: 1rem;
+        color: var(--accent-green);
+      }
+
+      .steps-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+
+      .steps-list li {
+        padding: 0.75rem 0;
+        padding-left: 2rem;
+        position: relative;
+        font-size: 0.95rem;
+        color: var(--text-muted);
+        line-height: 1.6;
+      }
+
+      .steps-list li::before {
+        content: "✓";
+        position: absolute;
+        left: 0;
+        font-weight: 700;
+        color: var(--accent-green);
+        font-size: 1.1rem;
+      }
+
+      .email-notice {
+        background: rgba(100, 200, 255, 0.08);
+        border: 1px solid rgba(100, 200, 255, 0.2);
+        padding: 1rem;
+        border-radius: 8px;
+        margin-bottom: 2rem;
+        font-size: 0.95rem;
+        color: var(--text-muted);
+      }
+
+      .actions {
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+        justify-content: center;
+        animation: fadeInUp 0.6s ease 0.6s backwards;
+      }
+
+      .btn {
+        padding: 1rem 2rem;
+        border-radius: 10px;
+        font-weight: 600;
+        font-size: 1rem;
+        border: none;
+        cursor: pointer;
+        transition: all 0.25s ease;
+        text-decoration: none;
+        display: inline-block;
+      }
+
+      .btn-primary {
+        background: var(--accent-red);
+        color: white;
+      }
+
+      .btn-primary:hover {
+        background: #c53030;
+        transform: translateY(-2px);
+        box-shadow: 0 12px 28px rgba(229, 62, 62, 0.35);
+      }
+
+      .btn-secondary {
+        background: transparent;
+        color: var(--text-muted);
+        border: 1px solid var(--border-soft);
+      }
+
+      .btn-secondary:hover {
+        background: rgba(255, 255, 255, 0.05);
+        color: var(--text-main);
+      }
+
+      .divider {
+        height: 1px;
+        background: var(--border-soft);
+        margin: 2rem 0;
+      }
+
+      footer {
+        background: var(--bg-header);
+        border-top: 1px solid var(--border-soft);
+        padding: 2rem;
+        text-align: center;
+        font-size: 0.85rem;
+        color: var(--text-muted);
+        margin-top: 4rem;
+      }
+
+      @media (max-width: 600px) {
+        main {
+          padding: 2rem 1rem;
+          max-width: 100%;
+        }
+
+        h1 {
+          font-size: 1.8rem;
+        }
+
+        .order-number-value {
+          font-size: 1.5rem;
+        }
+
+        .actions {
+          flex-direction: column;
+          gap: 0.75rem;
+        }
+
+        .btn {
+          width: 100%;
+          min-height: 44px;
+          padding: 1rem;
+          font-size: 1rem;
+        }
+
+        .success-icon {
+          width: 60px;
+          height: 60px;
+          font-size: 2rem;
+        }
+
+        .confirmation-card {
+          padding: 1.5rem;
+        }
+
+        .next-steps {
+          padding: 1.25rem;
+        }
+
+        .steps-list li {
+          padding-left: 1.75rem;
+          font-size: 0.9rem;
+        }
+
+        .email-notice {
+          padding: 0.75rem;
+          font-size: 0.9rem;
+        }
+
+        .subtitle {
+          font-size: 1rem;
+        }
+      }
+
+      @media (max-width: 400px) {
+        main {
+          padding: 1.5rem 1rem;
+        }
+
+        h1 {
+          font-size: 1.5rem;
+          margin-bottom: 1rem;
+        }
+
+        .order-number {
+          padding: 1rem;
+        }
+
+        .order-number-value {
+          font-size: 1.25rem;
+        }
+
+        .btn {
+          font-size: 0.95rem;
+        }
+
+
+  </head>
+
+  <body>
+    <main>
+      <div class="success-container">
+        <div class="success-icon">✓</div>
+        <h1>Order Confirmed!</h1>
+        <p class="subtitle">Your order has been successfully placed</p>
+
+        <!-- ORDER NUMBER -->
+        <div class="order-number">
+          <div class="order-number-label">Order Number</div>
+          <div class="order-number-value">#{{ order.id }}</div>
+        </div>
+
+        <!-- ORDER SUMMARY -->
+        <div class="confirmation-card">
+          <div class="card-title">
+            <span class="card-icon">🚗</span>
+            Order Details
+          </div>
+
+          <div class="confirmation-row">
+            <span class="row-label">Vehicle</span>
+            <span class="row-value"
+              >{{ car.year }} {{ car.make }} {{ car.model }}</span
+            >
+          </div>
+
+          <div class="confirmation-row">
+            <span class="row-label">Your Offer</span>
+            <span class="row-value amount-value"
+              >{{ order.order_amount | currency }}</span
+            >
+          </div>
+
+          <div class="confirmation-row">
+            <span class="row-label">Listed Price</span>
+            <span class="row-value"
+              >{{ order.listed_price | currency }}</span
+            >
+          </div>
+
+          <div class="confirmation-row">
+            <span class="row-label">Order Date</span>
+            <span class="row-value"
+              >{{ order.created_at.strftime('%B %d, %Y at %I:%M %p') }}</span
+            >
+          </div>
+
+          <div class="confirmation-row">
+            <span class="row-label">Status</span>
+            <span class="row-value">
+              <span
+                style="
+                  background: rgba(160, 174, 192, 0.3);
+                  padding: 0.25rem 0.75rem;
+                  border-radius: 4px;
+                  text-transform: capitalize;
+                "
+              >
+                {{ order.status }}
+              </span>
+            </span>
+          </div>
+        </div>
+
+        <!-- EMAIL NOTICE -->
+        <div class="email-notice">
+          📧 A confirmation email has been sent to
+          <strong>{{ current_user.email }}</strong>. Check your inbox for order
+          details and tracking information.
+        </div>
+
+        <!-- NEXT STEPS -->
+        <div class="next-steps">
+          <div class="next-steps-title">What Happens Next?</div>
+          <ul class="steps-list">
+            <li>
+              The seller will review your offer within <strong>24 hours</strong>
+            </li>
+            <li>If accepted, payment will be processed securely</li>
+            <li>You'll receive updates via email every step of the way</li>
+            <li>Track your order anytime in your dashboard</li>
+            <li>Delivery typically takes 3-5 business days after payment</li>
+          </ul>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- ACTIONS -->
+        <div class="actions">
+          <a href="{{ url_for('orders.my_orders') }}" class="btn btn-primary">
+            View All Orders
+          </a>
+          <a href="{{ url_for('cars.browse_cars') }}" class="btn btn-secondary">
+            Continue Shopping
+          </a>
+        </div>
+      </div>
+    </main>
+
+    <footer>
+      <div>© 2019–2026 Sarkin Mota Autos. All rights reserved.</div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,445 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Settings – Sarkin Mota Autos</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='settings.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='header-navbar.css') }}"
+    />
+    <style>
+      :root {
+        --bg-primary: #0a192f;
+        --bg-secondary: #020c1b;
+        --bg-card: #112240;
+        --accent-red: #e53e3e;
+        --accent-gold: #d69e2e;
+        --text-primary: #f7fafc;
+        --text-secondary: #a0aec0;
+        --text-muted: #94a3b8;
+        --border-soft: rgba(255, 255, 255, 0.08);
+        --radius: 12px;
+        --max-width: 1200px;
+        --transition: 0.3s ease;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Inter", system-ui, sans-serif;
+        background: linear-gradient(
+          180deg,
+          var(--bg-primary),
+          var(--bg-secondary)
+        );
+        color: var(--text-primary);
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+
+      header {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        backdrop-filter: blur(10px);
+        background: rgba(10, 25, 47, 0.9);
+        border-bottom: 1px solid var(--border-soft);
+      }
+
+      .topbar {
+        max-width: var(--max-width);
+        margin: 0 auto;
+        padding: 0 1.5rem;
+        height: 72px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .logo {
+        font-weight: 800;
+        font-size: 1.3rem;
+        color: var(--accent-red);
+        letter-spacing: 0.04em;
+      }
+
+      main {
+        flex: 1;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        padding: 3rem 1.5rem 4rem;
+      }
+
+      .content {
+        width: 100%;
+        max-width: var(--max-width);
+        display: grid;
+        grid-template-columns: 260px 1fr;
+        gap: 2rem;
+      }
+
+      .sidebar-placeholder {
+        background: transparent;
+      }
+
+      .page-header {
+        margin-bottom: 2rem;
+      }
+
+      .page-header h1 {
+        font-size: 2rem;
+        margin: 0;
+        font-weight: 800;
+      }
+
+      .page-header p {
+        margin-top: 0.4rem;
+        color: var(--text-secondary);
+      }
+
+      .card {
+        background: rgba(17, 34, 64, 0.65);
+        border: 1px solid var(--border-soft);
+        border-radius: var(--radius);
+        padding: 2rem;
+        backdrop-filter: blur(12px);
+        transition: var(--transition);
+      }
+
+      .card + .card {
+        margin-top: 1.5rem;
+      }
+
+      .card h2 {
+        margin: 0 0 1rem;
+        font-size: 1.25rem;
+        font-weight: 700;
+      }
+
+      .setting-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+        padding: 0.9rem 0;
+        border-bottom: 1px solid var(--border-soft);
+      }
+
+      .setting-row:last-child {
+        border-bottom: none;
+      }
+
+      .setting-info span {
+        display: block;
+        font-size: 0.8rem;
+        color: var(--text-muted);
+        word-break: break-all;
+      }
+
+      .setting-action {
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: var(--accent-red);
+        cursor: pointer;
+        flex-shrink: 0;
+      }
+
+      .setting-action a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .setting-action a:hover {
+        text-decoration: underline;
+      }
+
+      a.setting-action {
+        color: var(--accent-red);
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 0.85rem;
+        flex-shrink: 0;
+      }
+
+      a.setting-action:hover {
+        text-decoration: underline;
+      }
+
+      .danger {
+        color: var(--accent-red);
+        font-weight: 600;
+      }
+
+      /* Delete account form */
+      .delete-row-form {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+      }
+
+      .delete-row-form label {
+        font-size: 0.8rem;
+        color: var(--text-muted);
+      }
+
+      .delete-row-form input[type="email"] {
+        width: 100%;
+        padding: 0.6rem 0.9rem;
+        border-radius: 8px;
+        border: 1px solid var(--border-soft);
+        background: rgba(0, 0, 0, 0.25);
+        color: var(--text-primary);
+        font-size: 0.9rem;
+      }
+
+      .delete-row-form input[type="email"]:focus {
+        outline: none;
+        border-color: var(--accent-red);
+      }
+
+      .btn-delete {
+        align-self: flex-start;
+        padding: 0.55rem 1.25rem;
+        border-radius: 8px;
+        border: 1px solid var(--accent-red);
+        background: var(--accent-red);
+        color: #fff;
+        font-weight: 600;
+        font-size: 0.85rem;
+        cursor: pointer;
+        transition: background 0.2s;
+      }
+
+      .btn-delete:hover {
+        background: #c53030;
+      }
+
+      footer {
+        background: var(--bg-secondary);
+        padding: 2.5rem 1.5rem;
+        color: var(--text-secondary);
+        font-size: 0.85rem;
+      }
+
+      .footer-inner {
+        max-width: var(--max-width);
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 1rem;
+      }
+
+      @media (max-width: 900px) {
+        .content {
+          grid-template-columns: 1fr;
+        }
+
+        .sidebar-placeholder {
+          display: none;
+        }
+
+        .footer-inner {
+          text-align: center;
+          justify-content: center;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <header role="banner">
+      <div class="container" id="navcon">
+        <nav aria-label="Main navigation">
+          <div class="logo">Sarkin Mota Autos</div>
+          <div class="nav-actions">
+            <a href="{{ url_for('profiles.about') }}" style="color: #fff"
+              >About</a
+            >
+            {% if current_user.is_authenticated %}
+            <a
+              href="{{ url_for('dashboard') }}"
+              style="color: #fff"
+              class="btn-auth"
+            >
+              Dashboard
+            </a>
+            {% else %}
+            <a
+              href="{{ url_for('auth.login') }}"
+              style="color: #fff"
+              class="btn-auth"
+              >Sign In</a
+            >
+            <a
+              href="{{ url_for('auth.signup') }}"
+              style="color: #fff"
+              class="btn-auth btn-signup"
+              >Sign Up</a
+            >
+            {% endif %}
+          </div>
+        </nav>
+      </div>
+    </header>
+    <main>
+      <div class="content">
+        <aside class="sidebar-placeholder"></aside>
+
+        <section>
+          <div class="page-header">
+            <h1>Settings</h1>
+            <p>Manage your account preferences and security</p>
+          </div>
+
+          <div class="card">
+            <h2>Account</h2>
+            <div class="setting-row">
+              <div class="setting-info">
+                <strong>Full Name</strong>
+                <span
+                  >{{ user.name if user and user.name else user.email }}</span
+                >
+              </div>
+              <a
+                href="{{ url_for('profiles.edit_profile') }}"
+                class="setting-action"
+                >Change</a
+              >
+            </div>
+
+            <div class="setting-row">
+              <div class="setting-info">
+                <strong>Password</strong>
+                <span>Change your account password</span>
+              </div>
+              <a
+                href="{{ url_for('profiles.change_password') }}"
+                class="setting-action"
+                >Change</a
+              >
+            </div>
+
+            <div class="setting-row">
+              <div class="setting-info">
+                <strong>Email Address</strong>
+                <span
+                  >{{ user.email if user and user.email else user.email }}</span
+                >
+              </div>
+              {% if user and user.email_verified %}
+              <span class="setting-action" style="color: #48bb78"
+                >Verified ✓</span
+              >
+              {% else %}
+              <a
+                href="{{ url_for('profiles.edit_profile') }}"
+                class="setting-action"
+                >Update</a
+              >
+              {% endif %}
+            </div>
+          </div>
+
+          <div class="card">
+            <h2>Notifications</h2>
+            <div class="setting-row">
+              <div class="setting-info">
+                <strong>Notification Preferences</strong>
+                <span>Email, push, and in-app alert settings</span>
+              </div>
+              <a
+                href="{{ url_for('profiles.notification_settings') }}"
+                class="setting-action"
+                >Manage</a
+              >
+            </div>
+          </div>
+
+          <div class="card">
+            <h2>Session</h2>
+            <div class="setting-row">
+              <div class="setting-info">
+                <strong>Sign out</strong>
+                <span>End your current session</span>
+              </div>
+              <a
+                href="{{ url_for('auth.logout') }}"
+                class="setting-action danger"
+                >Log out</a
+              >
+            </div>
+          </div>
+
+          <div class="card">
+            <h2>Delete Account</h2>
+            <div class="setting-row">
+              <div class="setting-info">
+                <strong>Permanently delete your account</strong>
+                <span
+                  >This action cannot be undone. All your data will be
+                  removed.</span
+                >
+              </div>
+            </div>
+            <form
+              method="POST"
+              action="{{ url_for('profiles.delete_account') }}"
+              class="delete-row-form"
+              onsubmit="
+                return confirm(
+                  'Type your email address in the field below after submitting to confirm this irreversible action.',
+                );
+              "
+              id="deleteForm"
+            >
+              <input
+                type="hidden"
+                name="csrf_token"
+                value="{{ csrf_token() }}"
+              />
+              <label for="confirmEmail"
+                >Type your email address to confirm:</label
+              >
+              <input
+                type="email"
+                id="confirmEmail"
+                name="confirm_email"
+                placeholder="{{ user.email if user and user.email else '' }}"
+                required
+              />
+              <button type="submit" class="btn-delete">
+                Delete My Account
+              </button>
+            </form>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <footer>
+      <div class="footer-inner">
+        <div>© 2019–2026 Sarkin Mota Autos. All rights reserved.</div>
+        <div>Founded by <strong>Dr. Aliyu Mohammad (Sarkin Mota)</strong></div>
+      </div>
+    </footer>
+  </body>
+</html>

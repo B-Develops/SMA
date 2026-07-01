@@ -1,0 +1,744 @@
+﻿/* ==========================================================
+   SARKIN MOTA ADMIN - USERS
+   PART 1
+   ROOT + PAGE LAYOUT + BACKGROUND
+========================================================== */
+
+:root {
+  --color-bg-primary: #0a192f;
+  --color-bg-secondary: #020c1b;
+
+  --color-card-bg: #112240;
+
+  --color-accent-red: #e53e3e;
+  --color-accent-gold: #d69e2e;
+
+  --color-text-primary: #f7fafc;
+  --color-text-secondary: #a0aec0;
+
+  --border-soft: rgba(255, 255, 255, 0.08);
+
+  --radius: 18px;
+  --transition: 0.25s ease;
+}
+
+/* Reset */
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Scrollbar */
+
+body::-webkit-scrollbar {
+  width: 8px;
+}
+
+body::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 20px;
+}
+
+/* Body */
+
+body {
+  font-family: "Poppins", sans-serif;
+  background: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Background Image */
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+
+  background-image:
+    linear-gradient(rgba(9, 23, 44, 0.82), rgba(2, 12, 27, 0.9)),
+    url("../static/login-bg.png");
+
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  z-index: -2;
+}
+
+/* ==========================================================
+   PAGE WRAPPERS
+========================================================== */
+
+.page-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.page-container {
+  width: 100%;
+  max-width: 1200px;
+
+  background: rgba(17, 34, 64, 0.16);
+
+  border: 1px solid rgba(255, 255, 255, 0.05);
+
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+
+  border-radius: 22px;
+
+  padding: 2rem;
+}
+
+/* Give every major section breathing room */
+
+.page-header,
+.stats-grid,
+.toolbar,
+.table-card,
+.pagination {
+  margin-bottom: 2rem;
+}
+/* ==========================================================
+   PART 2
+   PAGE HEADER + BACK LINK + STATS
+========================================================== */
+
+/* ---------- PAGE HEADER ---------- */
+
+.page-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+
+  padding-bottom: 1.75rem;
+
+  border-bottom: 1px solid var(--border-soft);
+}
+
+.back-link {
+  width: fit-content;
+
+  color: var(--color-text-secondary);
+
+  text-decoration: none;
+
+  font-size: 0.9rem;
+  font-weight: 500;
+
+  transition: var(--transition);
+}
+
+.back-link:hover {
+  color: var(--color-text-primary);
+  transform: translateX(-3px);
+}
+
+.page-header h1 {
+  font-size: 2.4rem;
+
+  font-weight: 700;
+
+  color: var(--color-text-primary);
+
+  line-height: 1.2;
+}
+
+.page-header p {
+  max-width: 650px;
+
+  color: var(--color-text-secondary);
+
+  font-size: 0.98rem;
+
+  line-height: 1.7;
+}
+
+/* ==========================================================
+   STATS GRID
+========================================================== */
+
+.stats-grid {
+  display: grid;
+
+  grid-template-columns: repeat(3, 1fr);
+
+  gap: 1.5rem;
+}
+
+.stat-card {
+  background: rgba(17, 34, 64, 0.45);
+
+  border: 1px solid var(--border-soft);
+
+  border-radius: 18px;
+
+  padding: 1.8rem;
+
+  backdrop-filter: blur(8px);
+
+  transition: var(--transition);
+}
+
+.stat-card:hover {
+  transform: translateY(-4px);
+
+  border-color: rgba(229, 62, 62, 0.25);
+
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+}
+
+.stat-title {
+  color: var(--color-text-secondary);
+
+  font-size: 0.9rem;
+
+  margin-bottom: 0.75rem;
+
+  font-weight: 500;
+}
+
+.stat-card h2 {
+  font-size: 2rem;
+
+  color: var(--color-accent-gold);
+
+  font-weight: 700;
+}
+
+/* ==========================================================
+   MOBILE
+========================================================== */
+
+@media (max-width: 900px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .page-header h1 {
+    font-size: 2rem;
+  }
+}
+/* ==========================================================
+   PART 3
+   TOOLBAR
+========================================================== */
+
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+
+  background: rgba(17, 34, 64, 0.35);
+
+  border: 1px solid var(--border-soft);
+
+  border-radius: 18px;
+
+  padding: 1rem 1.25rem;
+
+  backdrop-filter: blur(8px);
+}
+
+/* ===============================
+   SEARCH BOX
+================================ */
+
+.search-box {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+
+  flex: 1;
+  min-width: 260px;
+
+  background: rgba(255, 255, 255, 0.04);
+
+  border: 1px solid var(--border-soft);
+
+  border-radius: 12px;
+
+  padding: 0.85rem 1rem;
+
+  transition: var(--transition);
+}
+
+.search-box:hover {
+  border-color: rgba(229, 62, 62, 0.2);
+}
+
+.search-box:focus-within {
+  border-color: var(--color-accent-red);
+
+  box-shadow: 0 0 0 3px rgba(229, 62, 62, 0.12);
+}
+
+.search-box svg {
+  width: 18px;
+  height: 18px;
+
+  color: var(--color-text-secondary);
+
+  flex-shrink: 0;
+}
+
+.search-box input {
+  width: 100%;
+
+  border: none;
+  outline: none;
+
+  background: transparent;
+
+  color: var(--color-text-primary);
+
+  font-size: 0.95rem;
+
+  font-family: inherit;
+}
+
+.search-box input::placeholder {
+  color: var(--color-text-secondary);
+}
+
+/* ===============================
+   FILTERS
+================================ */
+
+.toolbar-actions {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.toolbar-actions select {
+  min-width: 170px;
+
+  padding: 0.8rem 1rem;
+
+  background: rgba(255, 255, 255, 0.04);
+
+  color: var(--color-text-primary);
+
+  border: 1px solid var(--border-soft);
+
+  border-radius: 12px;
+
+  outline: none;
+
+  font-family: inherit;
+
+  cursor: pointer;
+
+  transition: var(--transition);
+}
+
+.toolbar-actions select:hover {
+  border-color: rgba(229, 62, 62, 0.2);
+}
+
+.toolbar-actions select:focus {
+  border-color: var(--color-accent-red);
+
+  box-shadow: 0 0 0 3px rgba(229, 62, 62, 0.12);
+}
+
+/* Dropdown options */
+
+.toolbar-actions option {
+  background: #112240;
+  color: #fff;
+}
+
+/* ===============================
+   MOBILE
+================================ */
+
+@media (max-width: 900px) {
+  .toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .toolbar-actions {
+    width: 100%;
+
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 1rem;
+  }
+
+  .toolbar-actions select {
+    width: 100%;
+    min-width: unset;
+  }
+}
+
+@media (max-width: 600px) {
+  .toolbar-actions {
+    grid-template-columns: 1fr;
+  }
+}
+/* ==========================================================
+   PART 4
+   TABLE CARD + TABLE
+========================================================== */
+
+.table-card {
+  background: rgba(17, 34, 64, 0.28);
+
+  border: 1px solid rgba(255, 255, 255, 0.06);
+
+  border-radius: 20px;
+
+  overflow: hidden;
+
+  backdrop-filter: blur(10px);
+
+  -webkit-backdrop-filter: blur(10px);
+
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+}
+
+/* ===============================
+   TABLE
+================================ */
+
+.admin-table {
+  width: 100%;
+
+  border-collapse: collapse;
+}
+
+/* Header */
+
+.admin-table thead {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.admin-table th {
+  padding: 1rem 1.25rem;
+
+  text-align: left;
+
+  color: var(--color-text-secondary);
+
+  font-size: 0.85rem;
+
+  font-weight: 600;
+
+  letter-spacing: 0.03em;
+
+  text-transform: uppercase;
+
+  border-bottom: 1px solid var(--border-soft);
+}
+
+/* Body */
+
+.admin-table td {
+  padding: 1.2rem 1.25rem;
+
+  vertical-align: middle;
+
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+
+  color: var(--color-text-primary);
+
+  transition: var(--transition);
+}
+
+.admin-table tbody tr {
+  transition: var(--transition);
+}
+
+.admin-table tbody tr:hover {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.admin-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* Column widths */
+
+.admin-table th:first-child,
+.admin-table td:first-child {
+  width: 42%;
+}
+
+.admin-table th:nth-child(2),
+.admin-table td:nth-child(2) {
+  width: 14%;
+}
+
+.admin-table th:nth-child(3),
+.admin-table td:nth-child(3) {
+  width: 12%;
+}
+
+.admin-table th:nth-child(4),
+.admin-table td:nth-child(4) {
+  width: 16%;
+}
+
+.admin-table th:last-child,
+.admin-table td:last-child {
+  width: 16%;
+
+  text-align: center;
+}
+
+/* Actions */
+
+.actions-cell {
+  display: flex;
+
+  justify-content: center;
+
+  align-items: center;
+
+  gap: 0.5rem;
+}
+
+/* Responsive */
+
+@media (max-width: 1000px) {
+  .table-card {
+    overflow-x: auto;
+  }
+
+  .admin-table {
+    min-width: 850px;
+  }
+}
+/* ==========================================================
+   PART 5
+   USER CARD + BADGES + BUTTONS + PAGINATION
+========================================================== */
+
+/* ===============================
+   USER CARD
+================================ */
+
+.user-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.avatar {
+  width: 52px;
+  height: 52px;
+
+  flex-shrink: 0;
+
+  border-radius: 50%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: linear-gradient(135deg, var(--color-accent-red), #b91c1c);
+
+  color: #fff;
+
+  font-weight: 700;
+  font-size: 1.1rem;
+
+  box-shadow: 0 8px 20px rgba(229, 62, 62, 0.25);
+}
+
+.user-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.user-name {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.user-email,
+.user-phone {
+  color: var(--color-text-secondary);
+  font-size: 0.85rem;
+}
+
+/* ===============================
+   BADGES
+================================ */
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0.45rem 0.9rem;
+
+  border-radius: 999px;
+
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.badge-admin {
+  background: rgba(229, 62, 62, 0.15);
+
+  color: #fc8181;
+
+  border: 1px solid rgba(229, 62, 62, 0.25);
+}
+
+.badge-user {
+  background: rgba(214, 158, 46, 0.15);
+
+  color: #f6e05e;
+
+  border: 1px solid rgba(214, 158, 46, 0.25);
+}
+
+.badge-current {
+  background: rgba(72, 187, 120, 0.15);
+
+  color: #9ae6b4;
+
+  border: 1px solid rgba(72, 187, 120, 0.25);
+}
+
+/* ===============================
+   BUTTONS
+================================ */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0.7rem 1rem;
+
+  border-radius: 10px;
+
+  border: 1px solid var(--border-soft);
+
+  background: transparent;
+
+  color: var(--color-text-primary);
+
+  text-decoration: none;
+
+  cursor: pointer;
+
+  transition: all 0.25s ease;
+
+  font-family: inherit;
+}
+
+.btn-sm {
+  padding: 0.55rem 0.9rem;
+
+  font-size: 0.82rem;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+}
+
+.btn-danger {
+  background: rgba(229, 62, 62, 0.12);
+
+  border: 1px solid rgba(229, 62, 62, 0.25);
+
+  color: #fc8181;
+}
+
+.btn-danger:hover {
+  background: rgba(229, 62, 62, 0.22);
+
+  border-color: rgba(229, 62, 62, 0.45);
+}
+
+/* ===============================
+   PAGINATION
+================================ */
+
+.pagination {
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  gap: 1rem;
+
+  flex-wrap: wrap;
+
+  margin-top: 2rem;
+}
+
+.pagination-info {
+  color: var(--color-text-secondary);
+
+  font-size: 0.92rem;
+}
+
+.pagination .btn {
+  min-width: 120px;
+}
+
+.disabled {
+  opacity: 0.45;
+
+  pointer-events: none;
+}
+
+/* ===============================
+   EMPTY STATE
+================================ */
+
+.empty-state {
+  padding: 5rem 2rem;
+
+  text-align: center;
+
+  color: var(--color-text-secondary);
+}
+
+.empty-state p {
+  font-size: 1rem;
+}
+
+/* ===============================
+   MOBILE
+================================ */
+
+@media (max-width: 700px) {
+  .user-card {
+    gap: 0.75rem;
+  }
+
+  .avatar {
+    width: 44px;
+    height: 44px;
+
+    font-size: 1rem;
+  }
+
+  .pagination {
+    justify-content: center;
+  }
+}

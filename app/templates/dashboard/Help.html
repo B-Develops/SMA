@@ -1,0 +1,449 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Help & Support – Sarkin Mota Autos</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='5.css') }}" />
+
+    <style>
+      :root {
+        --bg-primary: #0a192f;
+        --bg-secondary: #020c1b;
+        --bg-card: #112240;
+        --accent-red: #e53e3e;
+        --accent-gold: #d69e2e;
+        --text-primary: #f7fafc;
+        --text-secondary: #a0aec0;
+        --text-muted: #94a3b8;
+        --border-soft: rgba(255, 255, 255, 0.08);
+        --radius: 12px;
+        --max-width: 1000px;
+        --transition: 0.3s ease;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Inter", system-ui, sans-serif;
+        background: linear-gradient(
+          180deg,
+          var(--bg-primary),
+          var(--bg-secondary)
+        );
+        color: var(--text-primary);
+        min-height: 100vh;
+      }
+
+      .container {
+        max-width: var(--max-width);
+        margin: 0 auto;
+        padding: 2rem 1.5rem 4rem;
+      }
+
+      .page-header {
+        text-align: center;
+        margin-bottom: 3rem;
+      }
+
+      .page-header h1 {
+        font-size: 2.5rem;
+        margin: 0 0 0.5rem;
+        font-weight: 800;
+      }
+
+      .page-header p {
+        color: var(--text-secondary);
+        font-size: 1.1rem;
+      }
+
+      .help-section {
+        background: rgba(17, 34, 64, 0.65);
+        border: 1px solid var(--border-soft);
+        border-radius: var(--radius);
+        padding: 2rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .help-section h2 {
+        font-size: 1.4rem;
+        margin: 0 0 1.5rem;
+        font-weight: 700;
+        color: var(--accent-gold);
+      }
+
+      .how-it-works {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1.5rem;
+      }
+
+      .step {
+        text-align: center;
+        padding: 1.5rem;
+        background: rgba(255, 255, 255, 0.03);
+        border-radius: 10px;
+      }
+
+      .step-number {
+        width: 40px;
+        height: 40px;
+        background: var(--accent-red);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1rem;
+        font-weight: 700;
+        font-size: 1.2rem;
+      }
+
+      .step h3 {
+        margin: 0 0 0.5rem;
+        font-size: 1rem;
+      }
+
+      .step p {
+        margin: 0;
+        font-size: 0.85rem;
+        color: var(--text-secondary);
+      }
+
+      .faq-item {
+        padding: 1.2rem 0;
+        border-bottom: 1px solid var(--border-soft);
+      }
+
+      .faq-item:last-child {
+        border-bottom: none;
+      }
+
+      .faq-item strong {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+        font-size: 1rem;
+      }
+
+      .faq-item span {
+        font-size: 0.9rem;
+        color: var(--text-secondary);
+        line-height: 1.6;
+      }
+
+      .contact-options {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 1rem;
+      }
+
+      .contact-box {
+        padding: 1.5rem;
+        background: rgba(255, 255, 255, 0.04);
+        border-radius: 10px;
+        text-align: center;
+        border: 1px solid var(--border-soft);
+        transition: var(--transition);
+      }
+
+      .contact-box:hover {
+        border-color: var(--accent-red);
+      }
+
+      .contact-box h3 {
+        margin: 0 0 0.5rem;
+        font-size: 1rem;
+      }
+
+      .contact-box p {
+        margin: 0 0 0.8rem;
+        font-size: 0.85rem;
+        color: var(--text-muted);
+      }
+
+      .contact-box a {
+        color: var(--accent-red);
+        font-weight: 600;
+        text-decoration: none;
+      }
+
+      .back-link {
+        display: inline-block;
+        margin-bottom: 1.5rem;
+        color: var(--text-secondary);
+        text-decoration: none;
+      }
+
+      .back-link:hover {
+        color: var(--text-primary);
+      }
+
+      .info-box {
+        background: rgba(214, 158, 46, 0.1);
+        border: 1px solid var(--accent-gold);
+        border-radius: 8px;
+        padding: 1.5rem;
+        margin-top: 1rem;
+      }
+
+      .info-box h3 {
+        margin: 0 0 0.5rem;
+        color: var(--accent-gold);
+        font-size: 1rem;
+      }
+
+      .info-box p {
+        margin: 0;
+        font-size: 0.9rem;
+        color: var(--text-secondary);
+      }
+
+      .help-section {
+        background: rgba(17, 34, 64, 0.72);
+        backdrop-filter: blur(14px);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+        transition:
+          transform 0.3s ease,
+          border-color 0.3s ease;
+      }
+      .help-section:hover {
+        transform: translateY(-3px);
+        border-color: rgba(229, 62, 62, 0.25);
+      }
+      .step {
+        transition:
+          transform 0.3s ease,
+          background 0.3s ease;
+        border: 1px solid transparent;
+      }
+
+      .step:hover {
+        transform: translateY(-5px);
+        background: rgba(255, 255, 255, 0.05);
+        border-color: rgba(214, 158, 46, 0.25);
+      }
+      .faq-item {
+        transition: padding-left 0.25s ease;
+      }
+
+      .faq-item:hover {
+        padding-left: 0.5rem;
+      }
+      .faq-item strong {
+        color: #fff;
+        letter-spacing: -0.2px;
+      }
+      .contact-box {
+        position: relative;
+        overflow: hidden;
+      }
+      .contact-box::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          135deg,
+          rgba(229, 62, 62, 0.08),
+          transparent
+        );
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+
+      .contact-box:hover::before {
+        opacity: 1;
+      }
+      .help-section,
+      .info-box {
+        animation: fadeUp 0.5s ease forwards;
+      }
+
+      @keyframes fadeUp {
+        from {
+          opacity: 0;
+          transform: translateY(12px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background-image:
+          linear-gradient(rgba(9, 23, 44, 0.85), rgba(2, 12, 27, 0.9)),
+          url("../static/login-bg.png");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        z-index: -2;
+      }
+
+
+  </head>
+
+  <body>
+    <div class="container">
+      <a href="{{ url_for('dashboard') }}" class="back-link">← Back to Dashboard</a>
+
+      <div class="page-header">
+        <h1>Help & Support</h1>
+        <p>Everything you need to know about Sarkin Mota Autos</p>
+      </div>
+
+      <div class="help-section">
+        <h2>How It Works</h2>
+        <div class="how-it-works">
+          <div class="step">
+            <div class="step-number">1</div>
+            <h3>Browse Cars</h3>
+            <p>
+              Explore our verified listings of quality cars from trusted
+              sellers.
+            </p>
+          </div>
+          <div class="step">
+            <div class="step-number">2</div>
+            <h3>Place an Order</h3>
+            <p>
+              Found a car you like? Submit your order offer through the listing
+              page.
+            </p>
+          </div>
+          <div class="step">
+            <div class="step-number">3</div>
+            <h3>Confirmation & Payment</h3>
+            <p>
+              If your order is confirmed, you'll receive payment instructions.
+            </p>
+          </div>
+          <div class="step">
+            <div class="step-number">4</div>
+            <h3>Get Your Car</h3>
+            <p>Complete payment and arrange delivery or pickup.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="help-section">
+        <h2>Frequently Asked Questions</h2>
+
+        <div class="faq-item">
+          <strong>How do I place an order?</strong>
+          <span
+            >Browse the car listings, click on a car you like, enter your offer
+            amount on the listing page, and click "Place Order". Your order will
+            be sent to the seller for confirmation.</span
+          >
+        </div>
+
+        <div class="faq-item">
+          <strong>What happens after I place an order?</strong>
+          <span
+            >You'll see your order in "My Orders" on your dashboard. The seller
+            will review and either confirm or cancel the order. You'll receive a
+            notification when your order is confirmed.</span
+          >
+        </div>
+
+        <div class="faq-item">
+          <strong>What payment methods are accepted?</strong>
+          <span
+            >We accept bank transfers, USSD payments, and cash on delivery (for
+            local pickup). Confirmed orders receive detailed payment
+            instructions via your dashboard.</span
+          >
+        </div>
+
+        <div class="faq-item">
+          <strong>Can I inspect the car before buying?</strong>
+          <span
+            >Yes! You can request an inspection or visit the seller's location.
+            We highly recommend inspecting the car in person before completing
+            your purchase.</span
+          >
+        </div>
+
+        <div class="faq-item">
+          <strong>What if I have issues with my purchase?</strong>
+          <span
+            >Contact our support team immediately. We can help mediate disputes
+            and ensure you have a smooth transaction.</span
+          >
+        </div>
+
+        <div class="faq-item">
+          <strong>How do I save a car for later?</strong>
+          <span
+            >Click the heart icon on any listing to save it to your Watchlist.
+            You can view all saved cars on your dashboard.</span
+          >
+        </div>
+
+        <div class="faq-item">
+          <strong>Where is Sarkin Mota Autos located?</strong>
+          <span
+            >We operate across Nigeria. Our main office is in Abuja. We
+            facilitate car sales throughout the country with delivery services
+            available.</span
+          >
+        </div>
+
+        <div class="faq-item">
+          <strong>Who is the founder of Sarkin Mota Autos?</strong>
+          <span
+            >Sarkin Mota Autos was founded by Dr. Aliyu Mohammad (Sarkin Mota),
+            a trusted name in Nigeria's automotive industry.</span
+          >
+        </div>
+      </div>
+
+      <div class="help-section">
+        <h2>Contact Us</h2>
+        <div class="contact-options">
+          <div class="contact-box">
+            <h3>Phone</h3>
+            <p>Mon-Fri, 9am-6pm</p>
+            <a href="tel:+2348000000000">+234 800 000 0000</a>
+          </div>
+          <div class="contact-box">
+            <h3>WhatsApp</h3>
+            <p>Quick chat support</p>
+            <a href="https://wa.me/2348000000000">Chat on WhatsApp</a>
+          </div>
+          <div class="contact-box">
+            <h3>Email</h3>
+            <p>For written inquiries</p>
+            <a href="mailto:support@sarkinmota.com">support@sarkinmota.com</a>
+          </div>
+          <div class="contact-box">
+            <h3>Messages</h3>
+            <p>Chat in your dashboard</p>
+            <a href="{{ url_for('profiles.messages') }}">Open Messages</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="info-box">
+        <h3>Need more help?</h3>
+        <p>
+          Our support team is available Monday to Friday, 9am to 6pm. For urgent
+          matters, please call or WhatsApp us directly.
+        </p>
+      </div>
+    </div>
+  </body>
+</html>

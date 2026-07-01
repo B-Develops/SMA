@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Sarkin Mota Autos – User Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='dashboard.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='header-navbar.css') }}"
+    />
+
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+      /* ==========================================================
+         ROOT VARIABLES — CHANGE GLOBAL COLORS / SIZES HERE
+      ========================================================== */
+    </style>
+  </head>
+
+  <body>
+    <!-- LEFT SIDEBAR -->
+    <aside class="sidebar">
+      <h2 class="men"><i data-lucide="menu"></i> Menu</h2>
+
+      <a href="{{ url_for('admin.dashboard') }}" class="nav-item active">
+        <i data-lucide="layout-dashboard"></i> Overview
+      </a>
+      <a href="{{ url_for('admin.users') }}" class="nav-item">
+        <i data-lucide="users"></i> Users
+      </a>
+      <a href="{{ url_for('admin.listings') }}" class="nav-item">
+        <i data-lucide="car"></i> All Listings
+      </a>
+      <a href="{{ url_for('cars.my_listings') }}" class="nav-item">
+        <i data-lucide="user"></i> My Listings
+      </a>
+      <a href="{{ url_for('admin.orders') }}" class="nav-item">
+        <i data-lucide="shopping-cart"></i> Orders
+      </a>
+      <a href="{{ url_for('dashboard') }}" class="nav-item">
+        <i data-lucide="home"></i> Back to User Dashboard
+      </a>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <div class="main-wrapper" id="D">
+      <header role="banner">
+        <div class="container" id="navcon">
+          <nav aria-label="Main navigation">
+            <div class="logo">Sarkin Mota Autos</div>
+            <div class="nav-actions">
+              <a href="{{ url_for('profiles.about') }}" style="color: #fff"
+                >About</a
+              >
+              {% if current_user.is_authenticated %}
+              <a
+                href="{{ url_for('dashboard') }}"
+                style="color: #fff"
+                class="btn-auth"
+              >
+                Dashboard
+              </a>
+              {% else %}
+              <a
+                href="{{ url_for('auth.login') }}"
+                style="color: #fff"
+                class="btn-auth"
+                >Sign In</a
+              >
+              <a
+                href="{{ url_for('auth.signup') }}"
+                style="color: #fff"
+                class="btn-auth btn-signup"
+                >Sign Up</a
+              >
+              {% endif %}
+            </div>
+          </nav>
+        </div>
+      </header>
+      <!-- PAGE CONTENT -->
+      <main>
+        <!-- WELCOME CARD -->
+        <section class="welcome-card" class="section">
+          <div class="welcome-content">
+            <h1>Admin Dashboard</h1>
+            <p>
+              Manage users, listings, and orders. Monitor platform activity and
+              ensure smooth operations.
+            </p>
+            <a href="{{ url_for('admin.users') }}" class="btn-primary"
+              >Manage Users</a
+            >
+          </div>
+        </section>
+
+        <!-- STATS -->
+        <section class="stats-grid">
+          <div class="card stat-card">
+            <span>Total Users</span>
+            <h3>{{ stats.total_users }}</h3>
+          </div>
+          <div class="card stat-card">
+            <span>Admin Users</span>
+            <h3>{{ stats.admin_count }}</h3>
+          </div>
+          <div class="card stat-card">
+            <span>Total Listings</span>
+            <h3>{{ stats.total_listings }}</h3>
+          </div>
+          <div class="card stat-card">
+            <span>Cars Sold</span>
+            <h3>{{ stats.sold_listings }}</h3>
+          </div>
+          <div class="card stat-card">
+            <span>Total Orders</span>
+            <h3>{{ stats.total_orders }}</h3>
+          </div>
+          <div class="card stat-card">
+            <span>Avg. Price</span>
+            <h3>{{ stats.avg_price | currency }}</h3>
+          </div>
+        </section>
+
+        <!-- ACTIVITY TIMELINE -->
+        <section class="section">
+          <h2>Active Admin Accounts</h2>
+          {% if admin_accounts %}
+          <div class="table-responsive">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Phone</th>
+                  <th>Created Date</th>
+                  <th>Last Updated</th>
+                  <th>Email Verified</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for admin in admin_accounts %}
+                <tr>
+                  <td>{{ admin.name }}</td>
+                  <td>{{ admin.email }}</td>
+                  <td>{{ admin.phone }}</td>
+                  <td>
+                    {{ admin.created_at.strftime('%Y-%m-%d %H:%M') if
+                    admin.created_at else 'N/A' }}
+                  </td>
+                  <td>
+                    {{ admin.updated_at.strftime('%Y-%m-%d %H:%M') if
+                    admin.updated_at else 'N/A' }}
+                  </td>
+                  <td>
+                    <span
+                      class="badge {% if admin.email_verified %}badge-verified{% else %}badge-unverified{% endif %}"
+                    >
+                      {{ 'Yes' if admin.email_verified else 'No' }}
+                    </span>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          {% else %}
+          <p
+            style="
+              color: var(--color-text-secondary);
+              text-align: center;
+              padding: 2rem;
+            "
+          >
+            No admin accounts found.
+          </p>
+          {% endif %}
+        </section>
+
+        <!-- RECENT LISTINGS -->
+        <section class="section" class="section">
+          <h2>Recent Listings</h2>
+          {% if recent_listings %}
+          <div class="car-grid">
+            {% for car in recent_listings %}
+            <div class="car-card">
+              <div class="car-body">
+                <span
+                  class="status-badge {{ 'status-sold' if car.status == 'sold' else 'status-active' }}"
+                  style="margin-bottom: 0.5rem; display: inline-block"
+                  >{{ car.status|capitalize }}</span
+                >
+                <h4>{{ car.year }} {{ car.make }} {{ car.model }}</h4>
+                <p style="color: var(--text-muted); font-size: 0.9rem">
+                  Seller: {{ car.seller.name if car.seller else 'Unknown' }}
+                </p>
+                <div class="price">{{ car.price | currency }}</div>
+                <p style="color: var(--text-muted); font-size: 0.8rem">
+                  Listed: {{ car.created_at.strftime('%Y-%m-%d') if
+                  car.created_at else 'Unknown' }}
+                </p>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+          {% else %}
+          <p
+            style="
+              color: var(--color-text-secondary);
+              text-align: center;
+              padding: 2rem;
+            "
+          >
+            No listings yet.
+          </p>
+          {% endif %}
+        </section>
+
+        <!-- QUICK ACTIONS -->
+        <section class="section" class="section">
+          <h2>Quick Actions</h2>
+          <div style="display: flex; gap: 1rem; flex-wrap: wrap">
+            <a
+              href="{{ url_for('admin.users') }}"
+              class="btn btn-primary"
+              id="qa"
+              >Manage Users</a
+            >
+            <a
+              href="{{ url_for('admin.listings') }}"
+              class="btn btn-primary"
+              id="qa"
+              >Manage Listings</a
+            >
+            <a
+              href="{{ url_for('admin.orders') }}"
+              class="btn btn-primary"
+              id="qa"
+              >Manage Orders</a
+            >
+          </div>
+        </section>
+      </main>
+      <footer role="contentinfo">
+        <div class="container footer-inner">
+          <div>© 2019–2026 Sarkin Mota Autos. All rights reserved.</div>
+          <div>Founded by <span>Dr. Aliyu Mohammad (Sarkin Mota)</span></div>
+        </div>
+      </footer>
+      <!-- FOOTER (EDIT FREELY) -->
+    </div>
+
+    <script>
+      lucide.createIcons();
+
+      document
+        .getElementById("sidebarToggle")
+        .addEventListener("click", function () {
+          document.querySelector(".sidebar").classList.toggle("collapsed");
+        });
+    </script>
+  </body>
+</html>

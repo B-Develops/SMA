@@ -1,0 +1,83 @@
+:root {
+  --color-bg-primary: #0a192f;
+  --color-bg-secondary: #020c1b;
+  --color-accent-red: #e53e3e;
+  --color-text-primary: #f7fafc;
+  --color-text-secondary: #a0aec0ab;
+  --color-card-bg: #112240;
+  --border-soft: rgba(255, 255, 255, 0.08);
+}
+body {
+  margin: 0;
+  font-family: "Inter", system-ui, sans-serif;
+  background: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  min-height: 100vh;
+}
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+h1 {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+}
+.form-card {
+  background: var(--color-card-bg);
+  border: 1px solid var(--border-soft);
+  border-radius: 10px;
+  padding: 2rem;
+}
+.form-group {
+  margin-bottom: 1.5rem;
+}
+label {
+  display: block;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+input,
+select,
+textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border-radius: 6px;
+  border: 1px solid var(--border-soft);
+  background: transparent;
+  color: var(--color-text-primary);
+  font-size: 1rem;
+}
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--color-accent-red);
+}
+.btn-primary {
+  background: var(--color-accent-red);
+  color: white;
+  padding: 0.75rem 2rem;
+  border-radius: 6px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 1rem;
+}
+.btn-primary:hover {
+  background: #c53030;
+}
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+.back-link {
+  display: inline-block;
+  margin-bottom: 1rem;
+  color: var(--color-text-secondary);
+  text-decoration: none;
+}
+.back-link:hover {
+  color: var(--color-text-primary);
+}

@@ -1,0 +1,533 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Sarkin Mota Autos – Trusted Nigerian Car Marketplace</title>
+    <meta
+      name="description"
+      content="Sarkin Mota Autos is a trusted Nigerian online car marketplace based in Abuja, offering verified used cars, secure ordering, and nationwide delivery across Nigeria."
+    />
+
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../static/index.css" />
+    <style></style>
+  </head>
+
+  <body>
+    <a href="#main" class="skip-link">Skip to main content</a>
+    <div id="bg-overlay"></div>
+    <main id="main">
+      <!-- HERO -->
+      <section class="hero section">
+        <header role="banner">
+          <div class="container" id="navcon">
+            <nav aria-label="Main navigation">
+              <div class="logo">Sarkin Mota Autos</div>
+              <div class="nav-actions">
+                <a href="{{ url_for('profiles.about') }}" style="color: #fff"
+                  >About</a
+                >
+                {% if current_user.is_authenticated %}
+                <a
+                  href="{{ url_for('dashboard') }}"
+                  style="color: #fff"
+                  class="btn-auth"
+                >
+                  Dashboard
+                </a>
+                {% else %}
+                <a
+                  href="{{ url_for('auth.login') }}"
+                  style="color: #fff"
+                  class="btn-auth"
+                  >Sign In</a
+                >
+                <a
+                  href="{{ url_for('auth.signup') }}"
+                  style="color: #fff"
+                  class="btn-auth btn-signup"
+                  >Sign Up</a
+                >
+                {% endif %}
+              </div>
+            </nav>
+          </div>
+        </header>
+        <div class="container hero-content">
+          <h1>Trusted Car Sales Across Nigeria</h1>
+          <p>
+            Buy and sell verified used cars with confidence. Direct ordering,
+            professional inspections, and nationwide delivery — powered by
+            Sarkin Mota Autos.
+          </p>
+          <div class="hero-actions">
+            <a href="{{ url_for('cars.browse_cars') }}" class="btn btn-primary"
+              >Browse Cars</a
+            >
+            <a href="{{ url_for('dashboard') }}" class="btn btn-secondary"
+              >List Your Car</a
+            >
+          </div>
+        </div>
+      </section>
+
+      <!-- FEATURES -->
+      <section class="features section">
+        <div class="container">
+          <div class="features-grid">
+            <div class="feature-item">
+              <svg
+                class="feature-icon"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#E53E3E"
+                stroke-width="2"
+                aria-hidden="true"
+              >
+                <rect x="1" y="3" width="15" height="13"></rect>
+                <path d="M16 8h4l3 5v3h-7z"></path>
+              </svg>
+              <h3>Nationwide Delivery</h3>
+              <p>We deliver vehicles safely to all 36 states in Nigeria.</p>
+            </div>
+            <div class="feature-item">
+              <svg
+                class="feature-icon"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#D69E2E"
+                stroke-width="2"
+                aria-hidden="true"
+              >
+                <rect x="3" y="11" width="18" height="11"></rect>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+              </svg>
+              <h3>Easy Ordering</h3>
+              <p>Simple direct purchase process with buyer protection.</p>
+            </div>
+            <div class="feature-item">
+              <svg
+                class="feature-icon"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#38A169"
+                stroke-width="2"
+                aria-hidden="true"
+              >
+                <path d="M20 6L9 17l-5-5"></path>
+              </svg>
+              <h3>Verified Vehicles</h3>
+              <p>Every car is professionally inspected before listing.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- HOW TO USE -->
+
+      <!-- LISTINGS -->
+      <section class="listings section">
+        <div class="container" id="listing">
+          <div class="listings-header">
+            <h2>Featured Listings</h2>
+            <a
+              href="{{ url_for('cars.browse_cars') }}"
+              class="btn btn-secondary"
+              >View All</a
+            >
+          </div>
+          <div class="featured-layout">
+            <div class="featured-main">
+              <img src="/static/Mercedes.png" />
+
+              <div class="featured-overlay">
+                <span class="featured-tag"> Featured Vehicle </span>
+
+                <h2>Mercedes-Benz C300</h2>
+
+                <p>2.0L Turbo • 38,000 KM</p>
+
+                <div class="listing-price">₦18,200,000</div>
+
+                <a href="#" class="btn btn-primary"> View Details </a>
+              </div>
+            </div>
+
+            <div class="featured-side">
+              <article
+                class="listing-card"
+                style="
+                  backdrop-filter: blur(12px) saturate(120%);
+                  -webkit-backdrop-filter: blur(12px) saturate(120%);
+                  background: linear-gradient(
+                    transparent,
+                    rgba(7, 28, 59, 0.253)
+                  );
+                "
+              >
+                <div class="listing-image">
+                  <img src="/static/Toyota.png" />
+                </div>
+
+                <div class="listing-content">
+                  <h3>Toyota Camry</h3>
+
+                  <div class="listing-price">₦12,500,000</div>
+                </div>
+              </article>
+
+              <article
+                class="listing-card"
+                style="
+                  backdrop-filter: blur(12px) saturate(120%);
+                  -webkit-backdrop-filter: blur(12px) saturate(120%);
+                  background: linear-gradient(
+                    transparent,
+                    rgba(7, 28, 59, 0.253)
+                  );
+                "
+              >
+                <div class="listing-image">
+                  <img src="/static/Honda.png" />
+                </div>
+
+                <div class="listing-content">
+                  <h3>Honda Accord</h3>
+
+                  <div class="listing-price">₦10,800,000</div>
+                </div>
+              </article>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TESTIMONIALS -->
+      <section class="testimonials section">
+        <div class="container">
+          <div class="testimonials-header">
+            <p class="section-label">Testimonials</p>
+            <h2>Loved by Drivers Across Nigeria</h2>
+          </div>
+
+          <div class="testimonials-grid">
+            <!-- Testimonial 1 -->
+            <div class="testimonial-card">
+              <div class="testimonial-stars" aria-label="5 out of 5 stars">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path
+                    d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"
+                  />
+                </svg>
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path
+                    d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"
+                  />
+                </svg>
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path
+                    d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"
+                  />
+                </svg>
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path
+                    d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"
+                  />
+                </svg>
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path
+                    d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"
+                  />
+                </svg>
+              </div>
+              <blockquote>
+                "Sarkin Mota Autos made buying my car completely stress-free.
+                From the professional inspection to the smooth delivery to my
+                home in Kaduna, every step was transparent and hassle-free."
+              </blockquote>
+              <footer>
+                <div class="testimonial-avatar" aria-hidden="true">MA</div>
+                <div>
+                  <span class="testimonial-name">Musa A.</span>
+                  <span class="testimonial-location">Kaduna</span>
+                </div>
+              </footer>
+            </div>
+
+            <!-- Testimonial 2 -->
+            <div class="testimonial-card">
+              <div class="testimonial-stars" aria-label="5 out of 5 stars">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path
+                    d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"
+                  />
+                </svg>
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path
+                    d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"
+                  />
+                </svg>
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path
+                    d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"
+                  />
+                </svg>
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path
+                    d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"
+                  />
+                </svg>
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path
+                    d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"
+                  />
+                </svg>
+              </div>
+              <blockquote>
+                "I found my dream Lexus RX through Sarkin Mota Autos and
+                couldn't be happier. Competitive pricing, genuine specs, and
+                nationwide delivery came as a welcome bonus."
+              </blockquote>
+              <footer>
+                <div class="testimonial-avatar" aria-hidden="true">CO</div>
+                <div>
+                  <span class="testimonial-name">Chidi O.</span>
+                  <span class="testimonial-location">Lagos</span>
+                </div>
+              </footer>
+            </div>
+
+            <!-- Testimonial 3 -->
+            <div class="testimonial-card">
+              <div class="testimonial-stars" aria-label="5 out of 5 stars">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path
+                    d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"
+                  />
+                </svg>
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path
+                    d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"
+                  />
+                </svg>
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path
+                    d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"
+                  />
+                </svg>
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path
+                    d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"
+                  />
+                </svg>
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path
+                    d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"
+                  />
+                </svg>
+              </div>
+              <blockquote>
+                "Selling my car was just as smooth. A buyer found me within
+                days, inspection was handled professionally, and the entire
+                process felt trustworthy from start to finish."
+              </blockquote>
+              <footer>
+                <div class="testimonial-avatar" aria-hidden="true">FE</div>
+                <div>
+                  <span class="testimonial-name">Fatima E.</span>
+                  <span class="testimonial-location">Abuja</span>
+                </div>
+              </footer>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CONTACTS -->
+      <section class="contacts section">
+        <div class="container">
+          <p class="section-label">Get in Touch</p>
+          <h2>We'd Love to Hear From You</h2>
+          <p class="contacts-subtitle">
+            Whether you're looking to buy, sell, or simply have a question — our
+            team is one message or call away.
+          </p>
+
+          <div class="contacts-grid">
+            <div class="contact-card">
+              <div class="contact-card-icon">
+                <!-- phone -->
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path
+                    d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"
+                  ></path>
+                </svg>
+              </div>
+              <h3>Call or WhatsApp</h3>
+              <p>
+                <a href="tel:+234901234567">+234 901 234 567</a><br />
+                <a href="tel:+234809876543">+234 809 876 543</a>
+              </p>
+            </div>
+
+            <div class="contact-card">
+              <div class="contact-card-icon">
+                <!-- mail -->
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path
+                    d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"
+                  ></path>
+                  <polyline points="22,6 12,13 2,6"></polyline>
+                </svg>
+              </div>
+              <h3>Email Us</h3>
+              <p>
+                <a href="mailto:info@sarkinmotaautos.com"
+                  >info@sarkinmotaautos.com</a
+                ><br />
+                <a href="mailto:sales@sarkinmotaautos.com"
+                  >sales@sarkinmotaautos.com</a
+                >
+              </p>
+            </div>
+
+            <div class="contact-card">
+              <div class="contact-card-icon">
+                <!-- clock / hours -->
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <polyline points="12 6 12 12 16 14"></polyline>
+                </svg>
+              </div>
+              <h3>Business Hours</h3>
+              <p>
+                Monday – Friday: 8:00 AM – 6:00 PM<br />
+                Saturday: 9:00 AM – 4:00 PM<br />
+                Sunday: Closed
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="cta-banner">
+        <h2>Ready to Find Your Perfect Car?</h2>
+        <p>
+          Browse our collection of verified, high-quality vehicles with direct
+          ordering and nationwide delivery.
+        </p>
+        <a href="{{ url_for('cars.browse_cars') }}" class="btn"
+          >Start Browsing Now</a
+        >
+      </section>
+    </main>
+
+    <footer role="contentinfo">
+      <div class="container footer-inner">
+        <div>© 2019–2026 Sarkin Mota Autos. All rights reserved.</div>
+        <div>Founded by <span>Dr. Aliyu Mohammad (Sarkin Mota)</span></div>
+      </div>
+    </footer>
+    <script type="module">
+      import { NeatGradient } from "https://cdn.skypack.dev/@firecms/neat";
+
+      const canvas = document.getElementById("gradient");
+
+      // make sure canvas matches real screen pixels
+      function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }
+
+      resizeCanvas();
+      window.addEventListener("resize", resizeCanvas);
+
+      const config = {
+        colors: [
+          { color: "#0A192F", enabled: true },
+          { color: "#020C1B", enabled: true },
+          { color: "#112240", enabled: true },
+          { color: "#193058", enabled: true },
+          { color: "#2A4365", enabled: true },
+          { color: "#0A192F", enabled: true },
+        ],
+
+        speed: 1,
+        horizontalPressure: 3,
+        verticalPressure: 4,
+        waveFrequencyX: 2,
+        waveFrequencyY: 3,
+        waveAmplitude: 2,
+        shadows: 1,
+        highlights: 5,
+        colorBrightness: 1,
+        colorSaturation: 7,
+        wireframe: false,
+        colorBlending: 8,
+        backgroundColor: "#003FFF",
+        backgroundAlpha: 1,
+        grainScale: 0,
+        grainSparsity: 0,
+        grainIntensity: 0,
+        grainSpeed: 1,
+        resolution: 0.3,
+        yOffset: 100000,
+        yOffsetWaveMultiplier: 20,
+        yOffsetColorMultiplier: 4,
+        yOffsetFlowMultiplier: 4,
+        flowDistortionA: 3.7,
+        flowDistortionB: 1.4,
+        flowScale: 2.9,
+        flowEase: 0.32,
+        flowEnabled: true,
+        enableProceduralTexture: false,
+        textureVoidLikelihood: 0.27,
+        textureVoidWidthMin: 60,
+        textureVoidWidthMax: 420,
+        textureBandDensity: 1.2,
+        textureColorBlending: 0.06,
+        textureSeed: 333,
+        textureEase: 0.5,
+        proceduralBackgroundColor: "#0E0707",
+        textureShapeTriangles: 20,
+        textureShapeCircles: 15,
+        textureShapeBars: 15,
+        textureShapeSquiggles: 10,
+        domainWarpEnabled: false,
+        domainWarpIntensity: 0,
+        domainWarpScale: 3,
+        vignetteIntensity: 0,
+        vignetteRadius: 0.8,
+        fresnelEnabled: false,
+        fresnelPower: 2,
+        fresnelIntensity: 0.5,
+        fresnelColor: "#FFFFFF",
+        iridescenceEnabled: false,
+        iridescenceIntensity: 0.5,
+        iridescenceSpeed: 1,
+        bloomIntensity: 0,
+        bloomThreshold: 0.7,
+        chromaticAberration: 0,
+      };
+
+      const gradient = new NeatGradient({
+        ref: canvas,
+        ...config,
+      });
+
+      // scroll effect (safe)
+      window.addEventListener("scroll", () => {
+        gradient.yOffset = window.scrollY * 0.15;
+      });
+
+      // resize fix
+      window.addEventListener("resize", () => {
+        gradient.resize();
+      });
+    </script>
+  </body>
+</html>

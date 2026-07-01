@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>My Profile – Sarkin Mota Autos</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='profile.css') }}" />
+
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style></style>
+  </head>
+
+  <body>
+    <!-- LEFT SIDEBAR -->
+    <aside class="sidebar">
+      <h2 class="men">
+        <i data-lucide="menu"></i>
+      </h2>
+
+      <a href="{{ url_for('dashboard') }}" class="nav-item">
+        <i data-lucide="layout-dashboard"></i> Dashboard
+      </a>
+      <a href="{{ url_for('dashboard') }}#AO" class="nav-item">
+        <i data-lucide="shopping-bag"></i> My Orders
+      </a>
+      <a href="{{ url_for('dashboard') }}#SC" class="nav-item">
+        <i data-lucide="heart"></i> Watchlist
+      </a>
+      {% if current_user.role == 'admin' %}
+      <a href="{{ url_for('cars.my_listings') }}" class="nav-item">
+        <i data-lucide="car"></i> My Listings
+      </a>
+      {% endif %}
+      <a href="{{ url_for('profiles.settings') }}" class="nav-item">
+        <i data-lucide="settings"></i> Settings
+      </a>
+      <a
+        href="{{ url_for('admin.dashboard') }}"
+        class="nav-item"
+        style="background: rgba(214, 158, 46, 0.2); color: #f6e05e"
+      >
+        <i data-lucide="shield"></i> Admin
+      </a>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <div class="main-wrapper">
+        <div class="page-header">
+          <h1>My Profile</h1>
+          <div style="display: flex; gap: 0.75rem">
+            <a
+              href="{{ url_for('profiles.edit_profile') }}"
+              class="btn-secondary"
+              >Edit Profile</a
+            >
+            <a href="{{ url_for('profiles.settings') }}" class="btn-primary"
+              >Settings</a
+            >
+          </div>
+        </div>
+
+        <!-- Profile Info Card -->
+        <div class="card">
+          <h2>Personal Information</h2>
+          <div class="info-grid">
+            <div class="info-item">
+              <label>Full Name</label>
+              <span>{{ profile.name or profile.email }}</span>
+            </div>
+            <div class="info-item">
+              <label>Email Address</label>
+              <span>{{ profile.email }}</span>
+            </div>
+            <div class="info-item">
+              <label>Phone Number</label>
+              <span>{{ profile.phone or 'Not provided' }}</span>
+            </div>
+            <div class="info-item">
+              <label>Location</label>
+              <span>{{ profile.location or 'Not provided' }}</span>
+            </div>
+          </div>
+
+          <!-- Verification Badges -->
+          <div class="verification-badges">
+            <span
+              class="badge {{ 'verified' if profile.email_verified else 'unverified' }}"
+            >
+              <i data-lucide="check-circle" size="16"></i>
+              Email {{ 'Verified' if profile.email_verified else 'Unverified' }}
+            </span>
+            <span
+              class="badge {{ 'verified' if profile.phone_verified else 'unverified' }}"
+            >
+              <i data-lucide="check-circle" size="16"></i>
+              Phone {{ 'Verified' if profile.phone_verified else 'Unverified' }}
+            </span>
+            <span
+              class="badge {{ 'verified' if profile.id_verified else 'unverified' }}"
+            >
+              <i data-lucide="check-circle" size="16"></i>
+              ID {{ 'Verified' if profile.id_verified else 'Unverified' }}
+            </span>
+            <span
+              class="badge {{ 'verified' if profile.address_verified else 'unverified' }}"
+            >
+              <i data-lucide="check-circle" size="16"></i>
+              Address {{ 'Verified' if profile.address_verified else
+              'Unverified' }}
+            </span>
+          </div>
+        </div>
+
+        <!-- Statistics -->
+        <div class="card">
+          <h2>Your Activity</h2>
+          <div class="stats-grid">
+            <div class="stat-card">
+              <h3>{{ stats.total_orders }}</h3>
+              <span>Total Orders</span>
+            </div>
+            <div class="stat-card">
+              <h3>{{ stats.pending_orders }}</h3>
+              <span>Pending Orders</span>
+            </div>
+            <div class="stat-card">
+              <h3>{{ stats.saved_cars }}</h3>
+              <span>Saved Cars</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Notification Preferences -->
+        <div class="card">
+          <h2>Notification Preferences</h2>
+          <p>Choose how you'd like to receive notifications:</p>
+          <form
+            action="{{ url_for('profiles.notification_settings') }}"
+            method="POST"
+          >
+            <div class="info-grid">
+              <div class="info-item">
+                <label>
+                  <input
+                    type="checkbox"
+                    name="email_order_notifications"
+                    {% if notification_settings.email_order_notifications == "1" %}checked{% endif %}
+                  />
+                  Email: New orders on your listings
+                </label>
+              </div>
+              <div class="info-item">
+                <label>
+                  <input
+                    type="checkbox"
+                    name="email_message_notifications"
+                    {% if notification_settings.email_message_notifications == "1" %}checked{% endif %}
+                  />
+                  Email: New messages
+                </label>
+              </div>
+              <div class="info-item">
+                <label>
+                  <input
+                    type="checkbox"
+                    name="email_order_accepted"
+                    {% if notification_settings.email_order_accepted == "1" %}checked{% endif %}
+                  />
+                  Email: Your order accepted
+                </label>
+              </div>
+              <div class="info-item">
+                <label>
+                  <input
+                    type="checkbox"
+                    name="email_price_drop"
+                    {% if notification_settings.email_price_drop == "1" %}checked{% endif %}
+                  />
+                  Email: Price drop on saved cars
+                </label>
+              </div>
+              <div class="info-item">
+                <label>
+                  <input
+                    type="checkbox"
+                    name="push_new_orders"
+                    {% if notification_settings.push_new_orders == "1" %}checked{% endif %}
+                  />
+                  Push: New orders
+                </label>
+              </div>
+              <div class="info-item">
+                <label>
+                  <input
+                    type="checkbox"
+                    name="push_messages"
+                    {% if notification_settings.push_messages == "1" %}checked{% endif %}
+                  />
+                  Push: New messages
+                </label>
+              </div>
+              <div class="info-item">
+                <label>
+                  <input
+                    type="checkbox"
+                    name="push_order_accepted"
+                    {% if notification_settings.push_order_accepted == "1" %}checked{% endif %}
+                  />
+                  Push: Order accepted
+                </label>
+              </div>
+              <div class="info-item">
+                <label>
+                  <input
+                    type="checkbox"
+                    name="in_app_notifications"
+                    {% if notification_settings.in_app_notifications == "1" %}checked{% endif %}
+                  />
+                  In-app notifications
+                </label>
+              </div>
+            </div>
+            <div style="margin-top: 1.5rem; text-align: center">
+              <button type="submit" class="btn-primary">
+                Save Preferences
+              </button>
+            </div>
+          </form>
+        </div>
+      </main>
+
+      <footer
+        role="contentinfo"
+        style="
+          background-color: #020c1b;
+          padding: 2rem 0;
+          font-size: 0.9rem;
+          color: var(--color-text-secondary);
+          margin-top: auto;
+        "
+      >
+        <div
+          style="
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+          "
+        >
+          <div>© 2019–2026 Sarkin Mota Autos. All rights reserved.</div>
+          <div>
+            Founded by
+            <span style="color: var(--color-accent-gold)"
+              >Dr. Aliyu Mohammad (Sarkin Mota)</span
+            >
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script>
+      lucide.createIcons();
+    </script>
+  </body>
+</html>

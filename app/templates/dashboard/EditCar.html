@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Edit Listing - Sarkin Mota Autos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='3.css') }}" />
+  <style>
+    
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="page-header">
+      <h1>Edit Listing</h1>
+      <a href="{{ url_for('cars.my_listings') }}" class="back-link">← Back to My Listings</a>
+    </div>
+    
+    <div class="flash-messages">
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, message in messages %}
+            <div class="flash flash-{{ category }}">{{ message }}</div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+    </div>
+    
+    <div class="card">
+       <form method="POST" enctype="multipart/form-data">
+         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="make">Make *</label>
+            <input type="text" id="make" name="make" value="{{ car.make }}" required>
+          </div>
+          <div class="form-group">
+            <label for="model">Model *</label>
+            <input type="text" id="model" name="model" value="{{ car.model }}" required>
+          </div>
+        </div>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label for="year">Year</label>
+            <input type="number" id="year" name="year" value="{{ car.year or '' }}" min="1990" max="2030">
+          </div>
+          <div class="form-group">
+            <label for="price">Price (₦) *</label>
+            <input type="number" id="price" name="price" value="{{ car.price }}" required min="0" step="1">
+          </div>
+        </div>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label for="mileage">Mileage (km)</label>
+            <input type="number" id="mileage" name="mileage" value="{{ car.mileage or '' }}" min="0">
+          </div>
+          <div class="form-group">
+            <label for="condition">Condition</label>
+            <select id="condition" name="condition">
+              <option value="new" {% if car.condition == 'new' %}selected{% endif %}>New</option>
+              <option value="used" {% if car.condition == 'used' %}selected{% endif %}>Used</option>
+            </select>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label for="description">Description</label>
+          <textarea id="description" name="description">{{ car.description or '' }}</textarea>
+        </div>
+        
+        <div class="form-group">
+          <label for="image">Car Image</label>
+          <input type="file" id="image" name="image" accept="image/png,image/jpeg,image/jpg,image/gif,image/webp">
+          <p style="font-size: 0.8rem; color: var(--color-text-secondary); margin-top: 0.25rem;">
+            Current: {{ car.image_url }} | Leave empty to keep current image
+          </p>
+        </div>
+        
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+      </form>
+    </div>
+  </div>
+</body>
+</html>

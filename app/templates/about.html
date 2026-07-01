@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>About Sarkin Mota Autos</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='about.css') }}" />
+
+    <style></style>
+  </head>
+  <body>
+    <div class="container">
+      <a href="{{ url_for('index') }}" class="back-link">← Back to Home</a>
+
+      <div class="page-header">
+        <h1>About Sarkin Mota Autos</h1>
+      </div>
+
+      <!-- Navigation Tabs -->
+      <nav class="nav-tabs">
+        <a href="{{ url_for('index') }}" class="nav-tab">Home</a>
+        <a href="{{ url_for('profiles.about') }}" class="nav-tab active"
+          >About</a
+        >
+      </nav>
+
+      <div class="content">
+        <p>
+          Sarkin Mota Autos is a trusted Nigerian online car marketplace based
+          in Abuja, offering verified used cars, secure ordering, and nationwide
+          delivery across Nigeria.
+        </p>
+        <p>
+          Our platform connects buyers and sellers in a secure environment,
+          ensuring transparency and trust in every transaction. We verify all
+          listings to provide you with peace of mind when purchasing your next
+          vehicle.
+        </p>
+        <h2>Our Mission</h2>
+        <p>
+          To revolutionize the car buying experience in Nigeria by providing a
+          secure, transparent, and efficient platform that empowers both buyers
+          and sellers.
+        </p>
+        <h2>Our Vision</h2>
+        <p>
+          To be the leading online car marketplace in Nigeria, known for
+          integrity, innovation, and exceptional customer service.
+        </p>
+        <h2>Why Choose Us?</h2>
+        <ul>
+          <li>
+            <strong>Verified Listings:</strong> Every car undergoes a thorough
+            verification process.
+          </li>
+          <li>
+            <strong>Secure Transactions:</strong> We protect your payments and
+            personal information.
+          </li>
+          <li>
+            <strong>Nationwide Delivery:</strong> We deliver your vehicle
+            anywhere in Nigeria.
+          </li>
+          <li>
+            <strong>Customer Support:</strong> Our dedicated team is here to
+            assist you every step of the way.
+          </li>
+        </ul>
+        <p>
+          Whether you're looking to buy your dream car or sell your current
+          vehicle, Sarkin Mota Autos is here to make the process smooth and
+          reliable.
+        </p>
+      </div>
+
+      <div
+        class="divider"
+        style="height: 1px; background: var(--border-soft); margin: 2rem 0"
+      ></div>
+
+      <div
+        class="actions"
+        style="
+          display: flex;
+          gap: 1rem;
+          justify-content: flex-start;
+          flex-wrap: wrap;
+        "
+      >
+        <a href="{{ url_for('index') }}" class="btn btn-primary"
+          >Go to Homepage</a
+        >
+        <a href="{{ url_for('cars.browse_cars') }}" class="btn">Browse Cars</a>
+      </div>
+    </div>
+  </body>
+</html>

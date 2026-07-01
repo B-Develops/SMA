@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>500 – Server Error – Sarkin Mota Autos</title>
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{
+      font-family:'Inter',system-ui,sans-serif;
+      background:#0a192f;
+      color:#f7fafc;
+      min-height:100vh;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      padding:2rem;
+    }
+    .error-code{
+      font-size:8rem;
+      font-weight:800;
+      color:#e53e3e;
+      letter-spacing:-0.04em;
+      line-height:1;
+    }
+    h1{font-size:2rem;font-weight:700;margin-top:1rem}
+    p{color:#a0aec0;max-width:520px;margin:.75rem auto 0;line-height:1.7}
+    .btn{
+      display:inline-flex;align-items:center;justify-content:center;
+      margin-top:2rem;
+      padding:.75rem 2rem;
+      background:#e53e3e;color:#fff;border:none;
+      border-radius:10px;font-weight:600;font-size:1rem;
+      text-decoration:none;cursor:pointer;
+      transition:background .2s,transform .15s;
+    }
+    .btn:hover{background:#c53030;transform:translateY(-2px)}
+    .btn-secondary{
+      background:transparent;
+      border:1px solid rgba(255,255,255,.15);
+      color:#a0aec0;
+      margin-left:.75rem;
+    }
+    .btn-secondary:hover{background:rgba(255,255,255,.08);color:#f7fafc}
+    .icon{font-size:3rem;margin-bottom:1.5rem}
+    footer{
+      position:absolute;bottom:0;left:0;right:0;
+      padding:1rem;
+      text-align:center;
+      font-size:.8rem;color:#4a5568;
+    }
+  </style>
+</head>
+<body>
+  <div class="icon">🚧</div>
+  <div class="error-code">500</div>
+  <h1>Something Went Wrong</h1>
+  <p>Our team has been notified. Please try again later or contact support if the problem persists.</p>
+  <div>
+    <a href="/" class="btn">Go Home</a>
+    <a href="javascript:history.back()" class="btn btn-secondary">Go Back</a>
+  </div>
+  <footer>© 2019–2026 Sarkin Mota Autos. All rights reserved.</footer>
+</body>
+</html>

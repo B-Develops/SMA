@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sarkin Mota Autos – List Your Car</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='6.css') }}" />
+
+    <style>
+      :root {
+        --color-bg-primary: #0a192f;
+        --color-bg-secondary: #020c1b;
+        --color-accent-red: #e53e3e;
+        --color-text-primary: #f7fafc;
+        --color-text-secondary: #a0aec0ab;
+        --color-card-bg: #112240;
+        --border-soft: rgba(255, 255, 255, 0.08);
+      }
+      body {
+        margin: 0;
+        font-family: "Inter", system-ui, sans-serif;
+        background: var(--color-bg-primary);
+        color: var(--color-text-primary);
+        min-height: 100vh;
+      }
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 2rem;
+      }
+      h1 {
+        font-size: 2rem;
+        margin-bottom: 2rem;
+      }
+      .form-card {
+        background: var(--color-card-bg);
+        border: 1px solid var(--border-soft);
+        border-radius: 10px;
+        padding: 2rem;
+      }
+      .form-group {
+        margin-bottom: 1.5rem;
+      }
+      label {
+        display: block;
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+      }
+      input, select, textarea {
+        width: 100%;
+        padding: 0.75rem;
+        border-radius: 6px;
+        border: 1px solid var(--border-soft);
+        background: transparent;
+        color: var(--color-text-primary);
+        font-size: 1rem;
+      }
+      input:focus, select:focus, textarea:focus {
+        outline: none;
+        border-color: var(--color-accent-red);
+      }
+      .btn-primary {
+        background: var(--color-accent-red);
+        color: white;
+        padding: 0.75rem 2rem;
+        border-radius: 6px;
+        border: none;
+        font-weight: 600;
+        cursor: pointer;
+        font-size: 1rem;
+      }
+      .btn-primary:hover {
+        background: #c53030;
+      }
+      .row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+      }
+      .back-link {
+        display: inline-block;
+        margin-bottom: 1rem;
+        color: var(--color-text-secondary);
+        text-decoration: none;
+      }
+      .back-link:hover {
+        color: var(--color-text-primary);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <a href="{{ url_for('dashboard') }}" class="back-link">← Back to Dashboard</a>
+      <h1>List Your Car for Sale</h1>
+      
+      <div class="form-card">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <div style="padding: 1rem; border-radius: 6px; margin-bottom: 1rem; background: rgba(229, 62, 62, 0.2); border: 1px solid #e53e3e; color: #fc8181;">
+                {{ message }}
+              </div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+
+         <form method="POST">
+           <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <div class="row">
+            <div class="form-group">
+              <label>Make *</label>
+              <input type="text" name="make" placeholder="e.g., Toyota" required />
+            </div>
+            <div class="form-group">
+              <label>Model *</label>
+              <input type="text" name="model" placeholder="e.g., Camry" required />
+            </div>
+          </div>
+          
+          <div class="row">
+            <div class="form-group">
+              <label>Year *</label>
+              <input type="number" name="year" placeholder="e.g., 2020" min="1900" max="2026" required />
+            </div>
+            <div class="form-group">
+              <label>Price (₦) *</label>
+              <input type="number" name="price" placeholder="e.g., 15000000" min="0" required />
+            </div>
+          </div>
+          
+          <div class="row">
+            <div class="form-group">
+              <label>Mileage (KM)</label>
+              <input type="number" name="mileage" placeholder="e.g., 50000" min="0" />
+            </div>
+            <div class="form-group">
+              <label>Condition</label>
+              <select name="condition">
+                <option value=\"new\">New</option>
+                <option value=\"used\" selected>Used</option>
+                <option value=\"reconditioned\">Reconditioned</option>
+              </select>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label>Description</label>
+            <textarea name="description" rows="4" placeholder="Describe the car's condition, features, history..."></textarea>
+          </div>
+          
+          <div class="form-group">
+            <label>Car Image</label>
+            <div style="border: 2px dashed var(--border-soft); border-radius: 6px; padding: 1.5rem; text-align: center; background: rgba(255,255,255,0.02);">
+              <input type="file" name="image" id="image" accept="image/png,image/jpeg,image/gif,image/webp" style="display: none;" />
+              <label for="image" style="cursor: pointer; display: block;">
+                <div style="font-size: 2rem; margin-bottom: 0.5rem;">📷</div>
+                <div style="color: var(--color-text-secondary);">Click to upload an image</div>
+                <div style="color: var(--color-text-secondary); font-size: 0.85rem;">PNG, JPG, GIF, or WEBP (max 16MB)</div>
+              </label>
+              <div id="image-preview" style="margin-top: 1rem; display: none;">
+                <img id="preview-img" src="" alt="Preview" style="max-width: 200px; max-height: 150px; border-radius: 6px;" />
+                <button type="button" onclick="clearImage()" style="display: block; margin: 0.5rem auto 0; padding: 0.25rem 0.75rem; background: transparent; border: 1px solid var(--border-soft); color: var(--color-text-secondary); border-radius: 4px; cursor: pointer;">Remove</button>
+              </div>
+            </div>
+          </div>
+          
+          <button type="submit" class="btn-primary">List My Car</button>
+        </form>
+      </div>
+    </div>
+    
+    <script>
+      // Image preview functionality
+      const imageInput = document.getElementById('image');
+      const imagePreview = document.getElementById('image-preview');
+      const previewImg = document.getElementById('preview-img');
+      
+      imageInput.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+          // Validate file type
+          const validTypes = ['image/png', 'image/jpeg', 'image/gif', 'image/webp'];
+          if (!validTypes.includes(file.type)) {
+            alert('Please select a valid image file (PNG, JPG, GIF, or WEBP)');
+            imageInput.value = '';
+            return;
+          }
+          
+          // Validate file size (16MB max)
+          if (file.size > 16 * 1024 * 1024) {
+            alert('File size must be less than 16MB');
+            imageInput.value = '';
+            return;
+          }
+          
+          // Show preview
+          const reader = new FileReader();
+          reader.onload = function(e) {
+            previewImg.src = e.target.result;
+            imagePreview.style.display = 'block';
+          };
+          reader.readAsDataURL(file);
+        }
+      });
+      
+      function clearImage() {
+        imageInput.value = '';
+        previewImg.src = '';
+        imagePreview.style.display = 'none';
+      }
+    </script>
+  </body>
+</html>

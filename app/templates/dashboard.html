@@ -1,0 +1,404 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Sarkin Mota Autos – User Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='dashboard.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='header-navbarcopy.css') }}"
+    />
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+      /* ==========================================================
+         ROOT VARIABLES — CHANGE GLOBAL COLORS / SIZES HERE
+      ========================================================== */
+    </style>
+  </head>
+
+  <body>
+    <!-- LEFT SIDEBAR -->
+    <aside class="sidebar">
+      <h2 class="men" id="sidebar-toggle">
+        <i data-lucide="menu"></i>
+        <span>Menu</span>
+      </h2>
+
+      <nav>
+        <a href="{{ url_for('admin.dashboard') }}" class="nav-item active">
+          <i data-lucide="layout-dashboard"></i>
+          <span>Dashboard</span>
+        </a>
+
+        <a href="{{ url_for('admin.users') }}" class="nav-item">
+          <i data-lucide="users"></i>
+          <span>Users</span>
+        </a>
+
+        <a href="{{ url_for('admin.listings') }}" class="nav-item">
+          <i data-lucide="car"></i>
+          <span>Listings</span>
+        </a>
+
+        <a href="{{ url_for('cars.my_listings') }}" class="nav-item">
+          <i data-lucide="clipboard-list"></i>
+          <span>My Listings</span>
+        </a>
+
+        <a href="{{ url_for('admin.orders') }}" class="nav-item">
+          <i data-lucide="shopping-cart"></i>
+          <span>Orders</span>
+        </a>
+
+        <a href="{{ url_for('dashboard') }}" class="nav-item">
+          <i data-lucide="arrow-left"></i>
+          <span>User Dashboard</span>
+        </a>
+      </nav>
+    </aside>
+    <!-- MAIN CONTENT -->
+    <div class="main-wrapper" id="D">
+      <header role="banner">
+        <div class="container" id="navcon">
+          <nav aria-label="Main navigation" id="nav1">
+            <div class="logo">Sarkin Mota Autos</div>
+            <div class="nav-actions">
+              <a href="{{ url_for('profiles.about') }}" style="color: #fff"
+                >About</a
+              >
+              {% if current_user.is_authenticated %}
+              <a
+                href="{{ url_for('dashboard') }}"
+                style="color: #fff"
+                class="btn-auth"
+              >
+                Dashboard
+              </a>
+              {% else %}
+              <a
+                href="{{ url_for('auth.login') }}"
+                style="color: #fff"
+                class="btn-auth"
+                >Sign In</a
+              >
+              <a
+                href="{{ url_for('auth.signup') }}"
+                style="color: #fff"
+                class="btn-auth btn-signup"
+                >Sign Up</a
+              >
+              {% endif %}
+            </div>
+          </nav>
+        </div>
+      </header>
+      <!-- PAGE CONTENT -->
+      <main>
+        <!-- WELCOME CARD -->
+        <section class="welcome-card">
+          <div class="welcome-content">
+            <h1>Welcome back, <span id="user-name">{{ name }}</span></h1>
+            <p>
+              Your dream ride is just an order away. Track orders, manage
+              listings, and explore premium cars.
+            </p>
+            <a
+              href="{{ url_for('cars.browse_cars') }}"
+              class="btn-primary"
+              style="border-radius: 12px"
+            >
+              Browse Cars
+            </a>
+          </div>
+        </section>
+
+        <!-- STATS -->
+        <section class="stats-grid">
+          <div class="stat-card">
+            <span>Active Orders</span>
+            <h3>{{ stats.pending_orders + stats.confirmed_orders }}</h3>
+          </div>
+          <div class="stat-card">
+            <span>Saved Cars</span>
+            <h3>{{ saved_cars|length }}</h3>
+          </div>
+          <div class="stat-card">
+            <span>Notifications</span>
+            <h3>{{ unread_count if unread_count is defined else '0' }}</h3>
+          </div>
+        </section>
+
+        <!-- ACTIVITY TIMELINE -->
+        <section class="section">
+          <h2>Activity Timeline</h2>
+          {% if activities %}
+          <div class="activity-timeline">
+            {% for activity in activities %}
+            <div class="activity-item">
+              <div class="activity-icon" data-type="{{ activity.type }}">
+                <i data-lucide="{{ activity.icon }}"></i>
+              </div>
+              <div class="activity-content">
+                <p class="activity-title">{{ activity.title }}</p>
+                <p class="activity-time">{{ activity.time }}</p>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+          {% else %}
+          <p
+            class="no-activity-message"
+            style="color: var(--text-muted); text-align: center; padding: 2rem"
+          >
+            No activity yet. Start by browsing cars!
+          </p>
+          {% endif %}
+        </section>
+
+        <!-- ACTIVE ORDERS -->
+        <section class="section" id="AO">
+          <h2>My Orders</h2>
+          {% if active_orders %}
+          <div class="car-grid">
+            {% for order in active_orders %}
+            <div class="car-card">
+              {% if order['image_url'] %}
+              <img
+                src="{{ url_for('static', filename=order['image_url']) }}"
+                alt="{{ order['year'] }} {{ order['make'] }} {{ order['model'] }}"
+                style="
+                  width: 100%;
+                  height: 200px;
+                  object-fit: cover;
+                  border-radius: 8px 8px 0 0;
+                "
+              />
+              {% else %}
+              <img
+                src="{{ url_for('static', filename='Assets/images/' + order['make'] + '.png') }}"
+                alt="{{ order['year'] }} {{ order['make'] }} {{ order['model'] }}"
+                style="
+                  width: 100%;
+                  height: 200px;
+                  object-fit: cover;
+                  border-radius: 8px 8px 0 0;
+                  background: #1a2b4a;
+                "
+              />
+              {% endif %}
+              <div class="car-body">
+                <div class="verified">
+                  <i data-lucide="shopping-bag" style="color: #d69e2e"></i>
+                  {{ order['status']|capitalize }}
+                </div>
+                <h4>
+                  {{ order['year'] }} {{ order['make'] }} {{ order['model'] }}
+                </h4>
+                <div class="price">{{ order['order_amount'] | currency }}</div>
+                <small style="color: var(--text-muted)"
+                  >Listed: {{ order['listed_price'] | currency }}</small
+                >
+                <small style="color: var(--text-muted)"
+                  >{{ order['created_at'][:10] if order['created_at'] else 'N/A'
+                  }}</small
+                >
+                {% if order['status'] in ['pending', 'confirmed'] %}
+                <form
+                  action="{{ url_for('orders.cancel_order', order_id=order['id']) }}"
+                  method="POST"
+                  style="margin-top: 0.5rem"
+                >
+                  <input
+                    type="hidden"
+                    name="csrf_token"
+                    value="{{ csrf_token() }}"
+                  />
+                  <button
+                    type="submit"
+                    style="
+                      background: transparent;
+                      border: 1px solid #e63946;
+                      color: #e63946;
+                      padding: 0.5rem 1rem;
+                      border-radius: 6px;
+                      cursor: pointer;
+                      width: 100%;
+                    "
+                  >
+                    Cancel Order
+                  </button>
+                </form>
+                {% endif %}
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+          {% else %}
+          <div class="empty-state-card">
+            <div class="empty-state-icon">
+              <i data-lucide="shopping-cart"></i>
+            </div>
+            <h3>No Orders Yet</h3>
+            <p>
+              Start your journey to finding your dream car. Browse our extensive
+              inventory of premium vehicles.
+            </p>
+            <a
+              href="{{ url_for('cars.browse_cars') }}"
+              class="btn-primary"
+              style="
+                border-radius: 12px;
+                display: inline-block;
+                margin-top: 1rem;
+              "
+            >
+              Browse Cars Now
+            </a>
+          </div>
+          {% endif %}
+        </section>
+
+        <section class="section">
+          <h2>Hot Auctions Ending Soon</h2>
+          <div class="car-grid">
+            <div class="car-card">
+              <img src="../static/aaron-huber-8qYE6LGHW-c-unsplash.jpg" />
+              <div class="car-body">
+                <div class="verified">
+                  <i data-lucide="check-circle"></i> Verified
+                </div>
+                <h4>Mercedes-Benz C300</h4>
+                <p>2.0L Turbo • 38,000 KM</p>
+                <div class="price">₦18,200,000</div>
+                <button class="btn-primary" style="border-radius: 12px">
+                  View Details
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- SAVED CARS -->
+        <section class="section" id="SC">
+          <h2>My Watchlist</h2>
+          {% if saved_cars %}
+          <div class="car-grid">
+            {% for saved in saved_cars %}
+            <div class="car-card">
+              {% if saved.image_url %}
+              <img
+                src="{{ url_for('static', filename=saved.image_url) }}"
+                alt="{{ saved.year }} {{ saved.make }} {{ saved.model }}"
+                style="
+                  width: 100%;
+                  height: 200px;
+                  object-fit: cover;
+                  border-radius: 8px 8px 0 0;
+                "
+              />
+              {% else %}
+              <img
+                src="{{ url_for('static', filename='Assets/images/' + saved.make + '.png') }}"
+                alt="{{ saved.year }} {{ saved.make }} {{ saved.model }}"
+                style="
+                  width: 100%;
+                  height: 200px;
+                  object-fit: cover;
+                  border-radius: 8px 8px 0 0;
+                  background: #1a2b4a;
+                "
+              />
+              {% endif %}
+              <div class="car-body">
+                <div class="verified">
+                  <i data-lucide="heart" style="color: #e63946"></i> Saved
+                </div>
+                <h4>{{ saved.year }} {{ saved.make }} {{ saved.model }}</h4>
+                <div class="price">{{ saved.price | currency }}</div>
+                <form
+                  action="{{ url_for('cars.unsave_car', car_id=saved.id) }}"
+                  method="POST"
+                >
+                  <input
+                    type="hidden"
+                    name="csrf_token"
+                    value="{{ csrf_token() }}"
+                  />
+                  <button
+                    type="submit"
+                    style="
+                      background: transparent;
+                      border: 1px solid #e63946;
+                      color: #e63946;
+                      padding: 0.5rem 1rem;
+                      border-radius: 6px;
+                      cursor: pointer;
+                      margin-top: 0.5rem;
+                      width: 100%;
+                    "
+                  >
+                    Remove
+                  </button>
+                </form>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+          {% else %}
+          <div class="empty-state-card">
+            <div class="empty-state-icon">
+              <i data-lucide="heart"></i>
+            </div>
+            <h3>Your Watchlist is Empty</h3>
+            <p>
+              Save your favorite cars to keep track of vehicles that catch your
+              eye. Build your watchlist and never miss the perfect car.
+            </p>
+            <a
+              href="{{ url_for('cars.browse_cars') }}"
+              class="btn-primary"
+              style="
+                border-radius: 12px;
+                display: inline-block;
+                margin-top: 1rem;
+              "
+            >
+              Discover Cars to Save
+            </a>
+          </div>
+          {% endif %}
+        </section>
+      </main>
+      <footer role="contentinfo">
+        <div class="container footer-inner">
+          <div>© 2019–2026 Sarkin Mota Autos. All rights reserved.</div>
+          <div>Founded by <span>Dr. Aliyu Mohammad (Sarkin Mota)</span></div>
+        </div>
+      </footer>
+      <!-- FOOTER (EDIT FREELY) -->
+    </div>
+
+    <script>
+      lucide.createIcons();
+
+      document
+        .getElementById("sidebarToggle")
+        .addEventListener("click", function () {
+          document.querySelector(".sidebar").classList.toggle("collapsed");
+        });
+    </script>
+  </body>
+</html>
