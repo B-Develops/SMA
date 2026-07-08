@@ -155,6 +155,19 @@ def create_app(config_name=None):
     @login_manager.user_loader
     def load_user(user_id):
         return User.query.get(int(user_id))
+
+    @app.context_processor
+    def inject_unread_notifications():
+        from flask_login import current_user
+        try:
+            if current_user and getattr(current_user, 'is_authenticated', False):
+                from .models import Notification
+                count = Notification.query.filter_by(user_id=current_user.id, is_read=0).count()
+            else:
+                count = 0
+        except Exception:
+            count = 0
+        return dict(unread_notifications=count)
     
     # Register blueprints
     from .blueprints.auth import auth_bp
@@ -262,13 +275,25 @@ def create_app(config_name=None):
         # Sort activities by timestamp (newest first) and limit to 15
         activities.sort(key=lambda x: x['timestamp'], reverse=True)
         activities = activities[:15]
+
+        from .models import Notification
+        notifications_preview = Notification.query.filter_by(user_id=current_user.id)
+        notifications_preview = notifications_preview.order_by(Notification.created_at.desc()).limit(3).all()
         
         stats = {
             'pending_orders': pending_orders,
             'confirmed_orders': confirmed_orders,
         }
         
-        return render_template("dashboard.html", stats=stats, saved_cars=saved_cars, activities=activities, active_orders=active_orders)
+        return render_template(
+            "dashboard.html",
+            stats=stats,
+            saved_cars=saved_cars,
+            activities=activities,
+            active_orders=active_orders,
+            notifications_preview=notifications_preview,
+            is_admin=current_user.role == 'admin'
+        )
     
     # Health check endpoint
     @app.route("/health")

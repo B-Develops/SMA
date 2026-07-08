@@ -1,11 +1,11 @@
 from flask import render_template, request, redirect, url_for, flash
 from flask_login import login_user, logout_user, login_required, current_user
-from ...models import User
+from ...models import User, PasswordResetToken
 from ... import db, bcrypt
 from email_validator import validate_email, EmailNotValidError
 import secrets
 from datetime import datetime, timedelta
-from ...utils import send_verification_email, send_order_confirmation_email
+from ...utils import send_verification_email, send_order_confirmation_email, send_password_reset_email
 from . import auth_bp
 
 @auth_bp.route('/signup', methods=['GET', 'POST'])
@@ -212,3 +212,108 @@ def logout():
     logout_user()
     flash('You have been logged out.', 'info')
     return redirect(url_for('auth.login'))
+
+
+@auth_bp.route('/forgot-password', methods=['GET', 'POST'])
+def forgot_password():
+    """Handle forgot password requests."""
+    if request.method == 'POST':
+        email = request.form.get('email', '').strip()
+
+        if not email:
+            flash('Please enter your email address.', 'error')
+            return redirect(url_for('auth.forgot_password'))
+
+        try:
+            validated = validate_email(email, check_deliverability=False)
+            email = validated.email
+        except EmailNotValidError:
+            email = email.strip().lower()
+
+        user = User.query.filter_by(email=email).first()
+
+        if not user:
+            flash('If an account exists with that email, a reset link has been sent.', 'info')
+            return redirect(url_for('auth.login'))
+
+        token = secrets.token_urlsafe(32)
+        expires_at = datetime.utcnow() + timedelta(hours=1)
+
+        PasswordResetToken.query.filter_by(user_id=user.id, used=0).update({'used': 1})
+        reset_token = PasswordResetToken(user_id=user.id, token=token, expires_at=expires_at)
+        db.session.add(reset_token)
+        db.session.commit()
+
+        try:
+            from flask import current_app
+            base_url = current_app.config.get('BASE_URL', request.host_url.rstrip('/'))
+        except RuntimeError:
+            base_url = request.host_url.rstrip('/')
+
+        send_password_reset_email(
+            user_email=user.email,
+            user_name=user.name or 'User',
+            token=token,
+            base_url=base_url
+        )
+
+        flash('If an account exists with that email, a reset link has been sent.', 'info')
+        return redirect(url_for('auth.login'))
+
+    return render_template('auth/ForgotPassword.html')
+
+
+@auth_bp.route('/reset-password/<token>', methods=['GET', 'POST'])
+def reset_password(token):
+    """Handle password reset with token."""
+    reset_token = PasswordResetToken.query.filter_by(token=token, used=0).first()
+
+    if not reset_token:
+        flash('Invalid or expired reset link.', 'error')
+        return redirect(url_for('auth.login'))
+
+    if reset_token.expires_at < datetime.utcnow():
+        flash('This reset link has expired. Please request a new one.', 'error')
+        return redirect(url_for('auth.forgot_password'))
+
+    if request.method == 'POST':
+        password = request.form.get('password', '')
+        confirm_password = request.form.get('confirm_password', '')
+
+        if not password or not confirm_password:
+            flash('All fields are required.', 'error')
+            return redirect(url_for('auth.reset_password', token=token))
+
+        if password != confirm_password:
+            flash('Passwords do not match.', 'error')
+            return redirect(url_for('auth.reset_password', token=token))
+
+        if len(password) < 8:
+            flash('Password must be at least 8 characters long.', 'error')
+            return redirect(url_for('auth.reset_password', token=token))
+
+        if not any(c.isupper() for c in password):
+            flash('Password must contain at least one uppercase letter.', 'error')
+            return redirect(url_for('auth.reset_password', token=token))
+
+        if not any(c.islower() for c in password):
+            flash('Password must contain at least one lowercase letter.', 'error')
+            return redirect(url_for('auth.reset_password', token=token))
+
+        if not any(c.isdigit() for c in password):
+            flash('Password must contain at least one digit.', 'error')
+            return redirect(url_for('auth.reset_password', token=token))
+
+        if not any(c in "!@#$%^&*()_+-=[]{}|;:,.<>?/" for c in password):
+            flash('Password must contain at least one special character.', 'error')
+            return redirect(url_for('auth.reset_password', token=token))
+
+        user = User.query.get(reset_token.user_id)
+        user.password = bcrypt.generate_password_hash(password).decode('utf-8')
+        reset_token.used = 1
+        db.session.commit()
+
+        flash('Password reset successful! You can now log in.', 'success')
+        return redirect(url_for('auth.login'))
+
+    return render_template('auth/ResetPassword.html', token=token)

@@ -237,7 +237,7 @@
     <main>
       <div class="page-header">
         <h1>Payment</h1>
-        <p class="subtitle">Payment is linked to this exact order, user, and car.</p>
+        <p class="subtitle">Complete your payment for this order.</p>
       </div>
 
       {% with messages = get_flashed_messages(with_categories=true) %}
@@ -287,25 +287,21 @@
         </div>
       {% elif order.status != 'confirmed' %}
         <div class="notice warning">
-          This order is still {{ order.status }}. Admin must accept the order before payment can be initialized.
+          Payment will be available once the seller accepts your order. Current status: {{ order.status|title }}.
         </div>
       {% elif payment.provider == 'unset' %}
         <div class="notice info">
-          A payment record has been created for this order. Connect Paystack, Flutterwave, or a bank-transfer workflow to this scaffold when the payment method is ready.
+          Payment options will appear here once our payment provider is connected. You will be able to pay securely online or via bank transfer.
         </div>
-        <form method="POST" action="{{ url_for('payments.initialize_payment', order_id=order.id) }}">
-          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
-          <button type="submit" class="btn primary">Prepare Payment Placeholder</button>
-        </form>
       {% else %}
         <div class="notice info">
-          Payment is pending with provider: {{ payment.provider }}.
+          Payment is being processed. Please complete the payment using the instructions provided.
         </div>
       {% endif %}
 
       {% if current_user.role == 'admin' and payment.status != 'paid' %}
         <div class="card">
-          <h2>Admin Manual Verification</h2>
+          <h2>Admin: Mark Payment as Paid</h2>
           <p class="subtitle">Use this only when you have confirmed the money in the account.</p>
           <form method="POST" action="{{ url_for('payments.admin_mark_payment_paid', payment_id=payment.id) }}">
             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />

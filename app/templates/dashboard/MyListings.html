@@ -244,7 +244,10 @@
     <div class="container">
     <div class="page-header">
       <h1>My Listings</h1>
-      <a href="{{ url_for('cars.list_car') }}" class="btn btn-primary">+ New Listing</a>
+      <div style="display: flex; gap: 0.5rem;">
+        <a href="{{ url_for('cars.seller_orders') }}" class="btn btn-outline">Orders on My Listings</a>
+        <a href="{{ url_for('cars.list_car') }}" class="btn btn-primary">+ New Listing</a>
+      </div>
     </div>
     
     <div class="flash-messages">

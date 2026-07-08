@@ -21,6 +21,8 @@ class User(UserMixin, db.Model):
     # Security fields for login tracking
     failed_login_attempts = db.Column(db.Integer, default=0)
     last_failed_login = db.Column(db.DateTime, nullable=True)
+    email_verification_token = db.Column(db.String(128), nullable=True)
+    email_verification_token_expires = db.Column(db.DateTime, nullable=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
@@ -139,6 +141,18 @@ class NotificationSettings(db.Model):
     in_app_notifications = db.Column(db.Integer, default=1)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+
+class PasswordResetToken(db.Model):
+    __tablename__ = 'password_reset_tokens'
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    token = db.Column(db.String(128), nullable=False, unique=True, index=True)
+    expires_at = db.Column(db.DateTime, nullable=False)
+    used = db.Column(db.Integer, default=0)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+    user = db.relationship('User', backref='password_reset_tokens')
 
 
 class AdminActionLog(db.Model):

@@ -11,7 +11,10 @@
       rel="stylesheet"
     />
 
-    <link rel="stylesheet" href="{{ url_for('static', filename='admin-dashboard-new.css') }}" />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='admin-dashboard-new.css') }}"
+    />
 
     <!-- Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -102,7 +105,7 @@
           </div>
         </section>
 
-        <section>
+        <section class="section">
           <div class="section-header">
             <h2>Recent Admin Accounts</h2>
           </div>
@@ -192,30 +195,6 @@
           </p>
           {% endif %}
         </section>
-        <section class="section">
-          <h2>Hot Auctions Ending Soon</h2>
-          <div class="car-grid">
-            <div class="car-card">
-              <img
-                src="https://images.unsplash.com/photo-1619767886558-efdc259cde1a"
-              />
-              <div class="car-body">
-                <div class="verified">
-                  <i data-lucide="check-circle"></i> Verified
-                </div>
-                <h4>Mercedes-Benz C300</h4>
-                <p>2.0L Turbo • 38,000 KM</p>
-                <div class="price">₦18,200,000</div>
-                <button class="btn-primary" style="border-radius: 12px">
-                  View Details
-                </button>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- ACTIVE BIDS -->
-        <!-- Admin Actions Section -->
         <section class="section">
           <h2>Quick Actions</h2>
           <div style="display: flex; gap: 1rem; flex-wrap: wrap">

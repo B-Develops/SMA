@@ -116,11 +116,19 @@ aside.sidebar.collapsed .nav-item span {
 
 /* Header */
 header {
-  background: #0b1220;
+  background: #0a192fa6 !important;
+  backdrop-filter: blur(6px) saturate(120%) !important;
+  -webkit-backdrop-filter: blur(6px) saturate(120%) !important;
   border-bottom: 1px solid var(--border-soft);
   position: sticky;
   top: 0;
   z-index: 999;
+}
+
+#navcon {
+  background: #0a192fa6 !important;
+  backdrop-filter: blur(6px) saturate(120%) !important;
+  -webkit-backdrop-filter: blur(6px) saturate(120%) !important;
 }
 
 .container {
@@ -478,5 +486,3 @@ footer span {
     padding: 1rem;
   }
 }
-
-

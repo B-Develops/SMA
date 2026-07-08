@@ -114,6 +114,20 @@ button {
   position: relative;
 }
 
+.reveal-section {
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity 0.8s ease,
+    transform 0.8s ease;
+  will-change: opacity, transform;
+}
+
+.reveal-section.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 /* Technique 5: Backdrop Blur Intensity Variation */
 .section:nth-child(odd) {
   backdrop-filter: blur(1px);

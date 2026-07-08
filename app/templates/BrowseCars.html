@@ -798,7 +798,6 @@ body::before {
       <section class="grid section">
         {% for car in cars %}
         <article class="card">
-           <a href="{{ url_for('cars.car_detail', car_id=car.id) }}" style="text-decoration: none; color: inherit;">
           <div class="image-wrap">
             <span class="badge {{ car.condition }}"
               >{{ car.condition|capitalize }}</span
@@ -816,40 +815,25 @@ body::before {
             {% endif %}
           </div>
           <div class="card-body">
-            <div class="car-name">
-              {{ car.year }} {{ car.make }} {{ car.model }}
-            </div>
-            <div class="price">{{ car.price | currency }}</div>
+            <a href="{{ url_for('cars.car_detail', car_id=car.id) }}" style="text-decoration: none; color: inherit;">
+              <div class="car-name">
+                {{ car.year }} {{ car.make }} {{ car.model }}
+              </div>
+              <div class="price">{{ car.price | currency }}</div>
+            </a>
 
             {% if current_user.is_authenticated %}
-            <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem; flex-wrap: wrap;">
-                <form action="{{ url_for('cars.save_car', car_id=car.id) }}" method="POST" style="flex: 1; min-width: 120px;">
-                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                    <button type="submit" class="btn-details" style="width: 100%; background: transparent; border: 1px solid var(--accent-gold); color: #000;">
-                        ♡ Save
-                    </button>
-                </form>
-                <form action="{{ url_for('cars.place_order', car_id=car.id) }}" method="POST" style="flex: 1; display: flex; flex-direction: column; gap: 0.5rem;">
-                  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                 <input
-                   type="number"
-                   name="order_amount"
-                   placeholder="Your offer"
-                   value="{{ car.price }}"
-                   style="padding: 0.5rem; width: 100%; margin-bottom: 0.5rem; color: #000;"
-                 />
-                 <button type="submit" class="btn-details" style="width: 100%;">
-                   Place Order
-                 </button>
-               </form>
+            <div style="display: flex; gap: 0.5rem; margin-top: 0.75rem; flex-wrap: wrap;">
+              <form action="{{ url_for('cars.save_car', car_id=car.id) }}" method="POST" style="flex: 1; min-width: 100px;">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <button type="submit" class="btn-details" style="width: 100%; background: transparent; border: 1px solid var(--accent-gold); color: #000;">♡ Save</button>
+              </form>
+              <a href="{{ url_for('cars.car_detail', car_id=car.id) }}" class="btn-details" style="flex: 1; text-align: center; text-decoration: none; display: flex; align-items: center; justify-content: center; width: 100%;">View Details</a>
             </div>
             {% else %}
-            <a href="{{ url_for('auth.login') }}" class="btn-details" style="flex: 1; text-align: center; text-decoration: none; display: flex; align-items: center; justify-content: center;">
-              Login to Order
-            </a>
+            <a href="{{ url_for('cars.car_detail', car_id=car.id) }}" class="btn-details" style="margin-top: 0.75rem; text-align: center; text-decoration: none; display: flex; align-items: center; justify-content: center;">View Details</a>
             {% endif %}
           </div>
-          </a>
         </article>
         {% endfor %}
       </section>

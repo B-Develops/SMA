@@ -15,10 +15,7 @@
       rel="stylesheet"
       href="{{ url_for('static', filename='dashboard.css') }}"
     />
-    <link
-      rel="stylesheet"
-      href="{{ url_for('static', filename='header-navbarcopy.css') }}"
-    />
+
     <!-- Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
 
@@ -38,67 +35,74 @@
       </h2>
 
       <nav>
-        <a href="{{ url_for('admin.dashboard') }}" class="nav-item active">
-          <i data-lucide="layout-dashboard"></i>
+        <a href="" class="nav-item active">
+          <i data-lucide="shopping-bag"></i>
           <span>Dashboard</span>
         </a>
 
-        <a href="{{ url_for('admin.users') }}" class="nav-item">
-          <i data-lucide="users"></i>
-          <span>Users</span>
+        <a href="" class="nav-item">
+          <i data-lucide="shopping-bag"></i>
+          <span>My Orders</span>
         </a>
 
-        <a href="{{ url_for('admin.listings') }}" class="nav-item">
-          <i data-lucide="car"></i>
-          <span>Listings</span>
+        <a href="" class="nav-item">
+          <i data-lucide="heart"></i>
+          <span>Watchlist</span>
         </a>
 
-        <a href="{{ url_for('cars.my_listings') }}" class="nav-item">
-          <i data-lucide="clipboard-list"></i>
-          <span>My Listings</span>
+        <a href="" class="nav-item">
+          <i data-lucide="user"></i>
+          <span>Profile</span>
         </a>
 
-        <a href="{{ url_for('admin.orders') }}" class="nav-item">
-          <i data-lucide="shopping-cart"></i>
-          <span>Orders</span>
+        <a href="" class="nav-item">
+          <i data-lucide="help-circle"></i>
+          <span>Help</span>
         </a>
 
-        <a href="{{ url_for('dashboard') }}" class="nav-item">
-          <i data-lucide="arrow-left"></i>
-          <span>User Dashboard</span>
+        {% if is_admin %}
+        <a href="{{ url_for('admin.dashboard') }}" class="nav-item">
+          <i data-lucide="shield"></i>
+          <span>Admin</span>
         </a>
+        {% endif %}
       </nav>
     </aside>
     <!-- MAIN CONTENT -->
     <div class="main-wrapper" id="D">
       <header role="banner">
         <div class="container" id="navcon">
-          <nav aria-label="Main navigation" id="nav1">
+          <nav aria-label="Main navigation" id="nav-wrapper">
             <div class="logo">Sarkin Mota Autos</div>
             <div class="nav-actions">
-              <a href="{{ url_for('profiles.about') }}" style="color: #fff"
-                >About</a
+              <a href="{{ url_for('profiles.about') }}">About</a
+              ><a
+                href="{{ url_for('profiles.notifications') }}"
+                class="btn-notifications"
+                style="position: relative; color: #fff; margin-right: 0.5rem"
               >
+                🔔 {% if unread_notifications and unread_notifications > 0 %}
+                <span
+                  style="
+                    position: absolute;
+                    top: -6px;
+                    right: -6px;
+                    background: var(--accent-red);
+                    color: #fff;
+                    padding: 2px 6px;
+                    border-radius: 999px;
+                    font-size: 0.75rem;
+                  "
+                  >{{ unread_notifications }}</span
+                >
+                {% endif %}
+              </a>
               {% if current_user.is_authenticated %}
               <a
-                href="{{ url_for('dashboard') }}"
+                href="{{ url_for('auth.logout') }}"
                 style="color: #fff"
                 class="btn-auth"
-              >
-                Dashboard
-              </a>
-              {% else %}
-              <a
-                href="{{ url_for('auth.login') }}"
-                style="color: #fff"
-                class="btn-auth"
-                >Sign In</a
-              >
-              <a
-                href="{{ url_for('auth.signup') }}"
-                style="color: #fff"
-                class="btn-auth btn-signup"
-                >Sign Up</a
+                >Sign Out</a
               >
               {% endif %}
             </div>
@@ -127,18 +131,73 @@
 
         <!-- STATS -->
         <section class="stats-grid">
-          <div class="stat-card">
+          <div class="card stat-card">
             <span>Active Orders</span>
             <h3>{{ stats.pending_orders + stats.confirmed_orders }}</h3>
           </div>
-          <div class="stat-card">
+          <div class="card stat-card">
             <span>Saved Cars</span>
             <h3>{{ saved_cars|length }}</h3>
           </div>
-          <div class="stat-card">
+          <div class="card stat-card">
             <span>Notifications</span>
             <h3>{{ unread_count if unread_count is defined else '0' }}</h3>
           </div>
+        </section>
+
+        <!-- NOTIFICATIONS PREVIEW -->
+        <section class="section">
+          <div class="section-header">
+            <div>
+              <h2>Recent Notifications</h2>
+              <p class="section-description">
+                Quick view of your latest alerts.
+              </p>
+            </div>
+            <a
+              href="{{ url_for('profiles.notifications') }}"
+              class="btn-secondary"
+              style="border-radius: 12px"
+              >View all</a
+            >
+          </div>
+
+          {% if notifications_preview %}
+          <div class="notification-preview-grid">
+            {% for notification in notifications_preview %}
+            <div
+              class="notification-card preview {{ 'unread' if not notification.is_read }}"
+            >
+              <div class="notification-content">
+                <div class="notification-title">{{ notification.title }}</div>
+                {% if notification.message %}
+                <div class="notification-message">
+                  {{ notification.message }}
+                </div>
+                {% endif %}
+                <div class="notification-time">
+                  {{ notification.created_at.strftime('%b %d, %Y') }}
+                </div>
+              </div>
+              {% if notification.link %}
+              <a
+                href="{{ notification.link }}"
+                class="btn"
+                style="padding: 0.5rem 0.75rem"
+                >View</a
+              >
+              {% endif %}
+            </div>
+            {% endfor %}
+          </div>
+          {% else %}
+          <div
+            class="empty-state"
+            style="padding: 1.5rem 0; color: var(--text-muted)"
+          >
+            No recent notifications. Your latest updates will appear here.
+          </div>
+          {% endif %}
         </section>
 
         <!-- ACTIVITY TIMELINE -->

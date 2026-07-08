@@ -2,16 +2,12 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Order Confirmed – Sarkin Mota Autos</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
-
-    <link rel="stylesheet" href="{{ url_for('static', filename='dashboard.css') }}" />
-
     <style>
       :root {
         --bg-main: #0a192f;
@@ -29,475 +25,711 @@
         box-sizing: border-box;
       }
 
+      html {
+        scroll-behavior: smooth;
+      }
+
       body {
         margin: 0;
-        font-family: "Inter", system-ui, sans-serif;
-        background: var(--bg-main);
+        font-family: "Inter", sans-serif;
+        background-color: #081529;
         color: var(--text-main);
-        line-height: 1.6;
+        line-height: 1.5;
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background-image:
+          linear-gradient(rgba(9, 23, 44, 0.85), rgba(2, 12, 27, 0.9)),
+          url("https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1600&q=80");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        z-index: -2;
       }
 
       header {
-        background: var(--bg-header);
+        background: var(--bg-main);
         border-bottom: 1px solid var(--border-soft);
-        sticky: top;
-        z-index: 100;
+      }
+
+      img {
+        max-width: 100%;
+        display: block;
+      }
+
+      a {
+        text-decoration: none;
+        color: inherit;
       }
 
       .nav {
         max-width: 1200px;
         margin: 0 auto;
-        padding: 1.25rem;
+        padding: 1.25rem 1.24rem;
         display: flex;
         align-items: center;
         justify-content: space-between;
-        height: 72px;
+        gap: 1.5rem;
+        min-height: 72px;
+        flex-wrap: wrap;
       }
 
-      .logo {
+      .brand {
         font-weight: 800;
         font-size: 1.4rem;
-        color: var(--accent-red);
         letter-spacing: 0.03em;
+        color: var(--accent-red);
+        white-space: nowrap;
+      }
+
+      .nav-search {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        max-width: 420px;
+      }
+
+      .nav-search form {
+        display: flex;
+        gap: 0.5rem;
+        width: 100%;
+      }
+
+      .nav-search input[type="text"] {
+        background-color: var(--bg-card);
+        border: 1px solid var(--border-soft);
+        color: var(--text-main);
+        padding: 0.65rem 1rem;
+        border-radius: 6px;
+        font-size: 0.9rem;
+        flex: 1;
+        transition: border-color 0.25s ease;
+      }
+
+      .nav-search input[type="text"]:hover,
+      .nav-search input[type="text"]:focus {
+        border-color: var(--accent-gold);
+        outline: none;
+      }
+
+      .nav-search button {
+        background: var(--accent-red);
+        border: none;
+        color: white;
+        padding: 0.65rem 1rem;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: background 0.25s ease;
+      }
+
+      .nav-search button:hover {
+        background: #c53030;
+      }
+
+      .nav-search input::placeholder {
+        color: rgba(255, 255, 255, 0.45);
       }
 
       .nav-actions {
         display: flex;
-        gap: 1rem;
         align-items: center;
+        gap: 1rem;
+        font-size: 0.9rem;
       }
 
       .nav-actions a {
         color: var(--text-muted);
         font-weight: 500;
-        text-decoration: none;
+      }
+
+      .btn-auth {
+        padding: 0.45rem 0.9rem;
+        border-radius: 6px;
+        font-weight: 600;
+        border: 1px solid var(--border-soft);
+        color: #808b9aab;
+      }
+
+      .btn-auth:hover {
+        color: var(--text-main);
+        background: rgba(255, 255, 255, 0.06);
+        border-color: rgba(255, 255, 255, 0.25);
+        transition: all 0.3s ease;
+      }
+
+      .btn-signup {
+        background: var(--accent-red);
+        border-color: var(--accent-red);
+        color: #fff;
+      }
+
+      .btn-signup:hover {
+        background: #c42727;
+        border-color: #c53030;
+        transition: all 0.3s ease;
       }
 
       main {
-        max-width: 700px;
+        max-width: 1200px;
         margin: 0 auto;
-        padding: 3rem 1.5rem;
+        padding: 3rem 1.25rem 5rem;
       }
 
-      .success-container {
-        text-align: center;
-      }
-
-      .success-icon {
-        width: 80px;
-        height: 80px;
-        background: rgba(72, 187, 120, 0.2);
-        border: 2px solid var(--accent-green);
-        border-radius: 50%;
+      .hero-card {
+        background: rgba(17, 34, 64, 0.72);
+        border: 1px solid var(--border-soft);
+        border-radius: 16px;
+        padding: 2rem;
         display: flex;
         align-items: center;
-        justify-content: center;
-        margin: 0 auto 2rem;
-        font-size: 2.5rem;
-        animation: scaleIn 0.5s ease;
+        justify-content: space-between;
+        gap: 1rem;
+        backdrop-filter: blur(14px) saturate(120%);
+        -webkit-backdrop-filter: blur(14px) saturate(120%);
+        margin-bottom: 1.5rem;
       }
 
-      @keyframes scaleIn {
-        from {
-          opacity: 0;
-          transform: scale(0.8);
-        }
-        to {
-          opacity: 1;
-          transform: scale(1);
-        }
+      .hero-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.45rem;
+        background: rgba(72, 187, 120, 0.16);
+        color: #9ae6b4;
+        padding: 0.45rem 0.8rem;
+        border-radius: 999px;
+        font-size: 0.78rem;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        margin-bottom: 0.9rem;
       }
 
       h1 {
-        font-size: 2.5rem;
-        font-weight: 800;
-        margin-bottom: 0.5rem;
-        animation: fadeInUp 0.6s ease 0.1s backwards;
+        font-size: clamp(1.9rem, 3vw, 2.5rem);
+        margin: 0 0 0.5rem;
+        letter-spacing: -0.02em;
       }
 
-      .subtitle {
+      .hero-card p {
+        margin: 0;
         color: var(--text-muted);
-        font-size: 1.1rem;
-        margin-bottom: 2.5rem;
-        animation: fadeInUp 0.6s ease 0.2s backwards;
+        max-width: 640px;
       }
 
-      @keyframes fadeInUp {
-        from {
-          opacity: 0;
-          transform: translateY(10px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-
-      .order-number {
-        background: rgba(72, 187, 120, 0.1);
-        border: 1px solid rgba(72, 187, 120, 0.3);
-        border-radius: 8px;
-        padding: 1.5rem;
-        margin-bottom: 2rem;
-        animation: fadeInUp 0.6s ease 0.3s backwards;
-      }
-
-      .order-number-label {
-        font-size: 0.9rem;
-        color: var(--text-muted);
-        margin-bottom: 0.5rem;
-        text-transform: uppercase;
-        letter-spacing: 0.08em;
-      }
-
-      .order-number-value {
-        font-size: 2rem;
-        font-weight: 800;
-        color: var(--accent-green);
-        font-family: "Courier New", monospace;
-      }
-
-      .confirmation-card {
-        background: var(--bg-card);
+      .order-pill {
+        background: rgba(255, 255, 255, 0.06);
         border: 1px solid var(--border-soft);
-        border-radius: 12px;
-        padding: 2rem;
-        margin-bottom: 2rem;
-        text-align: left;
-        backdrop-filter: blur(10px);
-        animation: fadeInUp 0.6s ease 0.4s backwards;
-      }
-
-      .card-title {
+        padding: 0.8rem 1rem;
+        border-radius: 999px;
+        white-space: nowrap;
+        color: var(--accent-gold);
         font-weight: 700;
-        font-size: 1.1rem;
-        margin-bottom: 1.5rem;
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
       }
 
-      .card-icon {
-        font-size: 1.5rem;
+      .detail-grid {
+        display: grid;
+        grid-template-columns: 1.35fr 0.85fr;
+        gap: 1.5rem;
       }
 
-      .confirmation-row {
+      .panel {
+        background: rgba(17, 34, 64, 0.72);
+        border: 1px solid var(--border-soft);
+        border-radius: 16px;
+        padding: 1.25rem;
+        backdrop-filter: blur(14px) saturate(120%);
+        -webkit-backdrop-filter: blur(14px) saturate(120%);
+      }
+
+      .image-wrap {
+        aspect-ratio: 16 / 9;
+        border-radius: 12px;
+        overflow: hidden;
+        background: #1a2b4a;
+        margin-bottom: 1rem;
+      }
+
+      .image-wrap img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .image-fallback {
+        width: 100%;
+        height: 100%;
+        display: grid;
+        place-items: center;
+        color: var(--text-muted);
+        font-weight: 600;
+        background: linear-gradient(
+          135deg,
+          rgba(255, 255, 255, 0.08),
+          rgba(255, 255, 255, 0.03)
+        );
+      }
+
+      .panel h2,
+      .panel h3 {
+        margin: 0 0 0.75rem;
+      }
+
+      .panel p {
+        color: var(--text-muted);
+        margin: 0 0 1rem;
+      }
+
+      .summary-list {
+        display: grid;
+        gap: 0.8rem;
+      }
+
+      .info-row {
         display: flex;
         justify-content: space-between;
-        align-items: center;
+        gap: 1rem;
         padding: 0.75rem 0;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
       }
 
-      .confirmation-row:last-child {
+      .info-row:last-child {
         border-bottom: none;
       }
 
-      .row-label {
+      .info-label {
         color: var(--text-muted);
-        font-size: 0.95rem;
       }
 
-      .row-value {
+      .info-value {
         font-weight: 600;
-        font-size: 0.95rem;
+        text-align: right;
       }
 
-      .amount-value {
+      .amount {
         color: var(--accent-red);
+        font-size: 1.05rem;
+      }
+
+      .status-pill {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.35rem 0.75rem;
+        border-radius: 999px;
+        background: rgba(72, 187, 120, 0.16);
+        color: #9ae6b4;
+        font-size: 0.82rem;
         font-weight: 700;
-        font-size: 1.1rem;
+        margin-bottom: 0.8rem;
+        text-transform: capitalize;
       }
 
-      .next-steps {
-        background: rgba(16, 185, 129, 0.08);
-        border-left: 4px solid var(--accent-green);
-        padding: 1.5rem;
-        border-radius: 8px;
-        margin-bottom: 2rem;
-        animation: fadeInUp 0.6s ease 0.5s backwards;
-      }
-
-      .next-steps-title {
-        font-weight: 700;
-        margin-bottom: 1rem;
-        color: var(--accent-green);
-      }
-
-      .steps-list {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-      }
-
-      .steps-list li {
-        padding: 0.75rem 0;
-        padding-left: 2rem;
-        position: relative;
-        font-size: 0.95rem;
-        color: var(--text-muted);
-        line-height: 1.6;
-      }
-
-      .steps-list li::before {
-        content: "✓";
-        position: absolute;
-        left: 0;
-        font-weight: 700;
-        color: var(--accent-green);
-        font-size: 1.1rem;
-      }
-
-      .email-notice {
+      .notice {
+        margin-top: 1rem;
+        padding: 0.95rem 1rem;
+        border-radius: 10px;
         background: rgba(100, 200, 255, 0.08);
-        border: 1px solid rgba(100, 200, 255, 0.2);
-        padding: 1rem;
-        border-radius: 8px;
-        margin-bottom: 2rem;
-        font-size: 0.95rem;
+        border: 1px solid rgba(100, 200, 255, 0.18);
         color: var(--text-muted);
+        font-size: 0.95rem;
       }
 
       .actions {
         display: flex;
-        gap: 1rem;
+        gap: 0.75rem;
         flex-wrap: wrap;
-        justify-content: center;
-        animation: fadeInUp 0.6s ease 0.6s backwards;
+        margin-top: 1.2rem;
       }
 
       .btn {
-        padding: 1rem 2rem;
-        border-radius: 10px;
-        font-weight: 600;
-        font-size: 1rem;
-        border: none;
-        cursor: pointer;
-        transition: all 0.25s ease;
-        text-decoration: none;
-        display: inline-block;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.8rem 1rem;
+        border-radius: 8px;
+        font-weight: 700;
+        border: 1px solid transparent;
+        transition:
+          transform 0.2s ease,
+          background 0.2s ease;
+      }
+
+      .btn:hover {
+        transform: translateY(-2px);
       }
 
       .btn-primary {
         background: var(--accent-red);
-        color: white;
+        color: #fff;
       }
 
       .btn-primary:hover {
         background: #c53030;
-        transform: translateY(-2px);
-        box-shadow: 0 12px 28px rgba(229, 62, 62, 0.35);
       }
 
       .btn-secondary {
         background: transparent;
-        color: var(--text-muted);
-        border: 1px solid var(--border-soft);
+        color: var(--text-main);
+        border-color: var(--border-soft);
       }
 
       .btn-secondary:hover {
         background: rgba(255, 255, 255, 0.05);
-        color: var(--text-main);
-      }
-
-      .divider {
-        height: 1px;
-        background: var(--border-soft);
-        margin: 2rem 0;
       }
 
       footer {
-        background: var(--bg-header);
-        border-top: 1px solid var(--border-soft);
-        padding: 2rem;
-        text-align: center;
+        background-color: #020c1b;
+        padding: 2rem 2.25rem;
         font-size: 0.85rem;
         color: var(--text-muted);
-        margin-top: 4rem;
+        text-align: center;
+        border-top: 1px solid var(--border-soft);
       }
 
-      @media (max-width: 600px) {
+      footer span {
+        color: var(--accent-gold);
+      }
+
+      @media (max-width: 900px) {
+        .detail-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (max-width: 700px) {
         main {
-          padding: 2rem 1rem;
-          max-width: 100%;
+          padding: 2rem 1rem 3rem;
         }
 
-        h1 {
-          font-size: 1.8rem;
-        }
-
-        .order-number-value {
-          font-size: 1.5rem;
+        .hero-card {
+          flex-direction: column;
+          align-items: flex-start;
         }
 
         .actions {
           flex-direction: column;
-          gap: 0.75rem;
         }
 
         .btn {
           width: 100%;
-          min-height: 44px;
-          padding: 1rem;
-          font-size: 1rem;
-        }
-
-        .success-icon {
-          width: 60px;
-          height: 60px;
-          font-size: 2rem;
-        }
-
-        .confirmation-card {
-          padding: 1.5rem;
-        }
-
-        .next-steps {
-          padding: 1.25rem;
-        }
-
-        .steps-list li {
-          padding-left: 1.75rem;
-          font-size: 0.9rem;
-        }
-
-        .email-notice {
-          padding: 0.75rem;
-          font-size: 0.9rem;
-        }
-
-        .subtitle {
-          font-size: 1rem;
         }
       }
 
-      @media (max-width: 400px) {
-        main {
-          padding: 1.5rem 1rem;
+      .timeline {
+        display: flex;
+        align-items: flex-start;
+        gap: 0;
+        margin: 1.25rem 0 1.5rem;
+        padding: 0;
+      }
+
+      .timeline-step {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: relative;
+        text-align: center;
+      }
+
+      .timeline-dot {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        border: 2px solid rgba(255, 255, 255, 0.12);
+        background: rgba(2, 12, 27, 0.6);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.7rem;
+        color: var(--text-muted);
+        transition: all 0.3s ease;
+        z-index: 2;
+      }
+
+      .timeline-step.completed .timeline-dot {
+        background: #48bb78;
+        border-color: #48bb78;
+        color: #fff;
+      }
+
+      .timeline-step.active .timeline-dot {
+        background: var(--accent-red);
+        border-color: var(--accent-red);
+        color: #fff;
+        box-shadow: 0 0 0 4px rgba(229, 62, 62, 0.2);
+      }
+
+      .timeline-step.cancelled-step .timeline-dot {
+        background: rgba(229, 62, 62, 0.15);
+        border-color: #fc8181;
+        color: #fc8181;
+      }
+
+      .timeline-label {
+        margin-top: 0.5rem;
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: var(--text-muted);
+        line-height: 1.3;
+      }
+
+      .timeline-step.completed .timeline-label,
+      .timeline-step.active .timeline-label {
+        color: var(--text-main);
+      }
+
+      .timeline-line {
+        position: absolute;
+        top: 14px;
+        left: calc(50% + 14px);
+        right: calc(-50% + 14px);
+        height: 2px;
+        background: rgba(255, 255, 255, 0.08);
+        z-index: 1;
+      }
+
+      .timeline-step.completed .timeline-line {
+        background: #48bb78;
+      }
+
+      .timeline-step:last-child .timeline-line {
+        display: none;
+      }
+
+      @media (max-width: 640px) {
+        .timeline-label {
+          font-size: 0.65rem;
         }
-
-        h1 {
-          font-size: 1.5rem;
-          margin-bottom: 1rem;
+        .timeline-dot {
+          width: 22px;
+          height: 22px;
+          font-size: 0.6rem;
         }
-
-        .order-number {
-          padding: 1rem;
+        .timeline-line {
+          top: 11px;
+          left: calc(50% + 11px);
+          right: calc(-50% + 11px);
         }
-
-        .order-number-value {
-          font-size: 1.25rem;
-        }
-
-        .btn {
-          font-size: 0.95rem;
-        }
-
-
+      }
+    </style>
   </head>
 
   <body>
+    <header>
+      <div class="nav">
+        <a href="/" class="brand">Sarkin Mota Autos</a>
+        <div class="nav-search">
+          <form action="{{ url_for('cars.browse_cars') }}" method="get">
+            <input
+              type="text"
+              name="search"
+              placeholder="Search cars, brands, models..."
+            />
+            <button type="submit">Search</button>
+          </form>
+        </div>
+        <div class="nav-actions">
+          <a href="/about">About</a>
+          {% if current_user.is_authenticated %}
+          <a
+            href="{{ url_for('profiles.notifications') }}"
+            class="btn-auth"
+            style="position: relative"
+          >
+            🔔 {% if unread_notifications and unread_notifications > 0 %}
+            <span
+              style="
+                position: absolute;
+                top: -6px;
+                right: -6px;
+                background: var(--accent-red);
+                color: #fff;
+                padding: 2px 6px;
+                border-radius: 999px;
+                font-size: 0.75rem;
+              "
+              >{{ unread_notifications }}</span
+            >
+            {% endif %}
+          </a>
+          <a href="{{ url_for('auth.logout') }}">Logout</a>
+          {% else %}
+          <a href="/auth/login" class="btn-auth">Sign In</a>
+          <a href="/auth/signup" class="btn-auth btn-signup">Sign Up</a>
+          {% endif %}
+        </div>
+      </div>
+    </header>
+
     <main>
-      <div class="success-container">
-        <div class="success-icon">✓</div>
-        <h1>Order Confirmed!</h1>
-        <p class="subtitle">Your order has been successfully placed</p>
-
-        <!-- ORDER NUMBER -->
-        <div class="order-number">
-          <div class="order-number-label">Order Number</div>
-          <div class="order-number-value">#{{ order.id }}</div>
+      <section class="hero-card">
+        <div>
+          {% if order.status == 'completed' %}
+          <div class="hero-badge">✓ Order completed</div>
+          {% elif order.status == 'confirmed' %}
+          <div class="hero-badge" style="background: rgba(66, 153, 225, 0.16); color: #90cdf4;">⏳ Awaiting payment</div>
+          {% elif order.status == 'cancelled' %}
+          <div class="hero-badge" style="background: rgba(229, 62, 62, 0.16); color: #fc8181;">✕ Order cancelled</div>
+          {% else %}
+          <div class="hero-badge" style="background: rgba(214, 158, 46, 0.16); color: #f6ad55;">📋 Order placed</div>
+          {% endif %}
+          <h1>
+            {% if order.status == 'completed' %}Thank you for your purchase
+            {% elif order.status == 'confirmed' %}Your order has been accepted
+            {% elif order.status == 'cancelled' %}This order was cancelled
+            {% else %}We've received your order
+            {% endif %}
+          </h1>
+          <p>
+            {% if order.status == 'completed' %}
+              Your purchase of {{ car.year }} {{ car.make }} {{ car.model }} is complete. We hope you enjoy your new ride.
+            {% elif order.status == 'confirmed' %}
+              The seller has accepted your offer for {{ car.year }} {{ car.make }} {{ car.model }}. Proceed to payment to secure the vehicle.
+            {% elif order.status == 'cancelled' %}
+              This order for {{ car.year }} {{ car.make }} {{ car.model }} was cancelled. You can place a new order or browse other vehicles.
+            {% else %}
+              Your request for {{ car.year }} {{ car.make }} {{ car.model }} is under review. The seller has been notified and will respond within 24 hours.
+            {% endif %}
+          </p>
         </div>
+        <div class="order-pill">Order #{{ order.id }}</div>
+      </section>
 
-        <!-- ORDER SUMMARY -->
-        <div class="confirmation-card">
-          <div class="card-title">
-            <span class="card-icon">🚗</span>
-            Order Details
+      <div class="detail-grid">
+        <section class="panel">
+          <div class="image-wrap">
+            {% if car.image_url %}
+            <img
+              src="{{ car.image_url }}"
+              alt="{{ car.year }} {{ car.make }} {{ car.model }}"
+            />
+            {% else %}
+            <div class="image-fallback">No image available</div>
+            {% endif %}
           </div>
 
-          <div class="confirmation-row">
-            <span class="row-label">Vehicle</span>
-            <span class="row-value"
-              >{{ car.year }} {{ car.make }} {{ car.model }}</span
+          <h2>{{ car.year }} {{ car.make }} {{ car.model }}</h2>
+          <p>
+            {{ car.description | default('A carefully selected vehicle from Sarkin Mota Autos.') }}
+          </p>
+
+          <div class="summary-list">
+            <div class="info-row">
+              <span class="info-label">Condition</span>
+              <span class="info-value">{{ car.condition | title }}</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Mileage</span>
+              <span class="info-value">{{ car.mileage | default('N/A') }}</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Transmission</span>
+              <span class="info-value">{{ car.transmission | default('N/A') }}</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Fuel Type</span>
+              <span class="info-value">{{ car.fuel_type | default('N/A') }}</span>
+            </div>
+          </div>
+        </section>
+
+        <aside class="panel">
+          <div class="status-pill">{{ order.status | title }}</div>
+          <h3>Order Summary</h3>
+          <div class="summary-list">
+            <div class="info-row">
+              <span class="info-label">Order Number</span>
+              <span class="info-value">#{{ order.id }}</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Your Offer</span>
+              <span class="info-value amount">{{ order.order_amount | currency }}</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Listed Price</span>
+              <span class="info-value">{{ order.listed_price | currency }}</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Order Date</span>
+              <span class="info-value">{{ order.created_at.strftime('%b %d, %Y') }}</span>
+            </div>
+            {% if order.confirmed_at %}
+            <div class="info-row">
+              <span class="info-label">Confirmed On</span>
+              <span class="info-value">{{ order.confirmed_at.strftime('%b %d, %Y') }}</span>
+            </div>
+            {% endif %}
+          </div>
+
+          {% if order.status == 'pending' %}
+          <div class="notice" style="background: rgba(214, 158, 46, 0.08); border-color: rgba(214, 158, 46, 0.25); color: var(--accent-gold);">
+            The seller has 24 hours to review and accept your offer. You will receive an email and notification once there is an update.
+          </div>
+          {% elif order.status == 'confirmed' %}
+          <div class="notice" style="background: rgba(66, 153, 225, 0.08); border-color: rgba(66, 153, 225, 0.25); color: #90cdf4;">
+            Your order has been accepted. Payment is required to secure the vehicle. Use the button below to proceed to checkout.
+          </div>
+          {% elif order.status == 'completed' %}
+          <div class="notice" style="background: rgba(72, 187, 120, 0.08); border-color: rgba(72, 187, 120, 0.25); color: #9ae6b4;">
+            This order is complete. Thank you for buying through Sarkin Mota Autos.
+          </div>
+          {% elif order.status == 'cancelled' %}
+          <div class="notice" style="background: rgba(229, 62, 62, 0.08); border-color: rgba(229, 62, 62, 0.25); color: #fc8181;">
+            This order was cancelled. You can place a new order for this or another vehicle at any time.
+          </div>
+          {% endif %}
+
+          <div class="timeline">
+            <div class="timeline-step completed">
+              <div class="timeline-dot">✓</div>
+              <div class="timeline-label">Order Placed</div>
+              <div class="timeline-line"></div>
+            </div>
+            <div class="timeline-step {% if order.status in ['confirmed', 'completed', 'cancelled'] %}completed{% elif order.status == 'pending' %}active{% endif %}">
+              <div class="timeline-dot">
+                {% if order.status in ['confirmed', 'completed', 'cancelled'] %}✓{% else %}2{% endif %}
+              </div>
+              <div class="timeline-label">
+                {% if order.status == 'cancelled' %}Cancelled{% else %}Under Review{% endif %}
+              </div>
+              <div class="timeline-line"></div>
+            </div>
+            <div class="timeline-step {% if order.status == 'completed' %}completed{% elif order.status == 'confirmed' %}active{% endif %}">
+              <div class="timeline-dot">
+                {% if order.status == 'completed' %}✓{% elif order.status == 'confirmed' %}3{% endif %}
+              </div>
+              <div class="timeline-label">Confirmed</div>
+              <div class="timeline-line"></div>
+            </div>
+            <div class="timeline-step {% if order.status == 'completed' %}completed{% endif %}">
+              <div class="timeline-dot">
+                {% if order.status == 'completed' %}✓{% endif %}
+              </div>
+              <div class="timeline-label">Completed</div>
+            </div>
+          </div>
+
+          <div class="actions">
+            <a href="{{ url_for('orders.my_orders') }}" class="btn btn-primary"
+              >View All Orders</a
+            >
+            <a
+              href="{{ url_for('cars.browse_cars') }}"
+              class="btn btn-secondary"
+              >Browse More Cars</a
             >
           </div>
-
-          <div class="confirmation-row">
-            <span class="row-label">Your Offer</span>
-            <span class="row-value amount-value"
-              >{{ order.order_amount | currency }}</span
-            >
-          </div>
-
-          <div class="confirmation-row">
-            <span class="row-label">Listed Price</span>
-            <span class="row-value"
-              >{{ order.listed_price | currency }}</span
-            >
-          </div>
-
-          <div class="confirmation-row">
-            <span class="row-label">Order Date</span>
-            <span class="row-value"
-              >{{ order.created_at.strftime('%B %d, %Y at %I:%M %p') }}</span
-            >
-          </div>
-
-          <div class="confirmation-row">
-            <span class="row-label">Status</span>
-            <span class="row-value">
-              <span
-                style="
-                  background: rgba(160, 174, 192, 0.3);
-                  padding: 0.25rem 0.75rem;
-                  border-radius: 4px;
-                  text-transform: capitalize;
-                "
-              >
-                {{ order.status }}
-              </span>
-            </span>
-          </div>
-        </div>
-
-        <!-- EMAIL NOTICE -->
-        <div class="email-notice">
-          📧 A confirmation email has been sent to
-          <strong>{{ current_user.email }}</strong>. Check your inbox for order
-          details and tracking information.
-        </div>
-
-        <!-- NEXT STEPS -->
-        <div class="next-steps">
-          <div class="next-steps-title">What Happens Next?</div>
-          <ul class="steps-list">
-            <li>
-              The seller will review your offer within <strong>24 hours</strong>
-            </li>
-            <li>If accepted, payment will be processed securely</li>
-            <li>You'll receive updates via email every step of the way</li>
-            <li>Track your order anytime in your dashboard</li>
-            <li>Delivery typically takes 3-5 business days after payment</li>
-          </ul>
-        </div>
-
-        <div class="divider"></div>
-
-        <!-- ACTIONS -->
-        <div class="actions">
-          <a href="{{ url_for('orders.my_orders') }}" class="btn btn-primary">
-            View All Orders
-          </a>
-          <a href="{{ url_for('cars.browse_cars') }}" class="btn btn-secondary">
-            Continue Shopping
-          </a>
-        </div>
+        </aside>
       </div>
     </main>
 
     <footer>
       <div>© 2019–2026 Sarkin Mota Autos. All rights reserved.</div>
+      <div>Founded by Dr. Aliyu Mohammad (Sarkin Mota)</div>
     </footer>
   </body>
 </html>

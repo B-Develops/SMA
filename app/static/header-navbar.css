@@ -7,7 +7,7 @@
   width: 100%;
   max-width: none;
   padding: 0 1.25rem;
-  background: rgba(10, 25, 47, 0.534);
+  background: #0a192fa6;
   backdrop-filter: blur(16px) saturate(160%);
   -webkit-backdrop-filter: blur(16px) saturate(160%);
   border-right: 0;
@@ -21,7 +21,7 @@
 /* Header styling */
 header {
   width: 100%;
-  background-color: rgba(10, 25, 47, 0.404);
+  background-color: #0a192fa6;
   position: sticky;
   top: 0;
   z-index: 999;

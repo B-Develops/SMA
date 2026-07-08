@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Orders on My Listings – Sarkin Mota Autos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='my-orders.css') }}" />
+  <style>
+    .back-link { display: inline-block; margin-bottom: 1rem; color: var(--color-accent-red); text-decoration: none; }
+    .page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border-soft); }
+    .page-header h1 { margin: 0; font-size: 1.75rem; }
+    .nav-tabs { display: flex; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+    .nav-tab { padding: 0.5rem 0.75rem; border-radius: 0.5rem; font-weight: 600; color: var(--color-text-secondary); text-decoration: none; border: 1px solid transparent; }
+    .nav-tab.active { border-color: var(--color-accent-red); color: var(--color-text-primary); }
+    .stats-row { display: flex; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+    .stat-card { background: var(--color-card-bg); border: 1px solid var(--border-soft); border-radius: 0.75rem; padding: 1rem 1.25rem; min-width: 120px; }
+    .stat-card .label { font-size: 0.8rem; color: var(--color-text-secondary); margin-bottom: 0.25rem; }
+    .stat-card .value { font-size: 1.35rem; font-weight: 700; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <a href="{{ url_for('dashboard') }}" class="back-link">← Back to Dashboard</a>
+
+    <div class="page-header">
+      <h1>Orders on My Listings</h1>
+    </div>
+
+    <nav class="nav-tabs">
+      <a href="{{ url_for('dashboard') }}" class="nav-tab">Dashboard</a>
+      <a href="{{ url_for('cars.my_listings') }}" class="nav-tab">My Listings</a>
+      <a href="{{ url_for('cars.seller_orders') }}" class="nav-tab active">Orders</a>
+      <a href="{{ url_for('orders.my_orders') }}" class="nav-tab">My Purchase Orders</a>
+    </nav>
+
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="label">Total</div>
+        <div class="value">{{ stats.total }}</div>
+      </div>
+      <div class="stat-card">
+        <div class="label">Pending</div>
+        <div class="value">{{ stats.pending }}</div>
+      </div>
+      <div class="stat-card">
+        <div class="label">Confirmed</div>
+        <div class="value">{{ stats.confirmed }}</div>
+      </div>
+      <div class="stat-card">
+        <div class="label">Completed</div>
+        <div class="value">{{ stats.completed }}</div>
+      </div>
+    </div>
+
+    {% if orders %}
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Car</th>
+          <th>Buyer</th>
+          <th>Offer</th>
+          <th>Listed Price</th>
+          <th>Status</th>
+          <th>Payment</th>
+          <th>Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for order in orders %}
+        <tr>
+          <td>
+            <div class="car-details">
+              {% if order.image_url %}
+              <img src="{{ order.image_url }}" alt="{{ order.make }}" class="car-image" />
+              {% else %}
+              <div class="car-image" style="background: var(--color-bg-secondary); display: flex; align-items: center; justify-content: center;">
+                <span style="font-size: 0.6rem">N/A</span>
+              </div>
+              {% endif %}
+              <div class="car-info">
+                <span class="car-title">{{ order.year }} {{ order.make }} {{ order.model }}</span>
+                <span class="car-meta">{{ order.status|title }} • {{ order.payment_method|default('Not specified')|title }}</span>
+              </div>
+            </div>
+          </td>
+          <td>
+            <div style="font-weight: 600;">{{ order.buyer_name }}</div>
+            <div style="font-size: 0.85rem; color: var(--color-text-secondary);">{{ order.buyer_email }}</div>
+          </td>
+          <td class="order-amount">{{ order.order_amount | currency }}</td>
+          <td>
+            <span class="listed-price">{{ order.listed_price | currency }}</span>
+          </td>
+          <td>
+            <div style="display: flex; flex-direction: column; gap: 0.35rem;">
+              <span class="badge {{ 'badge-pending' if order.status == 'pending' else 'badge-confirmed' if order.status == 'confirmed' else 'badge-cancelled' if order.status == 'cancelled' else 'badge-completed' if order.status == 'completed' else '' }}">
+                {{ order.status|capitalize }}
+              </span>
+              <span style="font-size: 0.75rem; color: var(--color-text-secondary); line-height: 1.3;">
+                {% if order.status == 'pending' %}Waiting for review
+                {% elif order.status == 'confirmed' %}Accepted, awaiting payment
+                {% elif order.status == 'completed' %}Order fulfilled
+                {% elif order.status == 'cancelled' %}No longer active
+                {% endif %}
+              </span>
+            </div>
+          </td>
+          <td>
+            {% set latest_payment = order %}
+            {% if order.payment_status %}
+              <span class="badge" style="background: rgba(72, 187, 120, 0.16); color: #9ae6b4;">{{ order.payment_status|capitalize }}</span>
+            {% else %}
+              <span style="color: var(--color-text-secondary); font-size: 0.85rem">No payment</span>
+            {% endif %}
+          </td>
+          <td>{{ order.created_at }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <div class="empty-state">
+      <h2>No Orders Yet</h2>
+      <p>When buyers place orders on your listings, they will appear here.</p>
+      <a href="{{ url_for('cars.my_listings') }}" class="btn btn-primary" style="margin-top: 1rem; display: inline-block;">Manage My Listings</a>
+    </div>
+    {% endif %}
+  </div>
+</body>
+</html>

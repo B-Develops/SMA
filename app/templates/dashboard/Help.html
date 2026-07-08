@@ -12,8 +12,6 @@
       rel="stylesheet"
     />
 
-    <link rel="stylesheet" href="{{ url_for('static', filename='5.css') }}" />
-
     <style>
       :root {
         --bg-primary: #0a192f;
@@ -291,13 +289,12 @@
         background-repeat: no-repeat;
         z-index: -2;
       }
-
-
+    </style>
   </head>
 
   <body>
     <div class="container">
-      <a href="{{ url_for('dashboard') }}" class="back-link">← Back to Dashboard</a>
+      <a href="/dashboard" class="back-link">← Back to Dashboard</a>
 
       <div class="page-header">
         <h1>Help & Support</h1>
@@ -432,7 +429,7 @@
           <div class="contact-box">
             <h3>Messages</h3>
             <p>Chat in your dashboard</p>
-            <a href="{{ url_for('profiles.messages') }}">Open Messages</a>
+            <a href="/messages">Open Messages</a>
           </div>
         </div>
       </div>

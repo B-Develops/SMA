@@ -7,16 +7,7 @@ import json
 from . import admin_bp
 
 
-@admin_bp.route('/')
-@admin_bp.route('/admin')
-@login_required
-@cache.cached(timeout=300, key_prefix='admin_dashboard')
-def dashboard():
-    if current_user.role != 'admin':
-        flash('Access denied: Admin privileges required.', 'error')
-        return redirect(url_for('admin.dashboard'))
-
-    # Statistics
+def _get_admin_stats():
     total_users = User.query.count()
     admin_count = User.query.filter_by(role='admin').count()
     total_listings = Car.query.count()
@@ -26,11 +17,29 @@ def dashboard():
     pending_orders = Order.query.filter_by(status='pending').count()
     confirmed_orders = Order.query.filter_by(status='confirmed').count()
     avg_price = db.session.query(db.func.avg(Car.price)).scalar() or 0
+    return {
+        "total_users": total_users,
+        "admin_count": admin_count,
+        "total_listings": total_listings,
+        "active_listings": active_listings,
+        "sold_listings": sold_listings,
+        "total_orders": total_orders,
+        "pending_orders": pending_orders,
+        "confirmed_orders": confirmed_orders,
+        "avg_price": avg_price,
+    }
 
-    # Recent listings for display (limit 5)
+
+@admin_bp.route('/')
+@admin_bp.route('/admin')
+@login_required
+def dashboard():
+    if current_user.role != 'admin':
+        flash('Access denied: Admin privileges required.', 'error')
+        return redirect(url_for('admin.dashboard'))
+
+    stats = _get_admin_stats()
     recent_listings = Car.query.join(User).order_by(Car.created_at.desc()).limit(5).all()
-
-    # Active admin users (all admins)
     active_admins = User.query.filter_by(role='admin').order_by(User.created_at.desc()).all()
     admin_accounts = []
     for admin in active_admins:
@@ -44,18 +53,6 @@ def dashboard():
             'email_verified': admin.email_verified
         }
         admin_accounts.append(admin_dict)
-
-    stats = {
-        "total_users": total_users,
-        "admin_count": admin_count,
-        "total_listings": total_listings,
-        "active_listings": active_listings,
-        "sold_listings": sold_listings,
-        "total_orders": total_orders,
-        "pending_orders": pending_orders,
-        "confirmed_orders": confirmed_orders,
-        "avg_price": avg_price,
-    }
 
     return render_template("AdminDashboard.html", stats=stats, recent_listings=recent_listings, admin_accounts=admin_accounts)
 
@@ -113,7 +110,7 @@ def delete_user(user_id):
 
     if user_id == current_user.id:
         flash('You cannot delete your own account.', 'error')
-        return redirect(url_for('admin.users'))
+        return redirect(url_for('admin.dashboard'))
 
     user = User.query.get(user_id)
     if not user:
@@ -307,8 +304,15 @@ def orders(page=1):
     orders_paginated = orders_query.paginate(page=page, per_page=per_page, error_out=False)
     orders_list = []
 
+    order_ids = [order.Order.id for order in orders_paginated.items]
+    payments_q = Payment.query.filter(Payment.order_id.in_(order_ids)).order_by(Payment.created_at.desc()).all()
+    latest_payments = {}
+    for payment in payments_q:
+        if payment.order_id not in latest_payments:
+            latest_payments[payment.order_id] = payment
+
     for order in orders_paginated.items:
-        payment = Payment.query.filter_by(order_id=order.Order.id).order_by(Payment.created_at.desc()).first()
+        payment = latest_payments.get(order.Order.id)
         order_dict = {
             'id': order.Order.id,
             'buyer_name': order.buyer_name or 'Deleted User',

@@ -2,7 +2,7 @@ from flask import render_template, request, redirect, url_for, flash, abort
 from flask_login import login_required, current_user
 from ...models import User, Car, Order, SavedCar, Payment
 from ... import db, bcrypt
-from ...utils import send_order_confirmation_email
+from ...utils import send_order_confirmation_email, create_order_notification
 from datetime import datetime
 from sqlalchemy import text, func
 import os
@@ -11,6 +11,44 @@ from werkzeug.utils import secure_filename
 import magic
 from ...payment_utils import generate_payment_reference
 from . import cars_bp
+
+
+def _get_active_car_or_abort(car_id):
+    car = Car.query.get_or_404(car_id)
+    if car.status != 'active':
+        flash("This car is no longer available for purchase.", "error")
+        return None
+    return car
+
+
+def _require_complete_profile_or_abort():
+    if not current_user.phone or not current_user.location:
+        flash('Please complete your profile before placing an order. Add your phone number and location so the seller can reach you.', 'warning')
+        return False
+    return True
+
+
+def cancel_pending_orders_for_car(car_id, cancelled_by_user_id=None):
+    orders = Order.query.filter_by(car_id=car_id).filter(Order.status.in_(['pending', 'confirmed'])).all()
+    for order in orders:
+        order.status = 'cancelled'
+        order.cancelled_at = datetime.utcnow()
+        order.updated_at = datetime.utcnow()
+        try:
+            buyer_label = order.buyer.name or order.buyer.email if order.buyer else f"Buyer #{order.buyer_id}"
+            create_order_notification(
+                user_id=order.buyer_id,
+                order_id=order.id,
+                event_type="order_cancelled",
+                title="Order Cancelled",
+                message=f"A listing you ordered has been marked as sold. Order #{order.id} has been cancelled.",
+                link=f"/orders/{order.id}"
+            )
+        except Exception:
+            pass
+    db.session.commit()
+    return len(orders)
+
 
 # File upload settings
 UPLOAD_FOLDER = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "uploads")
@@ -150,6 +188,55 @@ def my_listings():
     
     return render_template("dashboard/MyListings.html", listings=listings, stats=stats)
 
+
+@cars_bp.route("/seller-orders")
+@login_required
+def seller_orders():
+    orders = db.session.query(
+        Order,
+        Car.year, Car.make, Car.model, Car.image_url, Car.status.label('car_status'),
+        User.name.label('buyer_name'), User.email.label('buyer_email')
+    ).join(Car, Order.car_id == Car.id)\
+     .outerjoin(User, Order.buyer_id == User.id)\
+     .filter(Car.seller_id == current_user.id)\
+     .order_by(Order.created_at.desc()).all()
+    
+    order_list = []
+    for order, year, make, model, image_url, car_status, buyer_name, buyer_email in orders:
+        payment = Payment.query.filter_by(order_id=order.id).order_by(Payment.created_at.desc()).first()
+        order_list.append({
+            'id': order.id,
+            'year': year,
+            'make': make,
+            'model': model,
+            'image_url': image_url,
+            'car_status': car_status,
+            'order_amount': order.order_amount,
+            'listed_price': order.listed_price,
+            'status': order.status,
+            'payment_method': order.payment_method,
+            'payment_status': payment.status if payment else None,
+            'payment_reference': payment.provider_reference if payment else None,
+            'buyer_name': buyer_name or 'Deleted User',
+            'buyer_email': buyer_email or '',
+            'delivery_address': order.delivery_address,
+            'notes': order.notes,
+            'created_at': order.created_at.strftime('%Y-%m-%d %H:%M') if order.created_at else 'N/A',
+        })
+    
+    pending_count = sum(1 for o in order_list if o['status'] == 'pending')
+    confirmed_count = sum(1 for o in order_list if o['status'] == 'confirmed')
+    completed_count = sum(1 for o in order_list if o['status'] == 'completed')
+    
+    stats = {
+        'pending': pending_count,
+        'confirmed': confirmed_count,
+        'completed': completed_count,
+        'total': len(order_list),
+    }
+    
+    return render_template("dashboard/SellerOrders.html", orders=order_list, stats=stats)
+
 @cars_bp.route("/cars/<int:car_id>/edit", methods=["GET", "POST"])
 @login_required
 def edit_car(car_id):
@@ -241,15 +328,23 @@ def delete_car(car_id):
 @login_required
 def mark_car_sold(car_id):
     car = Car.query.filter_by(id=car_id, seller_id=current_user.id).first()
-    
+
     if not car:
         flash("Listing not found or access denied.", "error")
         return redirect(url_for("cars.my_listings"))
-    
+
+    if car.status == 'sold':
+        flash("This listing is already marked as sold.", "info")
+        return redirect(url_for("cars.my_listings"))
+
+    cancelled_count = cancel_pending_orders_for_car(car_id)
     car.status = 'sold'
     db.session.commit()
-    
-    flash("Listing marked as sold.", "success")
+
+    if cancelled_count > 0:
+        flash(f"Listing marked as sold. {cancelled_count} pending order(s) were cancelled and buyers were notified.", "success")
+    else:
+        flash("Listing marked as sold.", "success")
     return redirect(url_for("cars.my_listings"))
 
 @cars_bp.route("/browse")
@@ -349,7 +444,7 @@ def car_detail(car_id):
     car = Car.query.get_or_404(car_id)
     seller = User.query.with_entities(User.name, User.phone, User.location).filter_by(id=car.seller_id).first()
     highest_bid = db.session.query(db.func.max(Order.order_amount)).filter_by(car_id=car_id, status='pending').first()
-    return render_template("dashboard/Listing-Page.html", car=car, seller=seller, highest_bid=highest_bid)
+    return render_template("View-details.html", car=car, seller=seller, highest_bid=highest_bid)
 
 @cars_bp.route("/cars/<int:car_id>/order", methods=["POST"])
 @login_required
@@ -358,11 +453,11 @@ def place_order(car_id):
     payment_method = request.form.get("payment_method", "").strip()
     delivery_address = request.form.get("delivery_address", "").strip()
     notes = request.form.get("notes", "").strip()
-    
+
     if not order_amount:
         flash("Order amount is required", "error")
         return redirect(url_for("cars.car_detail", car_id=car_id))
-    
+
     try:
         order_amount_float = float(order_amount)
         if order_amount_float < 1000:
@@ -374,28 +469,26 @@ def place_order(car_id):
     except ValueError:
         flash("Invalid order amount.", "error")
         return redirect(url_for("cars.car_detail", car_id=car_id))
-    
-    car = Car.query.get(car_id)
-    if not car:
-        flash("Car not found.", "error")
-        return redirect(url_for("cars.browse_cars"))
-    
-    if car.status != 'active':
-        flash("This car is no longer available for purchase.", "error")
+
+    car = _get_active_car_or_abort(car_id)
+    if car is None:
         return redirect(url_for("cars.car_detail", car_id=car_id))
-    
+
     existing_order = Order.query.filter_by(
-        buyer_id=current_user.id, 
+        buyer_id=current_user.id,
         car_id=car_id
     ).filter(Order.status.in_(['pending', 'confirmed'])).first()
-    
+
     if existing_order:
         flash("You already have an order for this car.", "info")
         return redirect(url_for("dashboard"))
-    
+
+    if not _require_complete_profile_or_abort():
+        return redirect(url_for('profiles.edit_profile'))
+
     try:
         listed_price_float = float(car.price)
-        
+
         new_order = Order(
             buyer_id=current_user.id,
             car_id=car_id,
@@ -425,24 +518,47 @@ def place_order(car_id):
         )
         db.session.add(payment)
         db.session.commit()
-        
+
         buyer_label = current_user.name or current_user.email
-        # create_notification(
-        #     user_id=car.seller_id,
-        #     type="order_received",
-        #     title="New Order Received",
-        #     message=f"{buyer_label} placed an order of ₦{order_amount_float:,.0f} on your {car.year} {car.make} {car.model}.",
-        #     link=f"/admin/orders",
-        # )
-        
-        # send_order_confirmation_email(
-        #     user_email=current_user.email,
-        #     user_name=current_user.name,
-        #     order_id=new_order.id,
-        #     car=car,
-        #     order_amount=order_amount_float
-        # )
-        
+
+        # Create in-app notification for the seller
+        try:
+            create_order_notification(
+                user_id=car.seller_id,
+                order_id=new_order.id,
+                event_type="order_received",
+                title="New Order Received",
+                message=f"{buyer_label} placed an order of ₦{order_amount_float:,.0f} on your {car.year} {car.make} {car.model}.",
+                link=f"/admin/orders"
+            )
+        except Exception:
+            pass
+
+        # Create in-app notification for the buyer
+        try:
+            create_order_notification(
+                user_id=current_user.id,
+                order_id=new_order.id,
+                event_type="order_created",
+                title="Order Placed",
+                message=f"Your order for {car.year} {car.make} {car.model} has been placed successfully.",
+                link=f"/orders/{new_order.id}"
+            )
+        except Exception:
+            pass
+
+        # Send confirmation email
+        try:
+            send_order_confirmation_email(
+                user_email=current_user.email,
+                user_name=current_user.name,
+                order_id=new_order.id,
+                car=car,
+                order_amount=order_amount_float
+            )
+        except Exception:
+            pass
+
         return redirect(url_for("cars.order_success", order_id=new_order.id))
     except Exception as e:
         db.session.rollback()
@@ -487,11 +603,13 @@ def unsave_car(car_id):
 @cars_bp.route("/cars/<int:car_id>/review", methods=["POST"])
 @login_required
 def review_order_post(car_id):
-    car = Car.query.get_or_404(car_id)
-    if car.status != 'active':
-        flash("This car is no longer available.", "error")
+    car = _get_active_car_or_abort(car_id)
+    if car is None:
         return redirect(url_for("cars.car_detail", car_id=car_id))
-    
+
+    if not _require_complete_profile_or_abort():
+        return redirect(url_for('profiles.edit_profile'))
+
     try:
         order_amount = float(request.form.get("order_amount", "") or car.price)
         if order_amount < 1000:
@@ -500,15 +618,15 @@ def review_order_post(car_id):
     except (ValueError, TypeError):
         flash("Invalid order amount.", "error")
         return redirect(url_for("cars.car_detail", car_id=car_id))
-    
+
     payment_method = request.form.get("payment_method", "").strip()
     if not payment_method:
         flash("Please select a payment method.", "error")
         return redirect(url_for("cars.car_detail", car_id=car_id))
-    
+
     delivery_address = request.form.get("delivery_address", "").strip()
     notes = request.form.get("notes", "").strip()
-    
+
     session_key = f"order_review_{current_user.id}_{car_id}"
     from flask import session
     session[session_key] = {
@@ -518,7 +636,7 @@ def review_order_post(car_id):
         "notes": notes,
         "created_at": datetime.utcnow().isoformat(),
     }
-    
+
     return redirect(url_for("cars.review_order_get", car_id=car_id))
 
 @cars_bp.route("/cars/<int:car_id>/review")
