@@ -52,6 +52,7 @@
 
       <!-- AUDIT LOGS TABLE -->
       {% if logs %}
+      <div class="table-wrap">
       <table class="admin-table">
         <thead>
           <tr>
@@ -78,6 +79,7 @@
           {% endfor %}
         </tbody>
       </table>
+      </div>
       {% else %}
       <div class="empty-state">
         <p>No audit logs found.</p>

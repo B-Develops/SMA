@@ -29,64 +29,65 @@
   <body>
     <!-- LEFT SIDEBAR -->
     <aside class="sidebar">
-      <h2 class="men"><i data-lucide="menu"></i> Menu</h2>
+      <div class="sidebar-header">
+        <h2 class="men">Menu</h2>
+
+        <button
+          id="sidebarToggle"
+          class="sidebar-toggle"
+          aria-label="Toggle Sidebar"
+        >
+          <i data-lucide="panel-left-close"></i>
+        </button>
+      </div>
 
       <a href="{{ url_for('admin.dashboard') }}" class="nav-item active">
-        <i data-lucide="layout-dashboard"></i> Overview
+        <i data-lucide="layout-dashboard"></i>
+        <span>Overview</span>
       </a>
+
       <a href="{{ url_for('admin.users') }}" class="nav-item">
-        <i data-lucide="users"></i> Users
+        <i data-lucide="users"></i>
+        <span>Users</span>
       </a>
+
       <a href="{{ url_for('admin.listings') }}" class="nav-item">
-        <i data-lucide="car"></i> All Listings
+        <i data-lucide="car"></i>
+        <span>All Listings</span>
       </a>
       <a href="{{ url_for('cars.my_listings') }}" class="nav-item">
-        <i data-lucide="user"></i> My Listings
+        <i data-lucide="users"></i>
+        <span>My Listings</span>
       </a>
       <a href="{{ url_for('admin.orders') }}" class="nav-item">
-        <i data-lucide="shopping-cart"></i> Orders
+        <i data-lucide="users"></i>
+        <span>Orders</span>
       </a>
-      <a href="{{ url_for('dashboard') }}" class="nav-item">
-        <i data-lucide="home"></i> Back to User Dashboard
+      <a href="{{ url_for('dashboard') }}" class="dashboard-link">
+        <i data-lucide="arrow-left"></i>
+        <span>User Dashboard</span>
       </a>
       <div class="sidebar-footer">
         <div class="user-profile">
           <div class="user-avatar">{{ current_user.name[0]|upper }}</div>
 
           <div class="user-details">
-            <span class="user-name">{{ current_user.name }}</span>
-            <span class="user-role">{{ current_user.role|capitalize }}</span>
-          </div>
+            <div class="user-name">{{ current_user.name }}</div>
 
-          <a href="{{ url_for('auth.logout') }}" class="logout-btn">
-            Sign Out
-          </a>
+            <div class="user-role">{{ current_user.role|capitalize }}</div>
+          </div>
         </div>
+
+        <a href="{{ url_for('auth.logout') }}" class="logout-btn">
+          <i data-lucide="log-out"></i>
+
+          <span>Sign Out</span>
+        </a>
       </div>
     </aside>
 
     <!-- MAIN CONTENT -->
     <div class="main-wrapper" id="D">
-      <header role="banner">
-        <div class="container" id="navcon">
-          <nav aria-label="Main navigation">
-            <div class="logo">Sarkin Mota Autos</div>
-            <div class="nav-actions">
-              <a href="{{ url_for('profiles.about') }}" style="color: #fff"
-                >About</a
-              >
-              {% if current_user.is_authenticated %}
-              <a
-                href="{{ url_for('auth.logout') }}"
-                style="color: #fff"
-                class="btn-auth"
-                >Sign Out</a
-              >
-              {% endif %}
-            </div>
-          </nav>
-        </div>
-      </header>
       <!-- PAGE CONTENT -->
       <main>
         <!-- WELCOME CARD -->
@@ -97,43 +98,81 @@
               Manage users, listings, and orders. Monitor platform activity and
               ensure smooth operations.
             </p>
-            <a href="{{ url_for('admin.users') }}" class="btn-primary"
-              >Manage Users</a
-            >
+            <a href="{{ url_for('admin.users') }}" class="btn btn-primary">
+              <i data-lucide="users"></i>
+              <span>Manage Users</span>
+            </a>
           </div>
         </section>
 
         <!-- STATS -->
         <section class="stats-grid">
           <div class="card stat-card">
-            <span>Total Users</span>
+            <div class="stat-header">
+              <span>Total Users</span>
+              <i data-lucide="users"></i>
+            </div>
+
             <h3>{{ stats.total_users }}</h3>
           </div>
+
           <div class="card stat-card">
-            <span>Admin Users</span>
+            <div class="stat-header">
+              <span>Admin Users</span>
+              <i data-lucide="shield-check"></i>
+            </div>
+
             <h3>{{ stats.admin_count }}</h3>
           </div>
+
           <div class="card stat-card">
-            <span>Total Listings</span>
+            <div class="stat-header">
+              <span>Total Listings</span>
+              <i data-lucide="car"></i>
+            </div>
+
             <h3>{{ stats.total_listings }}</h3>
           </div>
+
           <div class="card stat-card">
-            <span>Cars Sold</span>
+            <div class="stat-header">
+              <span>Cars Sold</span>
+              <i data-lucide="badge-check"></i>
+            </div>
+
             <h3>{{ stats.sold_listings }}</h3>
           </div>
+
           <div class="card stat-card">
-            <span>Total Orders</span>
+            <div class="stat-header">
+              <span>Total Orders</span>
+              <i data-lucide="shopping-cart"></i>
+            </div>
+
             <h3>{{ stats.total_orders }}</h3>
           </div>
-          <div class="card stat-card">
-            <span>Avg. Price</span>
+
+          <div class="card stat-card stat-price">
+            <div class="stat-header">
+              <span>Average Price</span>
+              <i data-lucide="banknote"></i>
+            </div>
+
             <h3>{{ stats.avg_price | currency }}</h3>
           </div>
         </section>
 
         <!-- ACTIVITY TIMELINE -->
         <section class="section">
-          <h2>Active Admin Accounts</h2>
+          <div class="section-header">
+            <div>
+              <h2>Active Admin Accounts</h2>
+
+              <p class="section-description">
+                Registered administrators with platform access.
+              </p>
+            </div>
+          </div>
           {% if admin_accounts %}
           <div class="table-responsive">
             <table class="admin-table">
@@ -187,8 +226,10 @@
         </section>
 
         <!-- RECENT LISTINGS -->
-        <section class="section" class="section">
-          <h2>Recent Listings</h2>
+        <section class="section">
+          <div class="section-header">
+            <h2>Recent Listings</h2>
+          </div>
           {% if recent_listings %}
           <div class="car-grid">
             {% for car in recent_listings %}
@@ -226,8 +267,10 @@
         </section>
 
         <!-- QUICK ACTIONS -->
-        <section class="section" class="section">
-          <h2>Quick Actions</h2>
+        <section class="section">
+          <div class="section-header">
+            <h2>Quick Actions</h2>
+          </div>
           <div style="display: flex; gap: 1rem; flex-wrap: wrap">
             <a
               href="{{ url_for('admin.users') }}"
@@ -255,11 +298,20 @@
     <script>
       lucide.createIcons();
 
-      document
-        .getElementById("sidebarToggle")
-        .addEventListener("click", function () {
-          document.querySelector(".sidebar").classList.toggle("collapsed");
-        });
+      const sidebar = document.querySelector(".sidebar");
+      const toggle = document.getElementById("sidebarToggle");
+
+      toggle.addEventListener("click", () => {
+        sidebar.classList.toggle("collapsed");
+
+        const iconName = sidebar.classList.contains("collapsed")
+          ? "panel-left-open"
+          : "panel-left-close";
+
+        toggle.innerHTML = `<i data-lucide="${iconName}"></i>`;
+
+        lucide.createIcons();
+      });
     </script>
   </body>
 </html>
