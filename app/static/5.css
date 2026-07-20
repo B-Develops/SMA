@@ -20,7 +20,7 @@
 body {
   margin: 0;
   font-family: "Inter", system-ui, sans-serif;
-  background: linear-gradient(180deg, var(--bg-primary), var(--bg-secondary));
+  background: var(--bg-primary);
   color: var(--text-primary);
   min-height: 100vh;
 }
