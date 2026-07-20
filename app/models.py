@@ -14,6 +14,7 @@ class User(UserMixin, db.Model):
     location = db.Column(db.String(100))
     bio = db.Column(db.Text)
     role = db.Column(db.String(20), default='user')
+    avatar_url = db.Column(db.String(256), nullable=True)
     email_verified = db.Column(db.Integer, default=0)
     phone_verified = db.Column(db.Integer, default=0)
     id_verified = db.Column(db.Integer, default=0)

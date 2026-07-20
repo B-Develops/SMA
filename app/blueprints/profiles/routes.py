@@ -1,8 +1,10 @@
-from flask import render_template, redirect, url_for, flash, request
+from flask import render_template, redirect, url_for, flash, request, current_app
 from flask_login import login_required, current_user, logout_user
 from ...models import User, Car, SavedCar, Notification, NotificationSettings, Order, AdminActionLog
 from ... import db
 from datetime import datetime
+import os
+from werkzeug.utils import secure_filename
 from . import profiles_bp
 
 @profiles_bp.route('/profile')
@@ -33,6 +35,16 @@ def edit_profile():
         user.phone = request.form.get('phone', user.phone)
         user.location = request.form.get('location', user.location)
         user.bio = request.form.get('bio', user.bio)
+        
+        avatar = request.files.get('avatar')
+        if avatar and avatar.filename:
+            filename = secure_filename(avatar.filename)
+            upload_dir = os.path.join(current_app.root_path, 'static', 'uploads')
+            os.makedirs(upload_dir, exist_ok=True)
+            filepath = os.path.join(upload_dir, filename)
+            avatar.save(filepath)
+            user.avatar_url = f"uploads/{filename}"
+        
         db.session.commit()
         flash('Profile updated successfully.', 'success')
         return redirect(url_for('profiles.view_profile'))

@@ -59,10 +59,18 @@
         <section class="profile-hero">
           <div class="profile-info">
             <div class="profile-avatar">
+              {% if profile.avatar_url %}
+              <img
+                src="{{ url_for('static', filename=profile.avatar_url) }}"
+                alt="{{ profile.name or 'Profile' }}"
+                style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;"
+              />
+              {% else %}
               <div class="avatar-placeholder">
                 {{ profile.name[:1].upper() if profile.name else
                 profile.email[:1].upper() }}
               </div>
+              {% endif %}
 
               <label class="avatar-edit" for="avatar-upload">
                 <i data-lucide="camera"></i>
@@ -106,7 +114,7 @@
               Upload Photo
             </label>
 
-            <button type="button" class="btn btn-secondary">
+            <button type="button" class="btn btn-secondary remove-photo-btn">
               <i data-lucide="trash-2"></i>
 
               Remove Photo
@@ -118,7 +126,7 @@
                  EDIT PROFILE FORM
             =========================================== -->
 
-        <form method="POST" action="{{ url_for('profiles.edit_profile') }}">
+        <form method="POST" action="{{ url_for('profiles.edit_profile') }}" enctype="multipart/form-data">
           <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
 
           <input
@@ -349,6 +357,29 @@
 
     <script>
       lucide.createIcons();
+      
+      const avatarInput = document.getElementById('avatar-upload');
+      const avatarContainer = document.querySelector('.profile-avatar');
+      const removeBtn = document.querySelector('.remove-photo-btn');
+      
+      avatarInput.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = function(event) {
+            avatarContainer.innerHTML = '<img src="' + event.target.result + '" alt="Preview" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">';
+          };
+          reader.readAsDataURL(file);
+        }
+      });
+      
+      if (removeBtn) {
+        removeBtn.addEventListener('click', function() {
+          avatarInput.value = '';
+          const name = '{{ profile.name or profile.email }}';
+          avatarContainer.innerHTML = name[0].toUpperCase();
+        });
+      }
     </script>
   </body>
 </html>
