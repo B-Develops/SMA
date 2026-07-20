@@ -30,8 +30,21 @@
   <body>
     <a href="#main-content" class="skip-link">Skip to main content</a>
     <style>
-      .skip-link{position:absolute;top:-40px;left:0;background:#e53e3e;color:white;padding:8px 16px;z-index:100;text-decoration:none;font-weight:600;transition:top .3s}
-      .skip-link:focus{top:0}
+      .skip-link {
+        position: absolute;
+        top: -40px;
+        left: 0;
+        background: #e53e3e;
+        color: white;
+        padding: 8px 16px;
+        z-index: 100;
+        text-decoration: none;
+        font-weight: 600;
+        transition: top 0.3s;
+      }
+      .skip-link:focus {
+        top: 0;
+      }
     </style>
     <!-- =====================================================
          MAIN WRAPPER
@@ -58,12 +71,20 @@
 
         <section class="profile-hero">
           <div class="profile-info">
-            <div class="profile-avatar" data-fallback-name="{{ profile.name or profile.email }}">
+            <div
+              class="profile-avatar"
+              data-fallback-name="{{ profile.name or profile.email }}"
+            >
               {% if profile.avatar_url %}
               <img
                 src="{{ url_for('static', filename=profile.avatar_url) }}"
                 alt="{{ profile.name or 'Profile' }}"
-                style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;"
+                style="
+                  width: 100%;
+                  height: 100%;
+                  object-fit: cover;
+                  border-radius: 50%;
+                "
               />
               {% else %}
               <div class="avatar-placeholder">
@@ -126,7 +147,11 @@
                  EDIT PROFILE FORM
             =========================================== -->
 
-        <form method="POST" action="{{ url_for('profiles.edit_profile') }}" enctype="multipart/form-data">
+        <form
+          method="POST"
+          action="{{ url_for('profiles.edit_profile') }}"
+          enctype="multipart/form-data"
+        >
           <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
 
           <input
@@ -134,7 +159,7 @@
             id="avatar-upload"
             name="avatar"
             accept="image/*"
-            hidden
+            style="position: absolute; opacity: 0; width: 0; height: 0;"
           /><!-- =====================================================
      PERSONAL INFORMATION
 ===================================================== -->
@@ -357,27 +382,30 @@
 
     <script>
       lucide.createIcons();
-      
-      const avatarInput = document.getElementById('avatar-upload');
-      const avatarContainer = document.querySelector('.profile-avatar');
-      const removeBtn = document.querySelector('.remove-photo-btn');
-      
-      avatarInput.addEventListener('change', function(e) {
+
+      const avatarInput = document.getElementById("avatar-upload");
+      const avatarContainer = document.querySelector(".profile-avatar");
+      const removeBtn = document.querySelector(".remove-photo-btn");
+
+      avatarInput.addEventListener("change", function (e) {
         const file = e.target.files[0];
         if (file) {
           const reader = new FileReader();
-          reader.onload = function(event) {
-            avatarContainer.innerHTML = '<img src="' + event.target.result + '" alt="Preview" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">';
+          reader.onload = function (event) {
+            avatarContainer.innerHTML =
+              '<img src="' +
+              event.target.result +
+              '" alt="Preview" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">';
           };
           reader.readAsDataURL(file);
         }
       });
-      
+
       if (removeBtn) {
-        removeBtn.addEventListener('click', function() {
-          avatarInput.value = '';
-          const nameEl = document.querySelector('.profile-avatar');
-          const name = nameEl ? nameEl.dataset.fallbackName : '';
+        removeBtn.addEventListener("click", function () {
+          avatarInput.value = "";
+          const nameEl = document.querySelector(".profile-avatar");
+          const name = nameEl ? nameEl.dataset.fallbackName : "";
           if (name) {
             avatarContainer.innerHTML = name.charAt(0).toUpperCase();
           }
@@ -386,4 +414,3 @@
     </script>
   </body>
 </html>
-
