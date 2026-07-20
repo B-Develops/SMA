@@ -58,7 +58,7 @@
 
         <section class="profile-hero">
           <div class="profile-info">
-            <div class="profile-avatar">
+            <div class="profile-avatar" data-fallback-name="{{ profile.name or profile.email }}">
               {% if profile.avatar_url %}
               <img
                 src="{{ url_for('static', filename=profile.avatar_url) }}"
@@ -376,8 +376,11 @@
       if (removeBtn) {
         removeBtn.addEventListener('click', function() {
           avatarInput.value = '';
-          const name = '{{ profile.name or profile.email }}';
-          avatarContainer.innerHTML = name[0].toUpperCase();
+          const nameEl = document.querySelector('.profile-avatar');
+          const name = nameEl ? nameEl.dataset.fallbackName : '';
+          if (name) {
+            avatarContainer.innerHTML = name.charAt(0).toUpperCase();
+          }
         });
       }
     </script>

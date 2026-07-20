@@ -22,6 +22,7 @@ def view_profile():
         'total_orders': Order.query.filter_by(buyer_id=current_user.id).count(),
         'pending_orders': Order.query.filter_by(buyer_id=current_user.id, status='pending').count(),
         'saved_cars': SavedCar.query.filter_by(user_id=current_user.id).count(),
+        'unread_notifications': Notification.query.filter_by(user_id=current_user.id, is_read=False).count(),
     }
 
     return render_template('Profile.html', profile=user, notification_settings=settings, stats=stats)
