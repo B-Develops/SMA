@@ -276,6 +276,7 @@
     </div>
     
     {% if listings %}
+    <div class="table-wrap">
     <table class="listings-table">
       <thead>
         <tr>
@@ -320,9 +321,10 @@
           </td>
         </tr>
         {% endfor %}
-      </tbody>
-    </table>
-    {% else %}
+        </tbody>
+      </table>
+      </div>
+      {% else %}
     <div class="empty-state">
       <h2>No Listings Yet</h2>
       <p>You haven't listed any cars for sale yet.</p>

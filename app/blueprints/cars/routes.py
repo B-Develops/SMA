@@ -51,7 +51,7 @@ def cancel_pending_orders_for_car(car_id, cancelled_by_user_id=None):
 
 
 # File upload settings
-UPLOAD_FOLDER = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "uploads")
+UPLOAD_FOLDER = os.path.join(os.path.dirname(os.path.abspath(__file__)), "static", "uploads")
 ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "gif", "webp"}
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
@@ -414,7 +414,10 @@ def browse_cars():
     else:  # newest (default)
         query = query.order_by(Car.created_at.desc())
     
-    cars = query.all()
+    page = request.args.get('page', 1, type=int)
+    per_page = 20
+    cars_pagination = query.paginate(page=page, per_page=per_page, error_out=False)
+    cars = cars_pagination.items
     
     makes = db.session.query(Car.make.distinct()).filter(
         Car.status == 'active',
@@ -436,7 +439,8 @@ def browse_cars():
         "BrowseCars.html", 
         cars=cars,
         makes=makes,
-        filters=current_filters
+        filters=current_filters,
+        pagination=cars_pagination
     )
 
 @cars_bp.route("/cars/<int:car_id>")

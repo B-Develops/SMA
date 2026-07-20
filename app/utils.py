@@ -2,6 +2,10 @@ from flask import render_template, current_app
 from . import mail
 from flask_mail import Message
 import os
+import logging
+
+logger = logging.getLogger(__name__)
+
 
 def _send_verification_email_direct(user_email, user_name, token):
     try:
@@ -17,13 +21,8 @@ def _send_verification_email_direct(user_email, user_name, token):
         )
 
         if current_app.config.get("TESTING") or not current_app.config.get("MAIL_USERNAME"):
-            print("\n" + "="*80)
-            print(f"EMAIL WOULD BE SENT TO: {user_email}")
-            print(f"SUBJECT: {subject}")
-            print(f"FROM: {current_app.config.get('MAIL_DEFAULT_SENDER')}")
-            print("="*80)
-            print(html_body)
-            print("="*80 + "\n")
+            logger.info("EMAIL WOULD BE SENT TO: %s | SUBJECT: %s", user_email, subject)
+            logger.debug("EMAIL BODY:\n%s", html_body)
             return True
 
         msg = Message(
@@ -34,7 +33,7 @@ def _send_verification_email_direct(user_email, user_name, token):
         mail.send(msg)
         return True
     except Exception as e:
-        print(f"Error sending verification email: {str(e)}")
+        logger.error("Error sending verification email: %s", str(e))
         return False
 
 
@@ -53,13 +52,8 @@ def _send_order_confirmation_email_direct(user_email, user_name, order_id, car, 
         )
 
         if current_app.config.get("TESTING") or not current_app.config.get("MAIL_USERNAME"):
-            print("\n" + "="*80)
-            print(f"EMAIL WOULD BE SENT TO: {user_email}")
-            print(f"SUBJECT: {subject}")
-            print(f"FROM: {current_app.config.get('MAIL_DEFAULT_SENDER')}")
-            print("="*80)
-            print(html_body)
-            print("="*80 + "\n")
+            logger.info("EMAIL WOULD BE SENT TO: %s | SUBJECT: %s", user_email, subject)
+            logger.debug("EMAIL BODY:\n%s", html_body)
             return True
 
         msg = Message(
@@ -70,7 +64,7 @@ def _send_order_confirmation_email_direct(user_email, user_name, order_id, car, 
         mail.send(msg)
         return True
     except Exception as e:
-        print(f"Error sending email: {str(e)}")
+        logger.error("Error sending email: %s", str(e))
         return False
 
 
@@ -121,13 +115,8 @@ def _send_password_reset_email_direct(user_email, user_name, token, base_url):
         )
 
         if current_app.config.get("TESTING") or not current_app.config.get("MAIL_USERNAME"):
-            print("\n" + "="*80)
-            print(f"EMAIL WOULD BE SENT TO: {user_email}")
-            print(f"SUBJECT: {subject}")
-            print(f"FROM: {current_app.config.get('MAIL_DEFAULT_SENDER')}")
-            print("="*80)
-            print(html_body)
-            print("="*80 + "\n")
+            logger.info("EMAIL WOULD BE SENT TO: %s | SUBJECT: %s", user_email, subject)
+            logger.debug("EMAIL BODY:\n%s", html_body)
             return True
 
         msg = Message(
@@ -138,7 +127,7 @@ def _send_password_reset_email_direct(user_email, user_name, token, base_url):
         mail.send(msg)
         return True
     except Exception as e:
-        print(f"Error sending password reset email: {str(e)}")
+        logger.error("Error sending password reset email: %s", str(e))
         return False
 
 

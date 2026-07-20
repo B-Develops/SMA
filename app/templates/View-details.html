@@ -520,6 +520,32 @@
       background-repeat: no-repeat;
       z-index: -2;
     }
+
+    #carDetailGrid {
+      grid-template-columns: 1fr;
+    }
+
+    @media (min-width: 900px) {
+      #carDetailGrid {
+        grid-template-columns: 2fr 1fr;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .car-detail-wrapper > div > section,
+      .car-detail-wrapper > section {
+        padding: 1.25rem;
+      }
+
+      .car-detail-wrapper dl {
+        grid-template-columns: 1fr !important;
+        gap: 1rem;
+      }
+
+      h1 {
+        font-size: 1.5rem;
+      }
+    }
   </style>
   <body>
     <header>
@@ -534,7 +560,7 @@
         </div>
 
         <div class="nav-actions">
-          <a href="/about">About</a>
+          <a href="{{ url_for('profiles.about') }}">About</a>
           {% if current_user.is_authenticated %}
             <a href="{{ url_for('profiles.notifications') }}" class="btn-auth" style="position:relative">
               🔔
@@ -542,10 +568,10 @@
                 <span style="position:absolute;top:-6px;right:-6px;background:var(--accent-red);color:#fff;padding:2px 6px;border-radius:999px;font-size:0.75rem;">{{ unread_notifications }}</span>
               {% endif %}
             </a>
-            <a class="btn-auth" href="/dashboard">Dashboard</a>
+            <a class="btn-auth" href="{{ url_for('dashboard') }}">Dashboard</a>
             {% else %}
-            <a class="btn-auth" href="/auth/login">Sign In</a>
-            <a class="btn-auth btn-signup" href="/auth/signup">Sign Up</a>
+            <a class="btn-auth" href="{{ url_for('auth.login') }}">Sign In</a>
+            <a class="btn-auth btn-signup" href="{{ url_for('auth.signup') }}">Sign Up</a>
             {% endif %}
         </div>
       </div>
@@ -554,11 +580,11 @@
     <main>
       <h1>{{ car.year }} {{ car.make }} {{ car.model }}</h1>
 
-      <div class="car-detail-wrapper" style="display: grid; grid-template-columns: 2fr 1fr; gap: 2rem; margin-top: 3rem;">
+      <div class="car-detail-wrapper" id="carDetailGrid" style="display: grid; grid-template-columns: 2fr 1fr; gap: 2rem; margin-top: 3rem;">
         <!-- Left: Image and Details -->
         <div>
           {% if car.image_url %}
-          <img src="{{ car.image_url }}" alt="{{ car.year }} {{ car.make }} {{ car.model }}" style="width: 100%; border-radius: 8px; margin-bottom: 2rem; aspect-ratio: 16/9; object-fit: cover;">
+          <img src="{{ url_for('static', filename=car.image_url) }}" alt="{{ car.year }} {{ car.make }} {{ car.model }}" style="width: 100%; border-radius: 8px; margin-bottom: 2rem; aspect-ratio: 16/9; object-fit: cover;">
           {% else %}
           <div style="width: 100%; aspect-ratio: 16/9; background: #1a2b4a; border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-bottom: 2rem; color: var(--text-muted);">No image available</div>
           {% endif %}
@@ -664,7 +690,7 @@
               {% endif %}
             </div>
 
-            <a href="/cars/browse" style="display: block; margin-top: 1rem; text-align: center; padding: 0.75rem 1rem; background: transparent; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 6px; font-weight: 500; color: var(--text-muted); text-decoration: none; transition: all 0.25s ease;">← Back to Browse</a>
+            <a href="{{ url_for('cars.browse_cars') }}" style="display: block; margin-top: 1rem; text-align: center; padding: 0.75rem 1rem; background: transparent; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 6px; font-weight: 500; color: var(--text-muted); text-decoration: none; transition: all 0.25s ease;">← Back to Browse</a>
           </section>
         </div>
       </div>

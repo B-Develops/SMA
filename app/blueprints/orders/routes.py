@@ -8,18 +8,25 @@ from . import orders_bp
 
 @orders_bp.route('/my-orders')
 @login_required
-@cache.cached(timeout=60, key_prefix='my_orders')
 def my_orders():
     page = request.args.get('page', 1, type=int)
     per_page = 10
     user_id = current_user.id
+    cache_key = f"my_orders_{user_id}_{page}"
+
+    cached = cache.get(cache_key)
+    if cached is not None:
+        return cached
+
     orders_pagination = Order.query.options(joinedload(Order.car), joinedload(Order.payments))\
         .filter_by(buyer_id=user_id)\
         .order_by(Order.created_at.desc())\
         .paginate(page=page, per_page=per_page, error_out=False)
-    return render_template('MyOrders.html',
+    response = render_template('MyOrders.html',
                          orders=orders_pagination.items,
                          pagination=orders_pagination)
+    cache.set(cache_key, response, timeout=60)
+    return response
 
 @orders_bp.route('/<int:order_id>/cancel', methods=['POST'])
 @login_required

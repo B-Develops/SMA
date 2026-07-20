@@ -74,7 +74,7 @@
           <td>
             <div class="car-details">
               {% if order.image_url %}
-              <img src="{{ order.image_url }}" alt="{{ order.make }}" class="car-image" />
+              <img src="{{ url_for('static', filename=order.image_url) }}" alt="{{ order.make }}" class="car-image" />
               {% else %}
               <div class="car-image" style="background: var(--color-bg-secondary); display: flex; align-items: center; justify-content: center;">
                 <span style="font-size: 0.6rem">N/A</span>

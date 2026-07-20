@@ -2,6 +2,7 @@ import os
 import secrets
 import logging
 from logging.handlers import RotatingFileHandler
+from pathlib import Path
 from flask import Flask, render_template, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, login_required, current_user
@@ -15,6 +16,12 @@ from flask_caching import Cache
 from flask_migrate import Migrate
 from datetime import timedelta, datetime
 import time
+
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    pass
 
 from .monitoring import setup_production_logging, RequestLoggingMiddleware, metrics
 
@@ -30,8 +37,8 @@ limiter = Limiter(
 )
 migrate = Migrate()
 talisman = Talisman(
-    force_https=False,
-    strict_transport_security=False,
+    force_https=os.environ.get("FORCE_HTTPS", "False") == "True",
+    strict_transport_security=os.environ.get("HSTS", "False") == "True",
     frame_options='SAMEORIGIN',
     content_security_policy={
         'default-src': "'self'",
@@ -45,6 +52,15 @@ talisman = Talisman(
 cache = Cache()
 
 import rq
+
+def _get_or_create_secret_key():
+    key_file = Path(__file__).parent.parent.parent / ".secret_key"
+    if key_file.exists():
+        return key_file.read_text().strip()
+    key = secrets.token_hex(32)
+    key_file.write_text(key)
+    return key
+
 
 def get_time_ago(time_diff):
     """Convert a timedelta object to a human-readable 'time ago' string."""
@@ -72,7 +88,7 @@ def create_app(config_name=None):
     app = Flask(__name__)
     
     # Configuration
-    app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY") or secrets.token_hex(32)
+    app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY") or _get_or_create_secret_key()
     app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get(
         "DATABASE_URL", 
         "sqlite:///database.db"
@@ -106,10 +122,19 @@ def create_app(config_name=None):
     app.config["MAIL_USERNAME"] = os.environ.get("MAIL_USERNAME")
     app.config["MAIL_PASSWORD"] = os.environ.get("MAIL_PASSWORD")
     app.config["MAIL_DEFAULT_SENDER"] = os.environ.get("MAIL_DEFAULT_SENDER", "noreply@sarkinmotaautos.com")
-    app.config["TESTING"] = os.environ.get("FLASK_ENV") != "production"
+    app.config["TESTING"] = os.environ.get("FLASK_ENV") == "testing"
     
     # Base URL for email templates and redirects
     app.config["BASE_URL"] = os.environ.get("BASE_URL", "http://127.0.0.1:5000")
+    
+    # Cache configuration
+    redis_url = os.environ.get("REDIS_URL")
+    if redis_url:
+        app.config["CACHE_TYPE"] = "redis"
+        app.config["CACHE_REDIS_URL"] = redis_url
+        app.config["CACHE_DEFAULT_TIMEOUT"] = 300
+    else:
+        app.config["CACHE_TYPE"] = "simple"
     
     # Initialize extensions with app
     db.init_app(app)
@@ -188,6 +213,9 @@ def create_app(config_name=None):
     from .blueprints.profiles import profiles_bp
     app.register_blueprint(profiles_bp, url_prefix='')
     
+    from .blueprints.mobile import mobile_bp
+    app.register_blueprint(mobile_bp, url_prefix='/mobile')
+    
     # Landing page route
     @app.route("/")
     def index():
@@ -205,25 +233,11 @@ def create_app(config_name=None):
         confirmed_orders = Order.query.filter_by(buyer_id=current_user.id, status='confirmed').count()
         
         # Get recent orders for dashboard table (show all, not just pending/confirmed)
-        active_orders_query = db.session.query(
-            Order,
-            Car.year, Car.make, Car.model, Car.image_url
-        ).join(Car, Order.car_id == Car.id)\
-         .filter(Order.buyer_id == current_user.id)\
-         .order_by(Order.created_at.desc()).limit(5).all()
-        active_orders = []
-        for order, year, make, model, image_url in active_orders_query:
-            active_orders.append({
-                'id': order.id,
-                'year': year,
-                'make': make,
-                'model': model,
-                'order_amount': order.order_amount,
-                'listed_price': order.listed_price,
-                'status': order.status,
-                'created_at': order.created_at.strftime('%Y-%m-%d %H:%M') if order.created_at else 'N/A',
-                'image_url': image_url,
-            })
+        from sqlalchemy.orm import joinedload
+        
+        active_orders = Order.query.options(joinedload(Order.car))\
+            .filter_by(buyer_id=current_user.id)\
+            .order_by(Order.created_at.desc()).limit(5).all()
         
         # Get saved cars
         saved_cars = db.session.query(Car).join(SavedCar).filter(SavedCar.user_id == current_user.id).all()
@@ -231,10 +245,13 @@ def create_app(config_name=None):
         # Generate activity timeline
         activities = []
         
-        # Get recent orders (last 10)
-        recent_orders = Order.query.filter_by(buyer_id=current_user.id).order_by(Order.created_at.desc()).limit(10).all()
+        # Get recent orders (last 10) with cars eager-loaded
+        from sqlalchemy.orm import joinedload
+        recent_orders = Order.query.options(joinedload(Order.car))\
+            .filter_by(buyer_id=current_user.id)\
+            .order_by(Order.created_at.desc()).limit(10).all()
         for order in recent_orders:
-            car = Car.query.get(order.car_id)
+            car = order.car
             if car:
                 time_diff = datetime.utcnow() - order.created_at
                 time_str = get_time_ago(time_diff)
@@ -272,26 +289,31 @@ def create_app(config_name=None):
                 'timestamp': listing.created_at
             })
         
-        # Sort activities by timestamp (newest first) and limit to 15
+        # Sort activities by timestamp (newest first) and limit to 5
         activities.sort(key=lambda x: x['timestamp'], reverse=True)
-        activities = activities[:15]
+        activities = activities[:5]
 
         from .models import Notification
         notifications_preview = Notification.query.filter_by(user_id=current_user.id)
         notifications_preview = notifications_preview.order_by(Notification.created_at.desc()).limit(3).all()
         
         stats = {
-            'pending_orders': pending_orders,
-            'confirmed_orders': confirmed_orders,
+            'active_orders': pending_orders + confirmed_orders,
+            'saved_cars': SavedCar.query.filter_by(user_id=current_user.id).count(),
+            'purchased_cars': Order.query.filter_by(buyer_id=current_user.id, status='completed').count(),
+            'notifications': Notification.query.filter_by(user_id=current_user.id, is_read=0).count()
         }
+        
+        unread_notifications = Notification.query.filter_by(user_id=current_user.id, is_read=0).count()
         
         return render_template(
             "dashboard.html",
             stats=stats,
-            saved_cars=saved_cars,
+            watchlist=saved_cars,
             activities=activities,
-            active_orders=active_orders,
-            notifications_preview=notifications_preview,
+            orders=active_orders,
+            notifications=notifications_preview,
+            unread_notifications=unread_notifications,
             is_admin=current_user.role == 'admin'
         )
     

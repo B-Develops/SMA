@@ -12,6 +12,13 @@ class TestCarListing:
             assert user is not None
 
     def test_place_order_creates_order(self, client, app, buyer_id, active_listing):
+        with app.app_context():
+            from app.models import User
+            buyer = User.query.get(buyer_id)
+            buyer.phone = "+234801234567"
+            buyer.location = "Lagos"
+            db.session.commit()
+
         with client.session_transaction() as sess:
             sess["_user_id"] = str(buyer_id)
             sess["_fresh"] = True

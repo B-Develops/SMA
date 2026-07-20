@@ -294,7 +294,7 @@
 
   <body>
     <div class="container">
-      <a href="/dashboard" class="back-link">← Back to Dashboard</a>
+      <a href="{{ url_for('dashboard') }}" class="back-link">← Back to Dashboard</a>
 
       <div class="page-header">
         <h1>Help & Support</h1>
@@ -429,7 +429,7 @@
           <div class="contact-box">
             <h3>Messages</h3>
             <p>Chat in your dashboard</p>
-            <a href="/messages">Open Messages</a>
+            <a href="{{ url_for('profiles.messages') }}">Open Messages</a>
           </div>
         </div>
       </div>

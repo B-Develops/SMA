@@ -1,7 +1,8 @@
 from flask import render_template, redirect, url_for, flash, request
-from flask_login import login_required, current_user
-from ...models import User, Car, SavedCar, Notification, NotificationSettings, Order
+from flask_login import login_required, current_user, logout_user
+from ...models import User, Car, SavedCar, Notification, NotificationSettings, Order, AdminActionLog
 from ... import db
+from datetime import datetime
 from . import profiles_bp
 
 @profiles_bp.route('/profile')
@@ -94,9 +95,33 @@ def notification_settings():
 def delete_account():
     user = User.query.get(current_user.id)
     if user:
-        db.session.delete(user)
+        user.name = 'Deleted User'
+        user.email = f"deleted_{user.id}@anonymized.local"
+        user.password = 'DELETED'
+        user.phone = None
+        user.location = None
+        user.bio = None
+        user.email_verified = 0
+        user.phone_verified = 0
+        user.id_verified = 0
+        user.address_verified = 0
+        user.updated_at = datetime.utcnow()
+
+        Order.query.filter_by(buyer_id=user.id).delete()
+        SavedCar.query.filter_by(user_id=user.id).delete()
+        NotificationSettings.query.filter_by(user_id=user.id).delete()
+
+        db.session.add(AdminActionLog(
+            admin_id=current_user.id,
+            action="user_deleted_self",
+            resource_type="User",
+            resource_id=user.id,
+            details=f"User {user.email} anonymized their own account"
+        ))
         db.session.commit()
-        flash('Your account has been deleted.', 'success')
+
+        logout_user()
+        flash('Your account has been anonymized and you have been logged out.', 'success')
     return redirect(url_for('auth.login'))
 
 @profiles_bp.route('/notifications')
@@ -160,3 +185,7 @@ def saved_cars():
 @profiles_bp.route('/about')
 def about():
     return render_template('about.html')
+
+@profiles_bp.route('/help')
+def help():
+    return render_template('dashboard/Help.html')

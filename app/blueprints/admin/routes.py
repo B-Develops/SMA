@@ -1,10 +1,20 @@
-from flask import render_template, redirect, url_for, flash, request, current_app
+from flask import render_template, redirect, url_for, flash, request, current_app, abort
 from flask_login import login_required, current_user
 from ...models import User, Car, Order, NotificationSettings, AdminActionLog, Payment
 from ... import db, cache
-from datetime import datetime
+from datetime import datetime, timedelta
 import json
+from functools import wraps
 from . import admin_bp
+
+
+def admin_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if current_user.role != 'admin':
+            abort(403)
+        return f(*args, **kwargs)
+    return decorated_function
 
 
 def _get_admin_stats():
@@ -30,15 +40,53 @@ def _get_admin_stats():
     }
 
 
+def _get_platform_activity(days=7):
+    """Return daily dashboard activity for the most recent calendar days."""
+    today = datetime.utcnow().date()
+    start_date = today - timedelta(days=days - 1)
+    start_time = datetime.combine(start_date, datetime.min.time())
+
+    activity = {
+        "labels": [],
+        "users": [],
+        "listings": [],
+        "completed_orders": [],
+    }
+
+    user_counts = {}
+    for user in User.query.filter(User.created_at >= start_time).all():
+        user_counts[user.created_at.date()] = user_counts.get(user.created_at.date(), 0) + 1
+
+    listing_counts = {}
+    for car in Car.query.filter(Car.created_at >= start_time).all():
+        listing_counts[car.created_at.date()] = listing_counts.get(car.created_at.date(), 0) + 1
+
+    completed_order_counts = {}
+    completed_orders = Order.query.filter(
+        Order.status == 'completed',
+        Order.completed_at >= start_time,
+    ).all()
+    for order in completed_orders:
+        completed_date = order.completed_at.date()
+        completed_order_counts[completed_date] = completed_order_counts.get(completed_date, 0) + 1
+
+    for offset in range(days):
+        day = start_date + timedelta(days=offset)
+        activity["labels"].append(day.strftime("%a"))
+        activity["users"].append(user_counts.get(day, 0))
+        activity["listings"].append(listing_counts.get(day, 0))
+        activity["completed_orders"].append(completed_order_counts.get(day, 0))
+
+    return activity
+
+
 @admin_bp.route('/')
 @admin_bp.route('/admin')
 @login_required
+@admin_required
 def dashboard():
-    if current_user.role != 'admin':
-        flash('Access denied: Admin privileges required.', 'error')
-        return redirect(url_for('admin.dashboard'))
-
     stats = _get_admin_stats()
+    platform_activity = _get_platform_activity()
     recent_listings = Car.query.join(User).order_by(Car.created_at.desc()).limit(5).all()
     active_admins = User.query.filter_by(role='admin').order_by(User.created_at.desc()).all()
     admin_accounts = []
@@ -54,18 +102,21 @@ def dashboard():
         }
         admin_accounts.append(admin_dict)
 
-    return render_template("AdminDashboard.html", stats=stats, recent_listings=recent_listings, admin_accounts=admin_accounts)
+    return render_template(
+        "AdminDashboard.html",
+        stats=stats,
+        platform_activity=platform_activity,
+        recent_listings=recent_listings,
+        admin_accounts=admin_accounts,
+    )
 
 
 @admin_bp.route('/users')
 @admin_bp.route('/users/page/<int:page>')
 @login_required
+@admin_required
 def users(page=1):
-    if current_user.role != 'admin':
-        flash('Access denied: Admin privileges required.', 'error')
-        return redirect(url_for('admin.dashboard'))
-
-    cache_key = f"admin_users_page_{page}"
+    cache_key = f"admin_users_page_{page}_{current_user.id}"
 
     cached = cache.get(cache_key)
     if cached is not None:
@@ -103,11 +154,8 @@ def users(page=1):
 
 @admin_bp.route('/users/<int:user_id>/delete', methods=['POST'])
 @login_required
+@admin_required
 def delete_user(user_id):
-    if current_user.role != 'admin':
-        flash('Access denied: Admin privileges required.', 'error')
-        return redirect(url_for('admin.dashboard'))
-
     if user_id == current_user.id:
         flash('You cannot delete your own account.', 'error')
         return redirect(url_for('admin.dashboard'))
@@ -156,14 +204,11 @@ def delete_user(user_id):
 @admin_bp.route('/listings')
 @admin_bp.route('/listings/page/<int:page>')
 @login_required
+@admin_required
 def listings(page=1):
-    if current_user.role != 'admin':
-        flash('Access denied: Admin privileges required.', 'error')
-        return redirect(url_for('admin.dashboard'))
-
     sort_by = request.args.get('sort', 'created_at')
     sort_order = request.args.get('order', 'desc')
-    cache_key = f"admin_listings_page_{page}_{sort_by}_{sort_order}"
+    cache_key = f"admin_listings_page_{page}_{sort_by}_{sort_order}_{current_user.id}"
 
     cached = cache.get(cache_key)
     if cached is not None:
@@ -222,11 +267,8 @@ def listings(page=1):
 
 @admin_bp.route('/listings/<int:listing_id>/delete', methods=['POST'])
 @login_required
+@admin_required
 def delete_listing(listing_id):
-    if current_user.role != 'admin':
-        flash('Access denied: Admin privileges required.', 'error')
-        return redirect(url_for('admin.dashboard'))
-
     car = Car.query.get(listing_id)
     if not car:
         flash('Listing not found.', 'error')
@@ -259,14 +301,11 @@ def delete_listing(listing_id):
 @admin_bp.route('/orders')
 @admin_bp.route('/orders/page/<int:page>')
 @login_required
+@admin_required
 def orders(page=1):
-    if current_user.role != 'admin':
-        flash('Access denied: Admin privileges required.', 'error')
-        return redirect(url_for('admin.dashboard'))
-
     sort_by = request.args.get('sort', 'created_at')
     sort_order = request.args.get('order', 'desc')
-    cache_key = f"admin_orders_page_{page}_{sort_by}_{sort_order}"
+    cache_key = f"admin_orders_page_{page}_{sort_by}_{sort_order}_{current_user.id}"
 
     cached = cache.get(cache_key)
     if cached is not None:
@@ -346,11 +385,8 @@ def orders(page=1):
 
 @admin_bp.route('/orders/<int:order_id>/accept', methods=['POST'])
 @login_required
+@admin_required
 def accept_order(order_id):
-    if current_user.role != 'admin':
-        flash('Access denied: Admin privileges required.', 'error')
-        return redirect(url_for('admin.dashboard'))
-
     order = Order.query.get(order_id)
     if not order:
         flash('Order not found.', 'error')
@@ -390,11 +426,8 @@ def accept_order(order_id):
 
 @admin_bp.route('/orders/<int:order_id>/reject', methods=['POST'])
 @login_required
+@admin_required
 def reject_order(order_id):
-    if current_user.role != 'admin':
-        flash('Access denied: Admin privileges required.', 'error')
-        return redirect(url_for('admin.dashboard'))
-
     order = Order.query.get(order_id)
     if not order:
         flash('Order not found.', 'error')
@@ -434,11 +467,8 @@ def reject_order(order_id):
 
 @admin_bp.route('/orders/<int:order_id>/cancel', methods=['POST'])
 @login_required
+@admin_required
 def cancel_order(order_id):
-    if current_user.role != 'admin':
-        flash('Access denied: Admin privileges required.', 'error')
-        return redirect(url_for('admin.dashboard'))
-
     order = Order.query.get(order_id)
     if not order:
         flash('Order not found.', 'error')
@@ -479,11 +509,8 @@ def cancel_order(order_id):
 @admin_bp.route('/audit-logs')
 @admin_bp.route('/audit-logs/page/<int:page>')
 @login_required
+@admin_required
 def audit_logs(page=1):
-    if current_user.role != 'admin':
-        flash('Access denied: Admin privileges required.', 'error')
-        return redirect(url_for('admin.dashboard'))
-
     per_page = 50
 
     logs_query = db.session.query(

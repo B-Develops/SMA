@@ -29,7 +29,7 @@
     </div>
     
     <div class="card">
-       <form method="POST" enctype="multipart/form-data">
+       <form method="POST" enctype="multipart/form-data" action="{{ url_for('cars.edit_car', car_id=car.id) }}">
          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
         <div class="form-row">
           <div class="form-group">

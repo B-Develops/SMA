@@ -174,6 +174,28 @@ h1::after {
   .grid {
     grid-template-columns: 1fr;
   }
+
+  .filter-bar {
+    padding: 1rem;
+    gap: 0.75rem;
+  }
+
+  .filter-group {
+    min-width: 100%;
+    flex: 1 1 100%;
+  }
+
+  .filter-actions {
+    margin-left: 0;
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .filter-actions button[type="submit"],
+  .filter-actions a {
+    flex: 1;
+    text-align: center;
+  }
 }
 
 /* ================= CARD ================= */
@@ -849,6 +871,20 @@ body::before {
           {% endif %}
         </p>
         <a href="{{ url_for('cars.browse_cars') }}">View All Cars</a>
+      </div>
+      {% endif %}
+      
+      {% if pagination and pagination.pages > 1 %}
+      <div class="pagination">
+        {% if pagination.has_prev %}
+        <a href="{{ url_for('cars.browse_cars', page=pagination.prev_num, **request.args) }}">← Prev</a>
+        {% endif %}
+        
+        <span class="active">{{ pagination.page }}</span>
+        
+        {% if pagination.has_next %}
+        <a href="{{ url_for('cars.browse_cars', page=pagination.next_num, **request.args) }}">Next →</a>
+        {% endif %}
       </div>
       {% endif %}
     </main>

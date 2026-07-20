@@ -290,11 +290,38 @@ footer {
 
 @media (max-width: 600px) {
   .auth-card {
-    padding: 2rem 1.5rem;
+    padding: 2rem 1.25rem;
   }
 
   .social-buttons {
     grid-template-columns: 1fr;
+  }
+
+  .nav-actions {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: flex-end;
+  }
+
+  .btn-auth {
+    font-size: 0.8rem;
+    padding: 0.4rem 0.7rem;
+  }
+}
+
+@media (max-width: 780px) {
+  .nav-links {
+    display: none;
+  }
+  .nav-actions {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: flex-end;
+    max-width: 100%;
+  }
+  .btn-auth {
+    font-size: 0.8rem;
+    padding: 0.4rem 0.7rem;
   }
 }
 header {

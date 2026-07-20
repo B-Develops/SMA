@@ -11,7 +11,10 @@
       rel="stylesheet"
     />
 
-    <link rel="stylesheet" href="{{ url_for('static', filename='profile.css') }}" />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='profile.css') }}"
+    />
 
     <!-- Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -22,253 +25,507 @@
   <body>
     <!-- LEFT SIDEBAR -->
     <aside class="sidebar">
-      <h2 class="men">
-        <i data-lucide="menu"></i>
-      </h2>
+      <div class="sidebar-header">
+        <h2 class="men">Menu</h2>
 
-      <a href="{{ url_for('dashboard') }}" class="nav-item">
-        <i data-lucide="layout-dashboard"></i> Dashboard
-      </a>
-      <a href="{{ url_for('dashboard') }}#AO" class="nav-item">
-        <i data-lucide="shopping-bag"></i> My Orders
-      </a>
-      <a href="{{ url_for('dashboard') }}#SC" class="nav-item">
-        <i data-lucide="heart"></i> Watchlist
-      </a>
-      {% if current_user.role == 'admin' %}
-      <a href="{{ url_for('cars.my_listings') }}" class="nav-item">
-        <i data-lucide="car"></i> My Listings
-      </a>
-      {% endif %}
-      <a href="{{ url_for('profiles.settings') }}" class="nav-item">
-        <i data-lucide="settings"></i> Settings
-      </a>
-      <a
-        href="{{ url_for('admin.dashboard') }}"
-        class="nav-item"
-        style="background: rgba(214, 158, 46, 0.2); color: #f6e05e"
-      >
-        <i data-lucide="shield"></i> Admin
-      </a>
+        <button
+          class="sidebar-toggle"
+          id="sidebarToggle"
+          aria-label="Toggle Sidebar"
+        >
+          <i data-lucide="panel-left-close"></i>
+        </button>
+      </div>
+
+      <nav class="sidebar-nav">
+        <a href="{{ url_for('dashboard') }}" class="nav-item">
+          <i data-lucide="layout-dashboard"></i>
+
+          <span>Dashboard</span>
+        </a>
+
+        <a href="{{ url_for('orders.my_orders') }}" class="nav-item">
+          <i data-lucide="shopping-cart"></i>
+
+          <span>My Orders</span>
+        </a>
+
+        <a
+          href="{{ url_for('profiles.notifications') }}"
+          class="nav-item active"
+        >
+          <i data-lucide="bell"></i>
+
+          <span>Notifications</span>
+
+          {% if unread_notifications > 0 %}
+          <span class="nav-badge"> {{ unread_notifications }} </span>
+          {% endif %}
+        </a>
+
+        <a href="{{ url_for('profiles.view_profile') }}" class="nav-item">
+          <i data-lucide="user"></i>
+
+          <span>Profile</span>
+        </a>
+
+        <a href="{{ url_for('profiles.help') }}" class="nav-item">
+          <i data-lucide="circle-help"></i>
+
+          <span>Help</span>
+        </a>
+
+        {% if current_user.role == "admin" %}
+
+        <a href="{{ url_for('admin.dashboard') }}" class="nav-item">
+          <i data-lucide="shield"></i>
+
+          <span>Admin Dashboard</span>
+        </a>
+
+        {% endif %}
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="user-profile">
+          <div class="user-avatar">{{ current_user.name[0]|upper }}</div>
+
+          <div class="user-details">
+            <span class="user-name"> {{ current_user.name }} </span>
+
+            <span class="user-role"> {{ current_user.role|capitalize }} </span>
+          </div>
+        </div>
+
+        <a class="logout-btn">
+          <i data-lucide="log-out"></i>
+
+          <span>Sign Out</span>
+        </a>
+      </div>
     </aside>
 
     <!-- MAIN CONTENT -->
+    <!-- =====================================================
+     MAIN WRAPPER
+====================================================== -->
+
     <div class="main-wrapper">
-        <div class="page-header">
-          <h1>My Profile</h1>
-          <div style="display: flex; gap: 0.75rem">
-            <a
-              href="{{ url_for('profiles.edit_profile') }}"
-              class="btn-secondary"
-              >Edit Profile</a
-            >
-            <a href="{{ url_for('profiles.settings') }}" class="btn-primary"
-              >Settings</a
-            >
-          </div>
-        </div>
+      <main>
+        <!-- =====================================================
+             PROFILE HERO
+        ====================================================== -->
 
-        <!-- Profile Info Card -->
-        <div class="card">
-          <h2>Personal Information</h2>
-          <div class="info-grid">
-            <div class="info-item">
-              <label>Full Name</label>
-              <span>{{ profile.name or profile.email }}</span>
+        <section class="profile-hero">
+          <div class="hero-circle"></div>
+
+          <div class="profile-info">
+            <div class="profile-avatar">{{ current_user.name[0]|upper }}</div>
+
+            <div class="profile-text">
+              <span class="badge success"> Welcome Back </span>
+
+              <h1>{{ profile.name or profile.email }}</h1>
+
+              <p>
+                Manage your personal information, security settings,
+                notification preferences and account verification from one
+                place.
+              </p>
+
+              <div class="profile-actions">
+                <a
+                  href="{{ url_for('profiles.edit_profile') }}"
+                  class="btn btn-primary"
+                >
+                  <i data-lucide="user-pen"></i>
+                  Edit Profile
+                </a>
+
+                <a
+                  href="{{ url_for('profiles.settings') }}"
+                  class="btn btn-secondary"
+                >
+                  <i data-lucide="settings"></i>
+                  Settings
+                </a>
+              </div>
             </div>
-            <div class="info-item">
-              <label>Email Address</label>
-              <span>{{ profile.email }}</span>
+          </div>
+        </section>
+        <!-- =====================================================
+     PERSONAL INFORMATION
+====================================================== -->
+
+        <section class="profile-grid">
+          <!-- Personal Information -->
+
+          <div class="card info-card">
+            <div class="info-card-header">
+              <div class="info-card-icon">
+                <i data-lucide="user-round"></i>
+              </div>
+
+              <div>
+                <h2>Personal Information</h2>
+
+                <p>Your account details</p>
+              </div>
             </div>
-            <div class="info-item">
-              <label>Phone Number</label>
-              <span>{{ profile.phone or 'Not provided' }}</span>
-            </div>
-            <div class="info-item">
-              <label>Location</label>
-              <span>{{ profile.location or 'Not provided' }}</span>
+
+            <div class="info-list">
+              <div class="info-row">
+                <span class="info-label"> Full Name </span>
+
+                <span class="info-value">
+                  {{ profile.name or profile.email }}
+                </span>
+              </div>
+
+              <div class="info-row">
+                <span class="info-label"> Email Address </span>
+
+                <span class="info-value"> {{ profile.email }} </span>
+              </div>
+
+              <div class="info-row">
+                <span class="info-label"> Phone Number </span>
+
+                <span class="info-value">
+                  {{ profile.phone or "Not provided" }}
+                </span>
+              </div>
+
+              <div class="info-row">
+                <span class="info-label"> Location </span>
+
+                <span class="info-value">
+                  {{ profile.location or "Not provided" }}
+                </span>
+              </div>
             </div>
           </div>
 
-          <!-- Verification Badges -->
-          <div class="verification-badges">
-            <span
-              class="badge {{ 'verified' if profile.email_verified else 'unverified' }}"
-            >
-              <i data-lucide="check-circle" size="16"></i>
-              Email {{ 'Verified' if profile.email_verified else 'Unverified' }}
-            </span>
-            <span
-              class="badge {{ 'verified' if profile.phone_verified else 'unverified' }}"
-            >
-              <i data-lucide="check-circle" size="16"></i>
-              Phone {{ 'Verified' if profile.phone_verified else 'Unverified' }}
-            </span>
-            <span
-              class="badge {{ 'verified' if profile.id_verified else 'unverified' }}"
-            >
-              <i data-lucide="check-circle" size="16"></i>
-              ID {{ 'Verified' if profile.id_verified else 'Unverified' }}
-            </span>
-            <span
-              class="badge {{ 'verified' if profile.address_verified else 'unverified' }}"
-            >
-              <i data-lucide="check-circle" size="16"></i>
-              Address {{ 'Verified' if profile.address_verified else
-              'Unverified' }}
-            </span>
-          </div>
-        </div>
+          <!-- Account Status -->
 
-        <!-- Statistics -->
-        <div class="card">
-          <h2>Your Activity</h2>
+          <div class="card info-card">
+            <div class="info-card-header">
+              <div class="info-card-icon">
+                <i data-lucide="shield-check"></i>
+              </div>
+
+              <div>
+                <h2>Account Status</h2>
+
+                <p>Verification progress</p>
+              </div>
+            </div>
+
+            <div class="badge-group">
+              <span
+                class="status-badge {{ 'verified' if profile.email_verified else 'unverified' }}"
+              >
+                <i data-lucide="mail-check"></i>
+                Email
+              </span>
+
+              <span
+                class="status-badge {{ 'verified' if profile.phone_verified else 'unverified' }}"
+              >
+                <i data-lucide="smartphone"></i>
+                Phone
+              </span>
+
+              <span
+                class="status-badge {{ 'verified' if profile.id_verified else 'unverified' }}"
+              >
+                <i data-lucide="badge-check"></i>
+                Identity
+              </span>
+
+              <span
+                class="status-badge {{ 'verified' if profile.address_verified else 'unverified' }}"
+              >
+                <i data-lucide="map-pinned"></i>
+                Address
+              </span>
+            </div>
+
+            <div class="verification-progress">
+              {% set completed = (1 if profile.email_verified else 0) + (1 if
+              profile.phone_verified else 0) + (1 if profile.id_verified else 0)
+              + (1 if profile.address_verified else 0) %}
+
+              <span></span>
+            </div>
+
+            <div class="verification-list">
+              <div
+                class="verification-item {{ 'completed' if profile.email_verified }}"
+              >
+                <i data-lucide="check-circle"></i>
+                Email Verification
+              </div>
+
+              <div
+                class="verification-item {{ 'completed' if profile.phone_verified }}"
+              >
+                <i data-lucide="check-circle"></i>
+                Phone Verification
+              </div>
+
+              <div
+                class="verification-item {{ 'completed' if profile.id_verified }}"
+              >
+                <i data-lucide="check-circle"></i>
+                Identity Verification
+              </div>
+
+              <div
+                class="verification-item {{ 'completed' if profile.address_verified }}"
+              >
+                <i data-lucide="check-circle"></i>
+                Address Verification
+              </div>
+            </div>
+          </div>
+        </section>
+        <!-- =====================================================
+     ACCOUNT ACTIVITY
+====================================================== -->
+
+        <section class="section">
+          <div class="section-heading">
+            <div>
+              <h2>Your Activity</h2>
+
+              <p>Overview of your marketplace activity.</p>
+            </div>
+          </div>
+
           <div class="stats-grid">
+            <!-- Total Orders -->
+
             <div class="stat-card">
-              <h3>{{ stats.total_orders }}</h3>
-              <span>Total Orders</span>
+              <div class="stat-header">
+                <div>
+                  <div class="stat-title">Total Orders</div>
+
+                  <div class="stat-value">{{ stats.total_orders }}</div>
+                </div>
+
+                <div class="stat-icon">
+                  <i data-lucide="shopping-cart"></i>
+                </div>
+              </div>
+
+              <div class="stat-footer">
+                <span class="stat-caption"> Orders placed </span>
+              </div>
             </div>
+
+            <!-- Pending Orders -->
+
             <div class="stat-card">
-              <h3>{{ stats.pending_orders }}</h3>
-              <span>Pending Orders</span>
+              <div class="stat-header">
+                <div>
+                  <div class="stat-title">Pending Orders</div>
+
+                  <div class="stat-value">{{ stats.pending_orders }}</div>
+                </div>
+
+                <div class="stat-icon">
+                  <i data-lucide="clock-3"></i>
+                </div>
+              </div>
+
+              <div class="stat-footer">
+                <span class="stat-caption"> Awaiting confirmation </span>
+              </div>
             </div>
+
+            <!-- Saved Cars -->
+
             <div class="stat-card">
-              <h3>{{ stats.saved_cars }}</h3>
-              <span>Saved Cars</span>
+              <div class="stat-header">
+                <div>
+                  <div class="stat-title">Saved Cars</div>
+
+                  <div class="stat-value">{{ stats.saved_cars }}</div>
+                </div>
+
+                <div class="stat-icon">
+                  <i data-lucide="heart"></i>
+                </div>
+              </div>
+
+              <div class="stat-footer">
+                <span class="stat-caption"> Vehicles in wishlist </span>
+              </div>
+            </div>
+
+            <!-- Notifications -->
+
+            <div class="stat-card">
+              <div class="stat-header">
+                <div>
+                  <div class="stat-title">Notifications</div>
+
+                  <div class="stat-value">{{ stats.unread_notifications }}</div>
+                </div>
+
+                <div class="stat-icon">
+                  <i data-lucide="bell"></i>
+                </div>
+              </div>
+
+              <div class="stat-footer">
+                <span class="stat-caption"> Unread updates </span>
+              </div>
             </div>
           </div>
-        </div>
+        </section>
+        <!-- =====================================================
+     NOTIFICATION PREFERENCES
+====================================================== -->
 
-        <!-- Notification Preferences -->
-        <div class="card">
-          <h2>Notification Preferences</h2>
-          <p>Choose how you'd like to receive notifications:</p>
-          <form
-            action="{{ url_for('profiles.notification_settings') }}"
-            method="POST"
-          >
-            <div class="info-grid">
-              <div class="info-item">
-                <label>
-                  <input
-                    type="checkbox"
-                    name="email_order_notifications"
-                    {% if notification_settings.email_order_notifications == "1" %}checked{% endif %}
-                  />
-                  Email: New orders on your listings
+        <section class="section">
+          <div class="card">
+            <div class="card-title">
+              <div>
+                <h2>Notification Preferences</h2>
+
+                <p>
+                  Choose how you'd like to receive updates from Sarkin Mota
+                  Autos.
+                </p>
+              </div>
+            </div>
+
+            <div class="settings-list">
+              <!-- Email -->
+
+              <div class="setting-item">
+                <div class="setting-info">
+                  <div class="setting-icon">
+                    <i data-lucide="mail"></i>
+                  </div>
+
+                  <div>
+                    <h4>Email Notifications</h4>
+
+                    <p>Receive order updates and important account alerts.</p>
+                  </div>
+                </div>
+
+                <label class="switch">
+                  <input type="checkbox" name="email_notifications" />
+
+                  <span class="slider"></span>
                 </label>
               </div>
-              <div class="info-item">
-                <label>
+
+              <!-- SMS -->
+
+              <div class="setting-item">
+                <div class="setting-info">
+                  <div class="setting-icon">
+                    <i data-lucide="smartphone"></i>
+                  </div>
+
+                  <div>
+                    <h4>SMS Notifications</h4>
+
+                    <p>Receive text messages for urgent activity.</p>
+                  </div>
+                </div>
+
+                <label class="switch">
                   <input
                     type="checkbox"
-                    name="email_message_notifications"
-                    {% if notification_settings.email_message_notifications == "1" %}checked{% endif %}
+                    name="sms_notifications"
+                    {%
+                    if
+                    profile.sms_notifications
+                    %}checked{%
+                    endif
+                    %}
                   />
-                  Email: New messages
+
+                  <span class="slider"></span>
                 </label>
               </div>
-              <div class="info-item">
-                <label>
-                  <input
-                    type="checkbox"
-                    name="email_order_accepted"
-                    {% if notification_settings.email_order_accepted == "1" %}checked{% endif %}
-                  />
-                  Email: Your order accepted
+
+              <!-- Marketing -->
+
+              <div class="setting-item">
+                <div class="setting-info">
+                  <div class="setting-icon">
+                    <i data-lucide="megaphone"></i>
+                  </div>
+
+                  <div>
+                    <h4>Promotions & Offers</h4>
+
+                    <p>
+                      Be the first to know about discounts and featured
+                      vehicles.
+                    </p>
+                  </div>
+                </div>
+
+                <label class="switch">
+                  <input type="checkbox" name="marketing_notifications" />
+
+                  <span class="slider"></span>
                 </label>
               </div>
-              <div class="info-item">
-                <label>
-                  <input
-                    type="checkbox"
-                    name="email_price_drop"
-                    {% if notification_settings.email_price_drop == "1" %}checked{% endif %}
-                  />
-                  Email: Price drop on saved cars
-                </label>
-              </div>
-              <div class="info-item">
-                <label>
-                  <input
-                    type="checkbox"
-                    name="push_new_orders"
-                    {% if notification_settings.push_new_orders == "1" %}checked{% endif %}
-                  />
-                  Push: New orders
-                </label>
-              </div>
-              <div class="info-item">
-                <label>
-                  <input
-                    type="checkbox"
-                    name="push_messages"
-                    {% if notification_settings.push_messages == "1" %}checked{% endif %}
-                  />
-                  Push: New messages
-                </label>
-              </div>
-              <div class="info-item">
-                <label>
-                  <input
-                    type="checkbox"
-                    name="push_order_accepted"
-                    {% if notification_settings.push_order_accepted == "1" %}checked{% endif %}
-                  />
-                  Push: Order accepted
-                </label>
-              </div>
-              <div class="info-item">
-                <label>
-                  <input
-                    type="checkbox"
-                    name="in_app_notifications"
-                    {% if notification_settings.in_app_notifications == "1" %}checked{% endif %}
-                  />
-                  In-app notifications
+
+              <!-- Security -->
+
+              <div class="setting-item">
+                <div class="setting-info">
+                  <div class="setting-icon">
+                    <i data-lucide="shield-check"></i>
+                  </div>
+
+                  <div>
+                    <h4>Security Alerts</h4>
+
+                    <p>Receive login and password change notifications.</p>
+                  </div>
+                </div>
+
+                <label class="switch">
+                  <input type="checkbox" checked disabled />
+
+                  <span class="slider"></span>
                 </label>
               </div>
             </div>
-            <div style="margin-top: 1.5rem; text-align: center">
-              <button type="submit" class="btn-primary">
+
+            <div class="divider"></div>
+
+            <div style="display: flex; justify-content: flex-end; gap: 1rem">
+              <button class="btn btn-secondary" type="reset">Cancel</button>
+
+              <button class="btn btn-primary" type="submit">
                 Save Preferences
               </button>
             </div>
-          </form>
-        </div>
-      </main>
-
-      <footer
-        role="contentinfo"
-        style="
-          background-color: #020c1b;
-          padding: 2rem 0;
-          font-size: 0.9rem;
-          color: var(--color-text-secondary);
-          margin-top: auto;
-        "
-      >
-        <div
-          style="
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 2rem;
-            display: flex;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 1rem;
-          "
-        >
-          <div>© 2019–2026 Sarkin Mota Autos. All rights reserved.</div>
-          <div>
-            Founded by
-            <span style="color: var(--color-accent-gold)"
-              >Dr. Aliyu Mohammad (Sarkin Mota)</span
-            >
           </div>
-        </div>
-      </footer>
+        </section>
+        <!-- =====================================================
+     PAGE FOOTER
+====================================================== -->
+      </main>
     </div>
+
+    <!-- =====================================================
+     SCRIPTS
+====================================================== -->
+
+    <script src="https://unpkg.com/lucide@latest"></script>
 
     <script>
       lucide.createIcons();

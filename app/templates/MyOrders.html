@@ -16,7 +16,29 @@
       href="{{ url_for('static', filename='my-orders.css') }}"
     />
 
-    <style></style>
+    <style>
+      .table-wrap {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        margin-bottom: 1.5rem;
+      }
+
+      .data-table {
+        min-width: 900px;
+      }
+
+      @media (max-width: 640px) {
+        .container {
+          padding: 1rem;
+        }
+        
+        .page-header {
+          flex-direction: column;
+          gap: 1rem;
+          align-items: flex-start;
+        }
+      }
+    </style>
   </head>
   <body>
     <div class="container">
@@ -38,6 +60,7 @@
       </nav>
 
       {% if orders %}
+      <div class="table-wrap">
       <table class="data-table">
         <thead>
           <tr>
@@ -194,6 +217,7 @@
           {% endfor %}
         </tbody>
       </table>
+      </div>
       {% else %}
       <div class="empty-state">
         <h2>No Orders Yet</h2>

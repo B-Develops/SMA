@@ -29,119 +29,169 @@
   <body>
     <!-- LEFT SIDEBAR -->
     <aside class="sidebar">
-      <h2 class="men" id="sidebar-toggle">
-        <i data-lucide="menu"></i>
-        <span>Menu</span>
-      </h2>
+      <div class="sidebar-header">
+        <h2 class="men">Menu</h2>
 
-      <nav>
-        <a href="" class="nav-item active">
-          <i data-lucide="shopping-bag"></i>
+        <button
+          class="sidebar-toggle"
+          id="sidebarToggle"
+          aria-label="Toggle Sidebar"
+        >
+          <i data-lucide="panel-left-close"></i>
+        </button>
+      </div>
+
+      <nav class="sidebar-nav">
+        <a href="{{ url_for('dashboard') }}" class="nav-item active">
+          <i data-lucide="layout-dashboard"></i>
+
           <span>Dashboard</span>
         </a>
 
-        <a href="" class="nav-item">
-          <i data-lucide="shopping-bag"></i>
+        <a href="{{ url_for('orders.my_orders') }}" class="nav-item">
+          <i data-lucide="shopping-cart"></i>
+
           <span>My Orders</span>
         </a>
 
-        <a href="" class="nav-item">
-          <i data-lucide="heart"></i>
-          <span>Watchlist</span>
+        <a href="{{ url_for('profiles.notifications') }}" class="nav-item">
+          <i data-lucide="bell"></i>
+
+          <span>Notifications</span>
+
+          {% if unread_notifications > 0 %}
+          <span class="nav-badge"> {{ unread_notifications }} </span>
+          {% endif %}
         </a>
 
-        <a href="" class="nav-item">
+        <a href="{{ url_for('profiles.view_profile') }}" class="nav-item">
           <i data-lucide="user"></i>
+
           <span>Profile</span>
         </a>
 
-        <a href="" class="nav-item">
-          <i data-lucide="help-circle"></i>
+        <a href="{{ url_for('profiles.help') }}" class="nav-item">
+          <i data-lucide="circle-help"></i>
+
           <span>Help</span>
         </a>
 
-        {% if is_admin %}
+        {% if current_user.role == "admin" %}
+
         <a href="{{ url_for('admin.dashboard') }}" class="nav-item">
           <i data-lucide="shield"></i>
-          <span>Admin</span>
+
+          <span>Admin Dashboard</span>
         </a>
+
         {% endif %}
       </nav>
+
+      <div class="sidebar-footer">
+        <div class="user-profile">
+          <div class="user-avatar">{{ current_user.name[0]|upper }}</div>
+
+          <div class="user-details">
+            <span class="user-name"> {{ current_user.name }} </span>
+
+            <span class="user-role"> {{ current_user.role|capitalize }} </span>
+          </div>
+        </div>
+
+        <a href="{{ url_for('auth.logout') }}" class="logout-btn">
+          <i data-lucide="log-out"></i>
+
+          <span>Sign Out</span>
+        </a>
+      </div>
     </aside>
     <!-- MAIN CONTENT -->
     <div class="main-wrapper" id="D">
-      <header role="banner">
-        <div class="container" id="navcon">
-          <nav aria-label="Main navigation" id="nav-wrapper">
-            <div class="logo">Sarkin Mota Autos</div>
-            <div class="nav-actions">
-              <a href="{{ url_for('profiles.about') }}">About</a
-              ><a
-                href="{{ url_for('profiles.notifications') }}"
-                class="btn-notifications"
-                style="position: relative; color: #fff; margin-right: 0.5rem"
-              >
-                🔔 {% if unread_notifications and unread_notifications > 0 %}
-                <span
-                  style="
-                    position: absolute;
-                    top: -6px;
-                    right: -6px;
-                    background: var(--accent-red);
-                    color: #fff;
-                    padding: 2px 6px;
-                    border-radius: 999px;
-                    font-size: 0.75rem;
-                  "
-                  >{{ unread_notifications }}</span
-                >
-                {% endif %}
-              </a>
-              {% if current_user.is_authenticated %}
-              <a
-                href="{{ url_for('auth.logout') }}"
-                style="color: #fff"
-                class="btn-auth"
-                >Sign Out</a
-              >
-              {% endif %}
-            </div>
-          </nav>
-        </div>
-      </header>
       <!-- PAGE CONTENT -->
       <main>
         <!-- WELCOME CARD -->
         <section class="welcome-card">
           <div class="welcome-content">
-            <h1>Welcome back, <span id="user-name">{{ name }}</span></h1>
+            <span class="badge badge-success"> Welcome Back </span>
+
+            <h1>Hello, {{ current_user.name }} 👋</h1>
+
             <p>
-              Your dream ride is just an order away. Track orders, manage
-              listings, and explore premium cars.
+              Manage your orders, keep track of your saved vehicles, and stay
+              updated with the latest activity on your account.
             </p>
-            <a
-              href="{{ url_for('cars.browse_cars') }}"
-              class="btn-primary"
-              style="border-radius: 12px"
-            >
-              Browse Cars
-            </a>
+
+            <div class="hero-actions">
+              <a href="{{ url_for('cars.browse_cars') }}" class="btn btn-primary">
+                <i data-lucide="search"></i>
+
+                Browse Cars
+              </a>
+
+              <a href="{{ url_for('orders.my_orders') }}" class="btn btn-secondary">
+                <i data-lucide="shopping-cart"></i>
+
+                My Orders
+              </a>
+            </div>
           </div>
         </section>
-
         <!-- STATS -->
         <section class="stats-grid">
-          <div class="card stat-card">
-            <span>Active Orders</span>
-            <h3>{{ stats.pending_orders + stats.confirmed_orders }}</h3>
+          <div class="card stat-card red">
+            <div class="stat-header">
+              <span>Active Orders</span>
+
+              <div class="stat-icon">
+                <i data-lucide="shopping-cart"></i>
+              </div>
+            </div>
+
+            <h3>{{ stats.active_orders }}</h3>
+
+            <div class="stat-footer">Orders currently being processed</div>
           </div>
-          <div class="card stat-card">
-            <span>Saved Cars</span>
-            <h3>{{ saved_cars|length }}</h3>
+
+          <div class="card stat-card gold">
+            <div class="stat-header">
+              <span>Saved Cars</span>
+
+              <div class="stat-icon">
+                <i data-lucide="heart"></i>
+              </div>
+            </div>
+
+            <h3>{{ stats.saved_cars }}</h3>
+
+            <div class="stat-footer">Vehicles in your watchlist</div>
           </div>
-          <div class="card stat-card">
-            <span>Notifications</span>
-            <h3>{{ unread_count if unread_count is defined else '0' }}</h3>
+
+          <div class="card stat-card blue">
+            <div class="stat-header">
+              <span>Purchased Cars</span>
+
+              <div class="stat-icon">
+                <i data-lucide="car"></i>
+              </div>
+            </div>
+
+            <h3>{{ stats.purchased_cars }}</h3>
+
+            <div class="stat-footer">Successfully completed purchases</div>
+          </div>
+
+          <div class="card stat-card green">
+            <div class="stat-header">
+              <span>Notifications</span>
+
+              <div class="stat-icon">
+                <i data-lucide="bell"></i>
+              </div>
+            </div>
+
+            <h3>{{ stats.notifications }}</h3>
+
+            <div class="stat-footer">Unread updates</div>
           </div>
         </section>
 
@@ -149,315 +199,339 @@
         <section class="section">
           <div class="section-header">
             <div>
-              <h2>Recent Notifications</h2>
+              <h2>Notifications</h2>
+
               <p class="section-description">
-                Quick view of your latest alerts.
+                Stay up to date with your latest account activity.
               </p>
             </div>
-            <a
-              href="{{ url_for('profiles.notifications') }}"
-              class="btn-secondary"
-              style="border-radius: 12px"
-              >View all</a
-            >
           </div>
 
-          {% if notifications_preview %}
-          <div class="notification-preview-grid">
-            {% for notification in notifications_preview %}
-            <div
-              class="notification-card preview {{ 'unread' if not notification.is_read }}"
+          {% if notifications %}
+
+          <div class="notifications-grid">
+            {% for notification in notifications %}
+
+            <article
+              class="notification-card {% if not notification.is_read %}unread{% endif %}"
             >
-              <div class="notification-content">
-                <div class="notification-title">{{ notification.title }}</div>
-                {% if notification.message %}
-                <div class="notification-message">
-                  {{ notification.message }}
-                </div>
-                {% endif %}
-                <div class="notification-time">
-                  {{ notification.created_at.strftime('%b %d, %Y') }}
-                </div>
+              <div class="notification-icon">
+                <i data-lucide="bell"></i>
               </div>
-              {% if notification.link %}
-              <a
-                href="{{ notification.link }}"
-                class="btn"
-                style="padding: 0.5rem 0.75rem"
-                >View</a
-              >
+
+              <div class="notification-content">
+                <h3 class="notification-title">{{ notification.title }}</h3>
+
+                <p class="notification-message">{{ notification.message }}</p>
+
+                <span class="notification-time">
+                  {{ notification.created_at.strftime('%d %b %Y • %I:%M %p') }}
+                </span>
+              </div>
+
+              {% if not notification.is_read %}
+              <span class="notification-dot"></span>
               {% endif %}
-            </div>
+            </article>
+
             {% endfor %}
           </div>
+
           {% else %}
-          <div
-            class="empty-state"
-            style="padding: 1.5rem 0; color: var(--text-muted)"
-          >
-            No recent notifications. Your latest updates will appear here.
+
+          <div class="empty-state">
+            <i data-lucide="bell-off"></i>
+
+            <h3>No Notifications</h3>
+
+            <p>You're all caught up. New updates will appear here.</p>
           </div>
+
           {% endif %}
         </section>
 
         <!-- ACTIVITY TIMELINE -->
         <section class="section">
-          <h2>Activity Timeline</h2>
+          <div class="section-header">
+            <div>
+              <h2>Recent Activity</h2>
+
+              <p class="section-description">
+                A timeline of your latest actions.
+              </p>
+            </div>
+          </div>
+
           {% if activities %}
+
           <div class="activity-timeline">
             {% for activity in activities %}
+
             <div class="activity-item">
-              <div class="activity-icon" data-type="{{ activity.type }}">
-                <i data-lucide="{{ activity.icon }}"></i>
-              </div>
-              <div class="activity-content">
-                <p class="activity-title">{{ activity.title }}</p>
-                <p class="activity-time">{{ activity.time }}</p>
-              </div>
+              <div
+                class="activity-dot {% if activity['type'] == 'success' %} success {% elif activity['type'] == 'warning' %} warning {% else %} info {% endif %}"
+              ></div>
+
+              <article class="activity-card">
+                <h3 class="activity-title">{{ activity['title'] }}</h3>
+
+                <p class="activity-description">{{ activity['title'] }}</p>
+
+                <span class="activity-time">
+                  {{ activity['timestamp'].strftime('%d %b %Y • %I:%M %p') }}
+                </span>
+              </article>
             </div>
+
             {% endfor %}
           </div>
+
           {% else %}
-          <p
-            class="no-activity-message"
-            style="color: var(--text-muted); text-align: center; padding: 2rem"
-          >
-            No activity yet. Start by browsing cars!
-          </p>
+
+          <div class="activity-empty">
+            <i data-lucide="history"></i>
+
+            <h3>No Recent Activity</h3>
+
+            <p>Your recent actions will appear here.</p>
+          </div>
+
           {% endif %}
         </section>
 
         <!-- ACTIVE ORDERS -->
-        <section class="section" id="AO">
-          <h2>My Orders</h2>
-          {% if active_orders %}
-          <div class="car-grid">
-            {% for order in active_orders %}
-            <div class="car-card">
-              {% if order['image_url'] %}
-              <img
-                src="{{ url_for('static', filename=order['image_url']) }}"
-                alt="{{ order['year'] }} {{ order['make'] }} {{ order['model'] }}"
-                style="
-                  width: 100%;
-                  height: 200px;
-                  object-fit: cover;
-                  border-radius: 8px 8px 0 0;
-                "
-              />
-              {% else %}
-              <img
-                src="{{ url_for('static', filename='Assets/images/' + order['make'] + '.png') }}"
-                alt="{{ order['year'] }} {{ order['make'] }} {{ order['model'] }}"
-                style="
-                  width: 100%;
-                  height: 200px;
-                  object-fit: cover;
-                  border-radius: 8px 8px 0 0;
-                  background: #1a2b4a;
-                "
-              />
-              {% endif %}
-              <div class="car-body">
-                <div class="verified">
-                  <i data-lucide="shopping-bag" style="color: #d69e2e"></i>
-                  {{ order['status']|capitalize }}
-                </div>
-                <h4>
-                  {{ order['year'] }} {{ order['make'] }} {{ order['model'] }}
-                </h4>
-                <div class="price">{{ order['order_amount'] | currency }}</div>
-                <small style="color: var(--text-muted)"
-                  >Listed: {{ order['listed_price'] | currency }}</small
-                >
-                <small style="color: var(--text-muted)"
-                  >{{ order['created_at'][:10] if order['created_at'] else 'N/A'
-                  }}</small
-                >
-                {% if order['status'] in ['pending', 'confirmed'] %}
-                <form
-                  action="{{ url_for('orders.cancel_order', order_id=order['id']) }}"
-                  method="POST"
-                  style="margin-top: 0.5rem"
-                >
-                  <input
-                    type="hidden"
-                    name="csrf_token"
-                    value="{{ csrf_token() }}"
-                  />
-                  <button
-                    type="submit"
-                    style="
-                      background: transparent;
-                      border: 1px solid #e63946;
-                      color: #e63946;
-                      padding: 0.5rem 1rem;
-                      border-radius: 6px;
-                      cursor: pointer;
-                      width: 100%;
-                    "
-                  >
-                    Cancel Order
-                  </button>
-                </form>
-                {% endif %}
-              </div>
+        <section class="section">
+          <div class="section-header">
+            <div>
+              <h2>My Orders</h2>
+
+              <p class="section-description">
+                Track every vehicle you've ordered from Sarkin Mota Autos.
+              </p>
             </div>
-            {% endfor %}
-          </div>
-          {% else %}
-          <div class="empty-state-card">
-            <div class="empty-state-icon">
-              <i data-lucide="shopping-cart"></i>
-            </div>
-            <h3>No Orders Yet</h3>
-            <p>
-              Start your journey to finding your dream car. Browse our extensive
-              inventory of premium vehicles.
-            </p>
-            <a
-              href="{{ url_for('cars.browse_cars') }}"
-              class="btn-primary"
-              style="
-                border-radius: 12px;
-                display: inline-block;
-                margin-top: 1rem;
-              "
-            >
-              Browse Cars Now
+
+            <a href="{{ url_for('orders.my_orders') }}" class="btn btn-secondary">
+              <i data-lucide="external-link"></i>
+
+              View All
             </a>
           </div>
-          {% endif %}
-        </section>
 
-        <section class="section">
-          <h2>Hot Auctions Ending Soon</h2>
-          <div class="car-grid">
-            <div class="car-card">
-              <img src="../static/aaron-huber-8qYE6LGHW-c-unsplash.jpg" />
-              <div class="car-body">
-                <div class="verified">
-                  <i data-lucide="check-circle"></i> Verified
-                </div>
-                <h4>Mercedes-Benz C300</h4>
-                <p>2.0L Turbo • 38,000 KM</p>
-                <div class="price">₦18,200,000</div>
-                <button class="btn-primary" style="border-radius: 12px">
-                  View Details
-                </button>
+          {% if orders %}
+
+          <div class="orders-grid">
+            {% for order in orders %}
+
+            <article class="order-card">
+              <div class="order-image">
+                {% if order.car and order.car.image_url %}
+                <img
+                  src="{{ url_for('static', filename=order.car.image_url) }}"
+                  alt="{{ order.car.year }} {{ order.car.make }} {{ order.car.model }}"
+                />
+                {% else %}
+                <img
+                  src="{{ url_for('static', filename='Assets/images/Toyota.png') }}"
+                  alt="No image"
+                />
+                {% endif %}
+
+                <span class="status-badge status-{{ order.status|lower }}">
+                  {{ order.status }}
+                </span>
               </div>
-            </div>
+
+              <div class="order-body">
+                <h3 class="order-title">
+                  {{ order.car.year }} {{ order.car.make }} {{ order.car.model
+                  }}
+                </h3>
+
+                <div class="order-meta">
+                  <span> Order #{{ order.id }} </span>
+
+                  <span> {{ order.created_at.strftime('%d %b %Y') }} </span>
+                </div>
+
+                <div class="order-price">
+                  {{ order.order_amount | currency }}
+                </div>
+
+                <div class="delivery-status">
+                  <i data-lucide="truck"></i>
+
+                  {{ order.status }}
+                </div>
+
+                <div class="order-divider"></div>
+
+                <div class="order-footer">
+                  <div class="order-actions">
+                    <a href="{{ url_for('orders.view_order', order_id=order.id) }}" class="btn btn-secondary">
+                      <i data-lucide="map-pinned"></i>
+
+                      Track
+                    </a>
+
+                    <a href="{{ url_for('cars.car_detail', car_id=order.car.id) }}" class="btn btn-primary">
+                      <i data-lucide="eye"></i>
+
+                      View
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </article>
+
+            {% endfor %}
           </div>
+
+          {% else %}
+
+          <div class="orders-empty">
+            <i data-lucide="shopping-cart"></i>
+
+            <h3>No Orders Yet</h3>
+
+            <p>Browse our marketplace and place your first order.</p>
+
+            <a href="{{ url_for('cars.browse_cars') }}" class="btn btn-primary mt-2">
+              <i data-lucide="search"></i>
+
+              Browse Cars
+            </a>
+          </div>
+
+          {% endif %}
         </section>
 
         <!-- SAVED CARS -->
-        <section class="section" id="SC">
-          <h2>My Watchlist</h2>
-          {% if saved_cars %}
-          <div class="car-grid">
-            {% for saved in saved_cars %}
-            <div class="car-card">
-              {% if saved.image_url %}
-              <img
-                src="{{ url_for('static', filename=saved.image_url) }}"
-                alt="{{ saved.year }} {{ saved.make }} {{ saved.model }}"
-                style="
-                  width: 100%;
-                  height: 200px;
-                  object-fit: cover;
-                  border-radius: 8px 8px 0 0;
-                "
-              />
-              {% else %}
-              <img
-                src="{{ url_for('static', filename='Assets/images/' + saved.make + '.png') }}"
-                alt="{{ saved.year }} {{ saved.make }} {{ saved.model }}"
-                style="
-                  width: 100%;
-                  height: 200px;
-                  object-fit: cover;
-                  border-radius: 8px 8px 0 0;
-                  background: #1a2b4a;
-                "
-              />
-              {% endif %}
-              <div class="car-body">
-                <div class="verified">
-                  <i data-lucide="heart" style="color: #e63946"></i> Saved
-                </div>
-                <h4>{{ saved.year }} {{ saved.make }} {{ saved.model }}</h4>
-                <div class="price">{{ saved.price | currency }}</div>
-                <form
-                  action="{{ url_for('cars.unsave_car', car_id=saved.id) }}"
-                  method="POST"
-                >
-                  <input
-                    type="hidden"
-                    name="csrf_token"
-                    value="{{ csrf_token() }}"
-                  />
-                  <button
-                    type="submit"
-                    style="
-                      background: transparent;
-                      border: 1px solid #e63946;
-                      color: #e63946;
-                      padding: 0.5rem 1rem;
-                      border-radius: 6px;
-                      cursor: pointer;
-                      margin-top: 0.5rem;
-                      width: 100%;
-                    "
-                  >
-                    Remove
-                  </button>
-                </form>
-              </div>
+        <section class="section">
+          <div class="section-header">
+            <div>
+              <h2>Saved Cars</h2>
+
+              <p class="section-description">
+                Vehicles you've saved for later.
+              </p>
             </div>
-            {% endfor %}
-          </div>
-          {% else %}
-          <div class="empty-state-card">
-            <div class="empty-state-icon">
+
+            <a href="{{ url_for('profiles.saved_cars') }}" class="btn btn-secondary">
               <i data-lucide="heart"></i>
-            </div>
-            <h3>Your Watchlist is Empty</h3>
-            <p>
-              Save your favorite cars to keep track of vehicles that catch your
-              eye. Build your watchlist and never miss the perfect car.
-            </p>
-            <a
-              href="{{ url_for('cars.browse_cars') }}"
-              class="btn-primary"
-              style="
-                border-radius: 12px;
-                display: inline-block;
-                margin-top: 1rem;
-              "
-            >
-              Discover Cars to Save
+
+              View All
             </a>
           </div>
+
+          {% if watchlist %}
+
+          <div class="watchlist-grid">
+            {% for item in watchlist %}
+
+            <article class="watch-card">
+              <div class="watch-image">
+                {% if item and item.image_url %}
+                <img
+                  src="{{ url_for('static', filename=item.image_url) }}"
+                  alt="{{ item.year }} {{ item.make }} {{ item.model }}"
+                />
+                {% else %}
+                <img
+                  src="{{ url_for('static', filename='Assets/images/Toyota.png') }}"
+                  alt="No image"
+                />
+                {% endif %}
+
+                <button class="watch-favorite" title="Remove from Watchlist">
+                  <i data-lucide="heart"></i>
+                </button>
+              </div>
+
+              <div class="watch-body">
+                <h3 class="watch-title">
+                  {{ item.year }} {{ item.make }} {{ item.model }}
+                </h3>
+
+                <div class="watch-meta">
+                  <span> {{ item.location }} </span>
+
+                  <span> {{ item.mileage }} </span>
+                </div>
+
+                <div class="watch-price">{{ item.price | currency }}</div>
+
+                <div class="watch-footer">
+                  <form
+                    action="{{ url_for('cars.unsave_car', car_id=item.id) }}"
+                    method="POST"
+                    style="display: inline"
+                  >
+                    <input
+                      type="hidden"
+                      name="csrf_token"
+                      value="{{ csrf_token() }}"
+                    />
+                    <button
+                      type="submit"
+                      class="btn btn-secondary"
+                      onclick="return confirm('Are you sure you want to remove this car from your saved list?');"
+                    >
+                      <i data-lucide="trash-2"></i>
+
+                      Remove
+                    </button>
+                  </form>
+
+                  <a href="{{ url_for('cars.car_detail', car_id=item.id) }}" class="btn btn-primary">
+                    <i data-lucide="arrow-right"></i>
+
+                    View Car
+                  </a>
+                </div>
+              </div>
+            </article>
+
+            {% endfor %}
+          </div>
+
+          {% else %}
+
+          <div class="watch-empty">
+            <i data-lucide="heart-off"></i>
+
+            <h3>No Saved Cars</h3>
+
+            <p>Save cars you're interested in and they'll appear here.</p>
+
+            <a class="btn btn-primary mt-2">
+              <i data-lucide="search"></i>
+
+              Browse Cars
+            </a>
+          </div>
+
           {% endif %}
         </section>
       </main>
-      <footer role="contentinfo">
-        <div class="container footer-inner">
-          <div>© 2019–2026 Sarkin Mota Autos. All rights reserved.</div>
-          <div>Founded by <span>Dr. Aliyu Mohammad (Sarkin Mota)</span></div>
-        </div>
-      </footer>
-      <!-- FOOTER (EDIT FREELY) -->
     </div>
 
     <script>
       lucide.createIcons();
 
-      document
-        .getElementById("sidebarToggle")
-        .addEventListener("click", function () {
-          document.querySelector(".sidebar").classList.toggle("collapsed");
-        });
+      const sidebar = document.querySelector(".sidebar");
+      const toggle = document.getElementById("sidebarToggle");
+
+      toggle.addEventListener("click", () => {
+        sidebar.classList.toggle("collapsed");
+
+        const iconName = sidebar.classList.contains("collapsed")
+          ? "panel-left-open"
+          : "panel-left-close";
+
+        toggle.innerHTML = `<i data-lucide="${iconName}"></i>`;
+
+        lucide.createIcons();
+      });
     </script>
   </body>
 </html>

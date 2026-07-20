@@ -1,6 +1,6 @@
 """Auth blueprint tests."""
 import pytest
-from app.models import User
+from app.models import User, Order, SavedCar, AdminActionLog
 from app import db, bcrypt
 
 
@@ -97,4 +97,45 @@ class TestLogin:
             },
         )
 
+        assert response.status_code == 302
+
+
+class TestDeleteAccount:
+    def test_user_can_delete_own_account(self, client, app, buyer_id):
+        with app.app_context():
+            user = User.query.get(buyer_id)
+            original_email = user.email
+
+        with client.session_transaction() as sess:
+            sess["_user_id"] = str(buyer_id)
+            sess["_fresh"] = True
+
+        response = client.post("/settings/delete-account")
+
+        assert response.status_code == 302
+        with app.app_context():
+            user = User.query.get(buyer_id)
+            assert user is not None
+            assert user.email == f"deleted_{buyer_id}@anonymized.local"
+            assert user.name == "Deleted User"
+            assert user.password == "DELETED"
+            assert user.email_verified == 0
+            orders = Order.query.filter_by(buyer_id=buyer_id).count()
+            assert orders == 0
+            saved = SavedCar.query.filter_by(user_id=buyer_id).count()
+            assert saved == 0
+            log = AdminActionLog.query.filter_by(
+                action="user_deleted_self",
+                resource_id=buyer_id
+            ).first()
+            assert log is not None
+
+    def test_deleted_user_cannot_access_protected_routes(self, client, app, buyer_id):
+        with client.session_transaction() as sess:
+            sess["_user_id"] = str(buyer_id)
+            sess["_fresh"] = True
+
+        client.post("/settings/delete-account")
+
+        response = client.get("/dashboard")
         assert response.status_code == 302

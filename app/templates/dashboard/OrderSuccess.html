@@ -521,7 +521,7 @@
   <body>
     <header>
       <div class="nav">
-        <a href="/" class="brand">Sarkin Mota Autos</a>
+        <a href="{{ url_for('index') }}" class="brand">Sarkin Mota Autos</a>
         <div class="nav-search">
           <form action="{{ url_for('cars.browse_cars') }}" method="get">
             <input
@@ -533,7 +533,7 @@
           </form>
         </div>
         <div class="nav-actions">
-          <a href="/about">About</a>
+          <a href="{{ url_for('profiles.about') }}">About</a>
           {% if current_user.is_authenticated %}
           <a
             href="{{ url_for('profiles.notifications') }}"
@@ -558,8 +558,8 @@
           </a>
           <a href="{{ url_for('auth.logout') }}">Logout</a>
           {% else %}
-          <a href="/auth/login" class="btn-auth">Sign In</a>
-          <a href="/auth/signup" class="btn-auth btn-signup">Sign Up</a>
+          <a href="{{ url_for('auth.login') }}" class="btn-auth">Sign In</a>
+          <a href="{{ url_for('auth.signup') }}" class="btn-auth btn-signup">Sign Up</a>
           {% endif %}
         </div>
       </div>
@@ -604,7 +604,7 @@
           <div class="image-wrap">
             {% if car.image_url %}
             <img
-              src="{{ car.image_url }}"
+              src="{{ url_for('static', filename=car.image_url) }}"
               alt="{{ car.year }} {{ car.make }} {{ car.model }}"
             />
             {% else %}
