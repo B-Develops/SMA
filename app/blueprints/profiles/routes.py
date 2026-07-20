@@ -27,37 +27,24 @@ def view_profile():
 
     return render_template('Profile.html', profile=user, notification_settings=settings, stats=stats)
 
-import logging
-logger = logging.getLogger(__name__)
-
 @profiles_bp.route('/profile/edit', methods=['GET', 'POST'])
 @login_required
 def edit_profile():
     user = User.query.get(current_user.id)
     if request.method == 'POST':
-        logger.info("EDIT_PROFILE POST | form=%s | files=%s | content_type=%s", list(request.form.keys()), list(request.files.keys()), request.content_type)
-        
         user.name = request.form.get('name', user.name)
         user.phone = request.form.get('phone', user.phone)
         user.location = request.form.get('location', user.location)
         user.bio = request.form.get('bio', user.bio)
         
         avatar = request.files.get('avatar')
-        logger.info("EDIT_PROFILE avatar present=%s filename=%s", avatar is not None, getattr(avatar, 'filename', None))
         if avatar and avatar.filename:
             filename = secure_filename(avatar.filename)
             upload_dir = os.path.join(current_app.root_path, 'static', 'uploads')
             os.makedirs(upload_dir, exist_ok=True)
             filepath = os.path.join(upload_dir, filename)
-            logger.info("EDIT_PROFILE saving to %s", filepath)
-            try:
-                avatar.save(filepath)
-                user.avatar_url = f"uploads/{filename}"
-                logger.info("EDIT_PROFILE saved OK")
-            except Exception as e:
-                logger.error("EDIT_PROFILE save failed: %s", e)
-                flash(f'Failed to save image: {str(e)}', 'error')
-                return redirect(url_for('profiles.edit_profile'))
+            avatar.save(filepath)
+            user.avatar_url = f"uploads/{filename}"
         
         db.session.commit()
         flash('Profile updated successfully.', 'success')
