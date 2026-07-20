@@ -723,10 +723,15 @@ body::before {
       <!-- Filter Bar -->
       <div style="max-width: 1200px; margin: 0 auto; padding: 0 1.25rem">
         <form action="{{ url_for('cars.browse_cars') }}" method="GET" class="filter-bar">
-          <!-- Keep search query when filtering -->
-          {% if filters.q %}
-          <input type="hidden" name="q" value="{{ filters.q }}" />
-          {% endif %}
+          <div class="filter-group" style="flex: 1 1 100%; min-width: 100%;">
+            <label>Search</label>
+            <input
+              type="text"
+              name="q"
+              placeholder="Search by make, model, or keyword..."
+              value="{{ filters.q or '' }}"
+            />
+          </div>
 
           <div class="filter-group">
             <label>Make</label>

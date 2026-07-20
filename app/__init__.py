@@ -94,6 +94,7 @@ def create_app(config_name=None):
         "sqlite:///database.db"
     )
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+    app.config["DEBUG"] = os.environ.get("FLASK_DEBUG", "True") == "True"
     engine_options = {"pool_pre_ping": True, "pool_recycle": 3600}
     db_url = app.config["SQLALCHEMY_DATABASE_URI"]
     if db_url and not db_url.startswith("sqlite"):
