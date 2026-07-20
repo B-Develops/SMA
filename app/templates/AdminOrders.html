@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
 
@@ -22,11 +22,12 @@
     <script src="https://unpkg.com/lucide@latest"></script>
   </head>
   <body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
     <!-- LEFT SIDEBAR -->
 
     <!-- MAIN CONTENT -->
     <div class="page-container">
-      <div class="container">
+      <main id="main-content">
         <a
           href="{{ url_for('admin.dashboard') }}"
           class="back-link"
@@ -46,7 +47,7 @@
           </div>
         </div>
 
-        {% if orders %} {% if orders %}
+        {% if orders %}
         <div class="table-wrapper">
           <table class="orders-table">
             <thead>
@@ -245,6 +246,7 @@
         </div>
         {% endif %}
       </div>
+    </main>
     </div>
 
     <script>
@@ -264,3 +266,4 @@
     </script>
   </body>
 </html>
+

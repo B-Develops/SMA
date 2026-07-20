@@ -37,10 +37,13 @@
           gap: 1rem;
           align-items: flex-start;
         }
-      }
+      }    .skip-link{position:absolute;top:-40px;left:0;background:#e53e3e;color:white;padding:8px 16px;z-index:100;text-decoration:none;font-weight:600;transition:top .3s}
+    .skip-link:focus{top:0}
+
     </style>
   </head>
   <body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
     <div class="container">
       <a href="{{ url_for('dashboard') }}" class="back-link">← Back to Dashboard</a>
 
@@ -183,6 +186,7 @@
                 <span style="color: var(--color-text-secondary); font-size: 0.85rem">Waiting</span>
               {% endif %}
             </td>
+            <td>
               {% if order.status in ['pending', 'confirmed'] %}
               <form
                 action="{{ url_for('orders.cancel_order', order_id=order.id) }}"
@@ -232,3 +236,4 @@
     </div>
   </body>
 </html>
+

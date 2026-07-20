@@ -8,6 +8,24 @@
   --accent-gold: #d69e2e;
   --border-soft: rgba(255, 255, 255, 0.08);
   --color-bg-primary: #0a192f;
+}
+
+/* Skip Link */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: #e53e3e;
+  color: white;
+  padding: 8px 16px;
+  z-index: 100;
+  text-decoration: none;
+  font-weight: 600;
+  transition: top 0.3s;
+}
+.skip-link:focus {
+  top: 0;
+}
   --color-bg-secondary: #020c1b;
   --color-accent-red: #e53e3e;
   --color-accent-gold: #d69e2e;

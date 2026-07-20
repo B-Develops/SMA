@@ -2,10 +2,27 @@
    1. IMPORTS
 ===================================================== */
 
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap");
+
+/* Skip Link */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: #e53e3e;
+  color: white;
+  padding: 8px 16px;
+  z-index: 100;
+  text-decoration: none;
+  font-weight: 600;
+  transition: top 0.3s;
+}
+.skip-link:focus {
+  top: 0;
+}
 
 /* =====================================================
-   2. DESIGN TOKENS
+    2. DESIGN TOKENS
 ===================================================== */
 
 :root {
@@ -123,7 +140,7 @@ ol {
 ===================================================== */
 
 body {
-  font-family: "Poppins", sans-serif;
+  font-family: "Inter", sans-serif;
   font-size: var(--text-md);
 
   color: var(--color-text-primary);

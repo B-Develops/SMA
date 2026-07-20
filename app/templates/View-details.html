@@ -3,10 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>{{ car.year }} {{ car.make }} {{ car.model }} - Sarkin Mota Autos</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='view-details.css') }}" />
   </head>
-</head>
   <style>
       :root {
         --bg-main: #0a192f;
@@ -577,7 +576,7 @@
       </div>
     </header>
 
-    <main>
+    <main id="main-content">
       <h1>{{ car.year }} {{ car.make }} {{ car.model }}</h1>
 
       <div class="car-detail-wrapper" id="carDetailGrid" style="display: grid; grid-template-columns: 2fr 1fr; gap: 2rem; margin-top: 3rem;">

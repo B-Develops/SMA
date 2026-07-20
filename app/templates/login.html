@@ -18,7 +18,9 @@
       href="{{ url_for('static', filename='login.css') }}"
     />
 
-    <style></style>
+    <style>    .skip-link{position:absolute;top:-40px;left:0;background:#e53e3e;color:white;padding:8px 16px;z-index:100;text-decoration:none;font-weight:600;transition:top .3s}
+    .skip-link:focus{top:0}
+</style>
   </head>
 
   <body>
@@ -57,8 +59,8 @@
         </nav>
       </div>
     </header>
-    <main id="main">
-      <div class="container">
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    <main id="main-content">
         <div class="auth-card">
           <h1>Sign In to Your Account</h1>
           <p class="subtitle">
@@ -129,3 +131,4 @@
     </footer>
   </body>
 </html>
+

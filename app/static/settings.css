@@ -1,5 +1,5 @@
 ﻿/* =====================================================
-   1. ROOT VARIABLES
+    1. ROOT VARIABLES
 ===================================================== */
 
 :root {
@@ -8,6 +8,24 @@
   --color-bg-primary: #0a192f;
   --color-bg-secondary: #020c1b;
   --color-card-bg: #112240;
+}
+
+/* Skip Link */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: #e53e3e;
+  color: white;
+  padding: 8px 16px;
+  z-index: 100;
+  text-decoration: none;
+  font-weight: 600;
+  transition: top 0.3s;
+}
+.skip-link:focus {
+  top: 0;
+}
 
   --color-accent-red: #e53e3e;
   --color-accent-gold: #d69e2e;
@@ -1243,38 +1261,6 @@ main {
 } /* =====================================================
    7. DANGER ZONE
 ===================================================== */
-
-/* ---------- Danger Card ---------- */
-
-.danger-card {
-  position: relative;
-
-  border: 1px solid rgba(239, 68, 68, 0.25);
-
-  background: linear-gradient(
-    180deg,
-    rgba(127, 29, 29, 0.18),
-    rgba(69, 10, 10, 0.12)
-  );
-
-  overflow: hidden;
-}
-
-.danger-card::before {
-  content: "";
-
-  position: absolute;
-
-  inset: 0;
-
-  background: radial-gradient(
-    circle at top right,
-    rgba(239, 68, 68, 0.1),
-    transparent 40%
-  );
-
-  pointer-events: none;
-}
 
 /* ---------- Header ---------- */
 

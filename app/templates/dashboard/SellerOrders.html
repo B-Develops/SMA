@@ -18,11 +18,14 @@
     .stats-row { display: flex; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
     .stat-card { background: var(--color-card-bg); border: 1px solid var(--border-soft); border-radius: 0.75rem; padding: 1rem 1.25rem; min-width: 120px; }
     .stat-card .label { font-size: 0.8rem; color: var(--color-text-secondary); margin-bottom: 0.25rem; }
-    .stat-card .value { font-size: 1.35rem; font-weight: 700; }
+    .stat-card .value { font-size: 1.35rem; font-weight: 700; }    .skip-link{position:absolute;top:-40px;left:0;background:#e53e3e;color:white;padding:8px 16px;z-index:100;text-decoration:none;font-weight:600;transition:top .3s}
+    .skip-link:focus{top:0}
+
   </style>
 </head>
 <body>
-  <div class="container">
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    <div class="container">
     <a href="{{ url_for('dashboard') }}" class="back-link">← Back to Dashboard</a>
 
     <div class="page-header">
@@ -131,3 +134,4 @@
   </div>
 </body>
 </html>
+

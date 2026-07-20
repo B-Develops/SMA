@@ -178,8 +178,10 @@ def saved_cars():
         .filter(SavedCar.user_id == current_user.id)\
         .order_by(SavedCar.created_at.desc())\
         .paginate(page=page, per_page=per_page, error_out=False)
+    saved_car_map = {sc.car_id: sc for sc in SavedCar.query.filter_by(user_id=current_user.id).all()}
     return render_template('saved_cars.html',
                          saved_cars=saved_cars_pagination.items,
+                         saved_car_map=saved_car_map,
                          pagination=saved_cars_pagination)
 
 @profiles_bp.route('/about')

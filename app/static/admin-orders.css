@@ -13,6 +13,24 @@
   --card-bg: rgba(17, 34, 64, 0.82);
 
   --primary: #e63946;
+}
+
+/* Skip Link */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: #e53e3e;
+  color: white;
+  padding: 8px 16px;
+  z-index: 100;
+  text-decoration: none;
+  font-weight: 600;
+  transition: top 0.3s;
+}
+.skip-link:focus {
+  top: 0;
+}
   --gold: #d4a017;
   --green: #22c55e;
   --blue: #3b82f6;

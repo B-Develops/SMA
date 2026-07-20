@@ -19,7 +19,22 @@
     <!-- Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
 
-    <style></style>
+    <style>
+      .skip-link {
+        position: absolute;
+        top: -40px;
+        left: 0;
+        background: #e53e3e;
+        color: white;
+        padding: 8px 16px;
+        z-index: 100;
+        text-decoration: none;
+        font-weight: 600;
+        transition: top 0.3s;
+      }
+      .skip-link:focus {
+        top: 0;
+      }</style>
   </head>
 
   <body>
@@ -35,19 +50,19 @@
         <i data-lucide="menu"></i> <span>Menu</span>
       </h2>
 
-      <a href="/admin" class="nav-item active">
+      <a href="{{ url_for('admin.dashboard') }}" class="nav-item active">
         <i data-lucide="layout-dashboard"></i> <span>Overview</span>
       </a>
-      <a href="/admin/users" class="nav-item">
+      <a href="{{ url_for('admin.users') }}" class="nav-item">
         <i data-lucide="users"></i> <span>Users</span>
       </a>
-      <a href="/admin/listings" class="nav-item">
+      <a href="{{ url_for('admin.listings') }}" class="nav-item">
         <i data-lucide="car"></i> <span>All Listings</span>
       </a>
       <a href="{{ url_for('cars.my_listings') }}" class="nav-item">
         <i data-lucide="user"></i> <span>My Listings</span>
       </a>
-      <a href="/admin/orders" class="nav-item">
+      <a href="{{ url_for('admin.orders') }}" class="nav-item">
         <i data-lucide="shopping-cart"></i> <span>Orders</span>
       </a>
       <a href="{{ url_for('dashboard') }}" class="nav-item">
@@ -58,7 +73,7 @@
     <!-- MAIN CONTENT -->
     <div class="main-wrapper">
       <!-- PAGE CONTENT -->
-      <main>
+      <main id="main-content">
         <!-- ADMIN HEADER -->
         <section class="welcome-card">
           <div class="welcome-content">
@@ -224,10 +239,7 @@
     </div>
 
     <script>
-      lucide.createIcons({
-        width: 60,
-        height: 60,
-      });
+      lucide.createIcons();
 
       document
         .getElementById("sidebarToggle")

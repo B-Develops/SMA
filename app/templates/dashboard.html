@@ -20,13 +20,31 @@
     <script src="https://unpkg.com/lucide@latest"></script>
 
     <style>
+      .skip-link {
+        position: absolute;
+        top: -40px;
+        left: 0;
+        background: var(--accent-red, #e53e3e);
+        color: white;
+        padding: 8px 16px;
+        z-index: 100;
+        text-decoration: none;
+        font-weight: 600;
+        transition: top 0.3s;
+      }
+      .skip-link:focus {
+        top: 0;
+      }
       /* ==========================================================
          ROOT VARIABLES — CHANGE GLOBAL COLORS / SIZES HERE
-      ========================================================== */
+      ========================================================== */    .skip-link{position:absolute;top:-40px;left:0;background:#e53e3e;color:white;padding:8px 16px;z-index:100;text-decoration:none;font-weight:600;transition:top .3s}
+    .skip-link:focus{top:0}
+
     </style>
   </head>
 
   <body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
     <!-- LEFT SIDEBAR -->
     <aside class="sidebar">
       <div class="sidebar-header">
@@ -108,7 +126,7 @@
     <!-- MAIN CONTENT -->
     <div class="main-wrapper" id="D">
       <!-- PAGE CONTENT -->
-      <main>
+      <main id="main-content">
         <!-- WELCOME CARD -->
         <section class="welcome-card">
           <div class="welcome-content">
@@ -275,7 +293,7 @@
               <article class="activity-card">
                 <h3 class="activity-title">{{ activity['title'] }}</h3>
 
-                <p class="activity-description">{{ activity['title'] }}</p>
+                <p class="activity-description">{{ activity['description'] }}</p>
 
                 <span class="activity-time">
                   {{ activity['timestamp'].strftime('%d %b %Y • %I:%M %p') }}
@@ -503,7 +521,7 @@
 
             <p>Save cars you're interested in and they'll appear here.</p>
 
-            <a class="btn btn-primary mt-2">
+            <a href="{{ url_for('cars.browse_cars') }}" class="btn btn-primary mt-2">
               <i data-lucide="search"></i>
 
               Browse Cars
@@ -535,3 +553,4 @@
     </script>
   </body>
 </html>
+

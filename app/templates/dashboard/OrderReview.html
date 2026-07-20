@@ -316,7 +316,12 @@
   </head>
 
   <body>
-    <main>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    <style>
+      .skip-link{position:absolute;top:-40px;left:0;background:#e53e3e;color:white;padding:8px 16px;z-index:100;text-decoration:none;font-weight:600;transition:top .3s}
+      .skip-link:focus{top:0}
+    </style>
+    <main id="main-content">
       <h1>Review Your Order</h1>
       <p class="subtitle">Please verify all details before confirming</p>
 
@@ -497,3 +502,4 @@
     </footer>
   </body>
 </html>
+

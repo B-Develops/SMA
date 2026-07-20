@@ -16,7 +16,6 @@
       href="{{ url_for('static', filename='saved-cars.css') }}"
     />
 
-    <style></style>
   </head>
   <body>
     <div class="container">
@@ -39,9 +38,7 @@
 
       {% if saved_cars %}
       <div class="car-grid">
-        {% for car in saved_cars %} {% set saved_car =
-        SavedCar.query.filter_by(user_id=current_user.id, car_id=car.id).first()
-        %}
+        {% for car in saved_cars %}{% set saved_car = saved_car_map.get(car.id) %}
         <div class="car-card">
           {% if car.image_url %}
           <img

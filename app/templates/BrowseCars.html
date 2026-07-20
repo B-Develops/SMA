@@ -16,6 +16,21 @@
       href="{{ url_for('static', filename='header-navbar.css') }}"
     />
 <style>
+  .skip-link {
+    position: absolute;
+    top: -40px;
+    left: 0;
+    background: #e53e3e;
+    color: white;
+    padding: 8px 16px;
+    z-index: 100;
+    text-decoration: none;
+    font-weight: 600;
+    transition: top 0.3s;
+  }
+  .skip-link:focus {
+    top: 0;
+  }
 :root {
   --bg-main: #0a192f;
   --bg-card: #112240;
@@ -660,7 +675,9 @@ body::before {
   background-position: center;
   background-repeat: no-repeat;
   z-index: -2;
-}
+}    .skip-link{position:absolute;top:-40px;left:0;background:#e53e3e;color:white;padding:8px 16px;z-index:100;text-decoration:none;font-weight:600;transition:top .3s}
+    .skip-link:focus{top:0}
+
 </style>
   </head>
 
@@ -699,7 +716,8 @@ body::before {
           </nav>
         </div>
       </header>
-    <main>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    <main id="main-content">
       <h1>Available Cars</h1>
 
       <!-- Filter Bar -->
@@ -987,3 +1005,4 @@ body::before {
     }
   </script>
 </html>
+

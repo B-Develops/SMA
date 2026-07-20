@@ -128,8 +128,6 @@
         display: grid;
         grid-template-columns: 360px 1fr;
         gap: 1.5rem;
-        background-color: #e53e3e;
-        margin: 0 0;
       }
 
       /* =====================================================
@@ -335,21 +333,18 @@
           grid-template-columns: 1fr;
         }
       }
-      .messages-layout {
-        display: grid;
-        grid-template-columns: 360px 1fr;
-        gap: 1.5rem;
-        margin-left: -200px;
-      }
 
 
-  </head>
+      .skip-link{position:absolute;top:-40px;left:0;background:#e53e3e;color:white;padding:8px 16px;z-index:100;text-decoration:none;font-weight:600;transition:top .3s}
+      .skip-link:focus{top:0}
+  </style>
 
     <body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
     <div class="layout">
       <div class="sidebar-placeholder"></div>
 
-      <main>
+      <main id="main-content">
         <div class="content">
           <div class="page-header">
             <h1>Messages & Support</h1>
@@ -449,3 +444,4 @@
     }
   </script>
 </html>
+

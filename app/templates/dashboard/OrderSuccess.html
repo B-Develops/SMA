@@ -514,11 +514,14 @@
           left: calc(50% + 11px);
           right: calc(-50% + 11px);
         }
-      }
+      }    .skip-link{position:absolute;top:-40px;left:0;background:#e53e3e;color:white;padding:8px 16px;z-index:100;text-decoration:none;font-weight:600;transition:top .3s}
+    .skip-link:focus{top:0}
+
     </style>
   </head>
 
   <body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
     <header>
       <div class="nav">
         <a href="{{ url_for('index') }}" class="brand">Sarkin Mota Autos</a>
@@ -565,7 +568,7 @@
       </div>
     </header>
 
-    <main>
+    <main id="main-content">
       <section class="hero-card">
         <div>
           {% if order.status == 'completed' %}
@@ -733,3 +736,4 @@
     </footer>
   </body>
 </html>
+

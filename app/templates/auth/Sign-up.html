@@ -19,11 +19,14 @@
     />
 
     <!-- STYLES UNCHANGED -->
-    <style></style>
   </head>
 
   <body>
-    <a href="#main" class="skip-link">Skip to main content</a>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    <style>
+      .skip-link{position:absolute;top:-40px;left:0;background:#e53e3e;color:white;padding:8px 16px;z-index:100;text-decoration:none;font-weight:600;transition:top .3s}
+      .skip-link:focus{top:0}
+    </style>
     <header role="banner">
       <div class="container" id="navcon">
         <nav aria-label="Main navigation">
@@ -58,7 +61,8 @@
         </nav>
       </div>
     </header>
-    <main id="main">
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    <main id="main-content">
       <div class="container">
         <div class="auth-card">
           <h1>Create Your Account</h1>
