@@ -69,6 +69,7 @@
   --text-2xl: 2rem;
   --text-2bxl: 2.5rem;
   --text-3xl: 3rem;
+  --text-4x1: 4rem;
 
   /* RADII */
   --radius-sm: 8px;
@@ -172,7 +173,6 @@ body::before {
   transform: scale(1.03);
 }
 
-h1,
 h2,
 h3,
 h4,
@@ -183,7 +183,7 @@ h6 {
 }
 
 h1 {
-  font-size: var(--text-3xl);
+  font-size: 3rem;
   font-weight: 800;
 }
 
@@ -677,6 +677,11 @@ main {
   margin-bottom: 1rem;
 }
 
+.h11 {
+  font-size: 3rem;
+  font-weight: 800;
+}
+
 .welcome-content p {
   font-size: 1.05rem;
 
@@ -719,7 +724,7 @@ main {
 
   justify-content: space-between;
 
-  min-height: 170px;
+  min-height: 113px;
 }
 
 .stat-header {
@@ -879,7 +884,10 @@ main {
 
   box-shadow: var(--shadow-sm);
 
-  transition: transform var(--transition-fast), border-color var(--transition-fast), background var(--transition-fast);
+  transition:
+    transform var(--transition-fast),
+    border-color var(--transition-fast),
+    background var(--transition-fast);
 }
 
 .quick-action-card:hover {
@@ -969,7 +977,9 @@ main {
 
   color: var(--color-text-secondary);
 
-  transition: color var(--transition-fast), transform var(--transition-fast);
+  transition:
+    color var(--transition-fast),
+    transform var(--transition-fast);
 }
 
 .quick-action-card:hover .quick-action-arrow {
@@ -1080,7 +1090,11 @@ main {
 
   border-radius: 50%;
 
-  background: linear-gradient(135deg, var(--color-accent-red), var(--color-accent-gold));
+  background: linear-gradient(
+    135deg,
+    var(--color-accent-red),
+    var(--color-accent-gold)
+  );
 
   color: white;
 
@@ -1569,6 +1583,10 @@ main {
    17. RESPONSIVE
 ===================================================== */
 
+h1 {
+  font-size: 3rem;
+}
+
 @media (max-width: 1100px) {
   main {
     padding: 2rem;
@@ -1595,9 +1613,7 @@ main {
     padding: 1.5rem 0.75rem;
   }
 
-  .sidebar .men,
-  .sidebar .user-details,
-  .sidebar .nav-item span {
+  .sidebar .men {
     display: none;
   }
 
@@ -1704,11 +1720,15 @@ main {
   }
 
   .stats-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
   }
 
   .car-grid {
     grid-template-columns: 1fr;
+  }
+
+  .section {
+    padding-inline: 1rem;
   }
 
   .quick-actions-grid {
@@ -1862,6 +1882,10 @@ main {
   .table-responsive::after {
     display: none;
   }
+
+  .section {
+    padding-inline: 1rem;
+  }
 }
 .user-details {
   flex: 1;
@@ -1965,4 +1989,418 @@ main {
 .section-header {
   margin-bottom: var(--space-7);
   margin-top: var(--space-9);
+}
+/* ==========================
+     Mobile Top Navigation
+  ========================== */
+
+.mobile-topbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 64px;
+
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 0 1.25rem;
+
+  background: rgba(10, 25, 47, 0.404);
+  backdrop-filter: blur(10px);
+
+  border-bottom: 1px solid var(--border-soft);
+
+  z-index: 1200;
+}
+
+.mobile-topbar h2 {
+  font-size: 1.1rem;
+  color: var(--color-accent-red);
+  font-weight: 700;
+  margin: 0;
+}
+
+.menu-btn {
+  width: 42px;
+  height: 42px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: none;
+  border: none;
+
+  color: white;
+  cursor: pointer;
+}
+
+.menu-btn svg {
+  width: 24px;
+  height: 24px;
+}
+
+@media (max-width: 768px) {
+  /* ==========================
+     Mobile Top Navigation
+  ========================== */
+
+  .mobile-topbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 64px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 1.25rem;
+
+    background: rgba(10, 25, 47, 0.527);
+    backdrop-filter: blur(16px);
+
+    border-bottom: 1px solid var(--border-soft);
+
+    z-index: 1200;
+  }
+
+  .mobile-topbar h2 {
+    font-size: 1.1rem;
+    color: var(--color-accent-red);
+    font-weight: 700;
+    margin: 0;
+  }
+
+  .menu-btn {
+    width: 42px;
+    height: 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: none;
+    border: none;
+
+    color: white;
+    cursor: pointer;
+  }
+
+  .menu-btn svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  /* ==========================
+     Sidebar Drawer
+  ========================== */
+
+  .sidebar {
+    position: fixed;
+
+    top: 0;
+    left: 0;
+
+    width: 280px;
+    height: 100vh;
+
+    transform: translateX(-100%);
+
+    transition: transform 0.35s ease;
+
+    z-index: 1400;
+
+    background: rgba(10, 25, 47, 0.98);
+
+    backdrop-filter: blur(18px);
+
+    padding: 1.75rem;
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
+  }
+  .nav-item {
+    justify-content: flex-start;
+  }
+
+  /* ==========================
+     Overlay
+  ========================== */
+
+  .sidebar-overlay {
+    position: fixed;
+    inset: 0;
+
+    background: rgba(0, 0, 0, 0.55);
+
+    opacity: 0;
+    visibility: hidden;
+
+    transition: 0.3s;
+
+    z-index: 1300;
+  }
+
+  .sidebar-overlay.show {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .sidebar-nav {
+    margin-top: -2rem;
+  }
+  .sidebar-footer {
+    margin-top: 13vh;
+  }
+  /* ==========================
+     Dashboard Layout
+  ========================== */
+
+  body {
+    display: block;
+  }
+
+  .main-wrapper {
+    width: 100%;
+  }
+
+  main {
+    padding: 88px 1rem 1.5rem;
+  }
+
+  .section {
+    padding-inline: 1rem;
+  }
+
+  /* ==========================
+     Cards
+  ========================== */
+
+  .welcome-card {
+    min-height: auto;
+  }
+
+  .welcome-content h1 {
+    font-size: 2rem;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .car-grid,
+  .quick-actions-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* ==========================
+     Buttons
+  ========================== */
+
+  .btn {
+    width: 100%;
+  }
+}
+@media (max-width: 768px) {
+  /* ==========================
+     Mobile Top Bar
+  ========================== */
+
+  .mobile-topbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 70px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 1rem;
+
+    background: rgba(10, 25, 47, 0.72);
+    backdrop-filter: blur(12px);
+
+    border-bottom: 1px solid var(--border-soft);
+
+    z-index: 1100;
+  }
+  .badge-success {
+    display: none;
+  }
+  .mobile-topbar h2 {
+    font-size: 1.05rem;
+    margin: 0;
+    color: linear-gradient(135deg, #ef4444, #c53030);
+  }
+
+  .menu-btn {
+    width: 42px;
+    height: 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: none;
+    border-radius: 12px;
+
+    background: rgba(255, 255, 255, 0.06);
+
+    color: white;
+
+    cursor: pointer;
+  }
+
+  .menu-btn svg {
+    width: 22px;
+    height: 22px;
+  }
+
+  /* Hide desktop toggle */
+
+  .sidebar-toggle {
+    display: none;
+  }
+
+  /* ==========================
+     Sidebar Drawer
+  ========================== */
+
+  .sidebar {
+    position: fixed;
+
+    top: 0;
+    left: 0;
+
+    width: 280px;
+    height: 100vh;
+
+    transform: translateX(-100%);
+
+    transition: transform 0.35s ease;
+
+    z-index: 1200;
+  }
+
+  .sidebar.mobile-open {
+    transform: translateX(0);
+  }
+
+  /* ==========================
+     Overlay
+  ========================== */
+
+  .sidebar-overlay {
+    position: fixed;
+
+    inset: 0;
+
+    background: rgba(0, 0, 0, 0.55);
+
+    opacity: 0;
+
+    visibility: hidden;
+
+    transition: 0.3s;
+
+    z-index: 1150;
+  }
+
+  .sidebar-overlay.show {
+    opacity: 1;
+
+    visibility: visible;
+  }
+
+  /* ==========================
+     Layout
+  ========================== */
+
+  .main-wrapper {
+    width: 100%;
+
+    margin: 0;
+  }
+
+  main {
+    padding: 90px 1rem 2rem;
+  }
+
+  .section {
+    padding-inline: 1rem;
+  }
+
+  /* ==========================
+     Hero
+  ========================== */
+
+  .welcome-card {
+    min-height: auto;
+  }
+
+  .welcome-content {
+    padding-bottom: 2rem;
+    padding-top: 2rem;
+    padding-left: 1.5rem;
+  }
+
+  .welcome-content h1 {
+    font-size: 2.6rem;
+  }
+
+  /* ==========================
+     Grids
+  ========================== */
+
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .car-grid,
+  .quick-actions-grid {
+    grid-template-columns: 1fr;
+  }
+  .welcome-card {
+    width: 100vw;
+    margin-top: 0;
+    height: 65vh;
+    border-radius: 0px;
+    border-left: none;
+    border-right: none;
+    border-top: none;
+    padding: 0;
+  }
+  .stat-footer {
+    display: none;
+  }
+  main {
+    padding: 0;
+  }
+  .welcome-content {
+    margin-top: 70px;
+  }
+  .stat-card {
+    padding: 1rem;
+  }
+  .stat-icon {
+    width: 36px;
+    height: 36px;
+  }
+
+  .stat-icon svg {
+    width: 17px;
+    height: 17px;
+  }
+  .munb {
+    color: var(--color-info);
+  }
 }

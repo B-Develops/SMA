@@ -37,9 +37,22 @@
       }
       /* ==========================================================
          ROOT VARIABLES — CHANGE GLOBAL COLORS / SIZES HERE
-      ========================================================== */    .skip-link{position:absolute;top:-40px;left:0;background:#e53e3e;color:white;padding:8px 16px;z-index:100;text-decoration:none;font-weight:600;transition:top .3s}
-    .skip-link:focus{top:0}
-
+      ========================================================== */
+      .skip-link {
+        position: absolute;
+        top: -40px;
+        left: 0;
+        background: #e53e3e;
+        color: white;
+        padding: 8px 16px;
+        z-index: 100;
+        text-decoration: none;
+        font-weight: 600;
+        transition: top 0.3s;
+      }
+      .skip-link:focus {
+        top: 0;
+      }
     </style>
   </head>
 
@@ -130,9 +143,19 @@
         </a>
       </div>
     </aside>
+    <div class="sidebar-overlay" id="sidebarOverlay"></div
     <!-- MAIN CONTENT -->
     <div class="main-wrapper" id="D">
       <!-- PAGE CONTENT -->
+      <div class="mobile-topbar">
+        <button class="menu-btn" id="menuToggle">
+          <i data-lucide="menu" class="munb"></i>
+        </button>
+
+        <h2>Sarkin Mota Autos</h2>
+
+        <div style="width: 42px"></div>
+      </div>
       <main id="main-content">
         <!-- WELCOME CARD -->
         <section class="welcome-card">
@@ -147,13 +170,19 @@
             </p>
 
             <div class="hero-actions">
-              <a href="{{ url_for('cars.browse_cars') }}" class="btn btn-primary">
+              <a
+                href="{{ url_for('cars.browse_cars') }}"
+                class="btn btn-primary"
+              >
                 <i data-lucide="search"></i>
 
                 Browse Cars
               </a>
 
-              <a href="{{ url_for('orders.my_orders') }}" class="btn btn-secondary">
+              <a
+                href="{{ url_for('orders.my_orders') }}"
+                class="btn btn-secondary"
+              >
                 <i data-lucide="shopping-cart"></i>
 
                 My Orders
@@ -300,7 +329,9 @@
               <article class="activity-card">
                 <h3 class="activity-title">{{ activity['title'] }}</h3>
 
-                <p class="activity-description">{{ activity['description'] }}</p>
+                <p class="activity-description">
+                  {{ activity['description'] }}
+                </p>
 
                 <span class="activity-time">
                   {{ activity['timestamp'].strftime('%d %b %Y • %I:%M %p') }}
@@ -335,7 +366,10 @@
               </p>
             </div>
 
-            <a href="{{ url_for('orders.my_orders') }}" class="btn btn-secondary">
+            <a
+              href="{{ url_for('orders.my_orders') }}"
+              class="btn btn-secondary"
+            >
               <i data-lucide="external-link"></i>
 
               View All
@@ -392,13 +426,19 @@
 
                 <div class="order-footer">
                   <div class="order-actions">
-                    <a href="{{ url_for('orders.view_order', order_id=order.id) }}" class="btn btn-secondary">
+                    <a
+                      href="{{ url_for('orders.view_order', order_id=order.id) }}"
+                      class="btn btn-secondary"
+                    >
                       <i data-lucide="map-pinned"></i>
 
                       Track
                     </a>
 
-                    <a href="{{ url_for('cars.car_detail', car_id=order.car.id) }}" class="btn btn-primary">
+                    <a
+                      href="{{ url_for('cars.car_detail', car_id=order.car.id) }}"
+                      class="btn btn-primary"
+                    >
                       <i data-lucide="eye"></i>
 
                       View
@@ -420,7 +460,10 @@
 
             <p>Browse our marketplace and place your first order.</p>
 
-            <a href="{{ url_for('cars.browse_cars') }}" class="btn btn-primary mt-2">
+            <a
+              href="{{ url_for('cars.browse_cars') }}"
+              class="btn btn-primary mt-2"
+            >
               <i data-lucide="search"></i>
 
               Browse Cars
@@ -441,7 +484,10 @@
               </p>
             </div>
 
-            <a href="{{ url_for('profiles.saved_cars') }}" class="btn btn-secondary">
+            <a
+              href="{{ url_for('profiles.saved_cars') }}"
+              class="btn btn-secondary"
+            >
               <i data-lucide="heart"></i>
 
               View All
@@ -499,7 +545,11 @@
                     <button
                       type="submit"
                       class="btn btn-secondary"
-                      onclick="return confirm('Are you sure you want to remove this car from your saved list?');"
+                      onclick="
+                        return confirm(
+                          'Are you sure you want to remove this car from your saved list?',
+                        );
+                      "
                     >
                       <i data-lucide="trash-2"></i>
 
@@ -507,7 +557,10 @@
                     </button>
                   </form>
 
-                  <a href="{{ url_for('cars.car_detail', car_id=item.id) }}" class="btn btn-primary">
+                  <a
+                    href="{{ url_for('cars.car_detail', car_id=item.id) }}"
+                    class="btn btn-primary"
+                  >
                     <i data-lucide="arrow-right"></i>
 
                     View Car
@@ -528,7 +581,10 @@
 
             <p>Save cars you're interested in and they'll appear here.</p>
 
-            <a href="{{ url_for('cars.browse_cars') }}" class="btn btn-primary mt-2">
+            <a
+              href="{{ url_for('cars.browse_cars') }}"
+              class="btn btn-primary mt-2"
+            >
               <i data-lucide="search"></i>
 
               Browse Cars
@@ -557,7 +613,36 @@
 
         lucide.createIcons();
       });
+      // ===============================
+      // Mobile Drawer
+      // ===============================
+
+      const menuToggle = document.getElementById("menuToggle");
+      const overlay = document.getElementById("sidebarOverlay");
+
+      function openSidebar() {
+        sidebar.classList.add("mobile-open");
+        overlay.classList.add("show");
+        document.body.style.overflow = "hidden";
+      }
+
+      function closeSidebar() {
+        sidebar.classList.remove("mobile-open");
+        overlay.classList.remove("show");
+        document.body.style.overflow = "";
+      }
+
+      menuToggle.addEventListener("click", openSidebar);
+
+      overlay.addEventListener("click", closeSidebar);
+
+      // Close drawer if screen becomes desktop
+
+      window.addEventListener("resize", () => {
+        if (window.innerWidth > 768) {
+          closeSidebar();
+        }
+      });
     </script>
   </body>
 </html>
-
