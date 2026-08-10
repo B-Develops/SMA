@@ -15,9 +15,24 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="../static/index.css" />
-    <style>    .skip-link{position:absolute;top:-40px;left:0;background:#e53e3e;color:white;padding:8px 16px;z-index:100;text-decoration:none;font-weight:600;transition:top .3s}
-    .skip-link:focus{top:0}
-</style>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+      .skip-link {
+        position: absolute;
+        top: -40px;
+        left: 0;
+        background: #e53e3e;
+        color: white;
+        padding: 8px 16px;
+        z-index: 100;
+        text-decoration: none;
+        font-weight: 600;
+        transition: top 0.3s;
+      }
+      .skip-link:focus {
+        top: 0;
+      }
+    </style>
   </head>
 
   <body>
@@ -28,36 +43,54 @@
       <section class="hero section reveal-section">
         <header role="banner">
           <div class="container" id="navcon">
-            <nav aria-label="Main navigation">
-              <div class="logo">Sarkin Mota Autos</div>
-              <div class="nav-actions">
-                <a href="{{ url_for('profiles.about') }}" style="color: #fff"
-                  >About</a
-                >
-                {% if current_user.is_authenticated %}
-                <a
-                  href="{{ url_for('dashboard') }}"
-                  style="color: #fff"
-                  class="btn-auth"
-                >
-                  Dashboard
-                </a>
-                {% else %}
-                <a
-                  href="{{ url_for('auth.login') }}"
-                  style="color: #fff"
-                  class="btn-auth"
-                  >Sign In</a
-                >
-                <a
-                  href="{{ url_for('auth.signup') }}"
-                  style="color: #fff"
-                  class="btn-auth btn-signup"
-                  >Sign Up</a
-                >
-                {% endif %}
-              </div>
-            </nav>
+          <nav aria-label="Main navigation">
+                <div class="logo">Sarkin Mota Autos</div>
+                <div class="dropdown">
+                  <button class="dropbtn" onclick="toggleMenu()">
+                    <i data-lucide="menu" class="munb"></i>
+                  </button>
+                  <div id="menu" class="dropdown-content">
+                    <a href="{{ url_for('profiles.about') }}">About</a>
+                    {% if current_user.is_authenticated %}
+                    <a
+                      href="{{ url_for('dashboard') }}"
+                      >Dashboard</a
+                    >
+                    {% else %}
+                    <a href="{{ url_for('auth.login') }}">Sign In</a>
+                    <a href="{{ url_for('auth.signup') }}">Sign Up</a>
+                    {% endif %}
+                  </div>
+                </div>
+                
+                <div class="nav-actions">
+                  <a href="{{ url_for('profiles.about') }}" style="color: #fff"
+                    >About</a
+                  >
+                  {% if current_user.is_authenticated %}
+                  <a
+                    href="{{ url_for('dashboard') }}"
+                    style="color: #fff"
+                    class="btn-auth"
+                  >
+                    Dashboard
+                  </a>
+                  {% else %}
+                  <a
+                    href="{{ url_for('auth.login') }}"
+                    style="color: #fff"
+                    class="btn-auth"
+                    >Sign In</a
+                  >
+                  <a
+                    href="{{ url_for('auth.signup') }}"
+                    style="color: #fff"
+                    class="btn-auth btn-signup"
+                    >Sign Up</a
+                  >
+                  {% endif %}
+                </div>
+              </nav>
           </div>
         </header>
         <div class="container hero-content">
@@ -145,7 +178,10 @@
           </div>
           <div class="featured-layout">
             <div class="featured-main">
-              <img src="/static/Mercedes.png" alt="Mercedes-Benz C300 Featured Vehicle" />
+              <img
+                src="/static/Mercedes.png"
+                alt="Mercedes-Benz C300 Featured Vehicle"
+              />
 
               <div class="featured-overlay">
                 <span class="featured-tag"> Featured Vehicle </span>
@@ -173,7 +209,10 @@
                 "
               >
                 <div class="listing-image">
-                  <img src="/static/Toyota.png" alt="Toyota Camry - ₦12,500,000" />
+                  <img
+                    src="/static/Toyota.png"
+                    alt="Toyota Camry - ₦12,500,000"
+                  />
                 </div>
 
                 <div class="listing-content">
@@ -195,7 +234,10 @@
                 "
               >
                 <div class="listing-image">
-                  <img src="/static/Honda.png" alt="Honda Accord - ₦10,800,000" />
+                  <img
+                    src="/static/Honda.png"
+                    alt="Honda Accord - ₦10,800,000"
+                  />
                 </div>
 
                 <div class="listing-content">
@@ -450,6 +492,33 @@
           sections.forEach((section) => section.classList.add("is-visible"));
         }
       });
+
+      function toggleMenu() {
+        const menu = document.getElementById('menu');
+        if (menu) {
+          menu.classList.toggle('show');
+        }
+      }
+
+      document.addEventListener('click', function(e) {
+        const dropdown = document.querySelector('.dropdown');
+        const menu = document.getElementById('menu');
+        if (dropdown && menu && menu.classList.contains('show') && !dropdown.contains(e.target)) {
+          menu.classList.remove('show');
+        }
+      });
+
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+          const menu = document.getElementById('menu');
+          if (menu && menu.classList.contains('show')) {
+            menu.classList.remove('show');
+            document.querySelector('.dropbtn')?.focus();
+          }
+        }
+      });
+
+      lucide.createIcons();
     </script>
 
     <footer role="contentinfo">
@@ -557,4 +626,3 @@
     </script>
   </body>
 </html>
-
