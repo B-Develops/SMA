@@ -3,746 +3,621 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{{ car.year }} {{ car.make }} {{ car.model }} - Sarkin Mota Autos</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='view-details.css') }}" />
+
+    <title>
+      {{ car.year }} {{ car.make }} {{ car.model }} - Sarkin Mota Autos
+    </title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='view-details.css') }}"
+    />
+
+    <script src="https://unpkg.com/lucide@latest"></script>
   </head>
-  <style>
-      :root {
-        --bg-main: #0a192f;
-        --bg-card: #112240;
-        --bg-header: #020c1b;
-        --text-main: #f7fafc;
-        --text-muted: #a0aec0;
-        --accent-red: #e53e3e;
-      --accent-gold: #d69e2e;
-      --border-soft: rgba(255, 255, 255, 0.144);
-      --color-bg-secondary: #112240;
-      --color-text-secondary: #a0aec0;
-      --color-accent-gold: #d69e2e;
-      --color-bg-primary: #0a192f;
-      --color-bg-secondary: #020c1b;
-      --color-accent-red: #e53e3e;
-      --color-accent-gold: #d69e2e;
-      --color-text-primary: #f7fafc;
-      --color-text-secondary: #a0aec0ab;
-      --color-card-bg: #112240;
-      --border-soft: rgba(255, 255, 255, 0.08);
-    }
 
-    * {
-      box-sizing: border-box;
-    }
-    html {
-      scroll-behavior: smooth;
-    }
-    body {
-      margin: 0;
-      font-family: "Inter", sans-serif;
-      background-color: #0a192f;
-      color: var(--text-main);
-      line-height: 1.5;
-    }
-    header {
-      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-    }
-
-    img {
-      max-width: 100%;
-      display: block;
-    }
-
-    a {
-      text-decoration: none;
-      color: inherit;
-    }
-
-    /* ================= HEADER ================= */
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0;
-    }
-
-    header {
-      background: var(--bg-main);
-      border-bottom: 1px solid var(--border-soft);
-    }
-
-    .nav {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 1.25rem 1.24rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1.5rem;
-      height: 72px;
-    }
-
-    .brand {
-      font-weight: 800;
-      font-size: 1.4rem;
-      letter-spacing: 0.03em;
-      color: var(--accent-red);
-      white-space: nowrap;
-    }
-
-    .nav-actions {
-      display: flex;
-      align-items: center;
-      gap: 1.5rem;
-    }
-
-    .nav-actions a {
-      color: var(--text-muted);
-      font-weight: 500;
-    }
-
-    .btn-auth {
-      padding: 0.45rem 0.9rem;
-      border-radius: 6px;
-      font-size: 0.85rem;
-      font-weight: 600;
-    }
-
-    .btn-auth:hover {
-      background-color: rgba(255, 255, 255, 0.205);
-      border-color: var(--accent-gold);
-      color: var(--text-main);
-    }
-
-    .btn-signup {
-      background: var(--accent-red);
-      border-color: var(--accent-red);
-      color: #fff;
-    }
-
-    .btn-signup:hover {
-      background: #c53030;
-      border-color: #c53030;
-    }
-
-    /* ================= MAIN ================= */
-    main {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 3rem 1.25rem 5rem;
-    }
-
-    h1 {
-      text-align: center;
-      font-size: clamp(2.1rem, 3.2vw, 2.6rem);
-      font-weight: 800;
-      letter-spacing: -0.02em;
-      margin-bottom: 3.5rem;
-      position: relative;
-    }
-    h1::after {
-      content: "";
-      display: block;
-      width: 48px;
-      height: 3px;
-      background: var(--accent-red);
-      margin: 1.25rem auto 0;
-      border-radius: 999px;
-    }
-
-    /* ================= GRID ================= */
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 2rem;
-      margin-top: -3rem;
-    }
-
-    @media (max-width: 1024px) {
-      .grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
-
-    @media (max-width: 600px) {
-      .grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    /* ================= CARD ================= */
-    .card {
-      background: var(--bg-card);
-      border-radius: 8px;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      transition:
-        transform 0.25s ease,
-        box-shadow 0.25s ease;
-    }
-
-    .card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
-    }
-    .card {
-      background: rgba(17, 34, 64, 0.65);
-      backdrop-filter: blur(12px) saturate(120%);
-      -webkit-backdrop-filter: blur(12px) saturate(120%);
-    }
-
-    .image-wrap {
-      position: relative;
-      aspect-ratio: 4 / 3;
-      background: #1a2b4a;
-    }
-
-    .image-wrap img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    .image-wrap::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(
-        to bottom,
-        transparent 40%,
-        rgba(10, 25, 47, 0.6)
-      );
-    }
-
-    /* ================= BADGE ================= */
-    .badge {
-      position: absolute;
-      top: 10px;
-      left: 10px;
-      font-size: 0.7rem;
-      font-weight: 700;
-      padding: 0.25rem 0.6rem;
-      border-radius: 999px;
-      background: #111;
-    }
-
-    .badge.used {
-      background: #2d3748;
-    }
-    .badge.new {
-      background: #000;
-    }
-    .badge.hot {
-      background: var(--accent-red);
-    }
-
-    /* ================= CONTENT ================= */
-    .card-body {
-      padding: 1.4rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.4rem;
-    }
-
-    .car-name {
-      font-weight: 600;
-      font-size: 0.95rem;
-      letter-spacing: 0.01em;
-    }
-
-    .price {
-      font-weight: 800;
-      font-size: 1.05rem;
-      color: var(--accent-red);
-      margin-bottom: 0.75rem;
-    }
-
-    .btn-details {
-      margin-top: auto;
-      text-align: center;
-      padding: 0.6rem;
-      background: #020c1b;
-      border-radius: 8px;
-      font-weight: 600;
-      font-size: 0.85rem;
-      border: 1px solid var(--border-soft);
-    }
-
-    .btn-details:hover {
-      background: var(--accent-red);
-      border-color: var(--accent-red);
-    }
-
-    /* ================= FOOTER BADGE ================= */
-    .built {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background: #000;
-      color: #fff;
-      font-size: 0.7rem;
-      padding: 0.4rem 0.6rem;
-      border-radius: 6px;
-      opacity: 0.7;
-    }
-
-    .nav-search input {
-      background-color: var(--bg-card);
-      border: 1px solid var(--border-soft);
-      color: var(--text-main);
-      padding: 0.65rem 1rem;
-      border-radius: 6px;
-      font-size: 0.9rem;
-      width: 100%;
-      max-width: 460px;
-      transition:
-        border-color 0.25s ease,
-        background-color 0.25s ease;
-    }
-    .nav-search input:hover {
-      border: 1px solid var(--accent-gold);
-      border-color: var(--accent-gold);
-    }
-    .nav-search input:focus {
-      outline: none;
-      border-color: var(--accent-red);
-      background-color: #0f203f;
-    }
-
-    input::placeholder {
-      color: rgba(255, 255, 255, 0.425);
-      font-weight: 100;
-    }
-    .nav-search {
-      flex: 1;
-      display: flex;
-      justify-content: center;
-      max-width: 420px;
-    }
-
-    .nav-search form {
-      display: flex;
-      gap: 0.5rem;
-      width: 100%;
-    }
-
-    .nav-search input[type="text"] {
-      background-color: var(--bg-card);
-      border: 1px solid var(--border-soft);
-      color: var(--text-main);
-      padding: 0.65rem 1rem;
-      border-radius: 6px;
-      font-size: 0.9rem;
-      flex: 1;
-      transition: border-color 0.25s ease;
-    }
-
-    .nav-search input[type="text"]:hover,
-    .nav-search input[type="text"]:focus {
-      border-color: var(--accent-gold);
-      outline: none;
-    }
-
-    .nav-search button {
-      background: var(--accent-red);
-      border: none;
-      color: white;
-      padding: 0.65rem 1rem;
-      border-radius: 6px;
-      cursor: pointer;
-      font-weight: 600;
-      transition: background 0.25s ease;
-    }
-
-    .nav-search button:hover {
-      background: #c53030;
-    }
-
-    input::placeholder {
-      color: rgba(255, 255, 255, 0.425);
-      font-weight: 100;
-    }
-
-    /* ================= FILTER BAR ================= */
-    .filter-bar {
-      background: rgba(17, 34, 64, 0.5);
-      border: 1px solid var(--border-soft);
-      border-radius: 8px;
-      padding: 1.25rem;
-      margin-bottom: 2rem;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1rem;
-      align-items: center;
-    }
-
-    .filter-bar select,
-    .filter-bar input {
-      background: var(--bg-card);
-      border: 1px solid var(--border-soft);
-      color: var(--text-main);
-      padding: 0.5rem 0.75rem;
-      border-radius: 6px;
-      font-size: 0.9rem;
-    }
-
-    .filter-bar select:focus,
-    .filter-bar input:focus {
-      outline: none;
-      border-color: var(--accent-red);
-    }
-
-    .filter-bar label {
-      font-size: 0.85rem;
-      color: var(--text-muted);
-      display: block;
-      margin-bottom: 0.25rem;
-    }
-
-    .filter-group {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .filter-actions {
-      display: flex;
-      gap: 0.5rem;
-      margin-left: auto;
-    }
-
-    .filter-actions button[type="submit"] {
-      background: var(--accent-red);
-      border: none;
-      color: white;
-      padding: 0.5rem 1rem;
-      border-radius: 6px;
-      font-weight: 600;
-      cursor: pointer;
-    }
-
-    .filter-actions button[type="submit"]:hover {
-      background: #c53030;
-    }
-
-    .filter-actions a {
-      background: transparent;
-      border: 1px solid var(--border-soft);
-      color: var(--text-muted);
-      padding: 0.5rem 1rem;
-      border-radius: 6px;
-      font-weight: 600;
-      text-decoration: none;
-    }
-
-    .filter-actions a:hover {
-      background: rgba(255, 255, 255, 0.06);
-      color: var(--text-main);
-    }
-
-    .results-count {
-      margin-bottom: 1rem;
-      color: var(--text-muted);
-      font-size: 0.95rem;
-    }
-
-    .results-count strong {
-      color: var(--text-main);
-    }
-
-    footer {
-      background-color: #020c1b;
-      padding: 2rem 2.25rem;
-      font-size: 0.9rem;
-      color: var(--color-text-secondary);
-    }
-
-    footer .footer-inner {
-      max-width: 1160px;
-      display: flex;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 1rem;
-    }
-
-    footer span {
-      color: var(--color-accent-gold);
-    }
-    .section {
-      padding: 4rem 0;
-    }
-    .nav-actions {
-      display: flex;
-      gap: 1rem;
-      align-items: center;
-      font-size: 0.9rem;
-    }
-
-    .nav-actions a {
-      color: var(--text-muted);
-      font-weight: 500;
-    }
-
-    .btn-auth {
-      padding: 0.45rem 0.9rem;
-      border-radius: 6px;
-      font-weight: 600;
-      border: 1px solid var(--border-soft);
-      color: #808b9aab;
-    }
-    .btn-signup {
-      background: var(--accent-red);
-      border-color: var(--accent-red);
-      color: #cccccc;
-    }
-    /* Hover for Sign In (btn-auth) */
-    .btn-auth:hover {
-      color: var(--color-text-primary);
-      background: rgba(255, 255, 255, 0.06);
-      border-color: rgba(255, 255, 255, 0.25);
-      transition: all 0.3s ease;
-    }
-
-    /* Hover for Sign Up (btn-signup – primary accent) */
-    .btn-signup:hover {
-      background: #c42727;
-      border-color: #c53030;
-      transform: translateY(-0px);
-      transition: all 0.3s ease;
-    }
-    body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      background-image:
-        linear-gradient(rgba(9, 23, 44, 0.85), rgba(2, 12, 27, 0.9)),
-        url("https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1600&q=80");
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      z-index: -2;
-    }
-
-    #carDetailGrid {
-      grid-template-columns: 1fr;
-    }
-
-    @media (min-width: 900px) {
-      #carDetailGrid {
-        grid-template-columns: 2fr 1fr;
-      }
-    }
-
-    @media (max-width: 640px) {
-      .car-detail-wrapper > div > section,
-      .car-detail-wrapper > section {
-        padding: 1.25rem;
-      }
-
-      .car-detail-wrapper dl {
-        grid-template-columns: 1fr !important;
-        gap: 1rem;
-      }
-
-      h1 {
-        font-size: 1.5rem;
-      }
-    }
-  </style>
   <body>
-    <header>
-      <div class="nav">
-        <a class="brand" href="/">Sarkin Mota Autos</a>
+    <!-- =====================================================
+         HEADER
+         ===================================================== -->
 
-        <div class="nav-search">
-          <form action="/cars/browse" method="GET">
-            <input type="text" name="q" placeholder="Search cars, brands, models..." />
-            <button type="submit">Search</button>
-          </form>
-        </div>
+    <header role="banner">
+      <div class="container" id="navcon">
+        <nav aria-label="Main navigation">
+          <div class="logo">Sarkin Mota Autos</div>
+          <div class="dropdown">
+            <button class="dropbtn" onclick="toggleMenu()">
+              <i data-lucide="menu" class="munb"></i>
+            </button>
 
-        <div class="nav-actions">
-          <a href="{{ url_for('profiles.about') }}">About</a>
-          {% if current_user.is_authenticated %}
-            <a href="{{ url_for('profiles.notifications') }}" class="btn-auth" style="position:relative">
-              🔔
-              {% if unread_notifications and unread_notifications > 0 %}
-                <span style="position:absolute;top:-6px;right:-6px;background:var(--accent-red);color:#fff;padding:2px 6px;border-radius:999px;font-size:0.75rem;">{{ unread_notifications }}</span>
-              {% endif %}
+            <div id="menu" class="dropdown-content">
+              <a href="#">Dashboard</a>
+              <a href="#">Profile</a>
+              <a href="#">Settings</a>
+              <a href="#">Logout</a>
+            </div>
+          </div>
+
+          <div class="nav-actions">
+            <a href="{{ url_for('profiles.about') }}" style="color: #fff"
+              >About</a
+            >
+            {% if current_user.is_authenticated %}
+            <a
+              href="{{ url_for('dashboard') }}"
+              style="color: #fff"
+              class="btn-auth"
+            >
+              Dashboard
             </a>
-            <a class="btn-auth" href="{{ url_for('dashboard') }}">Dashboard</a>
             {% else %}
-            <a class="btn-auth" href="{{ url_for('auth.login') }}">Sign In</a>
-            <a class="btn-auth btn-signup" href="{{ url_for('auth.signup') }}">Sign Up</a>
+            <a
+              href="{{ url_for('auth.login') }}"
+              style="color: #fff"
+              class="btn-auth"
+              >Sign In</a
+            >
+            <a
+              href="{{ url_for('auth.signup') }}"
+              style="color: #fff"
+              class="btn-auth btn-signup"
+              >Sign Up</a
+            >
             {% endif %}
-        </div>
+          </div>
+        </nav>
       </div>
     </header>
 
-    <main id="main-content">
-      <h1>{{ car.year }} {{ car.make }} {{ car.model }}</h1>
+    <!-- =====================================================
+         MAIN
+         ===================================================== -->
 
-      <div class="car-detail-wrapper" id="carDetailGrid" style="display: grid; grid-template-columns: 2fr 1fr; gap: 2rem; margin-top: 3rem;">
-        <!-- Left: Image and Details -->
-        <div>
+    <main class="vehicle-page">
+      <!-- =================================================
+           VEHICLE HEADER
+           ================================================= -->
+
+      <!-- =================================================
+           HERO / PURCHASE AREA
+           ================================================= -->
+
+      <section class="vehicle-hero">
+        <!-- IMAGE -->
+
+        <div class="vehicle-gallery">
           {% if car.image_url %}
-          <img src="{{ url_for('static', filename=car.image_url) }}" alt="{{ car.year }} {{ car.make }} {{ car.model }}" style="width: 100%; border-radius: 8px; margin-bottom: 2rem; aspect-ratio: 16/9; object-fit: cover;">
+
+          <div class="main-image">
+            <img
+              src="{{ url_for('static', filename=car.image_url) }}"
+              alt="{{ car.year }} {{ car.make }} {{ car.model }}"
+            />
+
+            <div class="image-overlay"></div>
+
+            <div class="image-label">
+              <div class="vehicle-heading-main">
+                <div class="condition-row">
+                  {% if car.condition == 'used' %}
+
+                  <span class="condition-badge used"> Used </span>
+
+                  {% else %}
+
+                  <span class="condition-badge new"> New </span>
+
+                  {% endif %}
+
+                  <span class="heading-divider"></span>
+
+                  <span class="heading-meta">
+                    {{ "{:,}".format(car.mileage) if car.mileage else 'N/A' }}
+                    km
+                  </span>
+
+                  <span class="heading-divider"></span>
+
+                  <span class="heading-meta">
+                    {{ car.transmission | default('Automatic') }}
+                  </span>
+                </div>
+
+                <h1>{{ car.year }} {{ car.make }} {{ car.model }}</h1>
+
+                <p class="vehicle-subtitle">
+                  Explore this vehicle and make an offer directly through Sarkin
+                  Mota Autos.
+                </p>
+              </div>
+            </div>
+          </div>
+
           {% else %}
-          <div style="width: 100%; aspect-ratio: 16/9; background: #1a2b4a; border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-bottom: 2rem; color: var(--text-muted);">No image available</div>
+
+          <div class="main-image no-image">
+            <i data-lucide="car"></i>
+
+            <span> No image available </span>
+          </div>
+
+          {% endif %}
+        </div>
+
+        <!-- PURCHASE PANEL -->
+
+        <aside class="purchase-panel">
+          <div class="price-block">
+            <span class="price-label"> Listed Price </span>
+
+            <div class="price">₦{{ "{:,.0f}".format(car.price) }}</div>
+
+            <span class="price-note"> Price set by the seller </span>
+          </div>
+
+          <div class="panel-divider"></div>
+
+          <!-- SELLER -->
+
+          {% if seller %}
+
+          <div class="seller-summary">
+            <div class="seller-icon">
+              <i data-lucide="user"></i>
+            </div>
+
+            <div class="seller-details">
+              <span class="seller-label"> Seller </span>
+
+              <strong> {{ seller.name }} </strong>
+
+              {% if seller.location %}
+
+              <span class="seller-location">
+                <i data-lucide="map-pin"></i>
+                {{ seller.location }}
+              </span>
+
+              {% endif %}
+            </div>
+          </div>
+
+          <div class="panel-divider"></div>
+
           {% endif %}
 
-          <section style="background: rgba(17, 34, 64, 0.5); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 8px; padding: 1.5rem; margin-bottom: 2rem;">
-            <h2 style="margin-top: 0; margin-bottom: 1rem;">Vehicle Details</h2>
-            <dl style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
-              <div>
-                <dt style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 0.25rem;">Year</dt>
-                <dd style="font-weight: 600; margin: 0;">{{ car.year }}</dd>
-              </div>
-              <div>
-                <dt style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 0.25rem;">Condition</dt>
-                <dd style="font-weight: 600; margin: 0;">{{ car.condition | capitalize }}</dd>
-              </div>
-              <div>
-                <dt style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 0.25rem;">Mileage</dt>
-                <dd style="font-weight: 600; margin: 0;">{{ "{:,}".format(car.mileage) if car.mileage else 'N/A' }} km</dd>
-              </div>
-              <div>
-                <dt style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 0.25rem;">Transmission</dt>
-                <dd style="font-weight: 600; margin: 0;">{{ car.transmission | default('N/A') }}</dd>
-              </div>
-              <div>
-                <dt style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 0.25rem;">Engine</dt>
-                <dd style="font-weight: 600; margin: 0;">{{ car.engine_size | default('N/A') }}</dd>
-              </div>
-              <div>
-                <dt style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 0.25rem;">Fuel Type</dt>
-                <dd style="font-weight: 600; margin: 0;">{{ car.fuel_type | default('N/A') }}</dd>
-              </div>
-            </dl>
-          </section>
+          <!-- ORDER -->
 
-          <section style="background: rgba(17, 34, 64, 0.5); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 8px; padding: 1.5rem;">
-            <h2 style="margin-top: 0; margin-bottom: 1rem;">Description</h2>
-            <p style="line-height: 1.6; color: var(--text-muted); margin: 0;">{{ car.description | default('No description available.') }}</p>
-          </section>
+          {% if current_user.is_authenticated %}
+
+          <div class="offer-heading">
+            <div>
+              <h2>Make an offer</h2>
+
+              <p>Enter the amount you'd like to offer.</p>
+            </div>
+          </div>
+
+          <form
+            id="orderForm"
+            action="{{ url_for('cars.review_order_post', car_id=car.id) }}"
+            method="POST"
+            class="order-form"
+          >
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+
+            <!-- OFFER -->
+
+            <div class="form-field">
+              <label for="orderAmount"> Your Offer </label>
+
+              <div class="input-wrapper money-input">
+                <span>₦</span>
+
+                <input
+                  id="orderAmount"
+                  type="number"
+                  name="order_amount"
+                  value="{{ car.price }}"
+                  min="1000"
+                  max="100000000"
+                  required
+                  oninput="updateAmountHint(this)"
+                />
+              </div>
+
+              <div id="amountHint" class="input-hint"></div>
+            </div>
+
+            <!-- PAYMENT -->
+
+            <div class="form-field">
+              <label for="paymentMethod"> Payment Method </label>
+
+              <select id="paymentMethod" name="payment_method" required>
+                <option value="">Select payment method</option>
+
+                <option value="bank_transfer">Bank Transfer</option>
+
+                <option value="card">Credit / Debit Card</option>
+
+                <option value="mobile_money">Mobile Money</option>
+              </select>
+
+              <div id="paymentError" class="input-error"></div>
+            </div>
+
+            <!-- DELIVERY -->
+
+            <div class="form-field">
+              <label for="deliveryAddress">
+                Delivery Address
+                <span>Optional</span>
+              </label>
+
+              <input
+                id="deliveryAddress"
+                type="text"
+                name="delivery_address"
+                placeholder="e.g. 15 Broad St, Lagos"
+              />
+            </div>
+
+            <!-- NOTES -->
+
+            <div class="form-field">
+              <label for="notes">
+                Notes
+                <span>Optional</span>
+              </label>
+
+              <textarea
+                id="notes"
+                name="notes"
+                rows="3"
+                placeholder="Any questions or conditions for the seller?"
+              ></textarea>
+            </div>
+
+            <button type="submit" id="reviewBtn" class="primary-action">
+              Review Order
+              <i data-lucide="arrow-right"></i>
+            </button>
+          </form>
+
+          <!-- SAVE -->
+
+          <form
+            action="{{ url_for('cars.save_car', car_id=car.id) }}"
+            method="POST"
+            class="save-form"
+          >
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+
+            <button type="submit" class="save-button">
+              <i data-lucide="heart"></i>
+              Save Car
+            </button>
+          </form>
+
+          {% else %}
+
+          <div class="offer-heading">
+            <h2>Interested in this vehicle?</h2>
+
+            <p>Sign in to make an offer or save this car.</p>
+          </div>
+
+          <a
+            href="{{ url_for('auth.login') }}"
+            class="primary-action auth-action"
+          >
+            Sign In to Order
+            <i data-lucide="arrow-right"></i>
+          </a>
+
+          <a href="{{ url_for('auth.signup') }}" class="secondary-action">
+            Create Account
+          </a>
+
+          {% endif %}
+        </aside>
+      </section>
+
+      <!-- =================================================
+           VEHICLE OVERVIEW
+           ================================================= -->
+
+      <section class="content-section">
+        <div class="section-heading">
+          <div>
+            <span class="section-eyebrow"> Vehicle information </span>
+
+            <h2>Vehicle Overview</h2>
+          </div>
         </div>
 
-        <!-- Right: Pricing Sidebar -->
-        <div>
-          <section style="background: rgba(17, 34, 64, 0.65); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 8px; padding: 1.5rem; position: sticky; top: 2rem; backdrop-filter: blur(12px);">
-            <h2 style="margin-top: 0; margin-bottom: 1rem; color: var(--accent-red); font-size: 1.8rem;">₦{{ "{:,.0f}".format(car.price) }}</h2>
-
-            <div style="margin: 1.5rem 0;">
-              {% if car.condition == 'used' %}
-              <span style="display: inline-block; background: #2d3748; padding: 0.35rem 0.75rem; border-radius: 999px; font-size: 0.8rem; font-weight: 600; color: var(--text-main);">Used</span>
-              {% else %}
-              <span style="display: inline-block; background: #000; padding: 0.35rem 0.75rem; border-radius: 999px; font-size: 0.8rem; font-weight: 600; color: var(--text-main);">New</span>
-              {% endif %}
+        <div class="spec-grid">
+          <div class="spec-item">
+            <div class="spec-icon">
+              <i data-lucide="calendar"></i>
             </div>
 
-            {% if seller %}
-            <div style="border-top: 1px solid rgba(255, 255, 255, 0.08); padding-top: 1rem; margin-top: 1rem;">
-              <h3 style="margin: 0 0 0.75rem 0; font-size: 0.95rem; color: var(--text-muted);">Seller Information</h3>
-              <p style="margin: 0.5rem 0; font-weight: 600;">{{ seller.name }}</p>
-              {% if seller.phone %}
-              <p style="margin: 0.5rem 0; color: var(--text-muted); font-size: 0.9rem;">📱 {{ seller.phone }}</p>
-              {% endif %}
-              {% if seller.location %}
-              <p style="margin: 0.5rem 0; color: var(--text-muted); font-size: 0.9rem;">📍 {{ seller.location }}</p>
-              {% endif %}
+            <div>
+              <span>Year</span>
+              <strong>{{ car.year }}</strong>
             </div>
+          </div>
+
+          <div class="spec-item">
+            <div class="spec-icon">
+              <i data-lucide="badge-check"></i>
+            </div>
+
+            <div>
+              <span>Condition</span>
+              <strong> {{ car.condition | capitalize }} </strong>
+            </div>
+          </div>
+
+          <div class="spec-item">
+            <div class="spec-icon">
+              <i data-lucide="gauge"></i>
+            </div>
+
+            <div>
+              <span>Mileage</span>
+              <strong>
+                {{ "{:,}".format(car.mileage) if car.mileage else 'N/A' }} km
+              </strong>
+            </div>
+          </div>
+
+          <div class="spec-item">
+            <div class="spec-icon">
+              <i data-lucide="settings-2"></i>
+            </div>
+
+            <div>
+              <span>Transmission</span>
+              <strong> {{ car.transmission | default('N/A') }} </strong>
+            </div>
+          </div>
+
+          <div class="spec-item">
+            <div class="spec-icon">
+              <i data-lucide="cog"></i>
+            </div>
+
+            <div>
+              <span>Engine</span>
+              <strong> {{ car.engine_size | default('N/A') }} </strong>
+            </div>
+          </div>
+
+          <div class="spec-item">
+            <div class="spec-icon">
+              <i data-lucide="fuel"></i>
+            </div>
+
+            <div>
+              <span>Fuel Type</span>
+              <strong> {{ car.fuel_type | default('N/A') }} </strong>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =================================================
+           DESCRIPTION
+           ================================================= -->
+
+      <section class="content-section description-section">
+        <div class="section-heading">
+          <div>
+            <span class="section-eyebrow"> About the vehicle </span>
+
+            <h2>Description</h2>
+          </div>
+        </div>
+
+        <p class="description-text">
+          {{ car.description | default('No description available.') }}
+        </p>
+      </section>
+
+      <!-- =================================================
+           SELLER
+           ================================================= -->
+
+      {% if seller %}
+
+      <section class="seller-section">
+        <div class="seller-section-heading">
+          <div>
+            <span class="section-eyebrow"> Listing information </span>
+
+            <h2>Seller</h2>
+          </div>
+
+          <div class="trust-badge">
+            <i data-lucide="shield-check"></i>
+
+            <span> Trusted Listing </span>
+          </div>
+        </div>
+
+        <div class="seller-card">
+          <div class="seller-avatar">
+            <i data-lucide="user"></i>
+          </div>
+
+          <div class="seller-main">
+            <strong> {{ seller.name }} </strong>
+
+            <span> Vehicle seller </span>
+          </div>
+
+          <div class="seller-contact">
+            {% if seller.location %}
+
+            <div>
+              <i data-lucide="map-pin"></i>
+              <span>{{ seller.location }}</span>
+            </div>
+
+            {% endif %} {% if seller.phone %}
+
+            <div>
+              <i data-lucide="phone"></i>
+              <span>{{ seller.phone }}</span>
+            </div>
+
             {% endif %}
-
-            <div style="display: flex; flex-direction: column; gap: 0.75rem; margin-top: 1.5rem;">
-              {% if current_user.is_authenticated %}
-              <form id="orderForm" action="{{ url_for('cars.review_order_post', car_id=car.id) }}" method="POST" style="display: flex; flex-direction: column; gap: 0.75rem;">
-                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                <div>
-                  <label style="display: block; font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.35rem;">Your Offer (₦)</label>
-                  <input type="number" name="order_amount" value="{{ car.price }}" min="1000" max="100000000" required style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.08); background: var(--bg-card); color: var(--text-main); font-size: 1rem;" oninput="updateAmountHint(this)" />
-                  <div id="amountHint" style="font-size: 0.8rem; margin-top: 0.35rem; color: var(--text-muted);"></div>
-                </div>
-                <div>
-                  <label style="display: block; font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.35rem;">Payment Method</label>
-                  <select name="payment_method" required style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.08); background: var(--bg-card); color: var(--text-main); font-size: 1rem;">
-                    <option value="">Select payment method</option>
-                    <option value="bank_transfer">Bank Transfer</option>
-                    <option value="card">Credit/Debit Card</option>
-                    <option value="mobile_money">Mobile Money</option>
-                  </select>
-                  <div id="paymentError" style="font-size: 0.8rem; margin-top: 0.35rem; color: #f56565; display: none;"></div>
-                </div>
-                <div>
-                  <label style="display: block; font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.35rem;">Delivery Address <span style="opacity: 0.6;">(optional)</span></label>
-                  <input type="text" name="delivery_address" placeholder="e.g., 15 Broad St, Lagos" style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.08); background: var(--bg-card); color: var(--text-main); font-size: 1rem;" />
-                </div>
-                <div>
-                  <label style="display: block; font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.35rem;">Notes <span style="opacity: 0.6;">(optional)</span></label>
-                  <textarea name="notes" rows="3" placeholder="Any questions or conditions for the seller?" style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.08); background: var(--bg-card); color: var(--text-main); font-size: 1rem; resize: vertical;"></textarea>
-                </div>
-                <button type="submit" id="reviewBtn" style="width: 100%; background: var(--accent-red); color: white; border: none; padding: 0.85rem 1rem; border-radius: 8px; font-weight: 700; cursor: pointer; transition: background 0.25s ease; font-size: 1rem;">Review Order</button>
-              </form>
-              <form action="{{ url_for('cars.save_car', car_id=car.id) }}" method="POST" style="margin-top: 0.25rem;">
-                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                <button type="submit" style="width: 100%; background: transparent; border: 1px solid rgba(255,255,255,0.08); color: var(--text-main); padding: 0.75rem 1rem; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.25s ease; font-size: 1rem;">♡ Save Car</button>
-              </form>
-              {% else %}
-              <a href="{{ url_for('auth.login') }}" style="text-align: center; padding: 0.85rem 1rem; background: var(--accent-red); color: white; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; text-decoration: none; font-size: 1rem; transition: background 0.25s ease;">Sign In to Order</a>
-              <a href="{{ url_for('auth.signup') }}" style="text-align: center; padding: 0.85rem 1rem; background: transparent; border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.25s ease; text-decoration: none; color: inherit; font-size: 1rem;">Create Account</a>
-              {% endif %}
-            </div>
-
-            <a href="{{ url_for('cars.browse_cars') }}" style="display: block; margin-top: 1rem; text-align: center; padding: 0.75rem 1rem; background: transparent; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 6px; font-weight: 500; color: var(--text-muted); text-decoration: none; transition: all 0.25s ease;">← Back to Browse</a>
-          </section>
+          </div>
         </div>
+      </section>
+
+      {% endif %}
+
+      <!-- =================================================
+           BOTTOM NAVIGATION
+           ================================================= -->
+
+      <div class="bottom-navigation">
+        <a href="{{ url_for('cars.browse_cars') }}" class="bottom-back">
+          <i data-lucide="arrow-left"></i>
+          Back to Browse Cars
+        </a>
       </div>
     </main>
 
-    <footer>
-      <div class="footer-inner">
-        <div>© 2019–2026 Sarkin Mota Autos. All rights reserved.</div>
-        <div>Founded by <span>Dr. Aliyu Mohammad (Sarkin Mota)</span></div>
-      </div>
-    </footer>
-
-    <div class="built">Built for trust</div>
+    <!-- =====================================================
+         JAVASCRIPT
+         ===================================================== -->
 
     <script>
+      /* Lucide icons */
+
+      lucide.createIcons();
+
+      /* Amount hint */
+
       function updateAmountHint(input) {
-        const hint = document.getElementById('amountHint');
+        const hint = document.getElementById("amountHint");
+
         const listed = parseFloat("{{ car.price }}");
+
         const val = parseFloat(input.value);
+
         if (!input.value || isNaN(val)) {
-          hint.textContent = '';
+          hint.textContent = "";
+
           return;
         }
+
         if (val > listed) {
           const diff = val - listed;
-          hint.innerHTML = '<span style="color: #f6ad55;">⚠️ Above listed price (₦' + listed.toLocaleString('en-NG') + ')</span>';
+
+          hint.innerHTML =
+            '<span class="hint-warning">⚠ Above listed price (₦' +
+            listed.toLocaleString("en-NG") +
+            ")</span>";
         } else if (val < listed) {
           const discount = listed - val;
+
           const pct = ((discount / listed) * 100).toFixed(0);
-          hint.innerHTML = '<span style="color: #48bb78;">✓ ' + pct + '% discount (₦' + discount.toLocaleString('en-NG') + ' off)</span>';
+
+          hint.innerHTML =
+            '<span class="hint-success">✓ ' +
+            pct +
+            "% below listed price (₦" +
+            discount.toLocaleString("en-NG") +
+            " off)</span>";
         } else {
-          hint.innerHTML = '<span style="color: var(--text-muted);">Equal to listed price</span>';
+          hint.innerHTML =
+            '<span class="hint-neutral">Equal to listed price</span>';
         }
       }
 
-      document.getElementById('orderForm').addEventListener('submit', function(e) {
-        const paymentSelect = this.querySelector('select[name="payment_method"]');
-        const paymentError = document.getElementById('paymentError');
-        const reviewBtn = document.getElementById('reviewBtn');
+      /* Order validation */
 
-        if (!paymentSelect.value) {
-          e.preventDefault();
-          paymentError.textContent = 'Please select a payment method';
-          paymentError.style.display = 'block';
-          paymentSelect.style.borderColor = '#f56565';
-          paymentSelect.focus();
-          return;
+      const orderForm = document.getElementById("orderForm");
+
+      if (orderForm) {
+        orderForm.addEventListener("submit", function (e) {
+          const paymentSelect = this.querySelector(
+            'select[name="payment_method"]',
+          );
+
+          const paymentError = document.getElementById("paymentError");
+
+          const reviewBtn = document.getElementById("reviewBtn");
+
+          if (!paymentSelect.value) {
+            e.preventDefault();
+
+            paymentError.textContent = "Please select a payment method";
+
+            paymentError.style.display = "block";
+
+            paymentSelect.classList.add("input-invalid");
+
+            paymentSelect.focus();
+
+            return;
+          }
+
+          paymentError.style.display = "none";
+
+          paymentSelect.classList.remove("input-invalid");
+
+          reviewBtn.disabled = true;
+
+          reviewBtn.innerHTML = "Preparing...";
+        });
+      }
+
+      /* Mobile menu */
+
+      function toggleMenu() {
+        const menu = document.getElementById("menu");
+
+        if (menu) {
+          menu.classList.toggle("show");
         }
+      }
 
-        paymentError.style.display = 'none';
-        paymentSelect.style.borderColor = 'rgba(255,255,255,0.08)';
-        reviewBtn.disabled = true;
-        reviewBtn.textContent = 'Preparing...';
+      document.addEventListener("click", function (e) {
+        const dropdown = document.querySelector(".mobile-menu");
+
+        const menu = document.getElementById("menu");
+
+        if (
+          dropdown &&
+          menu &&
+          menu.classList.contains("show") &&
+          !dropdown.contains(e.target)
+        ) {
+          menu.classList.remove("show");
+        }
+      });
+
+      document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape") {
+          const menu = document.getElementById("menu");
+
+          if (menu && menu.classList.contains("show")) {
+            menu.classList.remove("show");
+          }
+        }
       });
     </script>
   </body>

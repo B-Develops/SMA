@@ -38,61 +38,65 @@
   <body>
     <a href="#main-content" class="skip-link">Skip to main content</a>
     <div id="bg-overlay"></div>
+    <header role="banner">
+      <div class="container" id="navcon">
+        <nav aria-label="Main navigation">
+          <div class="logo">Sarkin Mota Autos</div>
+          <div class="dropdown">
+            <button class="dropbtn" onclick="toggleMenu()">
+              <i data-lucide="menu" class="munb"></i>
+            </button>
+            <div id="menu" class="dropdown-content">
+              <a href="{{ url_for('profiles.about') }}">About</a>
+              {% if current_user.is_authenticated %}
+              <a href="{{ url_for('dashboard') }}">Dashboard</a>
+              {% else %}
+              <a href="{{ url_for('auth.login') }}">Sign In</a>
+              <a href="{{ url_for('auth.signup') }}">Sign Up</a>
+              {% endif %}
+            </div>
+          </div>
+
+          <div class="nav-actions">
+            <a href="{{ url_for('profiles.about') }}" style="color: #fff"
+              >About</a
+            >
+            {% if current_user.is_authenticated %}
+            <a
+              href="{{ url_for('dashboard') }}"
+              style="color: #fff"
+              class="btn-auth"
+            >
+              Dashboard
+            </a>
+            {% else %}
+            <a
+              href="{{ url_for('auth.login') }}"
+              style="color: #fff"
+              class="btn-auth"
+              >Sign In</a
+            >
+            <a
+              href="{{ url_for('auth.signup') }}"
+              style="color: #fff"
+              class="btn-auth btn-signup"
+              >Sign Up</a
+            >
+            {% endif %}
+          </div>
+        </nav>
+      </div>
+    </header>
+
     <main id="main-content">
       <!-- HERO -->
       <section class="hero section reveal-section">
-        <header role="banner">
-          <div class="container" id="navcon">
-          <nav aria-label="Main navigation">
-                <div class="logo">Sarkin Mota Autos</div>
-                <div class="dropdown">
-                  <button class="dropbtn" onclick="toggleMenu()">
-                    <i data-lucide="menu" class="munb"></i>
-                  </button>
-                  <div id="menu" class="dropdown-content">
-                    <a href="{{ url_for('profiles.about') }}">About</a>
-                    {% if current_user.is_authenticated %}
-                    <a
-                      href="{{ url_for('dashboard') }}"
-                      >Dashboard</a
-                    >
-                    {% else %}
-                    <a href="{{ url_for('auth.login') }}">Sign In</a>
-                    <a href="{{ url_for('auth.signup') }}">Sign Up</a>
-                    {% endif %}
-                  </div>
-                </div>
-                
-                <div class="nav-actions">
-                  <a href="{{ url_for('profiles.about') }}" style="color: #fff"
-                    >About</a
-                  >
-                  {% if current_user.is_authenticated %}
-                  <a
-                    href="{{ url_for('dashboard') }}"
-                    style="color: #fff"
-                    class="btn-auth"
-                  >
-                    Dashboard
-                  </a>
-                  {% else %}
-                  <a
-                    href="{{ url_for('auth.login') }}"
-                    style="color: #fff"
-                    class="btn-auth"
-                    >Sign In</a
-                  >
-                  <a
-                    href="{{ url_for('auth.signup') }}"
-                    style="color: #fff"
-                    class="btn-auth btn-signup"
-                    >Sign Up</a
-                  >
-                  {% endif %}
-                </div>
-              </nav>
-          </div>
-        </header>
+        <video class="section-video" autoplay muted loop playsinline>
+          <source src="../static/videoplayback (1).mp4" type="video/mp4" />
+        </video>
+
+        <div class="video-overlay"></div>
+
         <div class="container hero-content">
           <h1>Trusted Car Sales Across Nigeria</h1>
           <p>
@@ -491,29 +495,42 @@
         } else {
           sections.forEach((section) => section.classList.add("is-visible"));
         }
+
+        const video = document.querySelector(".section-video");
+        if (
+          video &&
+          window.matchMedia("(prefers-reduced-motion: reduce)").matches
+        ) {
+          video.pause();
+        }
       });
 
       function toggleMenu() {
-        const menu = document.getElementById('menu');
+        const menu = document.getElementById("menu");
         if (menu) {
-          menu.classList.toggle('show');
+          menu.classList.toggle("show");
         }
       }
 
-      document.addEventListener('click', function(e) {
-        const dropdown = document.querySelector('.dropdown');
-        const menu = document.getElementById('menu');
-        if (dropdown && menu && menu.classList.contains('show') && !dropdown.contains(e.target)) {
-          menu.classList.remove('show');
+      document.addEventListener("click", function (e) {
+        const dropdown = document.querySelector(".dropdown");
+        const menu = document.getElementById("menu");
+        if (
+          dropdown &&
+          menu &&
+          menu.classList.contains("show") &&
+          !dropdown.contains(e.target)
+        ) {
+          menu.classList.remove("show");
         }
       });
 
-      document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape') {
-          const menu = document.getElementById('menu');
-          if (menu && menu.classList.contains('show')) {
-            menu.classList.remove('show');
-            document.querySelector('.dropbtn')?.focus();
+      document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape") {
+          const menu = document.getElementById("menu");
+          if (menu && menu.classList.contains("show")) {
+            menu.classList.remove("show");
+            document.querySelector(".dropbtn")?.focus();
           }
         }
       });
