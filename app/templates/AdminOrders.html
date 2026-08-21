@@ -3,16 +3,19 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Orders Received - Admin - Sarkin Mota Autos</title>
+
+    <title>Manage Orders - Admin - Sarkin Mota Autos</title>
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
 
+    <!-- Page Styles -->
     <link
       rel="stylesheet"
       href="{{ url_for('static', filename='admin-orders.css') }}"
@@ -21,249 +24,377 @@
     <!-- Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
   </head>
+
   <body>
-    <a href="#main-content" class="skip-link">Skip to main content</a>
-    <!-- LEFT SIDEBAR -->
+    <a href="#main-content" class="skip-link"> Skip to main content </a>
 
-    <!-- MAIN CONTENT -->
-    <div class="page-container">
-      <main id="main-content">
-        <a
-          href="{{ url_for('admin.dashboard') }}"
-          class="back-link"
-          style="display: block; margin-bottom: 1rem"
-          >← Back to Admin Dashboard</a
-        >
+    <div class="page-wrapper">
+      <main class="page-container" id="main-content">
+        <!-- =====================================================
+             PAGE HEADER
+        ====================================================== -->
 
-        <div class="stats-row">
-          <div class="stat-card">
-            <div class="label">Total Orders</div>
-            <div class="value">{{ total_orders }}</div>
-          </div>
-
-          <div class="stat-card">
-            <div class="label">Active Orders</div>
-            <div class="value">{{ active_orders }}</div>
-          </div>
-        </div>
-
-        {% if orders %}
-        <div class="table-wrapper">
-          <table class="orders-table">
-            <thead>
-              <tr>
-                <th>Car</th>
-                <th>Buyer</th>
-                <th>Offer Amount</th>
-                <th>Listed Price</th>
-                <th>Status</th>
-                <th>Payment</th>
-                <th>Date</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-
-            <tbody>
-              {% for order in orders %}
-              <tr>
-                <!-- CAR -->
-                <td>
-                  <div class="car-info">
-                    {{ order.year or '?' }} {{ order.make or '?' }} {{
-                    order.model or '?' }}
-                  </div>
-
-                  <div class="car-details">
-                    Listed: {{ order.listed_price | currency }}
-                  </div>
-                </td>
-
-                <!-- BUYER -->
-                <td>
-                  <div class="buyer-info">
-                    {{ order.buyer_name or 'Deleted User' }}
-                  </div>
-
-                  <div class="buyer-email">{{ order.buyer_email or '-' }}</div>
-                </td>
-
-                <!-- OFFER -->
-                <td class="amount">{{ order.order_amount | currency }}</td>
-
-                <!-- LISTED PRICE -->
-                <td class="amount">{{ order.listed_price | currency }}</td>
-
-                <!-- STATUS -->
-                <td>
-                  <span class="badge badge-{{ order.status }}">
-                    {{ order.status|capitalize }}
-                  </span>
-                </td>
-
-                <!-- PAYMENT -->
-                <td>
-                  {% if order.payment_status %}
-
-                  <span class="badge badge-{{ order.payment_status }}">
-                    {{ order.payment_status|capitalize }}
-                  </span>
-
-                  {% if order.payment_reference %}
-                  <div class="buyer-email" style="margin-top: 6px">
-                    {{ order.payment_reference }}
-                  </div>
-                  {% endif %} {% else %}
-
-                  <span class="buyer-email"> No payment </span>
-
-                  {% endif %}
-                </td>
-
-                <!-- DATE -->
-                <td>
-                  {{ order.created_at|date('Y-m-d') if order.created_at else
-                  'N/A' }}
-                </td>
-
-                <!-- ACTIONS -->
-                <td class="actions-cell">
-                  {% if order.status == 'pending' %}
-
-                  <form
-                    action="{{ url_for('admin.accept_order', order_id=order.id) }}"
-                    method="POST"
-                  >
-                    <input
-                      type="hidden"
-                      name="csrf_token"
-                      value="{{ csrf_token() }}"
-                    />
-
-                    <button type="submit" class="btn btn-accept btn-sm">
-                      Accept
-                    </button>
-                  </form>
-
-                  <form
-                    action="{{ url_for('admin.reject_order', order_id=order.id) }}"
-                    method="POST"
-                  >
-                    <input
-                      type="hidden"
-                      name="csrf_token"
-                      value="{{ csrf_token() }}"
-                    />
-
-                    <button type="submit" class="btn btn-reject btn-sm">
-                      Reject
-                    </button>
-                  </form>
-
-                  {% elif order.status == 'confirmed' %}
-
-                  <form
-                    action="{{ url_for('admin.cancel_order', order_id=order.id) }}"
-                    method="POST"
-                  >
-                    <input
-                      type="hidden"
-                      name="csrf_token"
-                      value="{{ csrf_token() }}"
-                    />
-
-                    <button type="submit" class="btn btn-danger btn-sm">
-                      Cancel
-                    </button>
-                  </form>
-
-                  {% endif %} {% if order.payment_id and order.payment_status !=
-                  'paid' %}
-
-                  <form
-                    action="{{ url_for('payments.admin_mark_payment_paid', payment_id=order.payment_id) }}"
-                    method="POST"
-                    onsubmit="
-                      return confirm(
-                        'Mark this payment as paid after confirming it in the bank account?',
-                      );
-                    "
-                  >
-                    <input
-                      type="hidden"
-                      name="csrf_token"
-                      value="{{ csrf_token() }}"
-                    />
-
-                    <button type="submit" class="btn btn-accept btn-sm">
-                      Mark Paid
-                    </button>
-                  </form>
-
-                  {% endif %}
-                </td>
-              </tr>
-              {% endfor %}
-            </tbody>
-          </table>
-        </div>
-
-        {% else %}
-
-        <div class="empty-state">
-          <p>No orders found.</p>
-        </div>
-
-        {% endif %} {% else %}
-        <div class="empty-state">
-          <p>No orders found.</p>
-        </div>
-        {% endif %}
-
-        <!-- PAGINATION -->
-        {% if pagination %}
-        <div class="pagination">
-          {% if pagination.has_prev %}
-          <a
-            href="{{ url_for('admin.orders', page=pagination.prev_num) }}"
-            class="btn"
-            >← Previous
+        <header class="page-header">
+          <a href="{{ url_for('admin.dashboard') }}" class="back-link">
+            <i data-lucide="arrow-left"></i>
+            <span>Back to Dashboard</span>
           </a>
+
+          <div class="page-heading">
+            <h1>Manage Orders</h1>
+
+            <p>
+              Review and manage customer orders across the Sarkin Mota Autos platform.
+            </p>
+          </div>
+        </header>
+
+        <!-- =====================================================
+             LISTING STATISTICS
+        ====================================================== -->
+
+        <section class="stats-grid" aria-label="Order statistics">
+          <!-- Total -->
+          <article class="stat-card">
+            <div class="stat-card-header">
+              <span class="stat-title"> Total Orders </span>
+
+              <div class="stat-icon">
+                <i data-lucide="shopping-bag"></i>
+              </div>
+            </div>
+
+            <h2>{{ total_orders }}</h2>
+
+            <span class="stat-description"> All customer orders </span>
+          </article>
+
+          <!-- Active -->
+          <article class="stat-card">
+            <div class="stat-card-header">
+              <span class="stat-title"> Active Orders </span>
+
+              <div class="stat-icon">
+                <i data-lucide="badge-check"></i>
+              </div>
+            </div>
+
+            <h2>{{ active_orders }}</h2>
+
+            <span class="stat-description"> Awaiting processing </span>
+          </article>
+
+          <!-- Sold -->
+          <article class="stat-card">
+            <div class="stat-card-header">
+              <span class="stat-title"> Other Orders </span>
+
+              <div class="stat-icon">
+                <i data-lucide="circle-check"></i>
+              </div>
+            </div>
+
+            <h2>{{ total_orders - active_orders }}</h2>
+
+            <span class="stat-description"> Confirmed, completed or cancelled </span>
+          </article>
+        </section>
+
+        <!-- =====================================================
+             TOOLBAR
+        ====================================================== -->
+
+        <section class="toolbar" aria-label="Order controls">
+          <!-- Search -->
+          <div class="search-box">
+            <i data-lucide="search"></i>
+
+            <input
+              type="search"
+              placeholder="Search orders by vehicle or buyer..."
+              aria-label="Search orders"
+            />
+          </div>
+
+          <!-- Filters -->
+          <div class="toolbar-actions">
+            <label class="sr-only" for="listing-status">
+              Filter orders by status
+            </label>
+
+            <select id="listing-status">
+              <option>All Status</option>
+              <option>Active</option>
+              <option>Pending</option>
+              <option>Sold</option>
+            </select>
+
+            <label class="sr-only" for="listing-sort"> Sort orders </label>
+
+            <select id="listing-sort">
+              <option>Newest First</option>
+              <option>Oldest First</option>
+              <option>Highest Price</option>
+              <option>Lowest Price</option>
+            </select>
+          </div>
+        </section>
+
+        <!-- =====================================================
+             LISTINGS TABLE
+        ====================================================== -->
+
+        <section class="table-card" aria-label="Customer orders">
+          {% if orders %}
+
+          <div class="table-wrap">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th scope="col">Vehicle</th>
+
+                  <th scope="col">Buyer</th>
+
+                  <th scope="col">Order Amount</th>
+
+                  <th scope="col">Status</th>
+
+                  <th scope="col">Listed</th>
+
+                  <th scope="col">Actions</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                {% for order in orders %}
+
+                <tr>
+                  <!-- =================================================
+                       VEHICLE
+                  ================================================== -->
+
+                  <td>
+                    <div class="vehicle-card">
+                      {% if order.image_url %}
+
+                      <img
+                        src="{{ url_for('static', filename=order.image_url) }}"
+                        alt="{{ order.year }} {{ order.make }} {{ order.model }}"
+                        class="car-image"
+                      />
+
+                      {% else %}
+
+                      <div
+                        class="car-image placeholder"
+                        aria-label="No vehicle image"
+                      >
+                        <i data-lucide="image-off"></i>
+                      </div>
+
+                      {% endif %}
+
+                      <div class="vehicle-details">
+                        <div class="vehicle-name">
+                          {{ order.year or '?' }} {{ order.make or '?' }} {{ order.model or '?' }}
+                        </div>
+
+                        <div class="vehicle-meta">
+                          <span>Listed: {{ order.listed_price | currency}}</span>
+
+                          <span class="meta-divider"> • </span>
+
+                          <span>Order #{{ order.id }}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+
+                  <!-- =================================================
+                       SELLER
+                  ================================================== -->
+
+                  <td>
+                    <div class="seller-details">
+                      <div class="seller-name">{{ order.buyer_name }}</div>
+
+                      <div class="seller-email">{{ order.buyer_email or 'No email' }}</div>
+                    </div>
+                  </td>
+
+                  <!-- =================================================
+                       PRICE
+                  ================================================== -->
+
+                  <td>
+                    <strong class="price"> {{ order.order_amount | currency }} </strong>
+                  </td>
+
+                  <!-- =================================================
+                       STATUS
+                  ================================================== -->
+
+                  <td>
+                    <span
+                      class="badge {% if order.status == 'confirmed' or order.status == 'completed' %} badge-active {% elif order.status == 'cancelled' or order.status == 'rejected' %} badge-sold {% else %} badge-pending {% endif %}"
+                    >
+                      <span class="status-dot"></span>
+
+                      {{ order.status|capitalize }}
+                    </span>
+                  </td>
+
+                  <!-- =================================================
+                       DATE
+                  ================================================== -->
+
+                  <td>
+                    <span class="listing-date">
+                      {{ order.created_at|date('Y-m-d') if order.created_at else
+                      'N/A' }}
+                    </span>
+                  </td>
+
+                  <!-- =================================================
+                       ACTIONS
+                  ================================================== -->
+
+                  <td class="actions-cell">
+                    {% if order.status == 'pending' %}
+                    <form
+                      action="{{ url_for(
+                        'admin.accept_order',
+                        order_id=order.id
+                      ) }}"
+                      method="POST"
+                      class="action-form"
+                    >
+                      <input
+                        type="hidden"
+                        name="csrf_token"
+                        value="{{ csrf_token() }}"
+                      />
+
+                      <button
+                        type="submit"
+                        class="btn btn-danger btn-sm"
+                        aria-label="Accept order {{ order.id }}"
+                        onclick="return confirm('Accept this order?');"
+                      >
+                        <i data-lucide="trash-2"></i>
+
+                        <span>Accept</span>
+                      </button>
+                    </form>
+                    {% else %}
+                    <span class="listing-date">No action needed</span>
+                    {% endif %}
+                  </td>
+                </tr>
+
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+
+          <!-- =====================================================
+               EMPTY STATE
+          ====================================================== -->
+
           {% else %}
-          <span class="btn" disabled>← Previous</span>
+
+          <div class="empty-state">
+            <div class="empty-state-icon">
+              <i data-lucide="car-front"></i>
+            </div>
+
+            <h3>No Orders Found</h3>
+
+            <p>There are currently no customer orders to display.</p>
+          </div>
+
+          {% endif %}
+        </section>
+
+        <!-- =====================================================
+             PAGINATION
+        ====================================================== -->
+
+        {% if pagination %}
+
+        <nav class="pagination" aria-label="Listings pagination">
+          {% if pagination.has_prev %}
+
+          <a
+            href="{{ url_for(
+              'admin.orders',
+              page=pagination.prev_num
+            ) }}"
+            class="btn pagination-button"
+          >
+            <i data-lucide="arrow-left"></i>
+
+            <span>Previous</span>
+          </a>
+
+          {% else %}
+
+          <span class="btn disabled pagination-button" aria-disabled="true">
+            <i data-lucide="arrow-left"></i>
+
+            <span>Previous</span>
+          </span>
+
           {% endif %}
 
-          <span> Page {{ pagination.page }} of {{ pagination.pages }} </span>
+          <span class="pagination-info">
+            Page
+            <strong>{{ pagination.page }}</strong>
+            of
+            <strong>{{ pagination.pages }}</strong>
+          </span>
 
           {% if pagination.has_next %}
+
           <a
-            href="{{ url_for('admin.orders', page=pagination.next_num) }}"
-            class="btn"
-            >Next →
+            href="{{ url_for(
+              'admin.orders',
+              page=pagination.next_num
+            ) }}"
+            class="btn pagination-button"
+          >
+            <span>Next</span>
+
+            <i data-lucide="arrow-right"></i>
           </a>
+
           {% else %}
-          <span class="btn" disabled>Next →</span>
+
+          <span class="btn disabled pagination-button" aria-disabled="true">
+            <span>Next</span>
+
+            <i data-lucide="arrow-right"></i>
+          </span>
+
           {% endif %}
-        </div>
+        </nav>
+
         {% endif %}
-      </div>
-    </main>
+      </main>
     </div>
 
-    <script>
-      lucide.createIcons({
-        width: 20,
-        height: 20,
-      });
+    <!-- =========================================================
+         ICON INITIALIZATION
+    ========================================================== -->
 
+    <script>
       document.addEventListener("DOMContentLoaded", function () {
-        const sidebarToggle = document.querySelector(".sidebar h2");
-        if (sidebarToggle) {
-          sidebarToggle.addEventListener("click", function () {
-            document.querySelector(".sidebar").classList.toggle("collapsed");
-          });
-        }
+        lucide.createIcons({
+          width: 18,
+          height: 18,
+          strokeWidth: 1.8,
+        });
       });
     </script>
   </body>
 </html>
-

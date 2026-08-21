@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
 
@@ -30,13 +30,22 @@
         <!-- ========================= -->
 
         <header class="page-header">
+          <div class="header-top">
           <a href="{{ url_for('admin.dashboard') }}" class="back-link">
             ← Back to Dashboard
           </a>
+            <span class="page-badge"><i data-lucide="car-front"></i>Listing Management</span>
+          </div>
 
-          <h1>Manage Listings</h1>
+          <div class="header-content">
+            <div>
+              <span class="section-eyebrow">ADMINISTRATION</span>
+              <h1>Manage Listings</h1>
 
-          <p>View, manage and moderate all vehicle listings on the platform.</p>
+              <p>View, manage and moderate every vehicle listed on the Sarkin Mota Autos platform.</p>
+            </div>
+            <div class="header-summary"><span>Total Listings</span><strong>{{ total_listings }}</strong></div>
+          </div>
         </header>
 
         <!-- ========================= -->
@@ -44,23 +53,32 @@
         <!-- ========================= -->
 
         <section class="stats-grid">
-          <div class="stat-card">
-            <div class="stat-title">Total Listings</div>
+          <article class="stat-card">
+            <div class="stat-icon listings-icon"><i data-lucide="car-front"></i></div>
+            <div class="stat-info">
+              <span class="stat-title">Total Listings</span>
+              <strong>{{ total_listings }}</strong>
+              <small>Vehicles on platform</small>
+            </div>
+          </article>
 
-            <h2>{{ total_listings }}</h2>
-          </div>
+          <article class="stat-card">
+            <div class="stat-icon active-icon"><i data-lucide="circle-check"></i></div>
+            <div class="stat-info">
+              <span class="stat-title">Active Listings</span>
+              <strong>{{ active_listings }}</strong>
+              <small>Currently available</small>
+            </div>
+          </article>
 
-          <div class="stat-card">
-            <div class="stat-title">Active Listings</div>
-
-            <h2>{{ active_listings }}</h2>
-          </div>
-
-          <div class="stat-card">
-            <div class="stat-title">Sold Listings</div>
-
-            <h2>{{ sold_listings }}</h2>
-          </div>
+          <article class="stat-card">
+            <div class="stat-icon sold-icon"><i data-lucide="badge-check"></i></div>
+            <div class="stat-info">
+              <span class="stat-title">Sold Listings</span>
+              <strong>{{ sold_listings }}</strong>
+              <small>Completed sales</small>
+            </div>
+          </article>
         </section>
 
         <!-- ========================= -->
@@ -68,26 +86,28 @@
         <!-- ========================= -->
 
         <section class="toolbar">
+          <div class="toolbar-main">
           <div class="search-box">
             <i data-lucide="search"></i>
 
-            <input type="text" placeholder="Search listings..." />
+            <input type="search" placeholder="Search listings by make, model or seller..." aria-label="Search listings" />
+          </div>
           </div>
 
           <div class="toolbar-actions">
-            <select>
+            <label class="filter-control"><span>Status</span><select aria-label="Filter by listing status">
               <option>All Status</option>
               <option>Active</option>
               <option>Pending</option>
               <option>Sold</option>
-            </select>
+            </select></label>
 
-            <select>
+            <label class="filter-control"><span>Sort</span><select aria-label="Sort listings">
               <option>Newest First</option>
               <option>Oldest First</option>
               <option>Highest Price</option>
               <option>Lowest Price</option>
-            </select>
+            </select></label>
           </div>
         </section>
 
@@ -96,6 +116,13 @@
         <!-- ========================= -->
 
         <section class="table-card">
+          <div class="table-header">
+            <div>
+              <span class="table-eyebrow">VEHICLE DIRECTORY</span>
+              <h2>Registered Listings</h2>
+            </div>
+            <span class="record-count">{{ total_listings }} listings</span>
+          </div>
           {% if listings %}
           <div class="table-wrap">
           <table class="admin-table">
@@ -106,7 +133,7 @@
                 <th>Price</th>
                 <th>Status</th>
                 <th>Listed</th>
-                <th>Actions</th>
+                <th class="actions-heading">Actions</th>
               </tr>
             </thead>
 
@@ -133,9 +160,9 @@
                     {% endif %}
 
                     <div class="vehicle-details">
-                      <div class="vehicle-name">
+                      <strong class="vehicle-name">
                         {{ car.year }} {{ car.make }} {{ car.model }}
-                      </div>
+                      </strong>
 
                       <div class="vehicle-meta">
                         {{ car.mileage|int }} mi • {{ car.transmission }}
@@ -167,6 +194,7 @@
         else 'badge-sold' if car.status == 'sold'
         else 'badge-pending' }}"
                   >
+                    <span class="badge-dot"></span>
                     {{ car.status|capitalize }}
                   </span>
                 </td>
@@ -174,8 +202,7 @@
                 <!-- DATE -->
 
                 <td>
-                  {{ car.created_at|date('Y-m-d') if car.created_at else 'N/A'
-                  }}
+                  <span class="joined-date">{{ car.created_at|date('Y-m-d') if car.created_at else 'N/A' }}</span>
                 </td>
 
                 <!-- ACTIONS -->
@@ -195,8 +222,10 @@
                       type="submit"
                       class="btn btn-danger btn-sm"
                       onclick="return confirm('Delete this listing?');"
+                      aria-label="Delete {{ car.make }} {{ car.model }}"
                     >
-                      Delete
+                      <i data-lucide="trash-2"></i>
+                      <span>Delete</span>
                     </button>
                   </form>
                 </td>
@@ -209,7 +238,9 @@
           {% else %}
 
           <div class="empty-state">
-            <p>No listings found.</p>
+            <div class="empty-icon"><i data-lucide="car-front"></i></div>
+            <h3>No listings found</h3>
+            <p>There are currently no vehicle listings to display.</p>
           </div>
 
           {% endif %}
@@ -220,12 +251,12 @@
 
         {% if pagination %}
 
-        <section class="pagination">
+        <nav class="pagination" aria-label="Listing pagination">
           {% if pagination.has_prev %}
 
           <a
             href="{{ url_for('admin.listings', page=pagination.prev_num) }}"
-            class="btn"
+            class="pagination-btn"
           >
             ← Previous
           </a>
@@ -244,7 +275,7 @@
 
           <a
             href="{{ url_for('admin.listings', page=pagination.next_num) }}"
-            class="btn"
+            class="pagination-btn"
           >
             Next →
           </a>
@@ -254,7 +285,7 @@
           <span class="btn disabled"> Next → </span>
 
           {% endif %}
-        </section>
+        </nav>
 
         {% endif %}
       </main>
@@ -262,8 +293,9 @@
 
     <script>
       lucide.createIcons({
-        width: 20,
-        height: 20,
+        width: 18,
+        height: 18,
+        strokeWidth: 1.8,
       });
 
       document.addEventListener("DOMContentLoaded", function () {
