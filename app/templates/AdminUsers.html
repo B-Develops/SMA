@@ -3,13 +3,14 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
     <title>Manage Users - Admin - Sarkin Mota Autos</title>
 
-    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
 
@@ -18,234 +19,344 @@
       href="{{ url_for('static', filename='admin-users.css') }}"
     />
 
-    <!-- Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
   </head>
 
   <body>
-    <a href="#main-content" class="skip-link">Skip to main content</a>
+    <a href="#main-content" class="skip-link"> Skip to main content </a>
+
     <div class="page-wrapper">
       <main class="page-container" id="main-content">
-        <!-- ========================= -->
-        <!-- PAGE HEADER -->
-        <!-- ========================= -->
+        <!-- ==================================================
+             HEADER
+        =================================================== -->
 
         <header class="page-header">
-          <a href="{{ url_for('admin.dashboard') }}" class="back-link">
-            ← Back to Dashboard
-          </a>
+          <div class="header-top">
+            <a href="{{ url_for('admin.dashboard') }}" class="back-link">
+              <i data-lucide="arrow-left"></i>
+              Back to Dashboard
+            </a>
 
-          <h1>Manage Users</h1>
+            <span class="page-badge">
+              <i data-lucide="users"></i>
+              User Management
+            </span>
+          </div>
 
-          <p>View, manage and moderate all registered users on the platform.</p>
+          <div class="header-content">
+            <div>
+              <span class="section-eyebrow">ADMINISTRATION</span>
+
+              <h1>Manage Users</h1>
+
+              <p>
+                View, manage and moderate everyone registered on the Sarkin Mota
+                Autos platform.
+              </p>
+            </div>
+
+            <div class="header-summary">
+              <span>Total Users</span>
+              <strong>{{ total_users }}</strong>
+            </div>
+          </div>
         </header>
 
-        <!-- ========================= -->
-        <!-- STATS -->
-        <!-- ========================= -->
+        <!-- ==================================================
+             STATS
+        =================================================== -->
 
         <section class="stats-grid">
-          <div class="stat-card">
-            <div class="stat-title">Total Users</div>
+          <article class="stat-card">
+            <div class="stat-icon users-icon">
+              <i data-lucide="users"></i>
+            </div>
 
-            <h2>{{ total_users }}</h2>
-          </div>
+            <div class="stat-info">
+              <span class="stat-title">Total Users</span>
 
-          <div class="stat-card">
-            <div class="stat-title">Administrators</div>
+              <strong>{{ total_users }}</strong>
 
-            <h2>{{ admin_count }}</h2>
-          </div>
+              <small> Registered accounts </small>
+            </div>
+          </article>
 
-          <div class="stat-card">
-            <div class="stat-title">Total Listings</div>
+          <article class="stat-card">
+            <div class="stat-icon admin-icon">
+              <i data-lucide="shield-check"></i>
+            </div>
 
-            <h2>{{ total_listings }}</h2>
-          </div>
+            <div class="stat-info">
+              <span class="stat-title">Administrators</span>
+
+              <strong>{{ admin_count }}</strong>
+
+              <small> Admin accounts </small>
+            </div>
+          </article>
+
+          <article class="stat-card">
+            <div class="stat-icon listing-icon">
+              <i data-lucide="car-front"></i>
+            </div>
+
+            <div class="stat-info">
+              <span class="stat-title">Total Listings</span>
+
+              <strong>{{ total_listings }}</strong>
+
+              <small> Vehicles on platform </small>
+            </div>
+          </article>
         </section>
 
-        <!-- ========================= -->
-        <!-- TOOLBAR -->
-        <!-- ========================= -->
+        <!-- ==================================================
+             TOOLBAR
+        =================================================== -->
 
         <section class="toolbar">
-          <div class="search-box">
-            <i data-lucide="search"></i>
+          <div class="toolbar-main">
+            <div class="search-box">
+              <i data-lucide="search"></i>
 
-            <input type="text" placeholder="Search users..." />
+              <input
+                type="search"
+                placeholder="Search users by name, email or phone..."
+                aria-label="Search users"
+              />
+            </div>
           </div>
 
           <div class="toolbar-actions">
-            <select>
-              <option>All Roles</option>
+            <label class="filter-control">
+              <span>Role</span>
 
-              <option>Users</option>
+              <select aria-label="Filter by role">
+                <option>All Roles</option>
+                <option>Users</option>
+                <option>Admins</option>
+              </select>
+            </label>
 
-              <option>Admins</option>
-            </select>
+            <label class="filter-control">
+              <span>Sort</span>
 
-            <select>
-              <option>Newest First</option>
-
-              <option>Oldest First</option>
-            </select>
+              <select aria-label="Sort users">
+                <option>Newest First</option>
+                <option>Oldest First</option>
+              </select>
+            </label>
           </div>
         </section>
 
-        <!-- ========================= -->
-        <!-- TABLE CARD -->
-        <!-- ========================= -->
+        <!-- ==================================================
+             TABLE
+        =================================================== -->
 
         <section class="table-card">
-          {% if users %}
-          <div class="table-wrap">
-          <table class="admin-table">
-            <thead>
-              <tr>
-                <th>User</th>
-                <th>Role</th>
-                <th>Listings</th>
-                <th>Joined</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
+          <div class="table-header">
+            <div>
+              <span class="table-eyebrow"> USER DIRECTORY </span>
 
-            <tbody>
-              {% for user in users %}
-              <tr>
-                <!-- USER -->
-                <td>
-                  <div class="user-card">
-                    <div class="avatar">
-                      {{ user.name[0]|upper if user.name else "U" }}
-                    </div>
+              <h2>Registered Users</h2>
+            </div>
 
-                    <div class="user-details">
-                      <div class="user-name">
-                        {{ user.name or "Unknown User" }}
-                      </div>
-
-                      <div class="user-email">{{ user.email }}</div>
-
-                      <div class="user-phone">
-                        {{ user.phone or "No phone number" }}
-                      </div>
-                    </div>
-                  </div>
-                </td>
-
-                <!-- ROLE -->
-                <td>
-                  <span
-                    class="badge {{ 'badge-admin' if user.role == 'admin' else 'badge-user' }}"
-                  >
-                    {{ user.role|capitalize }}
-                  </span>
-                </td>
-
-                <!-- LISTINGS -->
-                <td>
-                  <strong>{{ user.listing_count }}</strong>
-                </td>
-
-                <!-- JOINED -->
-                <td>
-                  {{ user.created_at|date('Y-m-d') if user.created_at else 'N/A'
-                  }}
-                </td>
-
-                <!-- ACTIONS -->
-                <td class="actions-cell">
-                  {% if user.id != current_user.id %}
-
-                  <form
-                    action="{{ url_for('admin.delete_user', user_id=user.id) }}"
-                    method="POST"
-                  >
-                    <input
-                      type="hidden"
-                      name="csrf_token"
-                      value="{{ csrf_token() }}"
-                    />
-
-                    <button
-                      type="submit"
-                      class="btn btn-danger btn-sm"
-                      onclick="return confirm('Delete this user?');"
-                    >
-                      Delete
-                    </button>
-                  </form>
-
-                  {% else %}
-
-                  <span class="badge badge-admin"> Current User </span>
-
-                {% endif %}
-              </tr>
-              {% endfor %}
-            </tbody>
-          </table>
+            <span class="record-count"> {{ total_users }} users </span>
           </div>
+
+          {% if users %}
+
+          <div class="table-wrap">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>User</th>
+                  <th>Role</th>
+                  <th>Listings</th>
+                  <th>Joined</th>
+                  <th class="actions-heading">Actions</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                {% for user in users %}
+
+                <tr>
+                  <!-- USER -->
+
+                  <td>
+                    <div class="user-card">
+                      <div class="avatar">
+                        {{ user.name[0]|upper if user.name else "U" }}
+                      </div>
+
+                      <div class="user-details">
+                        <strong class="user-name">
+                          {{ user.name or "Unknown User" }}
+                        </strong>
+
+                        <span class="user-email"> {{ user.email }} </span>
+
+                        <span class="user-phone">
+                          {{ user.phone or "No phone number" }}
+                        </span>
+                      </div>
+                    </div>
+                  </td>
+
+                  <!-- ROLE -->
+
+                  <td>
+                    <span
+                      class="badge
+                      {{ 'badge-admin' if user.role == 'admin' else 'badge-user' }}"
+                    >
+                      <span class="badge-dot"></span>
+                      {{ user.role|capitalize }}
+                    </span>
+                  </td>
+
+                  <!-- LISTINGS -->
+
+                  <td>
+                    <span class="listing-count">
+                      {{ user.listing_count }}
+                    </span>
+                  </td>
+
+                  <!-- JOINED -->
+
+                  <td>
+                    <span class="joined-date">
+                      {{ user.created_at|date('Y-m-d') if user.created_at else
+                      'N/A' }}
+                    </span>
+                  </td>
+
+                  <!-- ACTIONS -->
+
+                  <td class="actions-cell">
+                    {% if user.id != current_user.id %}
+
+                    <form
+                      action="{{ url_for('admin.delete_user', user_id=user.id) }}"
+                      method="POST"
+                    >
+                      <input
+                        type="hidden"
+                        name="csrf_token"
+                        value="{{ csrf_token() }}"
+                      />
+
+                      <button
+                        type="submit"
+                        class="btn btn-danger btn-sm"
+                        onclick="return confirm('Delete this user?');"
+                        aria-label="Delete {{ user.name or 'user' }}"
+                      >
+                        <i data-lucide="trash-2"></i>
+                        <span>Delete</span>
+                      </button>
+                    </form>
+
+                    {% else %}
+
+                    <span class="current-user">
+                      <i data-lucide="shield-check"></i>
+                      You
+                    </span>
+
+                    {% endif %}
+                  </td>
+                </tr>
+
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+
           {% else %}
 
           <div class="empty-state">
-            <p>No users found.</p>
+            <div class="empty-icon">
+              <i data-lucide="users-round"></i>
+            </div>
+
+            <h3>No users found</h3>
+
+            <p>There are currently no registered users to display.</p>
           </div>
 
           {% endif %}
         </section>
 
-        <!-- ========================= -->
-        <!-- PAGINATION -->
-        <!-- ========================= -->
+        <!-- ==================================================
+             PAGINATION
+        =================================================== -->
 
         {% if pagination %}
-        <section class="pagination">
+
+        <nav class="pagination" aria-label="User pagination">
           {% if pagination.has_prev %}
+
           <a
             href="{{ url_for('admin.users', page=pagination.prev_num) }}"
-            class="btn"
+            class="pagination-btn"
           >
-            ← Previous
+            <i data-lucide="chevron-left"></i>
+            Previous
           </a>
-          {% else %}
-          <span class="btn disabled"> ← Previous </span>
-          {% endif %}
 
-          <span class="pagination-info">
-            Page {{ pagination.page }} of {{ pagination.pages }}
+          {% else %}
+
+          <span class="pagination-btn disabled">
+            <i data-lucide="chevron-left"></i>
+            Previous
           </span>
 
+          {% endif %}
+
+          <div class="pagination-info">
+            <span>Page</span>
+
+            <strong>{{ pagination.page }}</strong>
+
+            <span>of</span>
+
+            <strong>{{ pagination.pages }}</strong>
+          </div>
+
           {% if pagination.has_next %}
+
           <a
             href="{{ url_for('admin.users', page=pagination.next_num) }}"
-            class="btn"
+            class="pagination-btn"
           >
-            Next →
+            Next
+            <i data-lucide="chevron-right"></i>
           </a>
+
           {% else %}
-          <span class="btn disabled"> Next → </span>
+
+          <span class="pagination-btn disabled">
+            Next
+            <i data-lucide="chevron-right"></i>
+          </span>
+
           {% endif %}
-        </section>
+        </nav>
+
         {% endif %}
       </main>
     </div>
+
     <script>
       lucide.createIcons({
-        width: 20,
-        height: 20,
-      });
-
-      document.addEventListener("DOMContentLoaded", function () {
-        const sidebarToggle = document.querySelector(".sidebar h2");
-        if (sidebarToggle) {
-          sidebarToggle.addEventListener("click", function () {
-            document.querySelector(".sidebar").classList.toggle("collapsed");
-          });
-        }
+        width: 18,
+        height: 18,
+        strokeWidth: 1.8,
       });
     </script>
   </body>
 </html>
-
