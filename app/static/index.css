@@ -210,17 +210,31 @@ nav {
   padding-top: 0;
 }
 .hero {
-  background:
-    linear-gradient(rgba(10, 25, 47, 0.62), rgba(10, 25, 47, 0.82)),
-    url("../static/photo-1503376780353-7e6692767b70.avif");
-  background-size: cover;
-  background-position: center;
   position: relative;
-  isolation: isolate;
-  /* important */
   overflow: hidden;
-  overflow: hidden;
-  height: 70vh;
+  min-height: 600px;
+  display: flex;
+  align-items: center;
+}
+.hero .section-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  z-index: 0;
+  filter: brightness(0.7);
+}
+.hero .video-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+    to bottom,
+    rgba(6, 23, 44, 0.35),
+    rgba(6, 23, 44, 0.85)
+  );
 }
 .hero::after {
   content: "";
@@ -234,6 +248,7 @@ nav {
     transparent 6px
   );
   pointer-events: none;
+  z-index: 1;
 }
 .hero-content {
   display: flex;
@@ -241,12 +256,11 @@ nav {
   position: relative;
   padding: 10rem 0 7rem;
   text-align: left;
-  margin-top: 1rem;
-  margin-bottom: 3rem;
+  margin-top: 0;
+  margin-bottom: 0;
   z-index: 2;
   align-items: flex-start;
   justify-content: left;
-  padding-left: 2rem;
 }
 .hero h1 {
   font-size: clamp(2rem, 6vw, 4rem);
@@ -586,25 +600,6 @@ footer span {
   .hero {
     overflow: hidden;
   }
-  .hero .section-video {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
-    z-index: 0;
-  }
-  .hero .video-overlay {
-    position: absolute;
-    inset: 0;
-    z-index: 1;
-    background: linear-gradient(
-      to left,
-      rgba(157, 165, 175, 0),
-      rgb(3, 13, 26)
-    );
-  }
   .hero header,
   .hero .hero-content {
     position: relative;
@@ -872,103 +867,545 @@ footer span {
   font-size: 0.8rem;
   color: var(--text-muted);
 }
-/* =====================
-        CONTACTS
-        ===================== */
+/* ==========================================================
+   CONTACTS
+========================================================== */
+
 .contacts {
-  backdrop-filter: blur(10px);
+  position: relative;
+  overflow: hidden;
+
+  padding: 6rem 0;
+
   text-align: center;
+
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
-.contacts .section-label {
+
+/* ==========================================================
+   HEADER
+   Matches Testimonials
+========================================================== */
+
+.contacts-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+
+  margin-bottom: 3rem;
+}
+
+.contacts-header .section-label {
   font-size: 0.85rem;
   font-weight: 700;
+
   text-transform: uppercase;
   letter-spacing: 0.12em;
+
   color: var(--accent-gold);
-  margin-bottom: 0.5rem;
+
+  margin: 0 0 0.5rem;
 }
-.contacts h2 {
+
+.contacts-header h2 {
   font-size: clamp(1.6rem, 3vw, 2.4rem);
   font-weight: 800;
-  margin-bottom: 0.75rem;
+
+  margin: 0 0 0.75rem;
 }
+
 .contacts-subtitle {
-  color: var(--text-muted);
   max-width: 580px;
-  margin: 0 auto 3rem;
+
+  margin: 0 auto;
+
+  color: var(--text-muted);
+
   font-size: 1rem;
   line-height: 1.6;
 }
-.contacts-grid {
+
+/* ==========================================================
+   MAIN CONTACT LAYOUT
+========================================================== */
+
+.contacts-layout {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 2rem;
-  margin-bottom: 3rem;
+
+  grid-template-columns:
+    minmax(0, 0.95fr)
+    minmax(0, 1.05fr);
+
+  gap: 1.5rem;
+
+  align-items: stretch;
+
+  text-align: left;
 }
-@media (max-width: 768px) {
-  .contacts-grid {
-    grid-template-columns: 1fr;
-  }
-}
-.contact-card {
-  background: rgba(10, 25, 47, 0.534);
-  border-radius: 12px;
-  padding: 2rem 1.5rem;
+
+/* ==========================================================
+   SARKIN MOTA CARD
+========================================================== */
+
+.sarkinmota-card {
+  position: relative;
+
+  min-width: 0;
+
+  overflow: hidden;
+
+  display: flex;
+  flex-direction: column;
+
+  border-radius: 16px;
+
   border: 1px solid rgba(255, 255, 255, 0.08);
+
+  background: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 0.05),
+    rgba(255, 255, 255, 0.015)
+  );
+
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+
+  box-shadow:
+    0 10px 35px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.035);
+
   transition:
     transform var(--transition-base),
+    border-color var(--transition-base),
     box-shadow var(--transition-base);
-  backdrop-filter: blur(16px) saturate(160%);
-  -webkit-backdrop-filter: blur(16px) saturate(160%);
+}
+
+.sarkinmota-card:hover {
+  transform: translateY(-4px);
+
+  border-color: rgba(214, 158, 46, 0.25);
+
   box-shadow:
-    0 8px 32px rgba(0, 0, 0, 0.25),
-    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    0 14px 40px rgba(0, 0, 0, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
+
+/* ==========================================================
+   FOUNDER IMAGE
+========================================================== */
+
+.sarkinmota-image {
+  position: relative;
+
+  width: 100%;
+
+  height: 280px;
+
+  overflow: hidden;
+}
+
+.sarkinmota-image::after {
+  content: "";
+
+  position: absolute;
+  inset: 0;
+
+  background: linear-gradient(
+    to bottom,
+    transparent 45%,
+    rgba(7, 28, 59, 0.8) 100%
+  );
+
+  pointer-events: none;
+}
+
+.sarkinmota-image img {
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+  object-position: center top;
+}
+
+/* ==========================================================
+   FOUNDER CONTENT
+========================================================== */
+
+.sarkinmota-content {
+  padding: 1.4rem 1.5rem 1.5rem;
+}
+
+.sarkinmota-label {
+  display: block;
+
+  margin-bottom: 0.35rem;
+
+  color: var(--accent-gold);
+
+  font-size: 0.7rem;
+  font-weight: 700;
+
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.sarkinmota-content h3 {
+  margin: 0;
+
+  font-size: 1.35rem;
+  font-weight: 800;
+
+  line-height: 1.2;
+}
+
+.sarkinmota-title {
+  margin: 0.2rem 0 0.7rem;
+
+  color: var(--accent-gold);
+
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.sarkinmota-description {
+  max-width: 500px;
+
+  margin: 0;
+
+  color: var(--text-muted);
+
+  font-size: 0.88rem;
+  line-height: 1.65;
+}
+
+/* ==========================================================
+   CONTACT INFORMATION
+========================================================== */
+
+.contacts-grid {
+  display: grid;
+
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+
+  gap: 1rem;
+
+  min-width: 0;
+}
+
+/* ==========================================================
+   CONTACT CARD
+========================================================== */
+
+.contact-card {
+  min-width: 0;
+
+  display: flex;
+  align-items: flex-start;
+
+  gap: 1rem;
+
+  padding: 1.35rem;
+
+  border-radius: 14px;
+
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  background: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 0.045),
+    rgba(255, 255, 255, 0.015)
+  );
+
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+
+  box-shadow:
+    0 8px 30px rgba(0, 0, 0, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.03);
+
+  transition:
+    transform var(--transition-base),
+    border-color var(--transition-base),
+    box-shadow var(--transition-base);
+}
+
 .contact-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+  transform: translateY(-4px);
+
+  border-color: rgba(214, 158, 46, 0.25);
+
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.28);
 }
+
+/* ==========================================================
+   ICON
+========================================================== */
+
 .contact-card-icon {
-  width: 48px;
-  height: 48px;
-  margin: 0 auto 1.2rem;
-  border-radius: 50%;
-  background: rgba(214, 158, 46, 0.12);
+  width: 44px;
+  height: 44px;
+
+  flex: 0 0 44px;
+
+  border-radius: 12px;
+
+  background: rgba(214, 158, 46, 0.1);
+
+  border: 1px solid rgba(214, 158, 46, 0.12);
+
   display: flex;
   align-items: center;
   justify-content: center;
 }
+
 .contact-card-icon svg {
-  width: 24px;
-  height: 24px;
+  width: 21px;
+  height: 21px;
+
   stroke: var(--accent-gold);
+
   fill: none;
+
   stroke-width: 2;
+
   stroke-linecap: round;
   stroke-linejoin: round;
 }
+
+/* ==========================================================
+   CONTACT TEXT
+========================================================== */
+
 .contact-card h3 {
-  font-size: 1.1rem;
-  font-weight: 700;
-  margin-bottom: 0.5rem;
-}
-.contact-card p {
+  margin: 0 0 0.4rem;
+
   font-size: 0.95rem;
-  color: var(--text-muted);
-  margin: 0;
-  line-height: 1.65;
+  font-weight: 700;
+
+  line-height: 1.25;
 }
+
+.contact-card p {
+  margin: 0;
+
+  color: var(--text-muted);
+
+  font-size: 0.82rem;
+  line-height: 1.6;
+
+  overflow-wrap: anywhere;
+}
+
+.contact-card a {
+  color: var(--text-muted);
+
+  text-decoration: none;
+
+  transition: color var(--transition-base);
+}
+
+.contact-card a:hover {
+  color: var(--accent-gold);
+}
+
+/* ==========================================================
+   PHONE CARD — FULL WIDTH
+========================================================== */
+
+.contact-card:first-child {
+  grid-column: 1 / -1;
+
+  align-items: center;
+
+  padding: 1.5rem;
+}
+
+/* ==========================================================
+   MAP
+========================================================== */
+
 .contact-map {
   width: 100%;
-  border-radius: 12px;
+
+  margin-top: 2rem;
+
   overflow: hidden;
+
+  border-radius: 16px;
+
   border: 1px solid var(--border-soft);
 }
+
 .contact-map iframe {
   width: 100%;
   height: 320px;
+
   border: 0;
+
   display: block;
+}
+
+/* ==========================================================
+   TABLET
+========================================================== */
+
+@media (max-width: 900px) {
+  .contacts-layout {
+    grid-template-columns: 1fr;
+
+    gap: 1rem;
+  }
+
+  .sarkinmota-image {
+    height: 260px;
+  }
+}
+
+/* ==========================================================
+   MOBILE
+========================================================== */
+
+@media (max-width: 640px) {
+  .contacts {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+  }
+
+  /* Header */
+
+  .contacts-header {
+    margin-bottom: 1.5rem;
+  }
+
+  .contacts-header .section-label {
+    font-size: 0.72rem;
+  }
+
+  .contacts-header h2 {
+    font-size: clamp(1.5rem, 6vw, 1.8rem);
+
+    line-height: 1.15;
+  }
+
+  .contacts-subtitle {
+    font-size: 0.86rem;
+    line-height: 1.55;
+  }
+
+  /* Layout */
+
+  .contacts-layout {
+    display: flex;
+    flex-direction: column;
+
+    gap: 0.85rem;
+  }
+
+  /* Founder */
+
+  .sarkinmota-card {
+    border-radius: 14px;
+  }
+
+  .sarkinmota-image {
+    height: 220px;
+  }
+
+  .sarkinmota-content {
+    padding: 1rem;
+  }
+
+  .sarkinmota-content h3 {
+    font-size: 1.15rem;
+  }
+
+  .sarkinmota-description {
+    font-size: 0.8rem;
+    line-height: 1.55;
+  }
+
+  /* Contact cards */
+
+  .contacts-grid {
+    grid-template-columns: 1fr;
+
+    gap: 0.7rem;
+  }
+
+  .contact-card,
+  .contact-card:first-child {
+    grid-column: auto;
+
+    padding: 1rem;
+
+    border-radius: 12px;
+  }
+
+  .contact-card-icon {
+    width: 40px;
+    height: 40px;
+
+    flex-basis: 40px;
+  }
+
+  .contact-card-icon svg {
+    width: 19px;
+    height: 19px;
+  }
+
+  .contact-card h3 {
+    font-size: 0.88rem;
+  }
+
+  .contact-card p {
+    font-size: 0.76rem;
+    line-height: 1.5;
+  }
+
+  /* Map */
+
+  .contact-map {
+    margin-top: 1.25rem;
+  }
+
+  .contact-map iframe {
+    height: 230px;
+  }
+}
+
+/* ==========================================================
+   VERY SMALL PHONES
+========================================================== */
+
+@media (max-width: 380px) {
+  .contacts {
+    padding-top: 2.5rem;
+    padding-bottom: 2.5rem;
+  }
+
+  .sarkinmota-image {
+    height: 190px;
+  }
+
+  .sarkinmota-content {
+    padding: 0.9rem;
+  }
+
+  .sarkinmota-content h3 {
+    font-size: 1.05rem;
+  }
+
+  .sarkinmota-description {
+    font-size: 0.76rem;
+  }
+
+  .contact-card {
+    padding: 0.85rem;
+  }
 }
 .btn-auth {
   padding: 0.5rem 1rem;
@@ -1161,4 +1598,796 @@ h1 {
   justify-self: flex-start;
   margin-left: 0;
   width: 700px;
+}
+/* ==========================================================
+   RESPONSIVE SYSTEM
+   ========================================================== */
+
+/* ==========================================================
+   LAPTOP / LARGE TABLET
+   Up to 1900px
+   ========================================================== */
+
+@media (max-width: 1900px) {
+  /* ---------- GLOBAL ---------- */
+
+  :root {
+    --max-width: 1400px;
+  }
+
+  .container {
+    width: min(100% - 3rem, var(--max-width));
+    margin-inline: auto;
+  }
+
+  /* ---------- NAVIGATION ---------- */
+
+  nav {
+    max-width: 1400px;
+    padding-inline: 1.25rem;
+  }
+
+  .navbar {
+    padding-inline: 1.25rem;
+  }
+
+  .nav-links {
+    gap: 1.5rem;
+  }
+
+  /* ---------- HERO ---------- */
+
+  .hero {
+    min-height: 650px;
+  }
+
+  .hero-content {
+    padding: 9rem 0 6rem;
+  }
+
+  .hero h1 {
+    font-size: clamp(2.4rem, 4vw, 3.8rem);
+  }
+
+  .hero p {
+    max-width: 650px;
+  }
+
+  /* ---------- FEATURES ---------- */
+
+  .features {
+    min-height: 300px;
+    height: auto;
+  }
+
+  .features-grid {
+    gap: 1.5rem;
+  }
+
+  .feature-item {
+    height: auto;
+    min-height: 220px;
+  }
+
+  /* ---------- LISTINGS ---------- */
+
+  .listings-grid {
+    gap: 1.5rem;
+  }
+
+  /* ---------- HOW TO USE ---------- */
+
+  .steps-grid {
+    gap: 1.5rem;
+  }
+
+  .step-card {
+    padding: 1.75rem 1.25rem;
+  }
+
+  /* ---------- TESTIMONIALS ---------- */
+
+  .testimonials-grid {
+    gap: 1.5rem;
+  }
+
+  .testimonial-card {
+    padding: 1.75rem;
+  }
+
+  /* ---------- CONTACTS ---------- */
+
+  .contacts-layout {
+    gap: 1.5rem;
+  }
+
+  .contacts-grid {
+    gap: 0.85rem;
+  }
+
+  .sarkinmota-image {
+    height: 260px;
+  }
+
+  /* ---------- FEATURED ---------- */
+
+  .featured-layout {
+    grid-template-columns: minmax(0, 1.5fr) minmax(280px, 1fr);
+    gap: 24px;
+  }
+
+  .featured-main {
+    max-width: 100%;
+    min-height: 540px;
+  }
+
+  .featured-side {
+    width: 100%;
+    margin-left: 0;
+    transform: none;
+    gap: 20px;
+  }
+}
+
+/* ==========================================================
+   TABLET / MOBILE
+   Up to 768px
+   ========================================================== */
+
+@media (max-width: 768px) {
+  /* ========================================================
+     GLOBAL MOBILE FOUNDATION
+     ======================================================== */
+
+  html,
+  body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  .container {
+    width: 100%;
+    max-width: 100%;
+    padding-inline: 1rem;
+  }
+
+  /*
+     Every major section gets a fullscreen viewport height.
+     min-height allows content to grow naturally if necessary.
+  */
+
+  .section {
+    min-height: 100vh;
+    min-height: 100dvh;
+    height: auto;
+    padding: 3rem 0;
+  }
+
+  /* Remove the desktop alternating blur treatment */
+  .section:nth-child(odd),
+  .section:nth-child(even) {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  /* ---------- TYPOGRAPHY ---------- */
+
+  h1,
+  h2,
+  h3,
+  p {
+    max-width: 100%;
+  }
+
+  /* ========================================================
+     HEADER / NAVIGATION
+     ======================================================== */
+
+  header {
+    top: 0;
+    margin-top: 0;
+    position: absolute;
+  }
+
+  nav {
+    width: 100%;
+    height: auto;
+    min-height: 64px;
+    padding: 0 1rem;
+  }
+
+  .navbar {
+    width: 100%;
+    min-height: 64px;
+    height: auto;
+    padding: 0.75rem 1rem;
+    flex-wrap: wrap;
+  }
+
+  .navbar-logo {
+    font-size: 1.15rem;
+  }
+
+  .nav-links {
+    display: none;
+  }
+
+  .nav-links.open {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+    gap: 0;
+    order: 4;
+  }
+
+  .nav-links.open a {
+    width: 100%;
+    padding: 0.8rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .nav-actions {
+    display: none;
+  }
+
+  .nav-actions.open {
+    display: flex;
+    width: 100%;
+    order: 5;
+    gap: 0.5rem;
+    padding-top: 0.75rem;
+  }
+
+  .nav-actions.open a {
+    flex: 1;
+    text-align: center;
+  }
+
+  .navbar-center {
+    order: 3;
+    flex-basis: 100%;
+    max-width: 100%;
+    justify-content: flex-start;
+    display: none;
+  }
+
+  .navbar-center.open {
+    display: flex;
+  }
+
+  .navbar-search-form {
+    width: 100%;
+    max-width: none;
+  }
+
+  .nav-toggle {
+    display: flex;
+  }
+
+  /* ========================================================
+     HERO
+     ======================================================== */
+
+  .hero,
+  .video-section {
+    min-height: 100vh;
+    min-height: 100dvh;
+    height: auto;
+  }
+
+  .hero-content {
+    width: 100%;
+    padding: 7rem 0 3rem;
+    margin: 0;
+    align-items: flex-start;
+    justify-content: center;
+  }
+
+  .hero h1 {
+    width: 100%;
+    max-width: 100%;
+    margin: 1rem 0 1rem;
+    font-size: clamp(2rem, 8vw, 3rem);
+    line-height: 1.1;
+  }
+
+  .hero p,
+  .hero-content p {
+    width: 100%;
+    max-width: 650px;
+    margin: 0 0 1.5rem;
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+
+  .hero-actions {
+    width: 100%;
+    justify-content: flex-start;
+    gap: 0.65rem;
+  }
+
+  .hero-actions .btn {
+    flex: 0 1 auto;
+  }
+
+  .hero .section-video {
+    min-height: 100%;
+  }
+
+  /* ========================================================
+     ALL GRIDS → VERTICAL
+     ======================================================== */
+
+  .features-grid,
+  .listings-grid,
+  .steps-grid,
+  .testimonials-grid,
+  .contacts-layout,
+  .contacts-grid,
+  .featured-layout {
+    grid-template-columns: 1fr;
+  }
+
+  /* ========================================================
+     FEATURES
+     ======================================================== */
+
+  .features {
+    min-height: 100vh;
+    min-height: 100dvh;
+    height: auto;
+    padding: 3rem 0;
+  }
+
+  .features-grid {
+    width: 100%;
+    gap: 1rem;
+  }
+
+  .feature-item {
+    width: 100%;
+    height: auto;
+    min-height: 0;
+    padding: 1.5rem 1.25rem;
+  }
+
+  .feature-icon {
+    width: 42px;
+    height: 42px;
+    margin-bottom: 0.75rem;
+  }
+
+  .feature-item h3 {
+    font-size: 1rem;
+  }
+
+  .feature-item p {
+    font-size: 0.88rem;
+  }
+
+  /* ========================================================
+     LISTINGS
+     ======================================================== */
+
+  .listings-grid {
+    gap: 1rem;
+  }
+
+  .listings-header {
+    align-items: flex-start;
+    flex-direction: column;
+    margin-bottom: 1.5rem;
+  }
+
+  .listings-header h2 {
+    font-size: 1.7rem;
+  }
+
+  article.listing-card {
+    width: 100%;
+  }
+
+  .listing-image {
+    max-height: none;
+    height: 220px;
+  }
+
+  .listing-content {
+    padding: 1rem;
+  }
+
+  /* ========================================================
+     HOW TO USE
+     ======================================================== */
+
+  .how-to-use {
+    min-height: 100vh;
+    min-height: 100dvh;
+  }
+
+  .how-to-use h2 {
+    margin-bottom: 1.75rem;
+  }
+
+  .steps-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .step-card {
+    width: 100%;
+    padding: 1.5rem 1.25rem;
+  }
+
+  .step-arrow {
+    display: none;
+  }
+
+  .steps-grid .step-card::after {
+    display: none;
+  }
+
+  /* ========================================================
+     TESTIMONIALS
+     ======================================================== */
+
+  .testimonials {
+    min-height: 100vh;
+    min-height: 100dvh;
+  }
+
+  .testimonials-header {
+    margin-bottom: 1.75rem;
+  }
+
+  .testimonials-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .testimonial-card {
+    width: 100%;
+    padding: 1.5rem;
+  }
+
+  .testimonial-card blockquote {
+    font-size: 0.9rem;
+  }
+
+  /* ========================================================
+     CTA
+     ======================================================== */
+
+  .cta-banner {
+    min-height: 100vh;
+    min-height: 100dvh;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    padding: 3rem 1rem;
+  }
+
+  .cta-banner h2 {
+    font-size: clamp(1.7rem, 7vw, 2.2rem);
+  }
+
+  /* ========================================================
+     CONTACTS
+     ======================================================== */
+
+  .contacts {
+    min-height: 100vh;
+    min-height: 100dvh;
+    padding: 3rem 0;
+  }
+
+  .contacts-header {
+    margin-bottom: 1.75rem;
+  }
+
+  .contacts-header h2 {
+    font-size: clamp(1.6rem, 7vw, 2.2rem);
+    line-height: 1.15;
+  }
+
+  .contacts-subtitle {
+    font-size: 0.88rem;
+  }
+
+  .contacts-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .sarkinmota-card {
+    width: 100%;
+  }
+
+  .sarkinmota-image {
+    height: 230px;
+  }
+
+  .sarkinmota-content {
+    padding: 1.1rem;
+  }
+
+  .sarkinmota-content h3 {
+    font-size: 1.2rem;
+  }
+
+  .sarkinmota-description {
+    font-size: 0.82rem;
+  }
+
+  .contacts-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  .contact-card,
+  .contact-card:first-child {
+    grid-column: auto;
+    width: 100%;
+    padding: 1rem;
+  }
+
+  .contact-card-icon {
+    width: 40px;
+    height: 40px;
+    flex-basis: 40px;
+  }
+
+  .contact-card-icon svg {
+    width: 19px;
+    height: 19px;
+  }
+
+  .contact-card h3 {
+    font-size: 0.88rem;
+  }
+
+  .contact-card p {
+    font-size: 0.76rem;
+  }
+
+  /* ========================================================
+     FOUNDER / FEATURED LAYOUT
+     ======================================================== */
+
+  .featured-layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .featured-main {
+    width: 100%;
+    max-width: 100%;
+    min-height: 420px;
+    border-radius: 18px;
+  }
+
+  .featured-side {
+    width: 100%;
+    margin-left: 0;
+    transform: none;
+    gap: 1rem;
+  }
+
+  .featured-overlay {
+    padding: 1.5rem;
+  }
+
+  /* ========================================================
+     BUTTONS
+     ======================================================== */
+
+  .btn {
+    padding: 0.7rem 1.2rem;
+    font-size: 0.9rem;
+  }
+
+  .btn-auth {
+    padding: 0.5rem 0.9rem;
+  }
+
+  /* ========================================================
+     FOOTER
+     ======================================================== */
+
+  footer {
+    padding: 1.75rem 0;
+  }
+
+  footer .footer-inner {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 0.75rem;
+  }
+
+  /* ========================================================
+     MOBILE DROPDOWN
+     ======================================================== */
+
+  .dropdown {
+    display: block;
+  }
+
+  .dropdown-content {
+    right: 0;
+    min-width: 210px;
+    max-width: calc(100vw - 2rem);
+  }
+}
+
+/* ==========================================================
+   SMALL PHONES
+   Up to 480px
+   ========================================================== */
+
+@media (max-width: 480px) {
+  .container {
+    padding-inline: 0.85rem;
+  }
+
+  .section {
+    padding: 2.5rem 0;
+  }
+
+  /* ---------- HERO ---------- */
+
+  .hero-content {
+    padding: 6.5rem 0 2.5rem;
+  }
+
+  .hero h1 {
+    font-size: clamp(1.8rem, 9vw, 2.5rem);
+  }
+
+  .hero p {
+    font-size: 0.88rem;
+  }
+
+  .hero-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .hero-actions .btn {
+    width: 100%;
+    text-align: center;
+  }
+
+  /* ---------- FEATURES ---------- */
+
+  .feature-item {
+    padding: 1.25rem 1rem;
+  }
+
+  /* ---------- LISTINGS ---------- */
+
+  .listing-image {
+    height: 200px;
+  }
+
+  /* ---------- HOW TO USE ---------- */
+
+  .step-card {
+    padding: 1.25rem 1rem;
+  }
+
+  /* ---------- TESTIMONIALS ---------- */
+
+  .testimonial-card {
+    padding: 1.25rem;
+  }
+
+  /* ---------- CONTACTS ---------- */
+
+  .contacts {
+    padding: 2.5rem 0;
+  }
+
+  .sarkinmota-image {
+    height: 210px;
+  }
+
+  .sarkinmota-content {
+    padding: 1rem;
+  }
+
+  .contact-card {
+    gap: 0.75rem;
+    padding: 0.9rem;
+  }
+
+  /* ---------- FEATURED ---------- */
+
+  .featured-main {
+    min-height: 360px;
+    border-radius: 16px;
+  }
+
+  .featured-overlay {
+    padding: 1.25rem;
+  }
+
+  .featured-tag {
+    padding: 6px 10px;
+    margin-bottom: 12px;
+    font-size: 0.75rem;
+  }
+}
+
+/* ==========================================================
+   VERY SMALL PHONES
+   Up to 380px
+   ========================================================== */
+
+@media (max-width: 380px) {
+  .container {
+    padding-inline: 0.75rem;
+  }
+
+  .section {
+    padding: 2.25rem 0;
+  }
+
+  .hero-content {
+    padding-top: 6rem;
+  }
+
+  .hero h1 {
+    font-size: 1.8rem;
+  }
+
+  .hero p {
+    font-size: 0.82rem;
+  }
+
+  .feature-item,
+  .step-card,
+  .testimonial-card {
+    padding: 1rem;
+  }
+
+  .sarkinmota-image {
+    height: 190px;
+  }
+
+  .sarkinmota-content h3 {
+    font-size: 1.05rem;
+  }
+
+  .sarkinmota-description {
+    font-size: 0.76rem;
+  }
+
+  .contact-card {
+    padding: 0.8rem;
+  }
+
+  .contact-card-icon {
+    width: 38px;
+    height: 38px;
+    flex-basis: 38px;
+  }
+
+  .contact-card p {
+    font-size: 0.72rem;
+  }
+
+  .featured-main {
+    min-height: 320px;
+  }
 }

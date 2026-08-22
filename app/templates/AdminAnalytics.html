@@ -1,0 +1,417 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Analytics - Admin - Sarkin Mota Autos</title>
+
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='admin-analytics.css') }}"
+    />
+  </head>
+
+  <body>
+    <div class="analytics-page">
+      <!-- =====================================================
+         HEADER
+    ====================================================== -->
+
+      <header class="analytics-header">
+        <div>
+          <a href="{{ url_for('admin.dashboard') }}" class="back-link">
+            ← Back to Dashboard
+          </a>
+
+          <h1>Analytics</h1>
+
+          <p>Overview of users, vehicles, orders and marketplace activity.</p>
+        </div>
+
+        <div class="header-actions">
+          <a href="{{ url_for('admin.users') }}" class="header-btn">
+            Manage Users
+          </a>
+
+          <a href="{{ url_for('admin.listings') }}" class="header-btn">
+            Manage Listings
+          </a>
+
+          <a href="{{ url_for('admin.orders') }}" class="header-btn primary">
+            View Orders
+          </a>
+        </div>
+      </header>
+
+      <!-- =====================================================
+         MAIN STATISTICS
+    ====================================================== -->
+
+      <section class="analytics-stats">
+        <div class="stat-card">
+          <div class="stat-card-top">
+            <span>Total Users</span>
+
+            <div class="stat-icon users-icon">
+              <svg viewBox="0 0 24 24">
+                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                <circle cx="9" cy="7" r="4" />
+                <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+                <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+              </svg>
+            </div>
+          </div>
+
+          <strong>{{ total_users|default(0) }}</strong>
+
+          <small> Registered users </small>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-card-top">
+            <span>Total Listings</span>
+
+            <div class="stat-icon listings-icon">
+              <svg viewBox="0 0 24 24">
+                <path d="M3 13l2-5a2 2 0 0 1 2-1h10a2 2 0 0 1 2 1l2 5" />
+                <path d="M5 13h14" />
+                <path d="M5 13v5" />
+                <path d="M19 13v5" />
+                <circle cx="7.5" cy="17.5" r="1.5" />
+                <circle cx="16.5" cy="17.5" r="1.5" />
+              </svg>
+            </div>
+          </div>
+
+          <strong>{{ total_listings|default(0) }}</strong>
+
+          <small> Vehicles listed </small>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-card-top">
+            <span>Total Orders</span>
+
+            <div class="stat-icon orders-icon">
+              <svg viewBox="0 0 24 24">
+                <circle cx="9" cy="21" r="1" />
+                <circle cx="20" cy="21" r="1" />
+                <path
+                  d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"
+                />
+              </svg>
+            </div>
+          </div>
+
+          <strong>{{ total_orders|default(0) }}</strong>
+
+          <small> Orders received </small>
+        </div>
+
+        <div class="stat-card revenue-card">
+          <div class="stat-card-top">
+            <span>Total Revenue</span>
+
+            <div class="stat-icon revenue-icon">
+              <span>₦</span>
+            </div>
+          </div>
+
+          <strong> ₦{{ "{:,.0f}".format(total_revenue|default(0)) }} </strong>
+
+          <small> Completed sales </small>
+        </div>
+      </section>
+
+      <!-- =====================================================
+         MAIN ANALYTICS GRID
+    ====================================================== -->
+
+      <section class="analytics-grid">
+        <!-- LISTINGS ACTIVITY -->
+
+        <div class="analytics-card activity-card">
+          <div class="card-heading">
+            <div>
+              <span class="card-label">MARKETPLACE ACTIVITY</span>
+              <h2>Listings Overview</h2>
+            </div>
+
+            <span class="period-label"> All Time </span>
+          </div>
+
+          <div class="chart-legend">
+            <span><i class="legend-dot listings"></i>New listings</span>
+            <span><i class="legend-dot orders"></i>New orders</span>
+          </div>
+
+          <div
+            class="chart-wrapper activity-bars"
+            aria-label="Marketplace activity for the last seven days"
+          >
+            {% for point in weekly_activity %}
+            <div class="activity-day">
+              <div class="activity-columns">
+                <span
+                  class="activity-bar listings"
+                  style="height: {{ ((point.listings / activity_max) * 100)|round(1) }}%"
+                  title="{{ point.listings }} listings"
+                ></span>
+                <span
+                  class="activity-bar orders"
+                  style="height: {{ ((point.orders / activity_max) * 100)|round(1) }}%"
+                  title="{{ point.orders }} orders"
+                ></span>
+              </div>
+              <span class="activity-label">{{ point.label }}</span>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+
+        <!-- ORDER STATUS -->
+
+        <div class="analytics-card order-status-card">
+          <div class="card-heading">
+            <div>
+              <span class="card-label">ORDERS</span>
+              <h2>Order Status</h2>
+            </div>
+          </div>
+
+          <div class="status-content">
+            <div class="donut">
+              <div class="donut-inner">
+                <strong>{{ total_orders|default(0) }}</strong>
+                <span>Orders</span>
+              </div>
+            </div>
+
+            <div class="status-list">
+              <div class="status-item">
+                <span class="status-dot confirmed"></span>
+
+                <span>Confirmed</span>
+
+                <strong> {{ confirmed_orders|default(0) }} </strong>
+              </div>
+
+              <div class="status-item">
+                <span class="status-dot pending"></span>
+
+                <span>Pending</span>
+
+                <strong> {{ pending_orders|default(0) }} </strong>
+              </div>
+
+              <div class="status-item">
+                <span class="status-dot completed"></span>
+
+                <span>Completed</span>
+
+                <strong> {{ completed_orders|default(0) }} </strong>
+              </div>
+
+              <div class="status-item">
+                <span class="status-dot cancelled"></span>
+
+                <span>Cancelled</span>
+
+                <strong> {{ cancelled_orders|default(0) }} </strong>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =====================================================
+         LOWER GRID
+    ====================================================== -->
+
+      <section class="lower-grid">
+        <!-- RECENT ORDERS -->
+
+        <div class="analytics-card recent-orders">
+          <div class="card-heading">
+            <div>
+              <span class="card-label">LATEST ACTIVITY</span>
+              <h2>Recent Orders</h2>
+            </div>
+
+            <a href="{{ url_for('admin.orders') }}" class="view-link">
+              View All →
+            </a>
+          </div>
+
+          <div class="orders-list">
+            {% if recent_orders %} {% for order in recent_orders %}
+
+            <div class="order-row">
+              <div class="order-car">
+                <div class="car-placeholder">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M3 13l2-5a2 2 0 0 1 2-1h10a2 2 0 0 1 2 1l2 5" />
+                    <path d="M5 13h14" />
+                    <path d="M5 13v5" />
+                    <path d="M19 13v5" />
+                  </svg>
+                </div>
+
+                <div>
+                  <strong>
+                    {{ order.car.year }} {{ order.car.make }} {{ order.car.model
+                    }}
+                  </strong>
+
+                  <small> {{ order.buyer_name|default('Customer') }} </small>
+                </div>
+              </div>
+
+              <strong class="order-price">
+                ₦{{ "{:,.0f}".format(order.order_amount) }}
+              </strong>
+
+              <span
+                class="order-status {% if order.status|default('')|lower == 'completed' %} completed {% elif order.status|default('')|lower == 'pending' %} pending {% elif order.status|default('')|lower == 'cancelled' %} cancelled {% else %} confirmed {% endif %}"
+              >
+                {{ order.status|default('Confirmed') }}
+              </span>
+            </div>
+
+            {% endfor %} {% else %}
+
+            <div class="empty-state">
+              <span>No recent orders</span>
+            </div>
+
+            {% endif %}
+          </div>
+        </div>
+
+        <!-- USER OVERVIEW -->
+
+        <div class="analytics-card user-overview">
+          <div class="card-heading">
+            <div>
+              <span class="card-label">USERS</span>
+              <h2>User Overview</h2>
+            </div>
+
+            <a href="{{ url_for('admin.users') }}" class="view-link">
+              Manage →
+            </a>
+          </div>
+
+          <div class="user-stat-main">
+            <div class="user-big-number">{{ total_users|default(0) }}</div>
+
+            <div>
+              <strong>Total Registered</strong>
+
+              <span> Users on the platform </span>
+            </div>
+          </div>
+
+          <div class="user-breakdown">
+            <div class="user-breakdown-item">
+              <div class="mini-icon">
+                <svg viewBox="0 0 24 24">
+                  <circle cx="12" cy="7" r="4" />
+                  <path d="M5.5 21a6.5 6.5 0 0 1 13 0" />
+                </svg>
+              </div>
+
+              <div>
+                <strong> {{ regular_users|default(0) }} </strong>
+
+                <span>Regular Users</span>
+              </div>
+            </div>
+
+            <div class="user-breakdown-item">
+              <div class="mini-icon admin">
+                <svg viewBox="0 0 24 24">
+                  <path d="M12 2l8 4v6c0 5-3.5 9-8 10-4.5-1-8-5-8-10V6l8-4z" />
+                </svg>
+              </div>
+
+              <div>
+                <strong> {{ admin_users|default(0) }} </strong>
+
+                <span>Administrators</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =====================================================
+         LISTING SUMMARY
+    ====================================================== -->
+
+      <section class="analytics-card inventory-card">
+        <div class="card-heading">
+          <div>
+            <span class="card-label">INVENTORY</span>
+            <h2>Listing Inventory</h2>
+          </div>
+
+          <a href="{{ url_for('admin.listings') }}" class="view-link">
+            Manage Listings →
+          </a>
+        </div>
+
+        <div class="inventory-grid">
+          <div class="inventory-stat">
+            <span class="inventory-number">
+              {{ active_listings|default(0) }}
+            </span>
+
+            <span class="inventory-label"> Active Listings </span>
+
+            <div class="inventory-bar">
+              <span class="active-bar"></span>
+            </div>
+          </div>
+
+          <div class="inventory-stat">
+            <span class="inventory-number">
+              {{ sold_listings|default(0) }}
+            </span>
+
+            <span class="inventory-label"> Sold Vehicles </span>
+
+            <div class="inventory-bar">
+              <span class="sold-bar"></span>
+            </div>
+          </div>
+
+          <div class="inventory-stat">
+            <span class="inventory-number">
+              {{ pending_listings|default(0) }}
+            </span>
+
+            <span class="inventory-label"> Pending Review </span>
+
+            <div class="inventory-bar">
+              <span class="pending-bar"></span>
+            </div>
+          </div>
+
+          <div class="inventory-stat">
+            <span class="inventory-number price">
+              ₦{{ "{:,.0f}".format(listings_value|default(0)) }}
+            </span>
+
+            <span class="inventory-label"> Inventory Value </span>
+
+            <div class="inventory-bar">
+              <span class="value-bar"></span>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </body>
+</html>
