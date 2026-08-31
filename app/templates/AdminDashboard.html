@@ -18,45 +18,9 @@
       rel="stylesheet"
       href="{{ url_for('static', filename='admin-dashboard.css') }}"
     />
-    <style>
-      .skip-link {
-        position: absolute;
-        top: -40px;
-        left: 0;
-        background: var(--accent-red, #e53e3e);
-        color: white;
-        padding: 8px 16px;
-        z-index: 100;
-        text-decoration: none;
-        font-weight: 600;
-        transition: top 0.3s;
-      }
-      .skip-link:focus {
-        top: 0;
-      }
-      /* ==========================================================
-         ROOT VARIABLES — CHANGE GLOBAL COLORS / SIZES HERE
-      ========================================================== */
-      .skip-link {
-        position: absolute;
-        top: -40px;
-        left: 0;
-        background: #e53e3e;
-        color: white;
-        padding: 8px 16px;
-        z-index: 100;
-        text-decoration: none;
-        font-weight: 600;
-        transition: top 0.3s;
-      }
-      .skip-link:focus {
-        top: 0;
-      }
-    </style>
   </head>
 
   <body>
-    <a href="#main-content" class="skip-link">Skip to main content</a>
     <!-- LEFT SIDEBAR -->
     <aside class="sidebar">
       <div class="sidebar-header">
@@ -142,6 +106,14 @@
         <div style="width: 42px"></div>
       </div>
       <main id="main-content">
+        {% with messages = get_flashed_messages(with_categories=true) %} {% if
+        messages %}
+        <div class="flash-messages">
+          {% for category, message in messages %}
+          <div class="flash-message flash-{{ category }}">{{ message }}</div>
+          {% endfor %}
+        </div>
+        {% endif %} {% endwith %}
         <!-- WELCOME CARD -->
         <section class="welcome-card section">
           <div class="welcome-content">
@@ -253,11 +225,10 @@
           </div>
         </section>
 
-        <!-- ACTIVITY TIMELINE -->
-        <section class="section">
+        <section class="section admin">
           <div class="section-header">
             <div>
-              <h2>Active Admin Accounts</h2>
+              <h2 class="tt">Active Admin Accounts</h2>
 
               <p class="section-description">
                 Registered administrators with platform access.
@@ -367,8 +338,26 @@
                 <p style="color: var(--text-muted); font-size: 0.9rem">
                   Seller: {{ car.seller.name if car.seller else 'Unknown' }}
                 </p>
+                <p
+                  style="
+                    color: var(--text-muted);
+                    font-size: 0.8rem;
+                    margin-top: -5px;
+                  "
+                  class="pt"
+                >
+                  Listed: {{ car.created_at.strftime('%Y-%m-%d') if
+                  car.created_at else 'Unknown' }}
+                </p>
                 <div class="price">{{ car.price | currency }}</div>
-                <p style="color: var(--text-muted); font-size: 0.8rem">
+                <p
+                  style="
+                    color: var(--text-muted);
+                    font-size: 0.8rem;
+                    margin-top: -5px;
+                  "
+                  class="pp"
+                >
                   Listed: {{ car.created_at.strftime('%Y-%m-%d') if
                   car.created_at else 'Unknown' }}
                 </p>

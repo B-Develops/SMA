@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -6,215 +6,560 @@
     <title>Sarkin Mota Autos – List Your Car</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="{{ url_for('static', filename='6.css') }}" />
 
-    <style>
-      :root {
-        --color-bg-primary: #0a192f;
-        --color-bg-secondary: #020c1b;
-        --color-accent-red: #e53e3e;
-        --color-text-primary: #f7fafc;
-        --color-text-secondary: #a0aec0ab;
-        --color-card-bg: #112240;
-        --border-soft: rgba(255, 255, 255, 0.08);
-      }
-      body {
-        margin: 0;
-        font-family: "Inter", system-ui, sans-serif;
-        background: var(--color-bg-primary);
-        color: var(--color-text-primary);
-        min-height: 100vh;
-      }
-      .container {
-        max-width: 800px;
-        margin: 0 auto;
-        padding: 2rem;
-      }
-      h1 {
-        font-size: 2rem;
-        margin-bottom: 2rem;
-      }
-      .form-card {
-        background: var(--color-card-bg);
-        border: 1px solid var(--border-soft);
-        border-radius: 10px;
-        padding: 2rem;
-      }
-      .form-group {
-        margin-bottom: 1.5rem;
-      }
-      label {
-        display: block;
-        font-weight: 500;
-        margin-bottom: 0.5rem;
-      }
-      input, select, textarea {
-        width: 100%;
-        padding: 0.75rem;
-        border-radius: 6px;
-        border: 1px solid var(--border-soft);
-        background: transparent;
-        color: var(--color-text-primary);
-        font-size: 1rem;
-      }
-      input:focus, select:focus, textarea:focus {
-        outline: none;
-        border-color: var(--color-accent-red);
-      }
-      .btn-primary {
-        background: var(--color-accent-red);
-        color: white;
-        padding: 0.75rem 2rem;
-        border-radius: 6px;
-        border: none;
-        font-weight: 600;
-        cursor: pointer;
-        font-size: 1rem;
-      }
-      .btn-primary:hover {
-        background: #c53030;
-      }
-      .row {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 1rem;
-      }
-      .back-link {
-        display: inline-block;
-        margin-bottom: 1rem;
-        color: var(--color-text-secondary);
-        text-decoration: none;
-      }
-      .back-link:hover {
-        color: var(--color-text-primary);
-      }    .skip-link{position:absolute;top:-40px;left:0;background:#e53e3e;color:white;padding:8px 16px;z-index:100;text-decoration:none;font-weight:600;transition:top .3s}
-    .skip-link:focus{top:0}
-
-    </style>
+    <style></style>
   </head>
   <body>
-    <a href="#main-content" class="skip-link">Skip to main content</a>
-    <div class="container">
-      <a href="{{ url_for('dashboard') }}" class="back-link">← Back to Dashboard</a>
-      <h1>List Your Car for Sale</h1>
-      
-      <div class="form-card">
-        {% with messages = get_flashed_messages(with_categories=true) %}
-          {% if messages %}
-            {% for category, message in messages %}
-              <div style="padding: 1rem; border-radius: 6px; margin-bottom: 1rem; background: rgba(229, 62, 62, 0.2); border: 1px solid #e53e3e; color: #fc8181;">
+    <a href="#main-content" class="skip-link"> Skip to main content </a>
+
+    <main id="main-content" class="listing-page">
+      <!-- ============================================
+             HERO
+        ============================================= -->
+
+      <section class="listing-hero">
+        <div class="hero-content">
+          <a href="{{ url_for('dashboard') }}" class="back-link">
+            <span class="back-arrow">←</span>
+            Back to Dashboard
+          </a>
+
+          <div class="hero-label">
+            <span class="hero-label-dot"></span>
+            SELLER CENTER
+          </div>
+
+          <h1>
+            List your car.
+            <span>Find its next owner.</span>
+          </h1>
+
+          <p class="hero-description">
+            Create a professional listing and put your vehicle in front of
+            buyers looking for their next car.
+          </p>
+
+          <div class="hero-features">
+            <div class="hero-feature">
+              <div class="feature-icon">✓</div>
+              <div>
+                <strong>Reach more buyers</strong>
+                <span>Showcase your vehicle</span>
+              </div>
+            </div>
+
+            <div class="hero-feature">
+              <div class="feature-icon">◆</div>
+              <div>
+                <strong>Professional listing</strong>
+                <span>Built to attract attention</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-decoration">
+          <div class="hero-circle hero-circle-one"></div>
+          <div class="hero-circle hero-circle-two"></div>
+          <div class="hero-car-shape">AUTO</div>
+        </div>
+      </section>
+
+      <!-- ============================================
+             MAIN CONTENT
+        ============================================= -->
+
+      <section class="listing-workspace">
+        <!-- ========================================
+                 FORM
+            ========================================= -->
+
+        <div class="listing-form-card">
+          <div class="form-card-header">
+            <div>
+              <div class="section-kicker">VEHICLE DETAILS</div>
+
+              <h2>Tell us about your car</h2>
+
+              <p>
+                Enter accurate information to help buyers understand your
+                vehicle.
+              </p>
+            </div>
+
+            <div class="step-number">01</div>
+          </div>
+
+          <form
+            method="POST"
+            action="{{ url_for('cars.list_car') }}"
+            enctype="multipart/form-data"
+          >
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+
+            <!-- ==================================
+                         FLASH MESSAGES
+                    =================================== -->
+
+            {% with messages = get_flashed_messages(with_categories=true) %} {%
+            if messages %}
+            <div class="flash-messages">
+              {% for category, message in messages %}
+              <div class="flash-message">
+                <span>!</span>
                 {{ message }}
               </div>
-            {% endfor %}
-          {% endif %}
-        {% endwith %}
+              {% endfor %}
+            </div>
+            {% endif %} {% endwith %}
 
-         <form method="POST" action="{{ url_for('cars.list_car') }}">
-           <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-          <div class="row">
-            <div class="form-group">
-              <label>Make *</label>
-              <input type="text" name="make" placeholder="e.g., Toyota" required />
+            <!-- ==================================
+                         BASIC INFORMATION
+                    =================================== -->
+
+            <div class="form-section">
+              <div class="form-section-title">
+                <span class="section-icon">01</span>
+
+                <div>
+                  <h3>Basic information</h3>
+                  <p>What vehicle are you selling?</p>
+                </div>
+              </div>
+
+              <div class="form-grid">
+                <div class="field">
+                  <label for="make">
+                    Make
+                    <span>*</span>
+                  </label>
+
+                  <div class="input-wrapper">
+                    <span class="input-icon">◆</span>
+
+                    <input
+                      type="text"
+                      id="make"
+                      name="make"
+                      placeholder="Toyota"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div class="field">
+                  <label for="model">
+                    Model
+                    <span>*</span>
+                  </label>
+
+                  <div class="input-wrapper">
+                    <span class="input-icon">◇</span>
+
+                    <input
+                      type="text"
+                      id="model"
+                      name="model"
+                      placeholder="Camry"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div class="field">
+                  <label for="year">
+                    Year
+                    <span>*</span>
+                  </label>
+
+                  <div class="input-wrapper">
+                    <span class="input-icon">▣</span>
+
+                    <input
+                      type="number"
+                      id="year"
+                      name="year"
+                      placeholder="2020"
+                      min="1900"
+                      max="2026"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div class="field">
+                  <label for="mileage"> Mileage </label>
+
+                  <div class="input-wrapper">
+                    <span class="input-icon">↗</span>
+
+                    <input
+                      type="number"
+                      id="mileage"
+                      name="mileage"
+                      placeholder="50,000"
+                      min="0"
+                    />
+
+                    <span class="input-suffix">KM</span>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div class="form-group">
-              <label>Model *</label>
-              <input type="text" name="model" placeholder="e.g., Camry" required />
+
+            <!-- ==================================
+                         PRICE / CONDITION
+                    =================================== -->
+
+            <div class="form-section">
+              <div class="form-section-title">
+                <span class="section-icon"> 02 </span>
+
+                <div>
+                  <h3>Pricing & condition</h3>
+                  <p>Set your asking price and vehicle condition.</p>
+                </div>
+              </div>
+
+              <div class="form-grid">
+                <div class="field field-large">
+                  <label for="price">
+                    Asking price
+                    <span>*</span>
+                  </label>
+
+                  <div class="input-wrapper price-input">
+                    <span class="currency"> ₦ </span>
+
+                    <input
+                      type="number"
+                      id="price"
+                      name="price"
+                      placeholder="15,000,000"
+                      min="0"
+                      required
+                    />
+                  </div>
+
+                  <small> Enter the price you expect to receive. </small>
+                </div>
+
+                <div class="field">
+                  <label for="condition"> Condition </label>
+
+                  <div class="select-wrapper">
+                    <select name="condition" id="condition">
+                      <option value="new">New</option>
+
+                      <option value="used" selected>Used</option>
+
+                      <option value="reconditioned">Reconditioned</option>
+                    </select>
+
+                    <span class="select-arrow"> ↓ </span>
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
-          
-          <div class="row">
-            <div class="form-group">
-              <label>Year *</label>
-              <input type="number" name="year" placeholder="e.g., 2020" min="1900" max="2026" required />
+
+            <!-- ==================================
+                         DESCRIPTION
+                    =================================== -->
+
+            <div class="form-section">
+              <div class="form-section-title">
+                <span class="section-icon"> 03 </span>
+
+                <div>
+                  <h3>Vehicle description</h3>
+                  <p>Give buyers a reason to choose your car.</p>
+                </div>
+              </div>
+
+              <div class="field">
+                <label for="description"> Description </label>
+
+                <textarea
+                  id="description"
+                  name="description"
+                  rows="6"
+                  maxlength="1500"
+                  placeholder="Tell buyers about the vehicle's condition, service history, features, ownership history, recent repairs and anything else they should know..."
+                ></textarea>
+
+                <div class="textarea-footer">
+                  <span> Be honest and specific. </span>
+
+                  <span> <span id="char-count">0</span>/1500 </span>
+                </div>
+              </div>
             </div>
-            <div class="form-group">
-              <label>Price (₦) *</label>
-              <input type="number" name="price" placeholder="e.g., 15000000" min="0" required />
+
+            <!-- ==================================
+                         IMAGE
+                    =================================== -->
+
+            <div class="form-section">
+              <div class="form-section-title">
+                <span class="section-icon"> 04 </span>
+
+                <div>
+                  <h3>Vehicle photos</h3>
+                  <p>A good photo can make your listing stand out.</p>
+                </div>
+              </div>
+
+              <div class="upload-area" id="upload-area">
+                <input
+                  type="file"
+                  name="image"
+                  id="image"
+                  accept="image/png,image/jpeg,image/gif,image/webp"
+                />
+
+                <div class="upload-content" id="upload-content">
+                  <div class="upload-icon">↑</div>
+
+                  <h4>Upload your vehicle photo</h4>
+
+                  <p>
+                    Drag and drop your image here, or
+                    <span>browse your device</span>
+                  </p>
+
+                  <div class="upload-meta">
+                    JPG, PNG, WEBP or GIF
+                    <span>•</span>
+                    Maximum 16MB
+                  </div>
+                </div>
+
+                <div class="image-preview" id="image-preview">
+                  <img id="preview-img" src="" alt="Vehicle preview" />
+
+                  <div class="preview-info">
+                    <strong id="preview-name"> Vehicle image </strong>
+
+                    <span id="preview-size"> Image selected </span>
+                  </div>
+
+                  <button type="button" id="remove-image">Remove</button>
+                </div>
+              </div>
             </div>
-          </div>
-          
-          <div class="row">
-            <div class="form-group">
-              <label>Mileage (KM)</label>
-              <input type="number" name="mileage" placeholder="e.g., 50000" min="0" />
+
+            <!-- ==================================
+                         SUBMIT
+                    =================================== -->
+
+            <div class="form-submit">
+              <div class="submit-note">
+                <div class="secure-icon">✓</div>
+
+                <div>
+                  <strong> Ready to sell? </strong>
+
+                  <span>
+                    Your listing will be reviewed before appearing to buyers.
+                  </span>
+                </div>
+              </div>
+
+              <button type="submit" class="submit-button">
+                <span>List My Car</span>
+                <span class="submit-arrow">→</span>
+              </button>
             </div>
-            <div class="form-group">
-              <label>Condition</label>
-              <select name="condition">
-                <option value=\"new\">New</option>
-                <option value=\"used\" selected>Used</option>
-                <option value=\"reconditioned\">Reconditioned</option>
-              </select>
+          </form>
+        </div>
+
+        <!-- ========================================
+                 DESKTOP SIDE PANEL
+            ========================================= -->
+
+        <aside class="listing-side-panel">
+          <div class="side-panel-inner">
+            <div class="side-kicker">SELLER TIP</div>
+
+            <h2>Listings with great photos get noticed first.</h2>
+
+            <p>
+              Use a clear photo taken in good lighting. Show the car from an
+              angle that lets buyers see its overall condition.
+            </p>
+
+            <div class="photo-guide">
+              <div class="photo-guide-image">
+                <div class="fake-car"></div>
+
+                <span class="photo-corner top-left"></span>
+                <span class="photo-corner top-right"></span>
+                <span class="photo-corner bottom-left"></span>
+                <span class="photo-corner bottom-right"></span>
+              </div>
+
+              <div class="photo-guide-label">Recommended</div>
             </div>
-          </div>
-          
-          <div class="form-group">
-            <label>Description</label>
-            <textarea name="description" rows="4" placeholder="Describe the car's condition, features, history..."></textarea>
-          </div>
-          
-          <div class="form-group">
-            <label>Car Image</label>
-            <div style="border: 2px dashed var(--border-soft); border-radius: 6px; padding: 1.5rem; text-align: center; background: rgba(255,255,255,0.02);">
-              <input type="file" name="image" id="image" accept="image/png,image/jpeg,image/gif,image/webp" style="display: none;" />
-              <label for="image" style="cursor: pointer; display: block;">
-                <div style="font-size: 2rem; margin-bottom: 0.5rem;">📷</div>
-                <div style="color: var(--color-text-secondary);">Click to upload an image</div>
-                <div style="color: var(--color-text-secondary); font-size: 0.85rem;">PNG, JPG, GIF, or WEBP (max 16MB)</div>
-              </label>
-              <div id="image-preview" style="margin-top: 1rem; display: none;">
-                <img id="preview-img" src="" alt="Preview" style="max-width: 200px; max-height: 150px; border-radius: 6px;" />
-                <button type="button" onclick="clearImage()" style="display: block; margin: 0.5rem auto 0; padding: 0.25rem 0.75rem; background: transparent; border: 1px solid var(--border-soft); color: var(--color-text-secondary); border-radius: 4px; cursor: pointer;">Remove</button>
+
+            <div class="side-checklist">
+              <div>
+                <span>✓</span>
+                Clean background
+              </div>
+
+              <div>
+                <span>✓</span>
+                Good natural lighting
+              </div>
+
+              <div>
+                <span>✓</span>
+                Vehicle clearly visible
               </div>
             </div>
           </div>
-          
-          <button type="submit" class="btn-primary">List My Car</button>
-        </form>
-      </div>
-    </div>
-    
+        </aside>
+      </section>
+    </main>
+
+    <!-- ================================================
+         JAVASCRIPT
+    ================================================= -->
+
     <script>
-      // Image preview functionality
-      const imageInput = document.getElementById('image');
-      const imagePreview = document.getElementById('image-preview');
-      const previewImg = document.getElementById('preview-img');
-      
-      imageInput.addEventListener('change', function(e) {
-        const file = e.target.files[0];
-        if (file) {
-          // Validate file type
-          const validTypes = ['image/png', 'image/jpeg', 'image/gif', 'image/webp'];
-          if (!validTypes.includes(file.type)) {
-            alert('Please select a valid image file (PNG, JPG, GIF, or WEBP)');
-            imageInput.value = '';
-            return;
-          }
-          
-          // Validate file size (16MB max)
-          if (file.size > 16 * 1024 * 1024) {
-            alert('File size must be less than 16MB');
-            imageInput.value = '';
-            return;
-          }
-          
-          // Show preview
-          const reader = new FileReader();
-          reader.onload = function(e) {
-            previewImg.src = e.target.result;
-            imagePreview.style.display = 'block';
-          };
-          reader.readAsDataURL(file);
+      const imageInput = document.getElementById("image");
+
+      const uploadArea = document.getElementById("upload-area");
+
+      const uploadContent = document.getElementById("upload-content");
+
+      const imagePreview = document.getElementById("image-preview");
+
+      const previewImg = document.getElementById("preview-img");
+
+      const previewName = document.getElementById("preview-name");
+
+      const previewSize = document.getElementById("preview-size");
+
+      const removeImage = document.getElementById("remove-image");
+
+      const description = document.getElementById("description");
+
+      const charCount = document.getElementById("char-count");
+
+      /* ==========================================
+           CHARACTER COUNT
+        ========================================== */
+
+      if (description) {
+        description.addEventListener("input", function () {
+          charCount.textContent = this.value.length;
+        });
+      }
+
+      /* ==========================================
+           IMAGE UPLOAD
+        ========================================== */
+
+      function showImage(file) {
+        const validTypes = [
+          "image/png",
+          "image/jpeg",
+          "image/gif",
+          "image/webp",
+        ];
+
+        if (!validTypes.includes(file.type)) {
+          alert("Please select a valid image file.");
+
+          return;
+        }
+
+        if (file.size > 16 * 1024 * 1024) {
+          alert("Image must be smaller than 16MB.");
+
+          return;
+        }
+
+        const reader = new FileReader();
+
+        reader.onload = function (event) {
+          previewImg.src = event.target.result;
+
+          previewName.textContent = file.name;
+
+          previewSize.textContent = formatFileSize(file.size);
+
+          uploadContent.style.display = "none";
+
+          imagePreview.classList.add("visible");
+        };
+
+        reader.readAsDataURL(file);
+      }
+
+      function formatFileSize(bytes) {
+        if (bytes < 1024) return bytes + " B";
+
+        if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + " KB";
+
+        return (bytes / (1024 * 1024)).toFixed(1) + " MB";
+      }
+
+      imageInput.addEventListener("change", function () {
+        if (this.files.length) {
+          showImage(this.files[0]);
         }
       });
-      
-      function clearImage() {
-        imageInput.value = '';
-        previewImg.src = '';
-        imagePreview.style.display = 'none';
-      }
+
+      /* ==========================================
+           DRAG & DROP
+        ========================================== */
+
+      ["dragenter", "dragover"].forEach(function (eventName) {
+        uploadArea.addEventListener(eventName, function (event) {
+          event.preventDefault();
+
+          uploadArea.classList.add("dragging");
+        });
+      });
+
+      ["dragleave", "drop"].forEach(function (eventName) {
+        uploadArea.addEventListener(eventName, function (event) {
+          event.preventDefault();
+
+          uploadArea.classList.remove("dragging");
+        });
+      });
+
+      uploadArea.addEventListener("drop", function (event) {
+        const files = event.dataTransfer.files;
+
+        if (!files.length) return;
+
+        imageInput.files = files;
+
+        showImage(files[0]);
+      });
+
+      /* ==========================================
+           REMOVE IMAGE
+        ========================================== */
+
+      removeImage.addEventListener("click", function () {
+        imageInput.value = "";
+
+        previewImg.src = "";
+
+        imagePreview.classList.remove("visible");
+
+        uploadContent.style.display = "flex";
+      });
     </script>
   </body>
 </html>
-

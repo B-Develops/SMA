@@ -17,6 +17,10 @@
       rel="stylesheet"
       href="{{ url_for('static', filename='admin-listings.css') }}"
     />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='responsive-tables.css') }}"
+    />
 
     <!-- Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -31,10 +35,12 @@
 
         <header class="page-header">
           <div class="header-top">
-          <a href="{{ url_for('admin.dashboard') }}" class="back-link">
-            ← Back to Dashboard
-          </a>
-            <span class="page-badge"><i data-lucide="car-front"></i>Listing Management</span>
+            <a href="{{ url_for('admin.dashboard') }}" class="back-link">
+              ← Back to Dashboard
+            </a>
+            <span class="page-badge"
+              ><i data-lucide="car-front"></i>Listing Management</span
+            >
           </div>
 
           <div class="header-content">
@@ -42,11 +48,25 @@
               <span class="section-eyebrow">ADMINISTRATION</span>
               <h1>Manage Listings</h1>
 
-              <p>View, manage and moderate every vehicle listed on the Sarkin Mota Autos platform.</p>
+              <p>
+                View, manage and moderate every vehicle listed on the Sarkin
+                Mota Autos platform.
+              </p>
             </div>
-            <div class="header-summary"><span>Total Listings</span><strong>{{ total_listings }}</strong></div>
+            <div class="header-summary">
+              <span>Total Listings</span><strong>{{ total_listings }}</strong>
+            </div>
           </div>
         </header>
+
+        {% with messages = get_flashed_messages(with_categories=true) %} {% if
+        messages %}
+        <div class="flash-messages">
+          {% for category, message in messages %}
+          <div class="flash-message flash-{{ category }}">{{ message }}</div>
+          {% endfor %}
+        </div>
+        {% endif %} {% endwith %}
 
         <!-- ========================= -->
         <!-- STATS -->
@@ -54,7 +74,9 @@
 
         <section class="stats-grid">
           <article class="stat-card">
-            <div class="stat-icon listings-icon"><i data-lucide="car-front"></i></div>
+            <div class="stat-icon listings-icon">
+              <i data-lucide="car-front"></i>
+            </div>
             <div class="stat-info">
               <span class="stat-title">Total Listings</span>
               <strong>{{ total_listings }}</strong>
@@ -63,7 +85,9 @@
           </article>
 
           <article class="stat-card">
-            <div class="stat-icon active-icon"><i data-lucide="circle-check"></i></div>
+            <div class="stat-icon active-icon">
+              <i data-lucide="circle-check"></i>
+            </div>
             <div class="stat-info">
               <span class="stat-title">Active Listings</span>
               <strong>{{ active_listings }}</strong>
@@ -72,7 +96,9 @@
           </article>
 
           <article class="stat-card">
-            <div class="stat-icon sold-icon"><i data-lucide="badge-check"></i></div>
+            <div class="stat-icon sold-icon">
+              <i data-lucide="badge-check"></i>
+            </div>
             <div class="stat-info">
               <span class="stat-title">Sold Listings</span>
               <strong>{{ sold_listings }}</strong>
@@ -87,27 +113,37 @@
 
         <section class="toolbar">
           <div class="toolbar-main">
-          <div class="search-box">
-            <i data-lucide="search"></i>
+            <div class="search-box">
+              <i data-lucide="search"></i>
 
-            <input type="search" placeholder="Search listings by make, model or seller..." aria-label="Search listings" />
-          </div>
+              <input
+                type="search"
+                placeholder="Search listings by make, model or seller..."
+                aria-label="Search listings"
+              />
+            </div>
           </div>
 
           <div class="toolbar-actions">
-            <label class="filter-control"><span>Status</span><select aria-label="Filter by listing status">
-              <option>All Status</option>
-              <option>Active</option>
-              <option>Pending</option>
-              <option>Sold</option>
-            </select></label>
+            <label class="filter-control"
+              ><span>Status</span
+              ><select aria-label="Filter by listing status">
+                <option>All Status</option>
+                <option>Active</option>
+                <option>Pending</option>
+                <option>Sold</option>
+              </select></label
+            >
 
-            <label class="filter-control"><span>Sort</span><select aria-label="Sort listings">
-              <option>Newest First</option>
-              <option>Oldest First</option>
-              <option>Highest Price</option>
-              <option>Lowest Price</option>
-            </select></label>
+            <label class="filter-control"
+              ><span>Sort</span
+              ><select aria-label="Sort listings">
+                <option>Newest First</option>
+                <option>Oldest First</option>
+                <option>Highest Price</option>
+                <option>Lowest Price</option>
+              </select></label
+            >
           </div>
         </section>
 
@@ -125,115 +161,118 @@
           </div>
           {% if listings %}
           <div class="table-wrap">
-          <table class="admin-table">
-            <thead>
-              <tr>
-                <th>Vehicle</th>
-                <th>Seller</th>
-                <th>Price</th>
-                <th>Status</th>
-                <th>Listed</th>
-                <th class="actions-heading">Actions</th>
-              </tr>
-            </thead>
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Vehicle</th>
+                  <th>Seller</th>
+                  <th>Price</th>
+                  <th>Status</th>
+                  <th>Listed</th>
+                  <th class="actions-heading">Actions</th>
+                </tr>
+              </thead>
 
-            <tbody>
-              {% for car in listings %}
+              <tbody>
+                {% for car in listings %}
 
-              <tr>
-                <!-- VEHICLE -->
+                <tr>
+                  <!-- VEHICLE -->
 
-                <td>
-                  <div class="vehicle-card">
-                    {% if car.image_url %}
+                  <td data-label="Vehicle">
+                    <div class="vehicle-card">
+                      {% if car.image_url %}
 
-                    <img
-                      src="{{ url_for('static', filename=car.image_url) }}"
-                      alt="{{ car.make }}"
-                      class="car-image"
-                    />
+                      <img
+                        src="{{ url_for('static', filename=car.image_url) }}"
+                        alt="{{ car.make }}"
+                        class="car-image"
+                      />
 
-                    {% else %}
+                      {% else %}
 
-                    <div class="car-image placeholder">N/A</div>
+                      <div class="car-image placeholder">N/A</div>
 
-                    {% endif %}
+                      {% endif %}
 
-                    <div class="vehicle-details">
-                      <strong class="vehicle-name">
-                        {{ car.year }} {{ car.make }} {{ car.model }}
-                      </strong>
+                      <div class="vehicle-details">
+                        <strong class="vehicle-name">
+                          {{ car.year }} {{ car.make }} {{ car.model }}
+                        </strong>
 
-                      <div class="vehicle-meta">
-                        {{ car.mileage|int }} mi • {{ car.transmission }}
+                        <div class="vehicle-meta">
+                          {{ car.mileage|int }} mi • {{ car.transmission }}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </td>
+                  </td>
 
-                <!-- SELLER -->
+                  <!-- SELLER -->
 
-                <td>
-                  <div class="seller-name">{{ car.seller_name }}</div>
+                  <td data-label="Seller">
+                    <div class="seller-name">{{ car.seller_name }}</div>
 
-                  <div class="seller-email">{{ car.seller_email }}</div>
-                </td>
+                    <div class="seller-email">{{ car.seller_email }}</div>
+                  </td>
 
-                <!-- PRICE -->
+                  <!-- PRICE -->
 
-                <td>
-                  <strong class="price"> {{ car.price | currency }} </strong>
-                </td>
+                  <td data-label="Price">
+                    <strong class="price"> {{ car.price | currency }} </strong>
+                  </td>
 
-                <!-- STATUS -->
+                  <!-- STATUS -->
 
-                <td>
-                  <span
-                    class="badge
+                  <td data-label="Status">
+                    <span
+                      class="badge
         {{ 'badge-active' if car.status == 'active'
         else 'badge-sold' if car.status == 'sold'
         else 'badge-pending' }}"
-                  >
-                    <span class="badge-dot"></span>
-                    {{ car.status|capitalize }}
-                  </span>
-                </td>
-
-                <!-- DATE -->
-
-                <td>
-                  <span class="joined-date">{{ car.created_at|date('Y-m-d') if car.created_at else 'N/A' }}</span>
-                </td>
-
-                <!-- ACTIONS -->
-
-                <td class="actions-cell">
-                  <form
-                    action="{{ url_for('admin.delete_listing', listing_id=car.id) }}"
-                    method="POST"
-                  >
-                    <input
-                      type="hidden"
-                      name="csrf_token"
-                      value="{{ csrf_token() }}"
-                    />
-
-                    <button
-                      type="submit"
-                      class="btn btn-danger btn-sm"
-                      onclick="return confirm('Delete this listing?');"
-                      aria-label="Delete {{ car.make }} {{ car.model }}"
                     >
-                      <i data-lucide="trash-2"></i>
-                      <span>Delete</span>
-                    </button>
-                  </form>
-                </td>
-              </tr>
+                      <span class="badge-dot"></span>
+                      {{ car.status|capitalize }}
+                    </span>
+                  </td>
 
-              {% endfor %}
-            </tbody>
-          </table>
+                  <!-- DATE -->
+
+                  <td data-label="Listed">
+                    <span class="joined-date"
+                      >{{ car.created_at|date('Y-m-d') if car.created_at else
+                      'N/A' }}</span
+                    >
+                  </td>
+
+                  <!-- ACTIONS -->
+
+                  <td class="actions-cell" data-label="Actions">
+                    <form
+                      action="{{ url_for('admin.delete_listing', listing_id=car.id) }}"
+                      method="POST"
+                    >
+                      <input
+                        type="hidden"
+                        name="csrf_token"
+                        value="{{ csrf_token() }}"
+                      />
+
+                      <button
+                        type="submit"
+                        class="btn btn-danger btn-sm"
+                        onclick="return confirm('Delete this listing?');"
+                        aria-label="Delete {{ car.make }} {{ car.model }}"
+                      >
+                        <i data-lucide="trash-2"></i>
+                        <span>Delete</span>
+                      </button>
+                    </form>
+                  </td>
+                </tr>
+
+                {% endfor %}
+              </tbody>
+            </table>
           </div>
           {% else %}
 
@@ -310,4 +349,3 @@
     </script>
   </body>
 </html>
-

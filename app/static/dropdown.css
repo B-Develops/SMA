@@ -1,0 +1,108 @@
+/* ==========================================================
+   DROPDOWN MENU — SHARED ACROSS PAGES
+   ========================================================== */
+
+.dropdown {
+  display: none;
+  position: relative;
+}
+
+@media (max-width: 768px) {
+  .dropdown {
+    display: block;
+  }
+}
+
+.dropdown-content {
+  display: none;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(8px);
+
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+
+  min-width: 220px;
+  padding: 6px;
+
+  background: rgba(11, 24, 46, 0.95);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+
+  box-shadow: 0 16px 35px rgba(0, 0, 0, 0.35);
+
+  z-index: 1000;
+
+  transition:
+    opacity 0.2s ease,
+    visibility 0.2s ease,
+    transform 0.2s ease;
+}
+
+.dropdown-content.show {
+  display: block;
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(2vh) !important;
+}
+
+.dropdown:hover .dropdown-content {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.dropdown-content a {
+  display: block;
+  padding: 11px 13px;
+
+  color: rgba(255, 255, 255, 0.88);
+  text-decoration: none;
+  font-size: 0.88rem;
+
+  border-radius: 7px;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.dropdown-content a:hover {
+  background: rgba(255, 255, 255, 0.07);
+  color: #fff;
+}
+
+.dropbtn {
+  width: 42px;
+  height: 42px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 8px;
+
+  color: white;
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.dropbtn:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.munb {
+  width: 24px;
+  height: 24px;
+  color: white;
+}

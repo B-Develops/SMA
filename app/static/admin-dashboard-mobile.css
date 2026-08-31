@@ -1,0 +1,314 @@
+@media (max-width) {
+  .stats-grid {
+    margin-top: -5vh;
+  }
+  .stat-card {
+    height: 18vh;
+  }
+}
+@media (max-width: 768px) {
+  /* ==========================
+     Mobile Top Bar
+  ========================== */
+
+  .mobile-topbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 70px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 1rem;
+
+    background: rgba(10, 25, 47, 0.72);
+    backdrop-filter: blur(12px);
+
+    border-bottom: 1px solid var(--border-soft);
+
+    z-index: 1100;
+  }
+  .badge-success {
+    display: none;
+  }
+  .mobile-topbar h2 {
+    font-size: 1.05rem;
+    margin: 0;
+    color: linear-gradient(135deg, #ef4444, #c53030);
+  }
+
+  .menu-btn {
+    width: 42px;
+    height: 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: none;
+    border-radius: 12px;
+
+    background: rgba(255, 255, 255, 0.06);
+
+    color: white;
+
+    cursor: pointer;
+  }
+
+  .menu-btn svg {
+    width: 22px;
+    height: 22px;
+  }
+
+  /* Hide desktop toggle */
+
+  .sidebar-toggle {
+    display: none;
+  }
+
+  /* ==========================
+     Sidebar Drawer
+  ========================== */
+
+  .sidebar {
+    position: fixed;
+
+    top: 0;
+    left: 0;
+
+    width: 280px;
+    height: 100vh;
+
+    transform: translateX(-100%);
+
+    transition: transform 0.35s ease;
+
+    z-index: 1200;
+  }
+
+  .sidebar.mobile-open {
+    transform: translateX(0);
+  }
+
+  /* ==========================
+     Overlay
+  ========================== */
+
+  .sidebar-overlay {
+    position: fixed;
+
+    inset: 0;
+
+    background: rgba(0, 0, 0, 0.55);
+
+    opacity: 0;
+
+    visibility: hidden;
+
+    transition: 0.3s;
+
+    z-index: 1150;
+  }
+
+  .sidebar-overlay.show {
+    opacity: 1;
+
+    visibility: visible;
+  }
+
+  /* ==========================
+     Layout
+  ========================== */
+
+  .main-wrapper {
+    width: 100%;
+
+    margin: 0;
+  }
+
+  main {
+    padding: 90px 1rem 2rem;
+  }
+
+  .section {
+    padding-inline: 1rem;
+  }
+
+  /* ==========================
+     Hero
+  ========================== */
+
+  .welcome-card {
+    min-height: auto;
+  }
+
+  .welcome-content {
+    padding-bottom: 2rem;
+    padding-top: 2rem;
+    padding-left: 1.5rem;
+  }
+
+  .welcome-content h1 {
+    font-size: 2.6rem;
+  }
+
+  /* ==========================
+     Grids
+  ========================== */
+
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .car-grid,
+  .quick-actions-grid {
+    grid-template-columns: 1fr;
+  }
+  .welcome-card {
+    width: 100vw;
+    margin-top: 0;
+    height: 65vh;
+    border-radius: 0px;
+    border-left: none;
+    border-right: none;
+    border-top: none;
+    padding: 0;
+  }
+  .stat-footer {
+    display: none;
+  }
+  main {
+    padding: 0;
+  }
+  .welcome-content {
+    margin-top: 70px;
+  }
+  .stat-card {
+    padding: 1rem;
+  }
+  .stat-icon {
+    width: 36px;
+    height: 36px;
+  }
+
+  .stat-icon svg {
+    width: 17px;
+    height: 17px;
+  }
+  .munb {
+    color: var(--color-info);
+  }
+  .stats-grid {
+    margin-top: -5vh;
+  }
+  .stat-card {
+    height: 16vh !important;
+  }
+  .platform-activity-section {
+    height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .section-header {
+    margin: 0;
+  }
+
+  /* ==========================
+   Section Header (desktop + mobile overrides)
+   Copied from admin-dashboard.css
+   ========================== */
+
+  /* Desktop spacing for section headers */
+  .section-header {
+    margin-bottom: var(--space-7);
+    margin-top: var(--space-9);
+  }
+
+  /* Mobile overrides */
+  @media (max-width: 768px) {
+    .section-header {
+      align-items: flex-start;
+      margin: 0;
+    }
+  }
+
+  td {
+    height: 9vh;
+  }
+  .admin {
+    margin: 0;
+  }
+  .car-card {
+    background: rgba(17, 34, 64, 0.72);
+
+    border: 1px solid var(--border-soft);
+
+    border-radius: var(--radius-lg);
+
+    overflow: hidden;
+
+    transition: all 0.3s ease;
+
+    box-shadow: var(--shadow-md);
+    height: 19vh;
+    padding: 0;
+  }
+
+  .car-card:hover {
+    transform: translateY(-8px);
+
+    border-color: var(--border-strong);
+
+    box-shadow: var(--shadow-lg);
+  }
+
+  .car-body {
+    padding: var(--space-2);
+  }
+
+  .car-body h4 {
+    margin-bottom: 0.1rem;
+  }
+  .car-body p {
+    margin-bottom: 0.1rem;
+  }
+  .price {
+    font-size: 1.5rem;
+
+    font-weight: 700;
+
+    color: var(--color-accent-red);
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+  .pp {
+    display: none;
+  }
+  .pt {
+    display: flex;
+  }
+}
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--color-text-primary);
+  line-height: 1.2;
+}
+
+h1 {
+  font-size: 3rem;
+  font-weight: 800;
+}
+
+h2 {
+  font-size: 2.2rem;
+  font-weight: 700;
+}

@@ -18,6 +18,10 @@
       rel="stylesheet"
       href="{{ url_for('static', filename='admin-users.css') }}"
     />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='responsive-tables.css') }}"
+    />
 
     <script src="https://unpkg.com/lucide@latest"></script>
   </head>
@@ -66,6 +70,15 @@
         <!-- ==================================================
              STATS
         =================================================== -->
+
+        {% with messages = get_flashed_messages(with_categories=true) %} {% if
+        messages %}
+        <div class="flash-messages">
+          {% for category, message in messages %}
+          <div class="flash-message flash-{{ category }}">{{ message }}</div>
+          {% endfor %}
+        </div>
+        {% endif %} {% endwith %}
 
         <section class="stats-grid">
           <article class="stat-card">
@@ -185,7 +198,7 @@
                 <tr>
                   <!-- USER -->
 
-                  <td>
+                  <td data-label="User">
                     <div class="user-card">
                       <div class="avatar">
                         {{ user.name[0]|upper if user.name else "U" }}
@@ -207,7 +220,7 @@
 
                   <!-- ROLE -->
 
-                  <td>
+                  <td data-label="Role">
                     <span
                       class="badge
                       {{ 'badge-admin' if user.role == 'admin' else 'badge-user' }}"
@@ -219,7 +232,7 @@
 
                   <!-- LISTINGS -->
 
-                  <td>
+                  <td data-label="Listings">
                     <span class="listing-count">
                       {{ user.listing_count }}
                     </span>
@@ -227,7 +240,7 @@
 
                   <!-- JOINED -->
 
-                  <td>
+                  <td data-label="Joined">
                     <span class="joined-date">
                       {{ user.created_at|date('Y-m-d') if user.created_at else
                       'N/A' }}
@@ -236,7 +249,7 @@
 
                   <!-- ACTIONS -->
 
-                  <td class="actions-cell">
+                  <td class="actions-cell" data-label="Actions">
                     {% if user.id != current_user.id %}
 
                     <form

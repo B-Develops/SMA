@@ -1287,4 +1287,16 @@ body::before {
   .search-box input {
     font-size: 0.72rem;
   }
+  main {
+    border-radius: 0 !important;
+  }
+  .page-wrapper {
+    width: 100%;
+    min-height: 100vh;
+    padding: 0;
+  }
+  tbody {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
 }

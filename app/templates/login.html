@@ -18,117 +18,144 @@
       href="{{ url_for('static', filename='login.css') }}"
     />
 
-    <style>    .skip-link{position:absolute;top:-40px;left:0;background:#e53e3e;color:white;padding:8px 16px;z-index:100;text-decoration:none;font-weight:600;transition:top .3s}
-    .skip-link:focus{top:0}
-</style>
+    <style>
+      .skip-link {
+        position: absolute;
+        top: -40px;
+        left: 0;
+        background: #e53e3e;
+        color: white;
+        padding: 8px 16px;
+        z-index: 100;
+        text-decoration: none;
+        font-weight: 600;
+        transition: top 0.3s;
+      }
+      .skip-link:focus {
+        top: 0;
+      }
+    </style>
   </head>
 
   <body>
-    <a href="#main" class="skip-link">Skip to main content</a>
-    <header role="banner">
-      <div class="container" id="navcon">
-        <nav aria-label="Main navigation">
-          <div class="logo">Sarkin Mota Autos</div>
-          <div class="nav-actions">
-            <a href="{{ url_for('profiles.about') }}" style="color: #fff"
-              >About</a
-            >
-            {% if current_user.is_authenticated %}
-            <a
-              href="{{ url_for('dashboard') }}"
-              style="color: #fff"
-              class="btn-auth"
-            >
-              Dashboard
-            </a>
-            {% else %}
-            <a
-              href="{{ url_for('auth.login') }}"
-              style="color: #fff"
-              class="btn-auth"
-              >Sign In</a
-            >
-            <a
-              href="{{ url_for('auth.signup') }}"
-              style="color: #fff"
-              class="btn-auth btn-signup"
-              >Sign Up</a
-            >
-            {% endif %}
-          </div>
-        </nav>
-      </div>
-    </header>
     <a href="#main-content" class="skip-link">Skip to main content</a>
-    <main id="main-content">
-        <div class="auth-card">
-          <h1>Sign In to Your Account</h1>
-          <p class="subtitle">
-            Access your dashboard, manage listings, orders, saved searches, and
-            more.
-          </p>
 
-          {% with messages = get_flashed_messages(with_categories=true) %} {% if
-          messages %}
-          <div style="margin-bottom: 1rem">
-            {% for category, message in messages %}
-            <div
-              style="
-                padding: 0.75rem;
-                border-radius: 6px;
-                margin-bottom: 0.5rem;
-                background: rgba(229, 62, 62, 0.2);
-                border: 1px solid #e53e3e;
-                color: #fc8181;
-              "
-            >
-              {{ message }}
-            </div>
-            {% endfor %}
-          </div>
-          {% endif %} {% endwith %}
+    <main id="main-content" class="auth-page">
+      <!-- BRAND PANEL -->
+      <section class="auth-brand" aria-label="Sarkin Mota Autos">
+        <div class="cover sec1">
+          <div class="brand-content">
+            <a href="{{ url_for('profiles.about') }}" class="brand-logo">
+              Sarkin Mota <span>Autos</span>
+            </a>
 
-          <form method="POST">
-            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
-            <div class="form-group">
-              <label>Email or Phone Number</label>
-              <input type="text" name="email" placeholder="email" required />
+            <div class="brand-message">
+              <span class="brand-label">TRUSTED NIGERIAN MARKETPLACE</span>
+
+              <h2>
+                Find the right car.
+                <span>With confidence.</span>
+              </h2>
+
+              <p>
+                Browse verified vehicles, manage your listings, track orders,
+                and enjoy a simpler way to buy and sell cars.
+              </p>
             </div>
 
-            <div class="form-group">
-              <label>Password</label>
-              <input
-                type="password"
-                name="password"
-                placeholder="Password"
-                required
-              />
+            <div class="brand-footer">
+              <span>Founded in 2019</span>
+              <span>Abuja, Nigeria</span>
             </div>
-
-            <div class="forgot">
-              <a href="{{ url_for('auth.forgot_password') }}">Forgot password?</a>
-            </div>
-
-            <button type="submit" class="btn btn-primary">Sign In</button>
-          </form>
-
-          <div class="auth-footer">
-            Don’t have an account? <a href="{{ url_for('auth.signup') }}">Sign Up</a>
-          </div>
-
-          <div class="trust">
-            Secure connection • Verified by Sarkin Mota • Nigerian-based support
           </div>
         </div>
-      </div>
-    </main>
+      </section>
 
-    <footer role="contentinfo">
-      <div class="container footer-inner">
-        <div>© 2019–2026 Sarkin Mota Autos. All rights reserved.</div>
-        <div>Founded by <span>Dr. Aliyu Mohammad (Sarkin Mota)</span></div>
-      </div>
-    </footer>
+      <!-- LOGIN PANEL -->
+      <section class="auth-panel" id="b">
+        <div class="cover">
+          <div class="auth-wrapper">
+            <div class="mobile-brand">
+              <a href="{{ url_for('profiles.about') }}" class="brand-logo">
+                Sarkin Mota <span>Autos</span>
+              </a>
+            </div>
+
+            <div class="auth-header">
+              <span class="auth-label">WELCOME BACK</span>
+
+              <h1>Sign in to your account</h1>
+
+              <p>Access your dashboard, listings, orders and saved searches.</p>
+            </div>
+
+            {% with messages = get_flashed_messages(with_categories=true) %} {%
+            if messages %}
+            <div class="flash-messages">
+              {% for category, message in messages %}
+              <div class="flash-message">{{ message }}</div>
+              {% endfor %}
+            </div>
+            {% endif %} {% endwith %}
+
+            <form method="POST" class="login-form">
+              <input
+                type="hidden"
+                name="csrf_token"
+                value="{{ csrf_token() }}"
+              />
+
+              <div class="form-group">
+                <label for="email">Email or Phone Number</label>
+
+                <input
+                  id="email"
+                  type="text"
+                  name="email"
+                  placeholder="Enter your email or phone"
+                  autocomplete="username"
+                  required
+                />
+              </div>
+
+              <div class="form-group">
+                <div class="label-row">
+                  <label for="password">Password</label>
+
+                  <a href="{{ url_for('auth.forgot_password') }}">
+                    Forgot password?
+                  </a>
+                </div>
+
+                <input
+                  id="password"
+                  type="password"
+                  name="password"
+                  placeholder="Enter your password"
+                  autocomplete="current-password"
+                  required
+                />
+              </div>
+
+              <button type="submit" class="login-button">Sign In</button>
+            </form>
+
+            <div class="auth-divider">
+              <span>New to Sarkin Mota?</span>
+            </div>
+
+            <a href="{{ url_for('auth.signup') }}" class="signup-button">
+              Create an account
+            </a>
+
+            <div class="security-note">
+              <span class="security-icon">✓</span>
+
+              <span> Secure connection · Nigerian-based support </span>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
   </body>
 </html>
-

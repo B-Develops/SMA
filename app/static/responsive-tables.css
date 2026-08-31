@@ -1,0 +1,187 @@
+/* Shared responsive table -> card system for admin tables */
+:root {
+  --color-bg-primary: #0a192f;
+  --color-bg-secondary: #020c1b;
+  --color-card: #112240;
+  --color-card-hover: #17315e;
+
+  --color-accent-red: #e53e3e;
+  --color-accent-gold: #d69e2e;
+
+  --color-text-primary: #f7fafc;
+  --color-text-secondary: #a0aec0;
+
+  --border-soft: rgba(255, 255, 255, 0.08);
+  --border-strong: rgba(255, 255, 255, 0.14);
+
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+}
+
+/* Force viewport-respecting layout on small screens */
+html,
+body {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+/* Core rules used on mobile only */
+@media (max-width: 768px) {
+  .table-wrap,
+  .admin-table,
+  .admin-table tbody,
+  .admin-table tr,
+  .admin-table td {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box;
+  }
+
+  /* Hide desktop header */
+  .admin-table thead {
+    display: none;
+  }
+
+  /* Make rows act like cards */
+  .admin-table tbody {
+    display: block;
+    padding: 0; /* keep spacing controlled by rows */
+  }
+
+  /* Add horizontal padding so cards don't touch the container edges */
+  .table-wrap {
+    padding: 0 12px;
+  }
+
+  .admin-table tr {
+    display: block;
+    margin: 12px 0;
+    padding: 12px;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-soft);
+    background: rgba(12, 28, 50, 0.62);
+    box-shadow:
+      0 8px 20px rgba(0, 0, 0, 0.35),
+      inset 0 1px 0 rgba(255, 255, 255, 0.02);
+    backdrop-filter: blur(8px) saturate(120%);
+    -webkit-backdrop-filter: blur(8px) saturate(120%);
+    overflow: hidden;
+  }
+
+  /* Subtle brightness alternation */
+  .admin-table tr:nth-child(odd) {
+    background: rgba(12, 28, 50, 0.62);
+  }
+
+  .admin-table tr:nth-child(even) {
+    background: rgba(20, 40, 70, 0.66);
+  }
+
+  /* Cells become rows within each card */
+  .admin-table td {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 8px 12px;
+    border: none;
+    color: var(--color-text-primary);
+    font-size: 0.92rem;
+    line-height: 1.2;
+  }
+
+  /* Left label from data-label */
+  .admin-table td::before {
+    content: attr(data-label) ":";
+    flex: 0 0 38%;
+    color: var(--color-text-secondary);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    text-transform: none;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* Content area: allow wrapping and prevent overflow */
+  .admin-table td > *,
+  .admin-table td .vehicle-card,
+  .admin-table td .user-card,
+  .admin-table td .seller-details,
+  .admin-table td .vehicle-details {
+    flex: 1 1 60%;
+    min-width: 0;
+    overflow: hidden;
+    word-wrap: break-word;
+    word-break: break-word;
+  }
+
+  /* Primary content prominence (first cell) */
+  .admin-table tr td:first-child {
+    padding-bottom: 10px;
+  }
+
+  .admin-table tr td:first-child::before {
+    color: var(--color-text-secondary);
+    font-weight: 600;
+  }
+
+  .admin-table tr td:first-child .vehicle-name,
+  .admin-table tr td:first-child .user-name {
+    display: block;
+    color: var(--color-text-primary);
+    font-size: 1rem;
+    font-weight: 800;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .admin-table tr td .vehicle-meta,
+  .admin-table tr td .seller-email,
+  .admin-table tr td .user-email,
+  .admin-table tr td .vehicle-details .vehicle-meta {
+    color: var(--color-text-secondary);
+    font-size: 0.85rem;
+    margin-top: 4px;
+  }
+
+  /* Actions: allow buttons to wrap and be tappable */
+  .admin-table td.actions-cell,
+  .admin-table td.actions-cell * {
+    display: flex !important;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+
+  .admin-table td.actions-cell .btn {
+    min-width: 44px;
+    padding: 8px 10px;
+    font-size: 0.85rem;
+  }
+
+  /* Ensure images fit and don't overflow cards */
+  .admin-table td .car-image,
+  .admin-table td img {
+    max-width: 64px;
+    max-height: 48px;
+    width: auto;
+    height: auto;
+    object-fit: cover;
+    border-radius: 8px;
+    flex: 0 0 auto;
+  }
+
+  /* Small tweaks for empty states and pagination inside mobile flow */
+  .pagination {
+    margin-top: 8px;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+}

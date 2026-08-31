@@ -118,12 +118,12 @@ button {
 }
 /* Technique 5: Backdrop Blur Intensity Variation */
 .section:nth-child(odd) {
-  backdrop-filter: blur(1px);
-  -webkit-backdrop-filter: blur(1px);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
 }
 .section:nth-child(even) {
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
 /* Technique 6: Styled Horizontal Rules */
 .section::before {
@@ -215,6 +215,7 @@ nav {
   min-height: 600px;
   display: flex;
   align-items: center;
+  height: 70vh;
 }
 .hero .section-video {
   position: absolute;
@@ -225,16 +226,6 @@ nav {
   object-position: center;
   z-index: 0;
   filter: brightness(0.7);
-}
-.hero .video-overlay {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  background: linear-gradient(
-    to bottom,
-    rgba(6, 23, 44, 0.35),
-    rgba(6, 23, 44, 0.85)
-  );
 }
 .hero::after {
   content: "";
@@ -261,9 +252,12 @@ nav {
   z-index: 2;
   align-items: flex-start;
   justify-content: left;
+  width: 1200px;
+  padding-left: 1.75rem;
+  margin-top: 4rem;
 }
 .hero h1 {
-  font-size: clamp(2rem, 6vw, 4rem);
+  font-size: 4.5rem;
   font-weight: 800;
   margin-bottom: 1rem;
   letter-spacing: -0.02em;
@@ -1037,6 +1031,7 @@ footer span {
 
 .sarkinmota-content {
   padding: 1.4rem 1.5rem 1.5rem;
+  background-color: rgba(7, 28, 59, 0.596);
 }
 
 .sarkinmota-label {
@@ -1114,12 +1109,7 @@ footer span {
 
   border: 1px solid rgba(255, 255, 255, 0.08);
 
-  background: linear-gradient(
-    145deg,
-    rgba(255, 255, 255, 0.045),
-    rgba(255, 255, 255, 0.015)
-  );
-
+  background-color: rgba(7, 28, 59, 0.596);
   backdrop-filter: blur(16px) saturate(140%);
   -webkit-backdrop-filter: blur(16px) saturate(140%);
 
@@ -1494,65 +1484,6 @@ body::before {
     grid-template-columns: 1fr;
   }
 }
-/* =====================
-        MOBILE DROPDOWN
-        ===================== */
-.dropdown {
-  display: none;
-  position: relative;
-}
-@media (max-width: 768px) {
-  .dropdown {
-    display: block;
-  }
-}
-.dropdown-content {
-  display: none;
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(10px);
-  transition: all 0.3s ease;
-  position: absolute;
-  top: calc(100% + 0px);
-  right: 0;
-  background: rgba(17, 34, 64, 0.95);
-  backdrop-filter: blur(12px);
-  min-width: 220px;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-  border-left: 1px solid rgba(255, 255, 255, 0.08);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  border-bottom-left-radius: 2px;
-  z-index: 1000;
-}
-.dropdown-content.show {
-  display: block;
-  flex-direction: column;
-}
-.dropdown-content a {
-  display: block;
-  padding: 12px 16px;
-  text-decoration: none;
-  color: white;
-}
-.dropdown-content a:hover {
-  background-color: rgba(255, 255, 255, 0.08);
-}
-.dropbtn {
-  width: 42px;
-  height: 42px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: none;
-  border: none;
-  color: white;
-  cursor: pointer;
-}
-.munb {
-  width: 24px;
-  height: 24px;
-  color: white;
-}
 .video-section {
   position: relative;
   min-height: 600px;
@@ -1578,13 +1509,6 @@ body::before {
 }
 
 /* Dark overlay */
-.video-overlay {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-
-  background: linear-gradient(to left, rgba(0, 15, 22, 0), rgb(6, 23, 44));
-}
 
 /* Content sits above everything */
 .section-content {
@@ -1599,6 +1523,18 @@ h1 {
   margin-left: 0;
   width: 700px;
 }
+.video-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+
+  background: linear-gradient(
+    to left,
+    rgba(132, 142, 146, 0.032),
+    rgb(6, 23, 44)
+  );
+}
+
 /* ==========================================================
    RESPONSIVE SYSTEM
    ========================================================== */
@@ -1794,6 +1730,7 @@ h1 {
     width: 100%;
     height: auto;
     min-height: 64px;
+    height: 9vh;
     padding: 0 1rem;
   }
 
@@ -1805,8 +1742,8 @@ h1 {
     flex-wrap: wrap;
   }
 
-  .navbar-logo {
-    font-size: 1.15rem;
+  .logo {
+    font-size: 3vh !important;
   }
 
   .nav-links {
@@ -1889,7 +1826,7 @@ h1 {
     width: 100%;
     max-width: 100%;
     margin: 1rem 0 1rem;
-    font-size: clamp(2rem, 8vw, 3rem);
+    font-size: 7.3vh !important;
     line-height: 1.1;
   }
 
@@ -1948,19 +1885,19 @@ h1 {
 
   .feature-item {
     width: 100%;
-    height: auto;
+    height: 30vh !important;
     min-height: 0;
     padding: 1.5rem 1.25rem;
   }
 
   .feature-icon {
-    width: 42px;
-    height: 42px;
-    margin-bottom: 0.75rem;
+    width: 6vh !important;
+    height: 6vh !important;
+    margin-bottom: 0rem;
   }
 
   .feature-item h3 {
-    font-size: 1rem;
+    font-size: 2.5vh;
   }
 
   .feature-item p {
@@ -1979,6 +1916,7 @@ h1 {
     align-items: flex-start;
     flex-direction: column;
     margin-bottom: 1.5rem;
+    height: 7vh;
   }
 
   .listings-header h2 {
@@ -2172,8 +2110,8 @@ h1 {
   .featured-main {
     width: 100%;
     max-width: 100%;
-    min-height: 420px;
     border-radius: 18px;
+    height: 90vh !important;
   }
 
   .featured-side {
@@ -2227,6 +2165,13 @@ h1 {
     right: 0;
     min-width: 210px;
     max-width: calc(100vw - 2rem);
+  }
+  .section {
+    height: 100dvh;
+    min-height: 100dvh;
+    max-height: 100dvh;
+    overflow: hidden;
+    padding: 0;
   }
 }
 
@@ -2389,5 +2334,850 @@ h1 {
 
   .featured-main {
     min-height: 320px;
+  }
+}
+@media (max-width: 768px) {
+  /* =========================
+     MOBILE HERO
+     ========================= */
+
+  .hero {
+    height: 100dvh;
+    min-height: 100dvh;
+    max-height: 100dvh;
+    overflow: hidden;
+
+    display: flex;
+    align-items: center;
+  }
+
+  .hero-content {
+    width: 100%;
+    height: calc(100dvh - 64px);
+
+    margin-top: 64px;
+    padding: 2rem 0;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+
+    box-sizing: border-box;
+  }
+
+  /* Bigger heading */
+  .hero h1 {
+    width: 100%;
+    max-width: 100%;
+
+    margin: 0 0 1.5rem;
+
+    font-size: clamp(2.5rem, 11vw, 4rem);
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+  }
+
+  /* Give the paragraph more breathing room */
+  .hero p,
+  .hero-content p {
+    width: 100%;
+    max-width: 650px;
+
+    margin: 0 0 2rem;
+
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+
+  /* Taller buttons */
+  .hero-actions {
+    width: 100%;
+
+    display: flex;
+    gap: 0.75rem;
+
+    justify-content: flex-start;
+  }
+
+  .hero-actions .btn {
+    min-height: 58px;
+
+    padding: 0.9rem 1.5rem;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 1rem;
+  }
+}
+
+/* =========================
+   SMALL PHONES
+   ========================= */
+
+@media (max-width: 480px) {
+  .hero-content {
+    margin-top: 64px;
+    padding: 2rem 1rem;
+  }
+
+  .hero h1 {
+    font-size: clamp(2.3rem, 3.38rem, 3.4rem);
+    margin-bottom: 1.25rem;
+  }
+
+  .hero p,
+  .hero-content p {
+    font-size: 0.92rem;
+    margin-bottom: 1.75rem;
+  }
+
+  .hero-actions {
+    flex-direction: column;
+    gap: 1rem;
+    border-top: 3rem;
+  }
+
+  .hero-actions .btn {
+    width: 100%;
+    min-height: 60px;
+  }
+}
+@media (max-width: 768px) {
+  /* =========================
+     MOBILE FEATURES
+     ========================= */
+
+  .features {
+    height: 100dvh;
+    min-height: 100dvh;
+    max-height: 100dvh;
+
+    padding: 1.5rem 0;
+    box-sizing: border-box;
+  }
+
+  .features > .container {
+    height: 100%;
+    box-sizing: border-box;
+
+    display: flex;
+    align-items: stretch;
+  }
+
+  .features-grid {
+    width: 100%;
+    height: 100%;
+
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(3, 1fr);
+
+    gap: 1rem;
+  }
+
+  .feature-item {
+    width: 100%;
+    height: 96% !important;
+    min-height: 0;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    padding: 1.5rem;
+  }
+}
+@media (max-width: 768px) {
+  /* ==========================================================
+     FEATURED LISTINGS — MOBILE
+  ========================================================== */
+
+  .listings {
+    height: 100dvh;
+    min-height: 100dvh;
+    max-height: 100dvh;
+
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+
+  .listings > .container {
+    height: 100%;
+    min-height: 0;
+
+    display: flex;
+    flex-direction: column;
+  }
+  .video-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+
+    background: linear-gradient(
+      to bottom,
+      rgba(132, 142, 146, 0.032),
+      rgba(6, 23, 44, 0.904)
+    );
+  }
+
+  /* ==========================================================
+     HEADER
+  ========================================================== */
+
+  .listings-header {
+    width: 100%;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-top: -2rem;
+
+    flex-shrink: 0;
+  }
+
+  .listings-header h2 {
+    margin: 0;
+
+    font-size: 1.5rem;
+    line-height: 1.1;
+  }
+
+  .listings-header .btn {
+    flex-shrink: 0;
+
+    padding: 0.5rem 0.85rem;
+
+    font-size: 0.75rem;
+  }
+
+  /* ==========================================================
+     FEATURED AREA
+     Fills ALL remaining space
+  ========================================================== */
+
+  .featured-layout {
+    width: 100%;
+
+    flex: 1;
+    min-height: 84vh;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 0.75rem;
+
+    overflow: hidden;
+  }
+
+  /* ==========================================================
+     MAIN FEATURED CARD
+  ========================================================== */
+
+  .featured-main {
+    width: 100%;
+    max-width: none;
+
+    flex: 1 1 auto;
+    min-height: 0;
+
+    border-radius: 16px;
+
+    overflow: hidden;
+
+    position: relative;
+  }
+
+  .featured-main img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+  }
+
+  .featured-overlay {
+    padding: 1rem;
+
+    background: linear-gradient(
+      to bottom,
+      transparent 35%,
+      rgba(2, 12, 27, 0.95)
+    );
+  }
+
+  .featured-overlay h3 {
+    font-size: 1.1rem;
+    line-height: 1.15;
+
+    margin-bottom: 0.25rem;
+  }
+
+  .featured-overlay p {
+    font-size: 0.7rem;
+    line-height: 1.35;
+
+    max-width: 80%;
+
+    margin-bottom: 0.5rem;
+  }
+
+  .featured-overlay .btn {
+    padding: 0.4rem 0.75rem;
+    font-size: 0.68rem;
+  }
+
+  .featured-tag {
+    padding: 4px 8px;
+
+    margin-bottom: 0.35rem;
+
+    font-size: 0.63rem;
+  }
+
+  /* ==========================================================
+     SUBORDINATE CARDS
+     FILL THE REMAINING HEIGHT
+  ========================================================== */
+
+  .featured-side {
+    width: 100%;
+
+    flex: 0 0 30%;
+
+    min-height: 0;
+
+    margin: 0;
+    transform: none;
+
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 0.75rem;
+
+    overflow: hidden;
+  }
+
+  .featured-side > * {
+    height: 100%;
+    min-height: 0;
+  }
+
+  /* ==========================================================
+     80% IMAGE / 20% CONTENT
+  ========================================================== */
+
+  .featured-side .listing-card,
+  .featured-side article {
+    display: flex;
+    flex-direction: column;
+
+    height: 100%;
+    min-height: 0;
+
+    overflow: hidden;
+  }
+
+  .featured-side .listing-image {
+    height: 80%;
+
+    min-height: 0;
+    max-height: none;
+
+    flex: 0 0 80%;
+  }
+
+  .featured-side .listing-content {
+    height: 20%;
+
+    min-height: 0;
+
+    flex: 0 0 20%;
+
+    padding: 0.45rem 0.6rem;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .featured-side .listing-title {
+    font-size: 0.7rem;
+
+    line-height: 1.15;
+
+    margin: 0 0 0.1rem;
+  }
+
+  .featured-side .listing-meta {
+    font-size: 0.6rem;
+
+    line-height: 1.15;
+
+    margin: 0;
+  }
+
+  .featured-side .listing-price {
+    display: none;
+  }
+}
+
+/* ==========================================================
+   SMALL PHONES
+========================================================== */
+
+@media (max-width: 480px) {
+  .listings {
+    padding-top: 1.7rem;
+    padding-bottom: 1.7rem;
+  }
+
+  .listings-header {
+    margin-bottom: 0.6rem;
+  }
+
+  .listings-header h2 {
+    font-size: 1.35rem;
+  }
+
+  .listings-header .btn {
+    padding: 0.45rem 0.7rem;
+    font-size: 0.7rem;
+  }
+
+  .featured-layout {
+    gap: 0.6rem;
+  }
+
+  .featured-side {
+    flex-basis: 31%;
+    gap: 0.6rem;
+  }
+
+  .featured-overlay {
+    padding: 0.85rem;
+  }
+
+  .featured-overlay h3 {
+    font-size: 1rem;
+  }
+
+  .featured-overlay p {
+    font-size: 0.65rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .featured-overlay .btn {
+    padding: 0.35rem 0.65rem;
+    font-size: 0.63rem;
+  }
+
+  .featured-side .listing-content {
+    padding: 0.35rem 0.5rem;
+    height: 20% !important;
+  }
+
+  .featured-side .listing-title {
+    font-size: 0.63rem;
+  }
+
+  .featured-side .listing-meta {
+    font-size: 0.55rem;
+  }
+}
+/* ========================================================
+   MOBILE TESTIMONIALS — FIT WITHIN 100dvh
+   ======================================================== */
+
+@media (max-width: 768px) {
+  .testimonials {
+    height: 100dvh;
+    min-height: 100dvh;
+    padding: 2rem 0;
+    overflow: hidden;
+  }
+
+  .testimonials-header {
+    margin-bottom: 1.25rem;
+  }
+
+  .testimonials-header .section-label {
+    font-size: 0.7rem;
+    margin-bottom: 0.3rem;
+  }
+
+  .testimonials-header h2 {
+    font-size: 1.6rem;
+    line-height: 1.15;
+    margin: 0;
+  }
+
+  .testimonials-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .testimonial-card {
+    width: 100%;
+    padding: 1rem 1.1rem;
+    border-radius: 10px;
+  }
+
+  .testimonial-card blockquote {
+    font-size: 0.78rem;
+    line-height: 1.4;
+    margin-bottom: 0.7rem;
+  }
+
+  .testimonial-stars {
+    gap: 0.15rem;
+    margin-bottom: 0.6rem;
+  }
+
+  .testimonial-stars svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  .testimonial-card footer {
+    gap: 0.6rem;
+    font-size: 0.75rem;
+  }
+
+  .testimonial-avatar {
+    width: 30px;
+    height: 30px;
+    font-size: 0.7rem;
+  }
+
+  .testimonial-name {
+    font-size: 0.75rem;
+  }
+
+  .testimonial-location {
+    font-size: 0.65rem;
+  }
+}
+/* ========================================================
+   MOBILE CONTACTS — FIT WITHIN 100dvh
+   ======================================================== */
+
+@media (max-width: 768px) {
+  .contacts {
+    height: 100dvh;
+    min-height: 100dvh;
+    padding: 1.7rem 0;
+    overflow: hidden;
+  }
+
+  /* ---------- HEADER ---------- */
+
+  .contacts-header {
+    margin-bottom: 1rem;
+  }
+
+  .contacts-header .section-label {
+    font-size: 0.7rem;
+    margin-bottom: 0.3rem;
+  }
+
+  .contacts-header h2 {
+    font-size: 1.6rem;
+    line-height: 1.15;
+    margin: 0 0 0.4rem;
+  }
+
+  .contacts-subtitle {
+    font-size: 0.78rem;
+    line-height: 1.45;
+  }
+
+  /* ---------- MAIN LAYOUT ---------- */
+
+  .contacts-layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.8rem;
+  }
+
+  /* ---------- SARKINMOTA CARD ----------
+     Keep this mostly unchanged
+  */
+
+  .sarkinmota-card {
+    width: 100%;
+  }
+
+  .sarkinmota-image {
+    height: 210px;
+  }
+
+  .sarkinmota-content {
+    padding: 1rem;
+  }
+
+  .sarkinmota-content h3 {
+    font-size: 1.15rem;
+  }
+
+  .sarkinmota-description {
+    font-size: 0.8rem;
+    line-height: 1.5;
+  }
+
+  /* ---------- CONTACT CARDS ---------- */
+
+  .contacts-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.65rem;
+  }
+
+  .contact-card,
+  .contact-card:first-child {
+    grid-column: auto;
+    width: 100%;
+    padding: 0.8rem;
+    border-radius: 10px;
+    gap: 0.7rem;
+  }
+
+  /* Phone card still spans full width */
+  .contact-card:first-child {
+    grid-column: 1 / -1;
+  }
+
+  .contact-card-icon {
+    width: 36px;
+    height: 36px;
+    flex-basis: 36px;
+    border-radius: 9px;
+  }
+
+  .contact-card-icon svg {
+    width: 17px;
+    height: 17px;
+  }
+
+  .contact-card h3 {
+    font-size: 0.8rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .contact-card p {
+    font-size: 0.7rem;
+    line-height: 1.4;
+  }
+
+  /* ---------- MAP ---------- */
+
+  .contact-map {
+    margin-top: 0.8rem;
+  }
+
+  .contact-map iframe {
+    height: 150px;
+  }
+  .cta-banner {
+    height: 40vh !important;
+  }
+}
+/* ========================================================
+   MOBILE CTA — SHORT FINAL SECTION
+   ======================================================== */
+
+@media (max-width: 768px) {
+  .cta-banner {
+    height: 30vh;
+    min-height: 30vh;
+    padding: 1.5rem 1rem;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    text-align: center;
+    overflow: hidden;
+  }
+
+  .cta-banner h2 {
+    font-size: 1.5rem;
+    line-height: 1.15;
+    margin: 0 0 0.5rem;
+  }
+
+  .cta-banner p {
+    font-size: 0.78rem;
+    line-height: 1.4;
+    margin: 0 auto 0.8rem;
+    max-width: 500px;
+  }
+
+  .cta-banner .btn {
+    padding: 0.55rem 1.1rem;
+    font-size: 0.8rem;
+  }
+}
+/* ========================================================
+   CONTACTS — FINAL MOBILE FIT
+   ======================================================== */
+
+@media (max-width: 768px) {
+  .contacts {
+    height: 100vh;
+    min-height: 100vh;
+    padding: 1.7rem 0 1.2rem;
+  }
+  section {
+    overflow: visible !important;
+    height: 100vh !important;
+    min-height: 100vh !important;
+  }
+  /* Header */
+  .contacts-header {
+    margin-bottom: 0.7rem;
+  }
+
+  .contacts-header .section-label {
+    font-size: 0.65rem;
+    margin-bottom: 0.2rem;
+  }
+
+  .contacts-header h2 {
+    font-size: 1.45rem;
+    margin-bottom: 0.3rem;
+  }
+
+  .contacts-subtitle {
+    font-size: 0.74rem;
+    line-height: 1.35;
+  }
+
+  /* Main layout */
+  .contacts-layout {
+    gap: 0.6rem;
+  }
+
+  /* Keep Sarkinmota card mostly unchanged,
+     but make it slightly shorter */
+  .sarkinmota-image {
+    height: 175px;
+  }
+
+  .sarkinmota-content {
+    padding: 0.8rem 1rem;
+  }
+
+  .sarkinmota-label {
+    font-size: 0.62rem;
+    margin-bottom: 0.2rem;
+  }
+
+  .sarkinmota-content h3 {
+    font-size: 1.05rem;
+  }
+
+  .sarkinmota-title {
+    font-size: 0.75rem;
+    margin: 0.15rem 0 0.4rem;
+  }
+
+  .sarkinmota-description {
+    font-size: 0.72rem;
+    line-height: 1.4;
+  }
+
+  /* Contact cards */
+  .contacts-grid {
+    gap: 0.5rem;
+  }
+
+  .contact-card,
+  .contact-card:first-child {
+    padding: 0.65rem 0.75rem;
+    min-height: 0;
+    gap: 0.6rem;
+  }
+
+  .contact-card-icon {
+    width: 32px;
+    height: 32px;
+    flex-basis: 32px;
+    border-radius: 8px;
+  }
+
+  .contact-card-icon svg {
+    width: 15px;
+    height: 15px;
+  }
+
+  .contact-card h3 {
+    font-size: 0.76rem;
+    margin-bottom: 0.15rem;
+  }
+
+  .contact-card p {
+    font-size: 0.66rem;
+    line-height: 1.3;
+  }
+
+  /* Map */
+  .contact-map {
+    margin-top: 0.5rem;
+  }
+
+  .contact-map iframe {
+    height: 110px;
+  }
+  .cta-banner {
+    height: 40vh !important;
+    min-height: 40vh !important;
+  }
+}
+@media (max-width: 762px) {
+  .hero-actions .btn {
+    height: 4.5rem;
+    border-radius: 0.6rem;
+  }
+  .hero-actions {
+    margin-bottom: -4rem;
+    margin-top: 1rem;
+  }
+  .hero-content p {
+    margin-top: 1rem;
+  }
+  .hero h1 {
+    width: 100%;
+    max-width: 100%;
+    margin: 1rem 0 1rem;
+    font-size: 3.38rem;
+    line-height: 1.1;
+    margin-top: -1rem;
+  }
+  .video-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+
+    background: linear-gradient(
+      to bottom,
+      rgba(132, 142, 146, 0.032),
+      rgba(6, 23, 44)
+    );
+  }
+  #navcon {
+    padding: 0;
+  }
+  nav {
+    padding: 0;
+    padding-left: 1rem;
+    padding-right: 0.2rem;
   }
 }

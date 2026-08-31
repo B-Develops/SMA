@@ -15,6 +15,10 @@
       rel="stylesheet"
       href="{{ url_for('static', filename='dashboard.css') }}"
     />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='admin-dashboard-mobile.css') }}"
+    />
 
     <!-- Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -57,7 +61,6 @@
   </head>
 
   <body>
-    <a href="#main-content" class="skip-link">Skip to main content</a>
     <!-- LEFT SIDEBAR -->
     <aside class="sidebar">
       <div class="sidebar-header">
@@ -130,9 +133,9 @@
           </div>
 
           <div class="user-details">
-            <span class="user-name"> {{ current_user.name }} </span>
+            <span class="user-name">{{ current_user.name }}</span>
 
-            <span class="user-role"> {{ current_user.role|capitalize }} </span>
+            <span class="user-role">{{ current_user.role|capitalize }}</span>
           </div>
         </div>
 

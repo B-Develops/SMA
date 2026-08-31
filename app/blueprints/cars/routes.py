@@ -168,7 +168,20 @@ def list_car():
         flash("Car listed successfully!", "success")
         return redirect(url_for("cars.browse_cars"))
     
-    return render_template("dashboard/ListCars.html")
+    listings = db.session.query(
+        Car,
+        func.count(Order.id).filter(Order.status == 'pending').label('order_count')
+    ).outerjoin(Order, Car.id == Order.car_id).filter(
+        Car.seller_id == current_user.id
+    ).group_by(Car.id).order_by(Car.created_at.desc()).all()
+
+    total = Car.query.filter_by(seller_id=current_user.id).count()
+    active = Car.query.filter_by(seller_id=current_user.id, status='active').count()
+    sold = Car.query.filter_by(seller_id=current_user.id, status='sold').count()
+
+    stats = {"total": total, "active": active, "sold": sold}
+
+    return render_template("dashboard/ListCars.html", listings=listings, stats=stats)
 
 @cars_bp.route("/my-listings")
 @login_required

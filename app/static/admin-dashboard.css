@@ -725,6 +725,9 @@ main {
   justify-content: space-between;
 
   min-height: 113px;
+  background: rgba(17, 34, 64, 0.418);
+  backdrop-filter: blur(10px) saturate(120%);
+  -webkit-backdrop-filter: blur(10px) saturate(120%);
 }
 
 .stat-header {
@@ -838,13 +841,15 @@ main {
 
   padding: var(--space-5);
 
-  background: rgba(17, 34, 64, 0.72);
+  background: rgba(17, 34, 64, 0.356);
 
   border: 1px solid var(--border-soft);
 
   border-radius: var(--radius-lg);
 
   box-shadow: var(--shadow-md);
+  backdrop-filter: blur(10px) saturate(120%);
+  -webkit-backdrop-filter: blur(10px) saturate(120%);
 }
 
 .platform-activity-card canvas {
@@ -880,7 +885,7 @@ main {
 
   border-radius: var(--radius-md);
 
-  background: rgba(17, 34, 64, 0.72);
+  background: rgba(17, 34, 64, 0.322);
 
   box-shadow: var(--shadow-sm);
 
@@ -888,14 +893,16 @@ main {
     transform var(--transition-fast),
     border-color var(--transition-fast),
     background var(--transition-fast);
+  backdrop-filter: blur(10px) saturate(120%);
+  -webkit-backdrop-filter: blur(10px) saturate(120%);
 }
 
 .quick-action-card:hover {
   transform: translateY(-4px);
 
-  border-color: rgba(229, 62, 62, 0.35);
+  border-color: rgba(229, 62, 62, 0.164);
 
-  background: rgba(23, 49, 94, 0.85);
+  background: rgba(23, 49, 94, 0.466);
 }
 
 .quick-action-icon {
@@ -998,7 +1005,7 @@ main {
 
   border-radius: var(--radius-lg);
 
-  background: rgba(17, 34, 64, 0.72);
+  background: rgba(17, 34, 64, 0.226);
 
   backdrop-filter: blur(14px);
 
@@ -1013,6 +1020,8 @@ main {
   border-collapse: collapse;
 
   min-width: 800px;
+  backdrop-filter: blur(10px) saturate(120%);
+  -webkit-backdrop-filter: blur(10px) saturate(120%);
 }
 
 /* Header */
@@ -1365,11 +1374,11 @@ main {
 
   grid-template-columns: repeat(4, minmax(0, 1fr));
 
-  gap: var(--space-5);
+  gap: var(--space-4);
 }
 
 .car-card {
-  background: rgba(17, 34, 64, 0.72);
+  background: rgba(17, 34, 64, 0.39);
 
   border: 1px solid var(--border-soft);
 
@@ -1380,6 +1389,8 @@ main {
   transition: all 0.3s ease;
 
   box-shadow: var(--shadow-md);
+  backdrop-filter: blur(10px) saturate(120%);
+  -webkit-backdrop-filter: blur(10px) saturate(120%);
 }
 
 .car-card:hover {
@@ -2041,7 +2052,9 @@ main {
   width: 24px;
   height: 24px;
 }
-
+.pt {
+  display: none;
+}
 @media (max-width: 768px) {
   /* ==========================
      Mobile Top Navigation
@@ -2114,7 +2127,10 @@ main {
 
     z-index: 1400;
 
-    background: rgba(10, 25, 47, 0.98);
+    background: rgba(11, 30, 58, 0.612);
+
+    backdrop-filter: blur(8px) saturate(100%);
+    -webkit-backdrop-filter: blur(8px) saturate(100%);
 
     backdrop-filter: blur(18px);
 
@@ -2136,7 +2152,7 @@ main {
     position: fixed;
     inset: 0;
 
-    background: rgba(0, 0, 0, 0.55);
+    background: rgba(0, 0, 0, 0.305) !important;
 
     opacity: 0;
     visibility: hidden;
@@ -2318,6 +2334,11 @@ main {
 
     visibility: visible;
   }
+  .sidebar-footer {
+    margin-top: auto;
+
+    padding-top: var(--space-6);
+  }
 
   /* ==========================
      Layout
@@ -2402,5 +2423,77 @@ main {
   }
   .munb {
     color: var(--color-info);
+  }
+  .stats-grid {
+    margin-top: -5vh;
+  }
+  .stat-card {
+    height: 18vh;
+  }
+  .platform-activity-section {
+    height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .section-header {
+    margin: 0;
+  }
+
+  td {
+    height: 9vh;
+  }
+  .admin {
+    margin: 0;
+  }
+  .car-card {
+    background: rgba(17, 34, 64, 0.72);
+
+    border: 1px solid var(--border-soft);
+
+    border-radius: var(--radius-lg);
+
+    overflow: hidden;
+
+    transition: all 0.3s ease;
+
+    box-shadow: var(--shadow-md);
+    height: 19vh;
+    padding: 0;
+  }
+
+  .car-card:hover {
+    transform: translateY(-8px);
+
+    border-color: var(--border-strong);
+
+    box-shadow: var(--shadow-lg);
+  }
+
+  .car-body {
+    padding: var(--space-2);
+    padding-left: var(--space-3);
+  }
+
+  .car-body h4 {
+    margin-bottom: 0.1rem;
+  }
+  .car-body p {
+    margin-bottom: 0.1rem;
+  }
+  .price {
+    font-size: 1.5rem;
+
+    font-weight: 700;
+
+    color: var(--color-accent-red);
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+  .pp {
+    display: none;
+  }
+  .pt {
+    display: flex;
   }
 }

@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>My Orders – Sarkin Mota Autos</title>
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -13,227 +14,288 @@
 
     <link
       rel="stylesheet"
-      href="{{ url_for('static', filename='my-orders.css') }}"
+      href="{{ url_for('static', filename='admin-orders.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='responsive-tables.css') }}"
     />
 
-    <style>
-      .table-wrap {
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-        margin-bottom: 1.5rem;
-      }
-
-      .data-table {
-        min-width: 900px;
-      }
-
-      @media (max-width: 640px) {
-        .container {
-          padding: 1rem;
-        }
-        
-        .page-header {
-          flex-direction: column;
-          gap: 1rem;
-          align-items: flex-start;
-        }
-      }    .skip-link{position:absolute;top:-40px;left:0;background:#e53e3e;color:white;padding:8px 16px;z-index:100;text-decoration:none;font-weight:600;transition:top .3s}
-    .skip-link:focus{top:0}
-
-    </style>
+    <script src="https://unpkg.com/lucide@latest"></script>
   </head>
+
   <body>
     <a href="#main-content" class="skip-link">Skip to main content</a>
-    <div class="container">
-      <a href="{{ url_for('dashboard') }}" class="back-link">← Back to Dashboard</a>
 
-      <div class="page-header">
-        <h1>My Orders</h1>
-      </div>
+    <div class="page-wrapper">
+      <main class="page-container" id="main-content">
+        <header class="page-header">
+          <a href="{{ url_for('dashboard') }}" class="back-link">
+            <i data-lucide="arrow-left"></i>
+            <span>Back to Dashboard</span>
+          </a>
 
-      <!-- Navigation Tabs -->
-      <nav class="nav-tabs">
-        <a href="{{ url_for('dashboard') }}" class="nav-tab">Dashboard</a>
-        <a href="{{ url_for('orders.my_orders') }}" class="nav-tab active"
-          >Orders</a
-        >
-        <a href="{{ url_for('profiles.saved_cars') }}" class="nav-tab"
-          >Saved Cars</a
-        >
-      </nav>
+          <div class="page-heading">
+            <h1>My Orders</h1>
+            <p>
+              Track all your purchases, check payment status, and manage the
+              next steps on each order.
+            </p>
+          </div>
+        </header>
 
-      {% if orders %}
-      <div class="table-wrap">
-      <table class="data-table">
-        <thead>
-          <tr>
-            <th>Car</th>
-            <th>Order Amount</th>
-            <th>Listed Price</th>
-            <th>Status</th>
-            <th>Payment</th>
-            <th>Date</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for order in orders %}
-          <tr>
-            <td>
-              <div class="car-details">
-                {% if order.car and order.car.image_url %}
-                <img
-                  src="{{ url_for('static', filename=order.car.image_url) }}"
-                  alt="{{ order.car.make }}"
-                  class="car-image"
-                />
-                {% else %}
-                <div
-                  class="car-image"
-                  style="
-                    background: var(--color-bg-secondary);
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                  "
-                >
-                  <span style="font-size: 0.6rem">N/A</span>
-                </div>
-                {% endif %}
-                <div class="car-info">
-                  {% if order.car %}
-                  <a href="{{ url_for('orders.view_order', order_id=order.id) }}" style="text-decoration: none; color: inherit;">
-                    <span class="car-title"
-                      >{{ order.car.year }} {{ order.car.make }} {{
-                      order.car.model }}</span
-                    >
-                  </a>
-                  <span class="car-meta"
-                    >{{ order.car.transmission or 'Automatic' }} • {{
-                    order.car.mileage|int }} km</span
-                  >
-                  {% else %}
-                  <span class="car-title">Deleted Car</span>
-                  <span class="car-meta">N/A</span>
-                  {% endif %}
-                </div>
-              </div>
-            </td>
-            <td class="order-amount">{{ order.order_amount | currency }}</td>
-            <td>
-              {% if order.car %}
-              <span class="listed-price"
-                >{{ order.listed_price | currency }}</span
-              >
-              {% else %}
-              <span class="listed-price">N/A</span>
-              {% endif %}
-            </td>
-            <td>
-              <div style="display: flex; flex-direction: column; gap: 0.35rem;">
-                <span
-                  class="badge {{ 'badge-pending' if order.status == 'pending' else 'badge-confirmed' if order.status == 'confirmed' else 'badge-cancelled' if order.status == 'cancelled' else 'badge-completed' if order.status == 'completed' else '' }}"
-                  title="{% if order.status == 'pending' %}Waiting for seller response{% elif order.status == 'confirmed' %}Seller accepted, payment required{% elif order.status == 'completed' %}Payment received, order fulfilled{% elif order.status == 'cancelled' %}This order was cancelled{% endif %}"
-                >
-                  {{ order.status|capitalize }}
-                </span>
-                <span style="font-size: 0.75rem; color: var(--color-text-secondary); line-height: 1.3;">
-                  {% if order.status == 'pending' %}Waiting for seller
-                  {% elif order.status == 'confirmed' %}Awaiting payment
-                  {% elif order.status == 'completed' %}Order fulfilled
-                  {% elif order.status == 'cancelled' %}No longer active
-                  {% endif %}
-                </span>
-              </div>
-            </td>
-            <td>
-              {% set latest_payment = order.latest_payment %}
-              {% if latest_payment %}
-                <span
-                  class="badge"
-                  style="
-                    background: rgba(72, 187, 120, 0.16);
-                    color: #9ae6b4;
-                  "
-                >
-                  {{ latest_payment.status|capitalize }}
-                </span>
-              {% else %}
-                <span style="color: var(--color-text-secondary); font-size: 0.85rem">No payment</span>
-              {% endif %}
-            </td>
-            <td>
-              {{ order.created_at.strftime('%Y-%m-%d') if order.created_at else
-              'N/A' }}
-            </td>
-            <td>
-              {% set latest_payment = order.latest_payment %}
-              {% if order.status == 'confirmed' and (not latest_payment or latest_payment.status != 'paid') %}
-                <a
-                  href="{{ url_for('payments.payment_page', order_id=order.id) }}"
-                  class="btn btn-primary btn-sm"
-                  style="
-                    background: var(--color-accent-red);
-                    border-color: var(--color-accent-red);
-                    color: white;
-                  "
-                >
-                  Pay Now
-                </a>
-              {% elif latest_payment and latest_payment.status == 'paid' %}
-                <span style="color: var(--color-text-secondary); font-size: 0.85rem">Paid</span>
-              {% else %}
-                <span style="color: var(--color-text-secondary); font-size: 0.85rem">Waiting</span>
-              {% endif %}
-            </td>
-            <td>
-              {% if order.status in ['pending', 'confirmed'] %}
-              <form
-                action="{{ url_for('orders.cancel_order', order_id=order.id) }}"
-                method="POST"
-                style="display: inline"
-              >
-                <input
-                  type="hidden"
-                  name="csrf_token"
-                  value="{{ csrf_token() }}"
-                />
-                <button
-                  type="submit"
-                  class="btn btn-danger btn-sm"
-                  onclick="
-                    return confirm(
-                      'Are you sure you want to cancel this order?',
-                    );
-                  "
-                >
-                  Cancel
-                </button>
-              </form>
-              {% else %}
-              <span
-                style="color: var(--color-text-secondary); font-size: 0.85rem"
-                >-</span
-              >
-              {% endif %}
-            </td>
-          </tr>
+        {% with messages = get_flashed_messages(with_categories=true) %} {% if
+        messages %}
+        <div class="flash-messages">
+          {% for category, message in messages %}
+          <div class="flash-message flash-{{ category }}">{{ message }}</div>
           {% endfor %}
-        </tbody>
-      </table>
-      </div>
-      {% else %}
-      <div class="empty-state">
-        <h2>No Orders Yet</h2>
-        <p>You haven't placed any orders. Start shopping!</p>
-        <a
-          href="{{ url_for('cars.browse_cars') }}"
-          style="color: var(--color-accent-red)"
-          >Browse Available Cars</a
-        >
-      </div>
-      {% endif %}
+        </div>
+        {% endif %} {% endwith %} {% set total_orders = orders|length if orders
+        else 0 %} {% set active_orders = orders|selectattr('status', 'in',
+        ['pending', 'confirmed'])|list|length if orders else 0 %} {% set
+        paid_orders = orders|selectattr('status', 'equalto',
+        'completed')|list|length if orders else 0 %}
+
+        <section class="stats-grid" aria-label="Order summary">
+          <article class="stat-card">
+            <div class="stat-card-header">
+              <span class="stat-title">Total Orders</span>
+              <div class="stat-icon"><i data-lucide="shopping-bag"></i></div>
+            </div>
+            <h2>{{ total_orders }}</h2>
+          </article>
+
+          <article class="stat-card">
+            <div class="stat-card-header">
+              <span class="stat-title">Active</span>
+              <div class="stat-icon"><i data-lucide="badge-check"></i></div>
+            </div>
+            <h2>{{ active_orders }}</h2>
+          </article>
+
+          <article class="stat-card">
+            <div class="stat-card-header">
+              <span class="stat-title">Completed</span>
+              <div class="stat-icon"><i data-lucide="circle-check"></i></div>
+            </div>
+            <h2>{{ paid_orders }}</h2>
+          </article>
+        </section>
+
+        <section class="toolbar" aria-label="Order controls">
+          <div class="search-box">
+            <i data-lucide="search"></i>
+            <input
+              type="search"
+              placeholder="Search your orders or vehicle name..."
+              aria-label="Search your orders"
+            />
+          </div>
+
+          <div class="toolbar-actions">
+            <label class="sr-only" for="my-order-status"
+              >Filter by status</label
+            >
+            <select id="my-order-status">
+              <option>All Status</option>
+              <option>Pending</option>
+              <option>Confirmed</option>
+              <option>Completed</option>
+              <option>Cancelled</option>
+            </select>
+
+            <label class="sr-only" for="my-order-sort">Sort orders</label>
+            <select id="my-order-sort">
+              <option>Newest First</option>
+              <option>Oldest First</option>
+              <option>Highest Amount</option>
+              <option>Lowest Amount</option>
+            </select>
+          </div>
+        </section>
+
+        <section class="table-card" aria-label="My orders">
+          {% if orders %}
+          <div class="table-wrap">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th scope="col">Vehicle</th>
+                  <th scope="col">Order Amount</th>
+                  <th scope="col">Listed Price</th>
+                  <th scope="col">Status</th>
+                  <th scope="col">Payment</th>
+                  <th scope="col">Date</th>
+                  <th scope="col">Actions</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                {% for order in orders %}
+                <tr>
+                  <td data-label="Vehicle">
+                    <div class="vehicle-card">
+                      {% if order.car and order.car.image_url %}
+                      <img
+                        src="{{ url_for('static', filename=order.car.image_url) }}"
+                        alt="{{ order.car.year }} {{ order.car.make }} {{ order.car.model }}"
+                        class="car-image"
+                      />
+                      {% else %}
+                      <div
+                        class="car-image placeholder"
+                        aria-label="No image available"
+                      >
+                        <i data-lucide="image-off"></i>
+                      </div>
+                      {% endif %}
+
+                      <div class="vehicle-details">
+                        {% if order.car %}
+                        <div class="vehicle-name">
+                          <a
+                            href="{{ url_for('orders.view_order', order_id=order.id) }}"
+                            style="color: inherit; text-decoration: none"
+                          >
+                            {{ order.car.year }} {{ order.car.make }} {{
+                            order.car.model }}
+                          </a>
+                        </div>
+                        <div class="vehicle-meta">
+                          <span
+                            >{{ order.car.transmission or 'Automatic' }}</span
+                          >
+                          <span class="meta-divider">•</span>
+                          <span>{{ order.car.mileage|int }} km</span>
+                        </div>
+                        {% else %}
+                        <div class="vehicle-name">Deleted Car</div>
+                        <div class="vehicle-meta">N/A</div>
+                        {% endif %}
+                      </div>
+                    </div>
+                  </td>
+
+                  <td data-label="Order Amount">
+                    <strong class="price"
+                      >{{ order.order_amount | currency }}</strong
+                    >
+                  </td>
+
+                  <td data-label="Listed Price">
+                    {% if order.car %}
+                    <span class="listing-date"
+                      >{{ order.listed_price | currency }}</span
+                    >
+                    {% else %}
+                    <span class="listing-date">N/A</span>
+                    {% endif %}
+                  </td>
+
+                  <td data-label="Status">
+                    <span
+                      class="badge {% if order.status == 'pending' %}badge-pending{% elif order.status == 'confirmed' %}badge-active{% elif order.status == 'cancelled' %}badge-sold{% else %}badge-active{% endif %}"
+                    >
+                      <span class="status-dot"></span>
+                      {{ order.status|capitalize }}
+                    </span>
+                  </td>
+
+                  <td data-label="Payment">
+                    {% set latest_payment = order.latest_payment %} {% if
+                    latest_payment %}
+                    <span
+                      class="badge {% if latest_payment.status == 'paid' %}badge-active{% else %}badge-pending{% endif %}"
+                    >
+                      <span class="status-dot"></span>
+                      {{ latest_payment.status|capitalize }}
+                    </span>
+                    {% else %}
+                    <span class="listing-date">No payment</span>
+                    {% endif %}
+                  </td>
+
+                  <td data-label="Date">
+                    <span class="listing-date">
+                      {{ order.created_at.strftime('%Y-%m-%d') if
+                      order.created_at else 'N/A' }}
+                    </span>
+                  </td>
+
+                  <td class="actions-cell" data-label="Actions">
+                    {% set latest_payment = order.latest_payment %} {% if
+                    order.status == 'confirmed' and (not latest_payment or
+                    latest_payment.status != 'paid') %}
+                    <a
+                      href="{{ url_for('payments.payment_page', order_id=order.id) }}"
+                      class="btn btn-danger btn-sm"
+                    >
+                      <i data-lucide="credit-card"></i>
+                      <span>Pay Now</span>
+                    </a>
+                    {% elif latest_payment and latest_payment.status == 'paid'
+                    %}
+                    <span class="listing-date">Paid</span>
+                    {% else %}
+                    <span class="listing-date">Waiting</span>
+                    {% endif %} {% if order.status in ['pending', 'confirmed']
+                    %}
+                    <form
+                      action="{{ url_for('orders.cancel_order', order_id=order.id) }}"
+                      method="POST"
+                      class="action-form"
+                    >
+                      <input
+                        type="hidden"
+                        name="csrf_token"
+                        value="{{ csrf_token() }}"
+                      />
+
+                      <button
+                        type="submit"
+                        class="btn btn-danger btn-sm"
+                        onclick="
+                          return confirm(
+                            'Are you sure you want to cancel this order?',
+                          );
+                        "
+                      >
+                        <i data-lucide="x"></i>
+                        <span>Cancel</span>
+                      </button>
+                    </form>
+                    {% endif %}
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          {% else %}
+          <div class="empty-state">
+            <div class="empty-state-icon">
+              <i data-lucide="car-front"></i>
+            </div>
+            <h3>No Orders Yet</h3>
+            <p>
+              You haven’t placed any orders. Start shopping to see your
+              purchases here.
+            </p>
+          </div>
+          {% endif %}
+        </section>
+      </main>
     </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        lucide.createIcons({
+          width: 18,
+          height: 18,
+          strokeWidth: 1.8,
+        });
+      });
+    </script>
   </body>
 </html>
-

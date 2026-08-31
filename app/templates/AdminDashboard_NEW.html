@@ -34,7 +34,8 @@
       }
       .skip-link:focus {
         top: 0;
-      }</style>
+      }
+    </style>
   </head>
 
   <body>
@@ -74,6 +75,14 @@
     <div class="main-wrapper">
       <!-- PAGE CONTENT -->
       <main id="main-content">
+        {% with messages = get_flashed_messages(with_categories=true) %} {% if
+        messages %}
+        <div class="flash-messages">
+          {% for category, message in messages %}
+          <div class="flash-message flash-{{ category }}">{{ message }}</div>
+          {% endfor %}
+        </div>
+        {% endif %} {% endwith %}
         <!-- ADMIN HEADER -->
         <section class="welcome-card">
           <div class="welcome-content">
@@ -83,12 +92,11 @@
               ensure smooth operations.
             </p>
             <a
-              href="/admin/users"
+              href="{{ url_for('admin.users') }}"
               class="btn-primary"
               style="border-radius: 12px"
+              >Manage Users</a
             >
-              Manage Users
-            </a>
           </div>
         </section>
 
@@ -127,42 +135,42 @@
 
           {% if user_log %}
           <div class="table-wrap">
-          <table class="data-table">
-            <thead>
-              <tr>
-                <th>Admin</th>
-                <th>Activity</th>
-                <th>Role</th>
-                <th>Created</th>
-              </tr>
-            </thead>
-            <tbody>
-              {% for log in user_log %}
-              <tr>
-                <td>
-                  <div style="font-weight: 500">{{ log.user }}</div>
-                  <div
-                    style="
-                      font-size: 0.8rem;
-                      color: var(--color-text-secondary);
-                    "
-                  >
-                    {{ log.email }}
-                  </div>
-                </td>
-                <td>
-                  <span class="status-badge status-active">
-                    {{ log.action }}
-                  </span>
-                </td>
-                <td style="color: var(--color-text-secondary)">
-                  {{ log.details }}
-                </td>
-                <td>{{ log.timestamp }}</td>
-              </tr>
-              {% endfor %}
-            </tbody>
-          </table>
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Admin</th>
+                  <th>Activity</th>
+                  <th>Role</th>
+                  <th>Created</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for log in user_log %}
+                <tr>
+                  <td>
+                    <div style="font-weight: 500">{{ log.user }}</div>
+                    <div
+                      style="
+                        font-size: 0.8rem;
+                        color: var(--color-text-secondary);
+                      "
+                    >
+                      {{ log.email }}
+                    </div>
+                  </td>
+                  <td>
+                    <span class="status-badge status-active">
+                      {{ log.action }}
+                    </span>
+                  </td>
+                  <td style="color: var(--color-text-secondary)">
+                    {{ log.details }}
+                  </td>
+                  <td>{{ log.timestamp }}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
           </div>
           {% else %}
           <p style="color: var(--color-text-secondary)">
@@ -216,19 +224,19 @@
           <h2>Quick Actions</h2>
           <div style="display: flex; gap: 1rem; flex-wrap: wrap">
             <a
-              href="/admin/users"
+              href="{{ url_for('admin.users') }}"
               class="btn btn-primary"
               style="background: var(--color-accent-gold); color: #000"
               >Manage Users</a
             >
             <a
-              href="/admin/listings"
+              href="{{ url_for('admin.listings') }}"
               class="btn btn-primary"
               style="background: var(--color-accent-gold); color: #000"
               >Manage Listings</a
             >
             <a
-              href="/admin/orders"
+              href="{{ url_for('admin.orders') }}"
               class="btn btn-primary"
               style="background: var(--color-accent-gold); color: #000"
               >Manage Orders</a

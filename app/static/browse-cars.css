@@ -1078,3 +1078,6 @@ body::before {
 
   transform: scale(1.03);
 }
+header {
+  overflow: visible;
+}

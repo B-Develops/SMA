@@ -262,7 +262,7 @@ main {
   width: var(--sidebar-width);
   height: 100vh;
 
-  position: sticky;
+  position: sticky !important;
   top: 0;
 
   display: flex;
@@ -590,7 +590,7 @@ a:focus-visible {
   box-shadow: var(--shadow-lg);
 
   isolation: isolate;
-  margin-top: var(--space-6);
+  margin-top: var(--space-);
 }
 .welcome-card::before {
   content: "";
@@ -675,7 +675,10 @@ a:focus-visible {
 
   justify-content: space-between;
 
-  min-height: 170px;
+  min-height: 0px;
+  background: rgba(13, 33, 63, 0.56) !important;
+  backdrop-filter: blur(10px) saturate(120%);
+  -webkit-backdrop-filter: blur(10px) saturate(120%);
 }
 
 .stat-header {
@@ -797,7 +800,9 @@ a:focus-visible {
 
   padding: 1.4rem;
 
-  background: rgba(17, 34, 64, 0.72);
+  background: rgba(13, 33, 63, 0.56) !important;
+  backdrop-filter: blur(10px) saturate(120%);
+  -webkit-backdrop-filter: blur(10px) saturate(120%);
 
   border: 1px solid var(--border-soft);
 
@@ -916,6 +921,15 @@ a:focus-visible {
   padding-left: 2rem;
 }
 
+/* Show only ~3 items before scrolling (mobile only) */
+@media (max-width: 768px) {
+  .activity-timeline {
+    max-height: calc(var(--activity-item-height, 120px) * 3);
+    overflow-y: auto;
+    padding-right: 1rem; /* space for scrollbar */
+  }
+}
+
 .activity-timeline::before {
   content: "";
 
@@ -968,8 +982,9 @@ a:focus-visible {
 
   padding: 1.35rem 1.5rem;
 
-  background: rgba(17, 34, 64, 0.72);
-
+  background: rgba(13, 33, 63, 0.56) !important;
+  backdrop-filter: blur(10px) saturate(120%);
+  -webkit-backdrop-filter: blur(10px) saturate(120%);
   border: 1px solid var(--border-soft);
 
   border-radius: var(--radius-lg);
@@ -1050,8 +1065,9 @@ a:focus-visible {
 
   overflow: hidden;
 
-  background: rgba(17, 34, 64, 0.72);
-
+  background: rgba(13, 33, 63, 0.34) !important;
+  backdrop-filter: blur(10px) saturate(120%);
+  -webkit-backdrop-filter: blur(10px) saturate(120%);
   border: 1px solid var(--border-soft);
 
   border-radius: var(--radius-lg);
@@ -1198,8 +1214,9 @@ a:focus-visible {
 .watch-card {
   overflow: hidden;
 
-  background: rgba(17, 34, 64, 0.72);
-
+  background: rgba(13, 33, 63, 0.36) !important;
+  backdrop-filter: blur(10px) saturate(120%);
+  -webkit-backdrop-filter: blur(10px) saturate(120%);
   border: 1px solid var(--border-soft);
 
   border-radius: var(--radius-lg);
@@ -2403,7 +2420,38 @@ main {
 }
 .car-grid {
   margin-top: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
 }
+
+.car-card {
+  border-radius: 14px;
+  height: 310px;
+}
+
+.car-card img {
+  height: 150px;
+}
+
+.car-body {
+  padding: 0.75rem 0.8rem 0.9rem;
+}
+
+.car-body h4 {
+  font-size: 1rem;
+  margin-bottom: 0.35rem;
+}
+
+.car-body p {
+  font-size: 0.8rem;
+  margin-bottom: 0.3rem;
+}
+
+.price {
+  font-size: 1.15rem;
+  margin: 0.4rem 0 0.75rem;
+}
+
 .actions {
   display: flex;
   flex-wrap: wrap;
@@ -2539,9 +2587,9 @@ main {
 
     z-index: 1400;
 
-    background: rgba(10, 25, 47, 0.98);
-
-    backdrop-filter: blur(18px);
+    background: rgba(13, 33, 63, 0.76) !important;
+    backdrop-filter: blur(10px) saturate(120%);
+    -webkit-backdrop-filter: blur(10px) saturate(120%);
 
     padding: 1.75rem;
   }
@@ -2581,6 +2629,9 @@ main {
   }
   .sidebar-footer {
     margin-top: 13vh;
+  }
+  .user-details {
+    display: flex !important;
   }
   /* ==========================
      Dashboard Layout
@@ -2720,6 +2771,7 @@ main {
     transition: transform 0.35s ease;
 
     z-index: 1200;
+    height: 100%;
   }
 
   .sidebar.mobile-open {
@@ -2827,6 +2879,7 @@ main {
   }
   .stat-card {
     padding: 1rem;
+    height: 1rem !important;
   }
   .stat-icon {
     width: 36px;
@@ -2840,4 +2893,131 @@ main {
   .munb {
     color: var(--color-info);
   }
+  platform-activity-section {
+    height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .section-header {
+    margin: 0;
+  }
+
+  td {
+    height: 9vh;
+  }
+  .admin {
+    margin: 0;
+  }
+  .car-card {
+    background: rgba(17, 34, 64, 0.72);
+
+    border: 1px solid var(--border-soft);
+
+    border-radius: var(--radius-lg);
+
+    overflow: hidden;
+
+    transition: all 0.3s ease;
+
+    box-shadow: var(--shadow-md);
+    height: 290px;
+    padding: 0;
+  }
+
+  .car-card img {
+    height: 130px;
+  }
+
+  .car-card:hover {
+    transform: translateY(-8px);
+
+    border-color: var(--border-strong);
+
+    box-shadow: var(--shadow-lg);
+  }
+
+  .car-body {
+    padding: var(--space-2);
+  }
+
+  .car-body h4 {
+    margin-bottom: 0.1rem;
+  }
+  .car-body p {
+    margin-bottom: 0.1rem;
+  }
+  .price {
+    font-size: 1.5rem;
+
+    font-weight: 700;
+
+    color: var(--color-accent-red);
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+  .pp {
+    display: none;
+  }
+  .pt {
+    display: flex;
+  }
+  .notifications-grid {
+    display: grid;
+
+    gap: 1rem;
+
+    margin-top: 1rem;
+  }
+
+  .notification-card {
+    padding: 1rem;
+  }
+
+  .notification-title {
+    margin-bottom: 0rem;
+  }
+
+  .notification-message {
+    margin-bottom: 0rem;
+  }
+
+  .notification-time {
+    color: var(--color-text-secondary);
+  }
+  .sidebar-footer {
+    margin-top: auto;
+
+    padding-top: var(--space-6);
+  }
+  .mobile-topbar {
+    width: 100vw;
+  }
+}
+/* Prevent horizontal page scrolling */
+
+.sidebar {
+  width: var(--sidebar-width);
+  height: 100vh;
+
+  position: sticky !important;
+  top: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  padding: var(--space-6);
+
+  background: rgba(10, 25, 47, 0.26);
+
+  backdrop-filter: blur(8px) saturate(120%);
+  -webkit-backdrop-filter: blur(8px) saturate(120%);
+
+  border-right: 1px solid var(--border-soft);
+
+  transition:
+    width var(--transition-base),
+    padding var(--transition-base);
+
+  z-index: 100;
 }

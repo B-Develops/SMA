@@ -108,11 +108,12 @@ def create_app(config_name=None):
     
     # Security configurations
     app.config["PERMANENT_SESSION_LIFETIME"] = int(os.environ.get("SESSION_TIMEOUT_MINUTES", 30)) * 60  # Convert to seconds
-    app.config["SESSION_COOKIE_SECURE"] = os.environ.get("SESSION_COOKIE_SECURE", "True") != "False"
+    force_https = os.environ.get("FORCE_HTTPS", "False") == "True"
+    app.config["SESSION_COOKIE_SECURE"] = force_https
     app.config["SESSION_COOKIE_HTTPONLY"] = True
     app.config["SESSION_COOKIE_SAMESITE"] = "Lax"
     app.config["REMEMBER_COOKIE_DURATION"] = int(os.environ.get("SESSION_TIMEOUT_MINUTES", 30)) * 60
-    app.config["REMEMBER_COOKIE_SECURE"] = os.environ.get("SESSION_COOKIE_SECURE", "True") != "False"
+    app.config["REMEMBER_COOKIE_SECURE"] = force_https
     app.config["REMEMBER_COOKIE_HTTPONLY"] = True
     app.config["REMEMBER_COOKIE_SAMESITE"] = "Lax"
     

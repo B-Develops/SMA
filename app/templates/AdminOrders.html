@@ -20,6 +20,10 @@
       rel="stylesheet"
       href="{{ url_for('static', filename='admin-orders.css') }}"
     />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='responsive-tables.css') }}"
+    />
 
     <!-- Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -44,7 +48,8 @@
             <h1>Manage Orders</h1>
 
             <p>
-              Review and manage customer orders across the Sarkin Mota Autos platform.
+              Review and manage customer orders across the Sarkin Mota Autos
+              platform.
             </p>
           </div>
         </header>
@@ -52,6 +57,15 @@
         <!-- =====================================================
              LISTING STATISTICS
         ====================================================== -->
+
+        {% with messages = get_flashed_messages(with_categories=true) %} {% if
+        messages %}
+        <div class="flash-messages">
+          {% for category, message in messages %}
+          <div class="flash-message flash-{{ category }}">{{ message }}</div>
+          {% endfor %}
+        </div>
+        {% endif %} {% endwith %}
 
         <section class="stats-grid" aria-label="Order statistics">
           <!-- Total -->
@@ -96,7 +110,9 @@
 
             <h2>{{ total_orders - active_orders }}</h2>
 
-            <span class="stat-description"> Confirmed, completed or cancelled </span>
+            <span class="stat-description">
+              Confirmed, completed or cancelled
+            </span>
           </article>
         </section>
 
@@ -173,7 +189,7 @@
                        VEHICLE
                   ================================================== -->
 
-                  <td>
+                  <td data-label="Vehicle">
                     <div class="vehicle-card">
                       {% if order.image_url %}
 
@@ -196,11 +212,14 @@
 
                       <div class="vehicle-details">
                         <div class="vehicle-name">
-                          {{ order.year or '?' }} {{ order.make or '?' }} {{ order.model or '?' }}
+                          {{ order.year or '?' }} {{ order.make or '?' }} {{
+                          order.model or '?' }}
                         </div>
 
                         <div class="vehicle-meta">
-                          <span>Listed: {{ order.listed_price | currency}}</span>
+                          <span
+                            >Listed: {{ order.listed_price | currency}}</span
+                          >
 
                           <span class="meta-divider"> • </span>
 
@@ -214,11 +233,13 @@
                        SELLER
                   ================================================== -->
 
-                  <td>
+                  <td data-label="Buyer">
                     <div class="seller-details">
                       <div class="seller-name">{{ order.buyer_name }}</div>
 
-                      <div class="seller-email">{{ order.buyer_email or 'No email' }}</div>
+                      <div class="seller-email">
+                        {{ order.buyer_email or 'No email' }}
+                      </div>
                     </div>
                   </td>
 
@@ -226,15 +247,17 @@
                        PRICE
                   ================================================== -->
 
-                  <td>
-                    <strong class="price"> {{ order.order_amount | currency }} </strong>
+                  <td data-label="Order Amount">
+                    <strong class="price">
+                      {{ order.order_amount | currency }}
+                    </strong>
                   </td>
 
                   <!-- =================================================
                        STATUS
                   ================================================== -->
 
-                  <td>
+                  <td data-label="Status">
                     <span
                       class="badge {% if order.status == 'confirmed' or order.status == 'completed' %} badge-active {% elif order.status == 'cancelled' or order.status == 'rejected' %} badge-sold {% else %} badge-pending {% endif %}"
                     >
@@ -248,7 +271,7 @@
                        DATE
                   ================================================== -->
 
-                  <td>
+                  <td data-label="Listed">
                     <span class="listing-date">
                       {{ order.created_at|date('Y-m-d') if order.created_at else
                       'N/A' }}
@@ -259,7 +282,7 @@
                        ACTIONS
                   ================================================== -->
 
-                  <td class="actions-cell">
+                  <td class="actions-cell" data-label="Actions">
                     {% if order.status == 'pending' %}
                     <form
                       action="{{ url_for(

@@ -256,11 +256,17 @@ def listings(page=1):
         }
         listings_list.append(car_dict)
 
+    # include admin summary stats so templates can show totals
+    stats = _get_admin_stats()
+
     response = render_template("AdminListings.html",
                          listings=listings_list,
                          pagination=listings_paginated,
                          current_sort=sort_by,
-                         current_order=sort_order)
+                         current_order=sort_order,
+                         total_listings=stats.get('total_listings', 0),
+                         active_listings=stats.get('active_listings', 0),
+                         sold_listings=stats.get('sold_listings', 0))
     cache.set(cache_key, response, timeout=300)
     return response
 

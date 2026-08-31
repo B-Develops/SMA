@@ -1,23 +1,26 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Audit Logs - Admin - Sarkin Mota Autos</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Audit Logs - Admin - Sarkin Mota Autos</title>
 
-  <!-- Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
-    rel="stylesheet"
-  />
+      rel="stylesheet"
+    />
 
-  <link rel="stylesheet" href="{{ url_for('static', filename='admin-dashboard.css') }}" />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='admin-dashboard.css') }}"
+    />
 
-  <!-- Icons -->
-  <script src="https://unpkg.com/lucide@latest"></script>
-</head>
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+  </head>
   <body>
     <a href="#main-content" class="skip-link">Skip to main content</a>
     <!-- LEFT SIDEBAR -->
@@ -50,66 +53,85 @@
     <!-- MAIN CONTENT -->
     <div class="main-wrapper">
       <main id="main-content">
-
-      <!-- AUDIT LOGS TABLE -->
-      {% if logs %}
-      <div class="table-wrap">
-      <table class="admin-table">
-        <thead>
-          <tr>
-            <th>Timestamp</th>
-            <th>Admin</th>
-            <th>Action</th>
-            <th>Resource Type</th>
-            <th>Resource ID</th>
-            <th>Details</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for log in logs %}
-          <tr>
-            <td>{{ log.created_at.strftime('%Y-%m-%d %H:%M') if log.created_at else 'N/A' }}</td>
-            <td>{{ log.admin_name }}</td>
-            <td>
-              <span style="color: var(--color-accent-red); font-weight: 500">{{ log.action|replace('_', ' ')|title }}</span>
-            </td>
-            <td>{{ log.resource_type }}</td>
-            <td>{{ log.resource_id or '-' }}</td>
-            <td>{{ log.details or '-' }}</td>
-          </tr>
+        {% with messages = get_flashed_messages(with_categories=true) %} {% if
+        messages %}
+        <div class="flash-messages">
+          {% for category, message in messages %}
+          <div class="flash-message flash-{{ category }}">{{ message }}</div>
           {% endfor %}
-        </tbody>
-      </table>
-      </div>
-      {% else %}
-      <div class="empty-state">
-        <p>No audit logs found.</p>
-      </div>
-      {% endif %}
+        </div>
+        {% endif %} {% endwith %}
 
-      <!-- PAGINATION CONTROLS -->
-      {% if pagination and pagination.pages > 1 %}
-      <div class="pagination" style="margin-top: 2rem;">
-        {% if pagination.has_prev %}
-        <a href="{{ url_for('admin.audit_logs', page=pagination.prev_num) }}" class="btn">
-          ← Previous
-        </a>
+        <!-- AUDIT LOGS TABLE -->
+        {% if logs %}
+        <div class="table-wrap">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Timestamp</th>
+                <th>Admin</th>
+                <th>Action</th>
+                <th>Resource Type</th>
+                <th>Resource ID</th>
+                <th>Details</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for log in logs %}
+              <tr>
+                <td>
+                  {{ log.created_at.strftime('%Y-%m-%d %H:%M') if log.created_at
+                  else 'N/A' }}
+                </td>
+                <td>{{ log.admin_name }}</td>
+                <td>
+                  <span style="color: var(--color-accent-red); font-weight: 500"
+                    >{{ log.action|replace('_', ' ')|title }}</span
+                  >
+                </td>
+                <td>{{ log.resource_type }}</td>
+                <td>{{ log.resource_id or '-' }}</td>
+                <td>{{ log.details or '-' }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
         {% else %}
-        <span class="btn" disabled>← Previous</span>
+        <div class="empty-state">
+          <p>No audit logs found.</p>
+        </div>
         {% endif %}
 
-        <span> Page {{ pagination.page }} of {{ pagination.pages }} </span>
+        <!-- PAGINATION CONTROLS -->
+        {% if pagination and pagination.pages > 1 %}
+        <div class="pagination" style="margin-top: 2rem">
+          {% if pagination.has_prev %}
+          <a
+            href="{{ url_for('admin.audit_logs', page=pagination.prev_num) }}"
+            class="btn"
+          >
+            ← Previous
+          </a>
+          {% else %}
+          <span class="btn" disabled>← Previous</span>
+          {% endif %}
 
-        {% if pagination.has_next %}
-        <a href="{{ url_for('admin.audit_logs', page=pagination.next_num) }}" class="btn">
-          Next →
-        </a>
-        {% else %}
-        <span class="btn" disabled>Next →</span>
+          <span> Page {{ pagination.page }} of {{ pagination.pages }} </span>
+
+          {% if pagination.has_next %}
+          <a
+            href="{{ url_for('admin.audit_logs', page=pagination.next_num) }}"
+            class="btn"
+          >
+            Next →
+          </a>
+          {% else %}
+          <span class="btn" disabled>Next →</span>
+          {% endif %}
+        </div>
         {% endif %}
-      </div>
-      {% endif %}
-    </main>
+      </main>
     </div>
 
     <script>
@@ -129,4 +151,3 @@
     </script>
   </body>
 </html>
-
