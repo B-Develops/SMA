@@ -1,19 +1,12 @@
 (function () {
   'use strict';
 
-  if (!('serviceWorker' in navigator)) {
-    console.log('Service Worker not supported');
-    return;
-  }
+  if (!('serviceWorker' in navigator)) return;
 
   window.addEventListener('load', function () {
     navigator.serviceWorker.register('/static/sw.js')
-      .then(function (registration) {
-        console.log('SW registered:', registration.scope);
-      })
-      .catch(function (error) {
-        console.log('SW registration failed:', error);
-      });
+      .then(function (r) { console.log('SW registered:', r.scope); })
+      .catch(function (e) { console.log('SW registration failed:', e); });
   });
 
   var deferredPrompt;
@@ -33,8 +26,7 @@
       banner.innerHTML =
         '<button class="install-dismiss" onclick="this.parentElement.remove()">×</button>' +
         '<div class="install-title">Add to Home Screen</div>' +
-        '<div class="install-desc">Tap the share button below, then select "Add to Home Screen".</div>' +
-        '<button class="install-btn" onclick="window.location.href=\'/#install-instructions\'">Show Instructions</button>' +
+        '<div class="install-desc">Tap the share button, then select "Add to Home Screen".</div>' +
         '<button class="install-btn secondary" onclick="this.parentElement.remove()">Got it</button>';
     } else {
       banner.innerHTML =
@@ -52,10 +44,8 @@
   window.handlePWAInstall = function () {
     if (deferredPrompt) {
       deferredPrompt.prompt();
-      deferredPrompt.userChoice.then(function (choiceResult) {
-        if (choiceResult.outcome === 'accepted') {
-          console.log('User installed');
-        }
+      deferredPrompt.userChoice.then(function (r) {
+        if (r.outcome === 'accepted') console.log('User installed');
         deferredPrompt = null;
         if (installBanner) installBanner.remove();
       });
@@ -66,83 +56,22 @@
     if (installBanner || installHintDismissed) return;
     installBanner = createInstallBanner();
     setTimeout(function () {
-      if (installBanner && installBanner.parentNode) {
-        installBanner.classList.add('visible');
-      }
+      if (installBanner && installBanner.parentNode) installBanner.classList.add('visible');
     }, 100);
-  }
-
-  function dismissHint() {
-    installHintDismissed = true;
-    if (installBanner) installBanner.remove();
-  }
-
-  if (isMobile) {
-    setTimeout(showInstallHint, 3000);
   }
 
   window.addEventListener('beforeinstallprompt', function (e) {
     e.preventDefault();
     deferredPrompt = e;
-
-    if (installBanner) return;
-    installBanner = createInstallBanner();
-    setTimeout(function () {
-      if (installBanner && installBanner.parentNode) {
-        installBanner.classList.add('visible');
-      }
-    }, 100);
+    if (!installBanner) {
+      installBanner = createInstallBanner();
+      setTimeout(function () {
+        if (installBanner && installBanner.parentNode) installBanner.classList.add('visible');
+      }, 100);
+    }
   });
 
-  function initImageLoaders() {
-    var wrappers = document.querySelectorAll('.loader-wrapper.loader-wrapper-loading');
-    if (!wrappers.length) return;
-
-    var observer = new IntersectionObserver(function (entries, obs) {
-      entries.forEach(function (entry) {
-        if (entry.isIntersecting) {
-          var wrapper = entry.target;
-          var img = wrapper.querySelector('img');
-          if (img) {
-            if (img.complete) {
-              wrapper.classList.remove('loader-wrapper-loading');
-              wrapper.classList.add('loader-wrapper-loaded');
-              img.classList.add('loaded');
-            } else {
-              img.addEventListener('load', function () {
-                wrapper.classList.remove('loader-wrapper-loading');
-                wrapper.classList.add('loader-wrapper-loaded');
-                img.classList.add('loaded');
-              });
-            }
-          }
-          obs.unobserve(wrapper);
-        }
-      });
-    }, { rootMargin: '100px' });
-
-    wrappers.forEach(function (wrapper) {
-      var img = wrapper.querySelector('img');
-      if (img) {
-        if (img.complete) {
-          wrapper.classList.remove('loader-wrapper-loading');
-          wrapper.classList.add('loader-wrapper-loaded');
-          img.classList.add('loaded');
-        } else {
-          img.addEventListener('load', function () {
-            wrapper.classList.remove('loader-wrapper-loading');
-            wrapper.classList.add('loader-wrapper-loaded');
-            img.classList.add('loaded');
-          });
-          observer.observe(wrapper);
-        }
-      }
-    });
-  }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initImageLoaders);
-  } else {
-    initImageLoaders();
+  if (isMobile) {
+    setTimeout(showInstallHint, 3000);
   }
 })();

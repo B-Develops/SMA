@@ -14,8 +14,8 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}" />
-    <link rel="stylesheet" href="{{ url_for('static', filename='dropdown.css') }}" />
+    <link rel="stylesheet" href="../static/index.css" />
+    <link rel="stylesheet" href="../static/dropdown.css" />
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
       .skip-link {
@@ -92,16 +92,9 @@
     <main id="main-content">
       <!-- HERO -->
       <section class="hero section reveal-section">
-        <div class="video-loader" id="heroVideoWrapper">
-          <video class="section-video" muted loop playsinline preload="auto" id="heroVideo">
-            <source src="{{ url_for('static', filename='Bagged M2 Competition [4K].mp4') }}" type="video/mp4" />
-          </video>
-          <div class="video-placeholder" id="videoPlaceholder">
-            <div class="play-icon">&#9654;</div>
-            <div class="video-text">Loading video...</div>
-            <div class="spinner"></div>
-          </div>
-        </div>
+        <video class="section-video" autoplay muted loop playsinline preload="auto">
+          <source src="../static/Bagged M2 Competition [4K].mp4" type="video/mp4" />
+        </video>
 
         <div class="video-overlay"></div>
 
@@ -190,16 +183,10 @@
           </div>
           <div class="featured-layout">
             <div class="featured-main">
-            <div class="loader-wrapper loader-wrapper-loading">
               <img
-                src="{{ url_for('static', filename='Mercedes.png') }}"
+                src="/static/Mercedes.png"
                 alt="Mercedes-Benz C300 Featured Vehicle"
-                loading="lazy"
-                onload="this.classList.add('loaded');this.parentElement.classList.remove('loader-wrapper-loading');this.parentElement.classList.add('loader-wrapper-loaded')"
               />
-              <span class="loader-skeleton"></span>
-              <span class="loader-spinner"></span>
-            </div>
 
               <div class="featured-overlay">
                 <span class="featured-tag"> Featured Vehicle </span>
@@ -227,16 +214,10 @@
                 "
               >
                 <div class="listing-image">
-                <div class="loader-wrapper loader-wrapper-loading">
                   <img
-                    src="{{ url_for('static', filename='Toyota.png') }}"
+                    src="/static/Toyota.png"
                     alt="Toyota Camry - ₦12,500,000"
-                    loading="lazy"
-                    onload="this.classList.add('loaded');this.parentElement.classList.remove('loader-wrapper-loading');this.parentElement.classList.add('loader-wrapper-loaded')"
                   />
-                  <span class="loader-skeleton"></span>
-                  <span class="loader-spinner"></span>
-                </div>
                 </div>
 
                 <div class="listing-content">
@@ -258,17 +239,10 @@
                 "
               >
                 <div class="listing-image">
-                <div class="loader-wrapper loader-wrapper-loading">
                   <img
-                    src="{{ url_for('static', filename='Honda.png') }}"
+                    src="/static/Honda.png"
                     alt="Honda Accord - ₦10,800,000"
-                    loading="lazy"
-                    onload="this.classList.add('loaded');this.parentElement.classList.remove('loader-wrapper-loading');this.parentElement.classList.add('loader-wrapper-loaded')"
                   />
-                  <span class="loader-skeleton"></span>
-                  <span class="loader-spinner"></span>
-                </div>
-                </div>
                 </div>
 
                 <div class="listing-content">
@@ -442,18 +416,8 @@
         <div class="contacts-layout">
           <!-- Sarkin Mota -->
           <article class="sarkinmota-card">
-             <div class="sarkinmota-image">
-               <div class="loader-wrapper loader-wrapper-loading">
-               <img
-                 src="{{ url_for('static', filename='ChatGPT Image Aug 24, 2026, 03_06_03 PM.png') }}"
-                 alt="Sarkin Mota"
-                 loading="lazy"
-                 onload="this.classList.add('loaded');this.parentElement.classList.remove('loader-wrapper-loading');this.parentElement.classList.add('loader-wrapper-loaded')"
-               />
-               <span class="loader-skeleton"></span>
-               <span class="loader-spinner"></span>
-             </div>
-             </div>
+            <div class="sarkinmota-image">
+              <img src="../static/ChatGPT Image Aug 24, 2026, 03_06_03 PM.png" alt="Sarkin Mota" />
             </div>
 
             <div class="sarkinmota-content">
@@ -593,38 +557,11 @@
         }
 
         const video = document.querySelector(".section-video");
-        const videoPlaceholder = document.getElementById("videoPlaceholder");
-
         if (
           video &&
           window.matchMedia("(prefers-reduced-motion: reduce)").matches
         ) {
           video.pause();
-        }
-
-        if (video && videoPlaceholder) {
-          video.classList.add("video-hidden");
-          video.play().catch(() => {});
-
-          video.addEventListener("canplay", () => {
-            videoPlaceholder.style.display = "none";
-            video.classList.remove("video-hidden");
-            video.classList.add("video-visible");
-          });
-
-          video.addEventListener("playing", () => {
-            videoPlaceholder.style.display = "none";
-            video.classList.remove("video-hidden");
-            video.classList.add("video-visible");
-          });
-
-          setTimeout(() => {
-            if (videoPlaceholder.style.display !== "none") {
-              videoPlaceholder.style.display = "none";
-              video.classList.remove("video-hidden");
-              video.classList.add("video-visible");
-            }
-          }, 3000);
         }
       });
 

@@ -11,11 +11,13 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
-    <link rel="stylesheet" href="{{ url_for('static', filename='browse-cars.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='dropdown.css') }}">
 
     {% include '_pwa_head.html' %}
   </head>
+<link rel="stylesheet" href="../static/browse-cars.css">
+<link rel="stylesheet" href="../static/dropdown.css">
+
+
   <body>
     <header role="banner">
         <div class="container" id="navcon">
@@ -159,27 +161,15 @@
               >{{ car.condition|capitalize }}</span
             >
             {% if car.image_url %}
-            <div class="loader-wrapper loader-wrapper-loading">
-              <img
-                src="{{ url_for('static', filename=car.image_url) }}"
-                alt="{{ car.year }} {{ car.make }} {{ car.model }}"
-                loading="lazy"
-                onload="this.classList.add('loaded');this.parentElement.classList.remove('loader-wrapper-loading');this.parentElement.classList.add('loader-wrapper-loaded')"
-              />
-              <span class="loader-skeleton"></span>
-              <span class="loader-spinner"></span>
-            </div>
+            <img
+              src="{{ url_for('static', filename=car.image_url) }}"
+              alt="{{ car.year }} {{ car.make }} {{ car.model }}"
+            />
             {% else %}
-            <div class="loader-wrapper loader-wrapper-loading">
-              <img
-                src="{{ url_for('static', filename='Assets/images/' + car.make + '.png') }}"
-                alt="{{ car.year }} {{ car.make }} {{ car.model }}"
-                loading="lazy"
-                onload="this.classList.add('loaded');this.parentElement.classList.remove('loader-wrapper-loading');this.parentElement.classList.add('loader-wrapper-loaded')"
-              />
-              <span class="loader-skeleton"></span>
-              <span class="loader-spinner"></span>
-            </div>
+            <img
+              src="{{ url_for('static', filename='Assets/images/' + car.make + '.png') }}"
+              alt="{{ car.year }} {{ car.make }} {{ car.model }}"
+            />
             {% endif %}
           </div>
           <div class="card-body featured-overlay">

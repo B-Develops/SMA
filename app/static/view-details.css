@@ -368,6 +368,9 @@ body::before {
   align-items: stretch;
 }
 
+section {
+  padding: 0 1rem;
+}
 /* =========================================================
    IMAGE
    ========================================================= */
@@ -422,16 +425,15 @@ body::before {
 
   border-radius: 7px;
 
-  background: rgba(2, 12, 27, 0.72);
+  background: rgba(2, 12, 27, 0.034);
 
-  border: 1px solid rgba(255, 255, 255, 0.1);
-
-  backdrop-filter: blur(8px);
+  backdrop-filter: blur(5px);
 
   color: white;
 
   font-size: 0.7rem;
   font-weight: 600;
+  width: 380px;
 }
 
 .image-overlay {
@@ -505,7 +507,7 @@ body::before {
 
   background: linear-gradient(
     145deg,
-    rgba(17, 34, 64, 0.9),
+    rgba(17, 34, 64, 0.4),
     rgba(10, 25, 47, 0.82)
   );
 
@@ -1023,7 +1025,19 @@ body::before {
 
   border-radius: var(--radius);
 
-  background: var(--border);
+  border: 1px solid var(--border);
+
+  border-radius: var(--radius);
+
+  background: linear-gradient(
+    145deg,
+    rgba(17, 34, 64, 0.856),
+    rgba(10, 25, 47, 0.178)
+  );
+
+  box-shadow: var(--shadow);
+
+  backdrop-filter: blur(10px);
 }
 
 .spec-item {
@@ -1037,7 +1051,7 @@ body::before {
 
   padding: 1.1rem;
 
-  background: rgba(17, 34, 64, 0.65);
+  background: rgba(17, 34, 64, 0.212);
 }
 
 .spec-icon {
@@ -1331,6 +1345,9 @@ body::before {
     padding-top: 0.75rem;
 
     border-top: 1px solid var(--border);
+  }
+  section {
+    padding: 0 0rem;
   }
 }
 

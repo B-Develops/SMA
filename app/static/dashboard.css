@@ -262,7 +262,7 @@ main {
   width: var(--sidebar-width);
   height: 100vh;
 
-  position: sticky !important;
+  position: absolute !important;
   top: 0;
 
   display: flex;
@@ -2638,7 +2638,8 @@ main {
   ========================== */
 
   body {
-    display: block;
+    display: flex;
+    flex-direction: column;
   }
 
   .main-wrapper {
@@ -2859,7 +2860,7 @@ main {
     grid-template-columns: 1fr;
   }
   .welcome-card {
-    width: 100vw;
+    width: 100%;
     margin-top: 0;
     height: 70vh;
     border-radius: 0px;
@@ -2991,7 +2992,7 @@ main {
     padding-top: var(--space-6);
   }
   .mobile-topbar {
-    width: 100vw;
+    width: 100%;
   }
 }
 /* Prevent horizontal page scrolling */
@@ -3020,4 +3021,70 @@ main {
     padding var(--transition-base);
 
   z-index: 100;
+}
+/* STOP DASHBOARD FROM OVER-EXTENDING */
+
+.main-wrapper {
+  min-width: 0;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+main {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+
+* {
+  max-width: 100%;
+}
+@media (max-width: 768px) {
+  html,
+  body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  .main-wrapper,
+  main {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    overflow-x: hidden;
+  }
+
+  .welcome-card {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .stats-grid,
+  .car-grid,
+  .orders-grid,
+  .watchlist-grid,
+  .notifications-grid {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+  }
+  .mobile-topbar {
+    width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .welcome-card {
+    height: auto;
+    min-height: 264px;
+  }
+
+  .welcome-content {
+    margin-top: 8vh !important;
+  }
+
+  .sidebar {
+    position: fixed !important;
+  }
 }
