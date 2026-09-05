@@ -25,6 +25,7 @@
     />
 
     <script src="https://unpkg.com/lucide@latest"></script>
+    {% include '_pwa_head.html' %}
   </head>
 
   <body>
@@ -106,10 +107,15 @@
           {% if car.image_url %}
 
           <div class="main-image">
-            <img
-              src="{{ url_for('static', filename=car.image_url) }}"
-              alt="{{ car.year }} {{ car.make }} {{ car.model }}"
-            />
+            <div class="loader-wrapper">
+              <img
+                src="{{ url_for('static', filename=car.image_url) }}"
+                alt="{{ car.year }} {{ car.make }} {{ car.model }}"
+                loading="lazy"
+                onload="this.classList.add('loaded');this.parentElement.classList.add('loaded')"
+              />
+              <span class="spinner"></span>
+            </div>
 
             <div class="image-overlay"></div>
 

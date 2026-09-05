@@ -338,6 +338,7 @@
     }
     .mobile-footer span { color: var(--accent-gold); }
   </style>
+    {% include '_pwa_head.html' %}
 </head>
 <body>
   <header class="mobile-header">
@@ -428,9 +429,15 @@
           <div class="car-card-image">
             <span class="car-card-badge {{ car.condition }}">{{ car.condition|capitalize }}</span>
             {% if car.image_url %}
-            <img src="{{ url_for('static', filename=car.image_url) }}" alt="{{ car.year }} {{ car.make }} {{ car.model }}" />
+            <div class="loader-wrapper">
+              <img src="{{ url_for('static', filename=car.image_url) }}" alt="{{ car.year }} {{ car.make }} {{ car.model }}" loading="lazy" onload="this.classList.add('loaded');this.parentElement.classList.add('loaded')" />
+              <span class="spinner"></span>
+            </div>
             {% else %}
-            <img src="{{ url_for('static', filename='Assets/images/' + car.make + '.png') }}" alt="{{ car.year }} {{ car.make }} {{ car.model }}" />
+            <div class="loader-wrapper">
+              <img src="{{ url_for('static', filename='Assets/images/' + car.make + '.png') }}" alt="{{ car.year }} {{ car.make }} {{ car.model }}" loading="lazy" onload="this.classList.add('loaded');this.parentElement.classList.add('loaded')" />
+              <span class="spinner"></span>
+            </div>
             {% endif %}
           </div>
           <div class="car-card-body">

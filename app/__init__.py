@@ -45,7 +45,10 @@ talisman = Talisman(
         'script-src': ["'self'", "'unsafe-inline'"],
         'style-src': ["'self'", "'unsafe-inline'"],
         'img-src': ["'self'", "data:", "https:"],
-        'font-src': ["'self'"],
+        'font-src': ["'self'", "https:", "data:"],
+        'media-src': ["'self'"],
+        'connect-src': ["'self'"],
+        'manifest-src': ["'self'"],
     }
 )
 
@@ -222,6 +225,10 @@ def create_app(config_name=None):
     @app.route("/")
     def index():
         return render_template("Index.html")
+
+    @app.route("/offline")
+    def offline():
+        return render_template("offline.html")
     
     # User dashboard route
     @app.route("/dashboard")

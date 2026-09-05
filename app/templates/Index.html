@@ -14,8 +14,8 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="../static/index.css" />
-    <link rel="stylesheet" href="../static/dropdown.css" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='dropdown.css') }}" />
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
       .skip-link {
@@ -34,6 +34,7 @@
         top: 0;
       }
     </style>
+    {% include '_pwa_head.html' %}
   </head>
 
   <body>
@@ -91,9 +92,16 @@
     <main id="main-content">
       <!-- HERO -->
       <section class="hero section reveal-section">
-        <video class="section-video" autoplay muted loop playsinline preload="auto">
-          <source src="../static/Bagged M2 Competition [4K].mp4" type="video/mp4" />
-        </video>
+        <div class="video-loader" id="heroVideoWrapper">
+           <video class="section-video" muted loop playsinline preload="none" id="heroVideo">
+             <source data-src="{{ url_for('static', filename='Bagged M2 Competition [4K].mp4') }}" type="video/mp4" />
+           </video>
+          <div class="video-placeholder" id="videoPlaceholder">
+            <div class="play-icon">&#9654;</div>
+            <div class="video-text">Loading video...</div>
+            <div class="spinner"></div>
+          </div>
+        </div>
 
         <div class="video-overlay"></div>
 
@@ -182,10 +190,15 @@
           </div>
           <div class="featured-layout">
             <div class="featured-main">
-              <img
-                src="/static/Mercedes.png"
-                alt="Mercedes-Benz C300 Featured Vehicle"
-              />
+              <div class="loader-wrapper">
+                <img
+                  src="{{ url_for('static', filename='Mercedes.png') }}"
+                  alt="Mercedes-Benz C300 Featured Vehicle"
+                  loading="lazy"
+                  onload="this.classList.add('loaded');this.parentElement.classList.add('loaded')"
+                />
+                <span class="spinner"></span>
+              </div>
 
               <div class="featured-overlay">
                 <span class="featured-tag"> Featured Vehicle </span>
@@ -213,10 +226,15 @@
                 "
               >
                 <div class="listing-image">
-                  <img
-                    src="/static/Toyota.png"
-                    alt="Toyota Camry - ₦12,500,000"
-                  />
+                  <div class="loader-wrapper">
+                    <img
+                      src="{{ url_for('static', filename='Toyota.png') }}"
+                      alt="Toyota Camry - ₦12,500,000"
+                      loading="lazy"
+                      onload="this.classList.add('loaded');this.parentElement.classList.add('loaded')"
+                    />
+                    <span class="spinner"></span>
+                  </div>
                 </div>
 
                 <div class="listing-content">
@@ -238,10 +256,16 @@
                 "
               >
                 <div class="listing-image">
-                  <img
-                    src="/static/Honda.png"
-                    alt="Honda Accord - ₦10,800,000"
-                  />
+                  <div class="loader-wrapper">
+                    <img
+                      src="{{ url_for('static', filename='Honda.png') }}"
+                      alt="Honda Accord - ₦10,800,000"
+                      loading="lazy"
+                      onload="this.classList.add('loaded');this.parentElement.classList.add('loaded')"
+                    />
+                    <span class="spinner"></span>
+                  </div>
+                </div>
                 </div>
 
                 <div class="listing-content">
@@ -415,8 +439,17 @@
         <div class="contacts-layout">
           <!-- Sarkin Mota -->
           <article class="sarkinmota-card">
-            <div class="sarkinmota-image">
-              <img src="../static/ChatGPT Image Aug 24, 2026, 03_06_03 PM.png" alt="Sarkin Mota" />
+             <div class="sarkinmota-image">
+               <div class="loader-wrapper">
+                 <img
+                   src="{{ url_for('static', filename='ChatGPT Image Aug 24, 2026, 03_06_03 PM.png') }}"
+                   alt="Sarkin Mota"
+                   loading="lazy"
+                   onload="this.classList.add('loaded');this.parentElement.classList.add('loaded')"
+                 />
+                 <span class="spinner"></span>
+               </div>
+             </div>
             </div>
 
             <div class="sarkinmota-content">
@@ -556,11 +589,44 @@
         }
 
         const video = document.querySelector(".section-video");
+        const videoPlaceholder = document.getElementById("videoPlaceholder");
+
         if (
           video &&
           window.matchMedia("(prefers-reduced-motion: reduce)").matches
         ) {
           video.pause();
+        }
+
+        if (video && videoPlaceholder) {
+          const heroSection = document.querySelector(".hero");
+          const loadVideo = () => {
+            const source = video.querySelector('source[data-src]');
+            if (source) {
+              source.src = source.dataset.src;
+              video.load();
+            }
+            video.play().catch(() => {});
+          };
+
+          video.addEventListener("canplay", () => {
+            videoPlaceholder.style.display = "none";
+            video.style.opacity = "1";
+          });
+
+          if ("IntersectionObserver" in window) {
+            const videoObserver = new IntersectionObserver((entries) => {
+              entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                  loadVideo();
+                  videoObserver.unobserve(entry.target);
+                }
+              });
+            }, { rootMargin: "200px" });
+            videoObserver.observe(heroSection);
+          } else {
+            loadVideo();
+          }
         }
       });
 
