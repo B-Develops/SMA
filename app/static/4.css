@@ -200,11 +200,7 @@ main {
 }
 
 .card:hover {
-  transform: translateY(-4px);
-
-  border-color: var(--border-strong);
-
-  box-shadow: var(--shadow-lg);
+  transform: none;
 }
 
 /* ---------- Card Header ---------- */
@@ -658,6 +654,150 @@ main {
 
 .profile-actions .btn {
   width: 100%;
+}
+
+/* List Cars visual treatment */
+.profile-hero {
+  min-height: 240px;
+  padding: 0;
+  border-radius: 18px;
+  background: rgba(17, 34, 64, 0.7);
+  border-color: rgba(148, 163, 184, 0.13);
+  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.35);
+  isolation: isolate;
+}
+
+.profile-hero::before {
+  background:
+    linear-gradient(rgba(2, 12, 27, 0.45), rgba(2, 12, 27, 0.65)),
+    url("../static/Screenshot 2026-05-31 161247.png") center/cover no-repeat;
+  filter: brightness(0.75) saturate(0.9);
+  z-index: -2;
+}
+
+.profile-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(2, 12, 27, 0.9),
+    rgba(2, 12, 27, 0.45),
+    rgba(2, 12, 27, 0.15)
+  );
+  z-index: -1;
+}
+
+.profile-info {
+  width: 100%;
+  padding: 48px;
+}
+
+.profile-details h1 {
+  font-size: 2.5rem;
+  letter-spacing: -0.5px;
+}
+
+.profile-details p {
+  color: rgba(248, 250, 252, 0.82);
+}
+
+.card {
+  border-radius: 18px;
+  padding: 0;
+  background: linear-gradient(145deg, #11224080, rgba(8, 17, 29, 0.541));
+  border-color: rgba(148, 163, 184, 0.13);
+  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.35);
+}
+
+.card-header {
+  margin-bottom: 0;
+  padding: 28px 30px;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.13);
+}
+
+.card-header h2 {
+  font-size: 22px;
+}
+
+.card-header p,
+.form-help,
+.character-count {
+  font-size: 12px;
+}
+
+.form-section {
+  margin-top: 0;
+  padding: 27px 30px;
+}
+
+.card .form-section + .form-section {
+  margin-top: 0;
+  padding-top: 27px;
+  border-top: 0;
+}
+
+.form-grid {
+  gap: 17px;
+  margin-top: 0;
+}
+
+.form-group {
+  gap: 0.5rem;
+}
+
+.form-group label {
+  color: #cbd5e1;
+  font-size: 14px;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+  padding: 0.8rem 1rem;
+  border-radius: 9px;
+  background: rgba(3, 10, 18, 0.65);
+  border-color: rgba(148, 163, 184, 0.13);
+  font-size: 15px;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+  border-color: rgba(239, 68, 68, 0.55);
+  background: rgba(3, 10, 18, 0.9);
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.07);
+}
+
+.btn-group {
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.btn {
+  border-radius: 9px;
+  padding: 0.8rem 1.5rem;
+  font-size: 14px;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+}
+
+@media (max-width: 768px) {
+  .profile-info {
+    padding: 28px 22px;
+  }
+
+  .profile-hero {
+    display: block;
+  }
+
+  .card-header,
+  .form-section {
+    padding: 22px 18px;
+  }
 }
 /* =====================================================
    7. SETTINGS COMPONENTS

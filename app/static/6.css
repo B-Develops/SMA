@@ -376,12 +376,11 @@ body {
 .listing-workspace {
   display: grid;
 
-  grid-template-columns:
-    minmax(0, 1fr)
-    330px;
+  grid-template-columns: minmax(0, 960px);
 
   gap: 25px;
 
+  justify-content: center;
   align-items: start;
 }
 
@@ -391,6 +390,8 @@ body {
 
 .listing-form-card {
   position: relative;
+
+  width: 100%;
 
   overflow: hidden;
 
@@ -1638,5 +1639,71 @@ body::before {
   .form-submit {
     padding-left: 14px;
     padding-right: 14px;
+  }
+}
+
+/* Improve form readability on larger screens */
+@media screen and (min-width: 601px) {
+  .section-kicker {
+    font-size: 11px;
+  }
+
+  .form-card-header h2 {
+    font-size: 28px;
+  }
+
+  .form-card-header p {
+    font-size: 14px;
+  }
+
+  .form-section-title h3 {
+    font-size: 17px;
+  }
+
+  .form-section-title p,
+  .field small,
+  .textarea-footer,
+  .submit-note span {
+    font-size: 12px;
+  }
+
+  .field label {
+    font-size: 14px;
+  }
+
+  .input-wrapper input,
+  .select-wrapper select,
+  .field textarea {
+    font-size: 15px;
+  }
+
+  .input-wrapper input::placeholder,
+  .field textarea::placeholder {
+    font-size: 15px;
+  }
+
+  .input-suffix,
+  .select-arrow,
+  .upload-content p,
+  .preview-info span,
+  #remove-image {
+    font-size: 12px;
+  }
+
+  .upload-content h4 {
+    font-size: 17px;
+  }
+
+  .upload-meta {
+    font-size: 11px;
+  }
+
+  .preview-info strong {
+    font-size: 14px;
+  }
+
+  .submit-note strong,
+  .submit-button {
+    font-size: 14px;
   }
 }
