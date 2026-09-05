@@ -1,0 +1,14 @@
+User-agent: *
+Allow: /
+Disallow: /auth/
+Disallow: /dashboard
+Disallow: /admin/
+Disallow: /orders/
+Disallow: /payments/
+Disallow: /profiles/messages
+Disallow: /profiles/saved-cars
+Disallow: /profiles/notifications
+Disallow: /settings/
+Disallow: /cars/list
+
+Sitemap: https://www.sarkinmotaautos.com/sitemap.xml

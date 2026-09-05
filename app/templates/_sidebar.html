@@ -1,0 +1,157 @@
+<aside class="sidebar" id="appSidebar">
+  <div class="sidebar-header">
+    <h2 class="men">Menu</h2>
+    <button
+      id="sidebarToggle"
+      class="sidebar-toggle"
+      type="button"
+      aria-label="Toggle Sidebar"
+      aria-expanded="true"
+      aria-controls="appSidebar"
+    >
+      <i data-lucide="panel-left-close"></i>
+    </button>
+  </div>
+
+  <nav class="sidebar-nav" aria-label="Primary navigation">
+    {% if request.endpoint and request.endpoint.startswith('admin.') %}
+    <a
+      href="{{ url_for('admin.dashboard') }}"
+      class="nav-item{% if request.endpoint == 'admin.dashboard' %} active{% endif %}"
+    >
+      <i data-lucide="layout-dashboard"></i><span>Overview</span>
+    </a>
+    <a
+      href="{{ url_for('admin.users') }}"
+      class="nav-item{% if request.endpoint == 'admin.users' %} active{% endif %}"
+    >
+      <i data-lucide="users"></i><span>Users</span>
+    </a>
+    <a
+      href="{{ url_for('admin.listings') }}"
+      class="nav-item{% if request.endpoint == 'admin.listings' %} active{% endif %}"
+    >
+      <i data-lucide="car"></i><span>All Listings</span>
+    </a>
+    <a
+      href="{{ url_for('cars.my_listings') }}"
+      class="nav-item{% if request.endpoint == 'cars.my_listings' %} active{% endif %}"
+    >
+      <i data-lucide="user"></i><span>My Listings</span>
+    </a>
+    <a
+      href="{{ url_for('admin.orders') }}"
+      class="nav-item{% if request.endpoint == 'admin.orders' %} active{% endif %}"
+    >
+      <i data-lucide="shopping-cart"></i><span>Orders</span>
+    </a>
+    <a
+      href="{{ url_for('admin.audit_logs') }}"
+      class="nav-item{% if request.endpoint == 'admin.audit_logs' %} active{% endif %}"
+    >
+      <i data-lucide="file-text"></i><span>Audit Logs</span>
+    </a>
+    <a href="{{ url_for('dashboard') }}" class="nav-item">
+      <i data-lucide="home"></i><span>User Dashboard</span>
+    </a>
+    {% else %}
+    <a
+      href="{{ url_for('dashboard') }}"
+      class="nav-item{% if request.endpoint == 'dashboard' %} active{% endif %}"
+    >
+      <i data-lucide="layout-dashboard"></i><span>Dashboard</span>
+    </a>
+    <a
+      href="{{ url_for('orders.my_orders') }}"
+      class="nav-item{% if request.endpoint == 'orders.my_orders' %} active{% endif %}"
+    >
+      <i data-lucide="shopping-cart"></i><span>My Orders</span>
+    </a>
+    <a
+      href="{{ url_for('profiles.notifications') }}"
+      class="nav-item{% if request.endpoint == 'profiles.notifications' %} active{% endif %}"
+    >
+      <i data-lucide="bell"></i><span>Notifications</span> {% if
+      unread_notifications|default(0) > 0 %}<span class="nav-badge"
+        >{{ unread_notifications }}</span
+      >{% endif %}
+    </a>
+    <a
+      href="{{ url_for('profiles.view_profile') }}"
+      class="nav-item{% if request.endpoint == 'profiles.view_profile' %} active{% endif %}"
+    >
+      <i data-lucide="user"></i><span>Profile</span>
+    </a>
+    <a
+      href="{{ url_for('profiles.help') }}"
+      class="nav-item{% if request.endpoint == 'profiles.help' %} active{% endif %}"
+    >
+      <i data-lucide="circle-help"></i><span>Help</span>
+    </a>
+    {% if current_user.role == 'admin' %}
+    <a href="{{ url_for('admin.dashboard') }}" class="nav-item">
+      <i data-lucide="shield"></i><span>Admin Dashboard</span>
+    </a>
+    {% endif %} {% endif %}
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="user-profile">
+      <div class="user-avatar">
+        {% if current_user.avatar_url %}
+        <img
+          src="{{ url_for('static', filename=current_user.avatar_url) }}"
+          alt="{{ current_user.name or 'Profile' }}"
+        />
+        {% else %}{{ current_user.name[0]|upper }}{% endif %}
+      </div>
+      <div class="user-details">
+        <span class="user-name">{{ current_user.name }}</span>
+        <span class="user-role">{{ current_user.role|capitalize }}</span>
+      </div>
+    </div>
+    <a href="{{ url_for('auth.logout') }}" class="logout-btn">
+      <i data-lucide="log-out"></i><span>Sign Out</span>
+    </a>
+  </div>
+</aside>
+<div class="sidebar-mobile-bar">
+  <button
+    class="menu-btn"
+    id="menuToggle"
+    type="button"
+    aria-label="Open navigation"
+    aria-controls="appSidebar"
+    aria-expanded="false"
+  >
+    <i data-lucide="menu"></i>
+  </button>
+  <span>Sarkin Mota Autos</span>
+</div>
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+<script nonce="{{ csp_nonce() }}">
+  (() => {
+    const sidebar = document.getElementById("appSidebar");
+    const sidebarToggle = document.getElementById("sidebarToggle");
+    const menuToggle = document.getElementById("menuToggle");
+    const overlay = document.getElementById("sidebarOverlay");
+    const setMobileState = (isOpen) => {
+      sidebar.classList.toggle("mobile-open", isOpen);
+      overlay.classList.toggle("show", isOpen);
+      menuToggle.setAttribute("aria-expanded", String(isOpen));
+    };
+    sidebarToggle.addEventListener("click", () => {
+      const collapsed = sidebar.classList.toggle("collapsed");
+      sidebarToggle.setAttribute("aria-expanded", String(!collapsed));
+      sidebarToggle.innerHTML = collapsed
+        ? '<i data-lucide="panel-left-open"></i>'
+        : '<i data-lucide="panel-left-close"></i>';
+      lucide.createIcons();
+    });
+    menuToggle.addEventListener("click", () => setMobileState(true));
+    overlay.addEventListener("click", () => setMobileState(false));
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") setMobileState(false);
+    });
+  })();
+</script>
