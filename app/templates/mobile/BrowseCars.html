@@ -429,14 +429,16 @@
           <div class="car-card-image">
             <span class="car-card-badge {{ car.condition }}">{{ car.condition|capitalize }}</span>
             {% if car.image_url %}
-            <div class="loader-wrapper">
-              <img src="{{ url_for('static', filename=car.image_url) }}" alt="{{ car.year }} {{ car.make }} {{ car.model }}" loading="lazy" onload="this.classList.add('loaded');this.parentElement.classList.add('loaded')" />
-              <span class="spinner"></span>
+            <div class="loader-wrapper loader-wrapper-loading">
+              <img src="{{ url_for('static', filename=car.image_url) }}" alt="{{ car.year }} {{ car.make }} {{ car.model }}" loading="lazy" onload="this.classList.add('loaded');this.parentElement.classList.remove('loader-wrapper-loading');this.parentElement.classList.add('loader-wrapper-loaded')" />
+              <span class="loader-skeleton"></span>
+              <span class="loader-spinner"></span>
             </div>
             {% else %}
-            <div class="loader-wrapper">
-              <img src="{{ url_for('static', filename='Assets/images/' + car.make + '.png') }}" alt="{{ car.year }} {{ car.make }} {{ car.model }}" loading="lazy" onload="this.classList.add('loaded');this.parentElement.classList.add('loaded')" />
-              <span class="spinner"></span>
+            <div class="loader-wrapper loader-wrapper-loading">
+              <img src="{{ url_for('static', filename='Assets/images/' + car.make + '.png') }}" alt="{{ car.year }} {{ car.make }} {{ car.model }}" loading="lazy" onload="this.classList.add('loaded');this.parentElement.classList.remove('loader-wrapper-loading');this.parentElement.classList.add('loader-wrapper-loaded')" />
+              <span class="loader-skeleton"></span>
+              <span class="loader-spinner"></span>
             </div>
             {% endif %}
           </div>

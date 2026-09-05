@@ -18,23 +18,38 @@
 
   var deferredPrompt;
   var installBanner = null;
-  var dismissBtn = null;
+  var installHintDismissed = false;
+
+  var isIOS = /iPhone|iPad|iPod/.test(navigator.userAgent);
+  var isAndroid = /Android/.test(navigator.userAgent);
+  var isMobile = isIOS || isAndroid;
 
   function createInstallBanner() {
     var banner = document.createElement('div');
     banner.id = 'pwa-install-prompt';
     banner.className = 'install-prompt';
-    banner.innerHTML =
-      '<button class="install-dismiss" onclick="this.parentElement.remove()">×</button>' +
-      '<div class="install-title">Install Sarkin Mota Autos</div>' +
-      '<div class="install-desc">Install our app for faster access and offline browsing.</div>' +
-      '<button class="install-btn" onclick="handleInstall()">Install</button>' +
-      '<button class="install-btn secondary" onclick="this.parentElement.parentElement.remove()">Not now</button>';
+
+    if (isMobile) {
+      banner.innerHTML =
+        '<button class="install-dismiss" onclick="this.parentElement.remove()">×</button>' +
+        '<div class="install-title">Add to Home Screen</div>' +
+        '<div class="install-desc">Tap the share button below, then select "Add to Home Screen".</div>' +
+        '<button class="install-btn" onclick="window.location.href=\'/#install-instructions\'">Show Instructions</button>' +
+        '<button class="install-btn secondary" onclick="this.parentElement.remove()">Got it</button>';
+    } else {
+      banner.innerHTML =
+        '<button class="install-dismiss" onclick="this.parentElement.remove()">×</button>' +
+        '<div class="install-title">Install Sarkin Mota Autos</div>' +
+        '<div class="install-desc">Install our app for faster access and offline browsing.</div>' +
+        '<button class="install-btn" onclick="handlePWAInstall()">Install</button>' +
+        '<button class="install-btn secondary" onclick="this.parentElement.remove()">Not now</button>';
+    }
+
     document.body.appendChild(banner);
     return banner;
   }
 
-  window.handleInstall = function () {
+  window.handlePWAInstall = function () {
     if (deferredPrompt) {
       deferredPrompt.prompt();
       deferredPrompt.userChoice.then(function (choiceResult) {
@@ -47,12 +62,30 @@
     }
   };
 
+  function showInstallHint() {
+    if (installBanner || installHintDismissed) return;
+    installBanner = createInstallBanner();
+    setTimeout(function () {
+      if (installBanner && installBanner.parentNode) {
+        installBanner.classList.add('visible');
+      }
+    }, 100);
+  }
+
+  function dismissHint() {
+    installHintDismissed = true;
+    if (installBanner) installBanner.remove();
+  }
+
+  if (isMobile) {
+    setTimeout(showInstallHint, 3000);
+  }
+
   window.addEventListener('beforeinstallprompt', function (e) {
     e.preventDefault();
     deferredPrompt = e;
 
     if (installBanner) return;
-
     installBanner = createInstallBanner();
     setTimeout(function () {
       if (installBanner && installBanner.parentNode) {
@@ -62,36 +95,47 @@
   });
 
   function initImageLoaders() {
-    var images = document.querySelectorAll('img[data-src]:not(.loaded)');
+    var wrappers = document.querySelectorAll('.loader-wrapper.loader-wrapper-loading');
+    if (!wrappers.length) return;
+
     var observer = new IntersectionObserver(function (entries, obs) {
       entries.forEach(function (entry) {
         if (entry.isIntersecting) {
-          var img = entry.target;
-          var wrapper = img.closest('.loader-wrapper');
-          if (wrapper) wrapper.classList.add('loaded');
-          img.src = img.getAttribute('data-src') || img.src;
-          img.classList.add('loaded');
-          img.removeAttribute('data-src');
-          obs.unobserve(img);
+          var wrapper = entry.target;
+          var img = wrapper.querySelector('img');
+          if (img) {
+            if (img.complete) {
+              wrapper.classList.remove('loader-wrapper-loading');
+              wrapper.classList.add('loader-wrapper-loaded');
+              img.classList.add('loaded');
+            } else {
+              img.addEventListener('load', function () {
+                wrapper.classList.remove('loader-wrapper-loading');
+                wrapper.classList.add('loader-wrapper-loaded');
+                img.classList.add('loaded');
+              });
+            }
+          }
+          obs.unobserve(wrapper);
         }
       });
     }, { rootMargin: '100px' });
 
-    images.forEach(function (img) {
-      observer.observe(img);
-    });
-
-    var loadedImages = document.querySelectorAll('img:not([data-src])');
-    loadedImages.forEach(function (img) {
-      var wrapper = img.closest('.loader-wrapper');
-      if (wrapper && img.complete) {
-        wrapper.classList.add('loaded');
-        img.classList.add('loaded');
-      } else if (wrapper) {
-        img.addEventListener('load', function () {
-          wrapper.classList.add('loaded');
+    wrappers.forEach(function (wrapper) {
+      var img = wrapper.querySelector('img');
+      if (img) {
+        if (img.complete) {
+          wrapper.classList.remove('loader-wrapper-loading');
+          wrapper.classList.add('loader-wrapper-loaded');
           img.classList.add('loaded');
-        });
+        } else {
+          img.addEventListener('load', function () {
+            wrapper.classList.remove('loader-wrapper-loading');
+            wrapper.classList.add('loader-wrapper-loaded');
+            img.classList.add('loaded');
+          });
+          observer.observe(wrapper);
+        }
       }
     });
   }
