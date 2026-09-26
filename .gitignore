@@ -16,3 +16,6 @@ venv/
 .DS_Store
 instance/
 uploads/
+.flaskenv
+logs/
+.secret_key

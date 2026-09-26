@@ -1,12 +1,14 @@
 # init_db.py
 import os
-from app import app, db, bcrypt
+from app import create_app, db, bcrypt
 from app.models import User, Order, Car, Payment, SavedCar, Notification, NotificationSettings, AdminActionLog
+
+app = create_app()
 
 with app.app_context():
     db.create_all()
     print("Database tables created!")
-    
+
     if os.environ.get("CREATE_TEST_USER", "False") == "True":
         existing_user = User.query.filter_by(email='test@example.com').first()
         if not existing_user:

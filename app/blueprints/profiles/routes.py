@@ -4,8 +4,15 @@ from ...models import User, Car, SavedCar, Notification, NotificationSettings, O
 from ... import db
 from datetime import datetime
 import os
+import magic
+import time
 from werkzeug.utils import secure_filename
 from . import profiles_bp
+
+AVATAR_ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "gif", "webp"}
+AVATAR_ALLOWED_MIME_TYPES = {
+    'image/png', 'image/jpeg', 'image/gif', 'image/webp'
+}
 
 @profiles_bp.route('/profile')
 @login_required
@@ -39,7 +46,31 @@ def edit_profile():
         
         avatar = request.files.get('avatar')
         if avatar and avatar.filename:
-            filename = secure_filename(avatar.filename)
+            # Mirror the validation the car-photo upload already performs.
+            # Without it, an attacker can upload evil.html and have it served
+            # from this origin via url_for('static', ...).
+            ext = (avatar.filename.rsplit('.', 1)[1].lower()
+                   if '.' in avatar.filename else '')
+            if ext not in AVATAR_ALLOWED_EXTENSIONS:
+                flash('Please upload a PNG, JPG, GIF or WEBP image.', 'error')
+                return redirect(url_for('profiles.edit_profile'))
+
+            try:
+                avatar.stream.seek(0)
+                head = avatar.stream.read(2048)
+                avatar.stream.seek(0)
+                mime_type = magic.from_buffer(head, mime=True)
+            except Exception:
+                mime_type = None
+
+            if mime_type not in AVATAR_ALLOWED_MIME_TYPES:
+                flash('That file is not a valid image.', 'error')
+                return redirect(url_for('profiles.edit_profile'))
+
+            # Prefix with the user id and a timestamp so uploads cannot
+            # overwrite one another across accounts.
+            filename = (f"avatar_{current_user.id}_{int(time.time())}_"
+                        f"{secure_filename(avatar.filename)}")
             upload_dir = os.path.join(current_app.root_path, 'static', 'uploads')
             os.makedirs(upload_dir, exist_ok=True)
             filepath = os.path.join(upload_dir, filename)
@@ -204,3 +235,15 @@ def about():
 @profiles_bp.route('/help')
 def help():
     return render_template('dashboard/Help.html')
+
+@profiles_bp.route('/privacy')
+def privacy():
+    return render_template('Privacy.html')
+
+@profiles_bp.route('/terms')
+def terms():
+    return render_template('Terms.html')
+
+@profiles_bp.route('/cookie')
+def cookie():
+    return render_template('Cookie.html')

@@ -65,6 +65,46 @@ def _get_or_create_secret_key():
     return key
 
 
+def _configure_upload_storage(app):
+    """Point ``app/static/uploads`` at a persistent disk when UPLOAD_DIR is set.
+
+    The production host has an ephemeral filesystem, so user uploads written
+    into the app directory are destroyed on every deploy. Rather than rewriting
+    every ``url_for('static', filename=...)`` call in the templates, we symlink
+    the static uploads directory at the mounted disk. Reads and writes both
+    follow the symlink, so existing code keeps working unchanged.
+
+    This must run before the blueprints are imported, because cars/routes.py
+    creates the real ``app/static/uploads`` directory as a side effect at import
+    time.
+    """
+    upload_dir = os.environ.get("UPLOAD_DIR")
+    if not upload_dir:
+        return
+
+    os.makedirs(upload_dir, exist_ok=True)
+    link_path = os.path.join(app.static_folder, "uploads")
+
+    try:
+        if os.path.islink(link_path):
+            # Already a symlink; only recreate it if it points somewhere else.
+            if os.path.realpath(link_path) != os.path.realpath(upload_dir):
+                os.remove(link_path)
+                os.symlink(upload_dir, link_path)
+        elif os.path.isdir(link_path):
+            # An empty leftover directory from the image build; replace it.
+            if not os.listdir(link_path):
+                os.rmdir(link_path)
+                os.symlink(upload_dir, link_path)
+        else:
+            os.symlink(upload_dir, link_path)
+    except OSError as exc:
+        app.logger.error(
+            "Could not link static uploads to %s: %s. Uploads will not persist "
+            "across deploys.", upload_dir, exc
+        )
+
+
 def get_time_ago(time_diff):
     """Convert a timedelta object to a human-readable 'time ago' string."""
     total_seconds = int(time_diff.total_seconds())
@@ -89,7 +129,20 @@ def get_time_ago(time_diff):
 def create_app(config_name=None):
     """Application factory function."""
     app = Flask(__name__)
-    
+
+    # The platform terminates TLS and forwards plain HTTP over its private
+    # network. Without ProxyFix, Flask considers every request insecure, so
+    # Talisman/FORCE_HTTPS 301-redirects to https:// forever (redirect loop).
+    # Must be applied before RequestLoggingMiddleware so logs record the real
+    # client IP rather than the proxy's.
+    from werkzeug.middleware.proxy_fix import ProxyFix
+    app.wsgi_app = ProxyFix(
+        app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_prefix=1
+    )
+
+    # Must run before the blueprint imports below.
+    _configure_upload_storage(app)
+
     # Configuration
     app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY") or _get_or_create_secret_key()
     app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get(
@@ -97,7 +150,7 @@ def create_app(config_name=None):
         "sqlite:///database.db"
     )
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-    app.config["DEBUG"] = os.environ.get("FLASK_DEBUG", "True") == "True"
+    app.config["DEBUG"] = os.environ.get("FLASK_DEBUG", "False") == "True"
     engine_options = {"pool_pre_ping": True, "pool_recycle": 3600}
     db_url = app.config["SQLALCHEMY_DATABASE_URI"]
     if db_url and not db_url.startswith("sqlite"):
@@ -355,10 +408,10 @@ def create_app(config_name=None):
             r.ping()
             status["checks"]["cache"] = {"status": "connected"}
         except Exception:
-            status["checks"]["cache"] = {"status": "unavailable"}
-            if status["status"] == "healthy":
-                status["status"] = "degraded"
-                overall_code = 503
+            # Redis is optional: caching falls back to in-process storage.
+            # Do not fail the health check when it is absent, otherwise the
+            # platform's health probe marks the service down permanently.
+            status["checks"]["cache"] = {"status": "not_configured"}
 
         metrics.gauge("health.status", 1 if status["status"] == "healthy" else 0)
 
@@ -419,5 +472,17 @@ def create_app(config_name=None):
     @app.shell_context_processor
     def make_shell_context():
         return {'db': db}
+
+    @app.cli.command("promote-admin")
+    def promote_admin():
+        """Promote a user to admin: flask promote-admin you@example.com"""
+        email = input("Email: ").strip().lower()
+        user = User.query.filter_by(email=email).first()
+        if not user:
+            print(f"No user found with email: {email}")
+            return
+        user.role = "admin"
+        db.session.commit()
+        print(f"{email} is now an admin.")
 
     return app
