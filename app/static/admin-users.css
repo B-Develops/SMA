@@ -1,27 +1,25 @@
-﻿/* ==========================================================
+/* ==========================================================
    SARKIN MOTA AUTOS
    ADMIN — USERS
 ========================================================== */
 
 :root {
-  --bg-primary: #071426;
-  --bg-secondary: #020b18;
+  --bg-primary: #1a1a1a;
+  --bg-secondary: #0d0d0d;
 
-  --panel: rgba(12, 31, 57, 0.62);
-  --panel-light: rgba(18, 40, 70, 0.5);
+  --panel: rgba(26, 26, 26, 0.62);
+  --panel-light: rgba(42, 42, 42, 0.5);
 
   --text-primary: #f5f7fb;
-  --text-secondary: #a7b4c7;
-  --text-muted: #738299;
+  --text-secondary: #B3B3B3;
+  --text-muted: #808080;
 
-  --red: #e53e3e;
-  --red-light: #fc8181;
-
-  --gold: #d69e2e;
+--gold: #d69e2e;
   --gold-light: #f0c65a;
+  --gold-soft: rgba(214, 158, 46, 0.1);
 
   --green: #48bb78;
-  --blue: #5b8def;
+  --grey: #888888;
 
   --border: rgba(255, 255, 255, 0.08);
   --border-soft: rgba(255, 255, 255, 0.055);
@@ -54,13 +52,13 @@ body {
   color: var(--text-primary);
 
   background:
-    radial-gradient(circle at 10% 0%, rgba(20, 55, 100, 0.28), transparent 35%),
+    radial-gradient(circle at 10% 0%, rgba(51, 51, 51, 0.28), transparent 35%),
     radial-gradient(
       circle at 90% 100%,
       rgba(214, 158, 46, 0.06),
       transparent 30%
     ),
-    linear-gradient(145deg, #071426, #020b18);
+    linear-gradient(145deg, #131313, #0A0A0A);
 
   overflow-x: hidden;
 }
@@ -78,7 +76,7 @@ body::before {
   z-index: -1;
 
   background:
-    linear-gradient(rgba(5, 18, 35, 0.72), rgba(2, 10, 22, 0.88)),
+    linear-gradient(rgba(16, 16, 16, 0.72), rgba(9, 9, 9, 0.88)),
     url("../static/login-bg.png");
 
   background-size: cover;
@@ -102,7 +100,7 @@ body::before {
 
 ::-webkit-scrollbar-thumb {
   background: rgba(255, 255, 255, 0.13);
-  border-radius: 20px;
+  border-radius: 5px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
@@ -123,9 +121,9 @@ body::before {
 
   padding: 10px 16px;
 
-  border-radius: 8px;
+  border-radius: 5px;
 
-  background: var(--red);
+  background: var(--gold);
   color: #fff;
 
   text-decoration: none;
@@ -153,9 +151,9 @@ body::before {
   padding: 30px;
 
   border: 1px solid rgba(255, 255, 255, 0.055);
-  border-radius: 24px;
+  border-radius: 5px;
 
-  background: rgba(7, 20, 38, 0.34);
+  background: rgba(19, 19, 19, 0.34);
 
   backdrop-filter: blur(18px) saturate(120%);
   -webkit-backdrop-filter: blur(18px) saturate(120%);
@@ -223,10 +221,10 @@ body::before {
 
   padding: 7px 11px;
 
-  border: 1px solid rgba(214, 158, 46, 0.18);
+  border: 1px solid rgba(128, 128, 128, 0.18);
   border-radius: 999px;
 
-  background: rgba(214, 158, 46, 0.06);
+  background: rgba(128, 128, 128, 0.06);
 
   color: var(--gold-light);
 
@@ -292,7 +290,7 @@ body::before {
 
   border: 1px solid var(--border);
 
-  border-radius: 14px;
+  border-radius: 5px;
 
   background: rgba(255, 255, 255, 0.025);
 
@@ -344,12 +342,12 @@ body::before {
 
   border: 1px solid var(--border);
 
-  border-radius: var(--radius);
+  border-radius: 5px;
 
   background: linear-gradient(
     145deg,
-    rgba(17, 39, 70, 0.58),
-    rgba(8, 23, 44, 0.55)
+    rgba(37, 37, 37, 0.58),
+    rgba(21, 21, 21, 0.55)
   );
 
   backdrop-filter: blur(16px);
@@ -377,7 +375,7 @@ body::before {
   align-items: center;
   justify-content: center;
 
-  border-radius: 13px;
+  border-radius: 5px;
 
   background: rgba(255, 255, 255, 0.045);
 }
@@ -388,21 +386,21 @@ body::before {
 }
 
 .users-icon {
-  color: var(--red-light);
-
-  background: rgba(229, 62, 62, 0.09);
-}
-
-.admin-icon {
   color: var(--gold-light);
 
   background: rgba(214, 158, 46, 0.09);
 }
 
-.listing-icon {
-  color: #79a7ff;
+.admin-icon {
+  color: var(--gold-light);
 
-  background: rgba(91, 141, 239, 0.09);
+  background: rgba(128, 128, 128, 0.09);
+}
+
+.listing-icon {
+  color: #A4A4A4;
+
+  background: rgba(137, 137, 137, 0.09);
 }
 
 .stat-info {
@@ -459,9 +457,9 @@ body::before {
 
   border: 1px solid var(--border);
 
-  border-radius: var(--radius);
+  border-radius: 5px;
 
-  background: rgba(10, 27, 50, 0.52);
+  background: rgba(25, 25, 25, 0.52);
 
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
@@ -488,7 +486,7 @@ body::before {
 
   border: 1px solid var(--border);
 
-  border-radius: 11px;
+  border-radius: 5px;
 
   background: rgba(255, 255, 255, 0.035);
 
@@ -505,9 +503,9 @@ body::before {
 }
 
 .search-box:focus-within {
-  border-color: rgba(229, 62, 62, 0.55);
+  border-color: rgba(214, 158, 46, 0.55);
 
-  box-shadow: 0 0 0 3px rgba(229, 62, 62, 0.08);
+  box-shadow: 0 0 0 3px rgba(214, 158, 46, 0.08);
 }
 
 .search-box input {
@@ -558,7 +556,7 @@ body::before {
 
   border: 1px solid var(--border);
 
-  border-radius: 11px;
+  border-radius: 5px;
 
   outline: 0;
 
@@ -573,13 +571,13 @@ body::before {
 }
 
 .filter-control select:focus {
-  border-color: rgba(229, 62, 62, 0.55);
+  border-color: rgba(214, 158, 46, 0.55);
 
-  box-shadow: 0 0 0 3px rgba(229, 62, 62, 0.08);
+  box-shadow: 0 0 0 3px rgba(214, 158, 46, 0.08);
 }
 
 .filter-control option {
-  background: #10233f;
+  background: #212121;
   color: #fff;
 }
 
@@ -592,9 +590,9 @@ body::before {
 
   border: 1px solid var(--border);
 
-  border-radius: 20px;
+  border-radius: 5px;
 
-  background: rgba(9, 25, 46, 0.58);
+  background: rgba(23, 23, 23, 0.58);
 
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
@@ -763,12 +761,12 @@ body::before {
   align-items: center;
   justify-content: center;
 
-  border-radius: 12px;
+  border-radius: 5px;
 
   background: linear-gradient(
     135deg,
-    rgba(229, 62, 62, 0.95),
-    rgba(148, 30, 30, 0.95)
+    rgba(214, 158, 46, 0.95),
+    rgba(184, 134, 11, 0.95)
   );
 
   color: #fff;
@@ -776,7 +774,7 @@ body::before {
   font-size: 0.9rem;
   font-weight: 800;
 
-  box-shadow: 0 7px 18px rgba(229, 62, 62, 0.16);
+  box-shadow: 0 7px 18px rgba(214, 158, 46, 0.16);
 }
 
 .user-details {
@@ -851,21 +849,21 @@ body::before {
 }
 
 .badge-admin {
-  border: 1px solid rgba(229, 62, 62, 0.2);
+  border: 1px solid rgba(214, 158, 46, 0.2);
 
-  background: rgba(229, 62, 62, 0.09);
+  background: rgba(214, 158, 46, 0.09);
 
-  color: var(--red-light);
+  color: var(--gold-light);
 }
 
 .badge-admin .badge-dot {
-  background: var(--red-light);
+  background: var(--gold-light);
 }
 
 .badge-user {
-  border: 1px solid rgba(214, 158, 46, 0.2);
+  border: 1px solid rgba(128, 128, 128, 0.2);
 
-  background: rgba(214, 158, 46, 0.08);
+  background: rgba(128, 128, 128, 0.08);
 
   color: var(--gold-light);
 }
@@ -889,11 +887,11 @@ body::before {
 
   padding: 0 8px;
 
-  border-radius: 8px;
+  border-radius: 5px;
 
-  background: rgba(91, 141, 239, 0.08);
+  background: rgba(137, 137, 137, 0.08);
 
-  color: #8db2ff;
+  color: #B0B0B0;
 
   font-size: 0.72rem;
   font-weight: 700;
@@ -931,7 +929,7 @@ body::before {
 
   border: 1px solid transparent;
 
-  border-radius: 9px;
+  border-radius: 5px;
 
   font-family: inherit;
 
@@ -955,17 +953,17 @@ body::before {
 }
 
 .btn-danger {
-  border-color: rgba(229, 62, 62, 0.2);
+  border-color: rgba(214, 158, 46, 0.2);
 
-  background: rgba(229, 62, 62, 0.08);
+  background: rgba(214, 158, 46, 0.08);
 
-  color: var(--red-light);
+  color: var(--gold-light);
 }
 
 .btn-danger:hover {
-  border-color: rgba(229, 62, 62, 0.4);
+  border-color: rgba(214, 158, 46, 0.4);
 
-  background: rgba(229, 62, 62, 0.16);
+  background: rgba(214, 158, 46, 0.16);
 
   transform: translateY(-1px);
 }
@@ -1028,7 +1026,7 @@ body::before {
 
   margin-bottom: 14px;
 
-  border-radius: 15px;
+  border-radius: 5px;
 
   background: rgba(255, 255, 255, 0.04);
 
@@ -1081,7 +1079,7 @@ body::before {
 
   border: 1px solid var(--border);
 
-  border-radius: 10px;
+  border-radius: 5px;
 
   background: rgba(255, 255, 255, 0.025);
 
@@ -1206,7 +1204,7 @@ body::before {
   .page-container {
     padding: 16px;
 
-    border-radius: 18px;
+    border-radius: 5px;
   }
 
   .header-top {

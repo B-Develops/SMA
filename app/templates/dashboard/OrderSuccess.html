@@ -10,12 +10,12 @@
     />
     <style>
       :root {
-        --bg-main: #0a192f;
-        --bg-card: #112240;
-        --bg-header: #020c1b;
+        --bg-main: #1a1a1a;
+        --bg-card: #2a2a2a;
+        --bg-header: #0d0d0d;
         --text-main: #f7fafc;
-        --text-muted: #a0aec0;
-        --accent-red: #e53e3e;
+        --text-muted: #ACACAC;
+--accent-gold: #d69e2e;
         --accent-gold: #d69e2e;
         --accent-green: #48bb78;
         --border-soft: rgba(255, 255, 255, 0.08);
@@ -32,7 +32,7 @@
       body {
         margin: 0;
         font-family: "Inter", sans-serif;
-        background-color: #0a192f;
+        background-color: #1a1a1a;
         color: var(--text-main);
         line-height: 1.5;
       }
@@ -42,7 +42,7 @@
         position: fixed;
         inset: 0;
         background-image:
-          linear-gradient(rgba(9, 23, 44, 0.85), rgba(2, 12, 27, 0.9)),
+          linear-gradient(rgba(20, 20, 20, 0.85), rgba(13, 13, 13, 0.9)),
           url("https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1600&q=80");
         background-size: cover;
         background-position: center;
@@ -127,7 +127,7 @@
       }
 
       .nav-search button:hover {
-        background: #c53030;
+        background: #b8860b;
       }
 
       .nav-search input::placeholder {
@@ -151,7 +151,7 @@
         border-radius: 6px;
         font-weight: 600;
         border: 1px solid var(--border-soft);
-        color: #808b9aab;
+        color: #8A8A8Aab;
       }
 
       .btn-auth:hover {
@@ -162,14 +162,14 @@
       }
 
       .btn-signup {
-        background: var(--accent-red);
-        border-color: var(--accent-red);
+        background: var(--accent-gold);
+        border-color: var(--accent-gold);
         color: #fff;
       }
 
       .btn-signup:hover {
-        background: #c42727;
-        border-color: #c53030;
+background: #b8860b;
+        border-color: #b8860b;
         transition: all 0.3s ease;
       }
 
@@ -180,7 +180,7 @@
       }
 
       .hero-card {
-        background: rgba(17, 34, 64, 0.72);
+        background: rgba(33, 33, 33, 0.72);
         border: 1px solid var(--border-soft);
         border-radius: 16px;
         padding: 2rem;
@@ -237,7 +237,7 @@
       }
 
       .panel {
-        background: rgba(17, 34, 64, 0.72);
+        background: rgba(33, 33, 33, 0.72);
         border: 1px solid var(--border-soft);
         border-radius: 16px;
         padding: 1.25rem;
@@ -249,7 +249,7 @@
         aspect-ratio: 16 / 9;
         border-radius: 12px;
         overflow: hidden;
-        background: #1a2b4a;
+        background: #2A2A2A;
         margin-bottom: 1rem;
       }
 
@@ -331,8 +331,8 @@
         margin-top: 1rem;
         padding: 0.95rem 1rem;
         border-radius: 10px;
-        background: rgba(100, 200, 255, 0.08);
-        border: 1px solid rgba(100, 200, 255, 0.18);
+        background: rgba(150, 150, 150, 0.08);
+        border: 1px solid rgba(150, 150, 150, 0.18);
         color: var(--text-muted);
         font-size: 0.95rem;
       }
@@ -367,7 +367,7 @@
       }
 
       .btn-primary:hover {
-        background: #c53030;
+        background: #b8860b;
       }
 
       .btn-secondary {
@@ -381,7 +381,7 @@
       }
 
       footer {
-        background-color: #020c1b;
+        background-color: #0d0d0d;
         padding: 2rem 2.25rem;
         font-size: 0.85rem;
         color: var(--text-muted);
@@ -440,7 +440,7 @@
         height: 28px;
         border-radius: 50%;
         border: 2px solid rgba(255, 255, 255, 0.12);
-        background: rgba(2, 12, 27, 0.6);
+        background: rgba(11, 11, 11, 0.6);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -460,13 +460,13 @@
         background: var(--accent-red);
         border-color: var(--accent-red);
         color: #fff;
-        box-shadow: 0 0 0 4px rgba(229, 62, 62, 0.2);
+        box-shadow: 0 0 0 4px rgba(214, 158, 46, 0.2);
       }
 
       .timeline-step.cancelled-step .timeline-dot {
-        background: rgba(229, 62, 62, 0.15);
-        border-color: #fc8181;
-        color: #fc8181;
+        background: rgba(214, 158, 46, 0.15);
+        border-color: #f0c65a;
+        color: #f0c65a;
       }
 
       .timeline-label {
@@ -514,7 +514,7 @@
           left: calc(50% + 11px);
           right: calc(-50% + 11px);
         }
-      }    .skip-link{position:absolute;top:-40px;left:0;background:#e53e3e;color:white;padding:8px 16px;z-index:100;text-decoration:none;font-weight:600;transition:top .3s}
+      }    .skip-link{position:absolute;top:-40px;left:0;background:#d69e2e;color:white;padding:8px 16px;z-index:100;text-decoration:none;font-weight:600;transition:top .3s}
     .skip-link:focus{top:0}
 
     </style>
@@ -575,11 +575,11 @@
           {% if order.status == 'completed' %}
           <div class="hero-badge">✓ Order completed</div>
           {% elif order.status == 'confirmed' %}
-          <div class="hero-badge" style="background: rgba(66, 153, 225, 0.16); color: #90cdf4;">⏳ Awaiting payment</div>
+          <div class="hero-badge" style="background: rgba(140, 140, 140, 0.16); color: #C3C3C3;">⏳ Awaiting payment</div>
           {% elif order.status == 'cancelled' %}
-          <div class="hero-badge" style="background: rgba(229, 62, 62, 0.16); color: #fc8181;">✕ Order cancelled</div>
+          <div class="hero-badge" style="background: rgba(214, 158, 46, 0.16); color: #f0c65a;">✕ Order cancelled</div>
           {% else %}
-          <div class="hero-badge" style="background: rgba(214, 158, 46, 0.16); color: #f6ad55;">📋 Order placed</div>
+          <div class="hero-badge" style="background: rgba(128, 128, 128, 0.16); color: #f6ad55;">📋 Order placed</div>
           {% endif %}
           <h1>
             {% if order.status == 'completed' %}Thank you for your purchase
@@ -670,11 +670,11 @@
           </div>
 
           {% if order.status == 'pending' %}
-          <div class="notice" style="background: rgba(214, 158, 46, 0.08); border-color: rgba(214, 158, 46, 0.25); color: var(--accent-gold);">
+          <div class="notice" style="background: rgba(128, 128, 128, 0.08); border-color: rgba(128, 128, 128, 0.25); color: var(--accent-gold);">
             The seller has 24 hours to review and accept your offer. You will receive an email and notification once there is an update.
           </div>
           {% elif order.status == 'confirmed' %}
-          <div class="notice" style="background: rgba(66, 153, 225, 0.08); border-color: rgba(66, 153, 225, 0.25); color: #90cdf4;">
+          <div class="notice" style="background: rgba(140, 140, 140, 0.08); border-color: rgba(140, 140, 140, 0.25); color: #C3C3C3;">
             Your order has been accepted. Payment is required to secure the vehicle. Use the button below to proceed to checkout.
           </div>
           {% elif order.status == 'completed' %}
@@ -682,7 +682,7 @@
             This order is complete. Thank you for buying through Sarkin Mota Autos.
           </div>
           {% elif order.status == 'cancelled' %}
-          <div class="notice" style="background: rgba(229, 62, 62, 0.08); border-color: rgba(229, 62, 62, 0.25); color: #fc8181;">
+          <div class="notice" style="background: rgba(214, 158, 46, 0.08); border-color: rgba(214, 158, 46, 0.25); color: #f0c65a;">
             This order was cancelled. You can place a new order for this or another vehicle at any time.
           </div>
           {% endif %}

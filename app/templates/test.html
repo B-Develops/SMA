@@ -28,22 +28,22 @@
       }
 
       :root {
-        --color-bg-primary: #0a192f; /* Deep indigo */
-        --color-bg-secondary: #020c1b;
-        --color-accent-red: #e53e3e; /* Crimson red */
-        --color-accent-gold: #d69e2e; /* Subtle gold */
+        --color-bg-primary: #1a1a1a; /* Deep grey */
+        --color-bg-secondary: #0d0d0d;
+        --color-accent-red: #d69e2e; /* Crimson red */
+        --color-accent-gold: #666; /* Subtle gold */
         --color-text-primary: #f7fafc;
-        --color-text-secondary: #a0aec0;
-        --color-card-bg: #112240;
+        --color-text-secondary: #ACACAC;
+        --color-card-bg: #2a2a2a;
         --max-width: 1200px;
         --transition-base: 0.3s ease;
-        --bg-main: #0a192f;
-        --bg-card: #112240;
-        --bg-header: #020c1b;
+        --bg-main: #1a1a1a;
+        --bg-card: #2a2a2a;
+        --bg-header: #0d0d0d;
         --text-main: #f7fafc;
-        --text-muted: #a0aec0;
-        --accent-red: #e53e3e;
-        --accent-gold: #d69e2e;
+        --text-muted: #ACACAC;
+        --accent-red: #d69e2e;
+        --accent-gold: #666;
         --border-soft: rgba(255, 255, 255, 0.08);
       }
 
@@ -111,7 +111,7 @@
       }
 
       #navcon {
-        background: rgba(10, 25, 47, 0.534);
+        background: rgba(23, 23, 23, 0.534);
 
         backdrop-filter: blur(16px) saturate(160%);
         -webkit-backdrop-filter: blur(16px) saturate(160%);
@@ -136,7 +136,7 @@
        HEADER & NAVIGATION
        ===================== */
       header {
-        background-color: rgba(10, 25, 47, 0);
+        background-color: rgba(23, 23, 23, 0);
         position: sticky;
         top: 0;
         z-index: 999;
@@ -203,7 +203,7 @@
       .hero {
         position: relative;
         background:
-          linear-gradient(rgba(10, 25, 47, 0.62), rgba(10, 25, 47, 0.82)),
+          linear-gradient(rgba(23, 23, 23, 0.62), rgba(23, 23, 23, 0.82)),
           url("../static/photo-1503376780353-7e6692767b70.avif");
 
         background-size: cover;
@@ -305,7 +305,7 @@
 
       .feature-item {
         padding: 2rem 1.5rem;
-        background: #0a192f54;
+        background: #1a1a1a54;
         border-radius: 12px;
         border: 1px solid var(--border-soft);
       }
@@ -385,8 +385,8 @@
         inset: 0;
         background: linear-gradient(
           to bottom,
-          rgba(10, 25, 47, 0) 0%,
-          rgba(10, 25, 47, 0.4) 100%
+          rgba(23, 23, 23, 0) 0%,
+          rgba(23, 23, 23, 0.4) 100%
         );
       }
 
@@ -462,7 +462,7 @@
        FOOTER
        ===================== */
       footer {
-        background: rgba(2, 12, 27, 0.85);
+        background: rgba(11, 11, 11, 0.85);
         backdrop-filter: blur(10px);
         padding: 2rem 0;
         font-size: 0.9rem;
@@ -552,7 +552,7 @@
 
       .navbar-search-form button:hover {
         transform: translateY(-1px);
-        box-shadow: 0 4px 14px rgba(229, 62, 62, 0.25);
+        box-shadow: 0 4px 14px rgba(214, 158, 46, 0.25);
       }
 
       .nav-links {
@@ -601,16 +601,16 @@
       }
 
       .btn-signup {
-        background: linear-gradient(135deg, #e53e3e, #c53030);
+        background: linear-gradient(135deg, #d69e2e, #b8860b);
         border: none !important;
         color: #fff !important;
-        box-shadow: 0 4px 14px rgba(229, 62, 62, 0.25);
+        box-shadow: 0 4px 14px rgba(214, 158, 46, 0.25);
       }
 
       .btn-signup:hover {
         background: linear-gradient(135deg, #f05050, #d63030) !important;
         transform: translateY(-1px);
-        box-shadow: 0 6px 18px rgba(229, 62, 62, 0.35) !important;
+        box-shadow: 0 6px 18px rgba(214, 158, 46, 0.35) !important;
       }
 
       /* Mobile */
@@ -970,7 +970,7 @@
         height: 48px;
         margin: 0 auto 1.2rem;
         border-radius: 50%;
-        background: rgba(214, 158, 46, 0.12);
+        background: rgba(128, 128, 128, 0.12);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -1020,7 +1020,7 @@
         z-index: 999;
       }
       #navcon {
-        background: rgba(10, 25, 47, 0.534);
+        background: rgba(23, 23, 23, 0.534);
 
         backdrop-filter: blur(16px) saturate(160%);
         -webkit-backdrop-filter: blur(16px) saturate(160%);
@@ -1037,11 +1037,11 @@
         padding: 10rem 0 7rem;
       }
       .btn-signup {
-        background: linear-gradient(135deg, #e53e3e, #c53030);
+        background: linear-gradient(135deg, #d69e2e, #b8860b);
 
         border: none;
 
-        box-shadow: 0 4px 14px rgba(229, 62, 62, 0.25);
+        box-shadow: 0 4px 14px rgba(214, 158, 46, 0.25);
       }
       .btn-auth {
         padding: 0.5rem 1rem;
@@ -1066,7 +1066,7 @@
 
         color: var(--color-text-primary);
 
-        background: #020c1b;
+        background: #0d0d0d;
 
         overflow-x: hidden;
       }
@@ -1079,8 +1079,8 @@
         inset: 0;
 
         background: linear-gradient(
-          rgba(2, 12, 27, 0.45),
-          rgba(2, 12, 27, 0.7)
+          rgba(11, 11, 11, 0.45),
+          rgba(11, 11, 11, 0.7)
         );
 
         z-index: -1;
@@ -1196,7 +1196,7 @@
 
         padding: 40px;
 
-        background: linear-gradient(transparent, rgba(2, 12, 27, 0.95));
+        background: linear-gradient(transparent, rgba(11, 11, 11, 0.95));
       }
 
       .featured-tag {
@@ -1206,9 +1206,9 @@
 
         border-radius: 999px;
 
-        background: rgba(229, 62, 62, 0.15);
+        background: rgba(214, 158, 46, 0.15);
 
-        border: 1px solid rgba(229, 62, 62, 0.25);
+        border: 1px solid rgba(214, 158, 46, 0.25);
 
         margin-bottom: 18px;
       }
@@ -1272,14 +1272,14 @@
 
         text-align: center;
 
-        background: linear-gradient(135deg, #e53e3e, #c53030);
+        background: linear-gradient(135deg, #d69e2e, #b8860b);
       }
       body::before {
         content: "";
         position: fixed;
         inset: 0;
         background-image:
-          linear-gradient(rgba(9, 23, 44, 0.85), rgba(2, 12, 27, 0.9)),
+          linear-gradient(rgba(22, 22, 22, 0.85), rgba(11, 11, 11, 0.9)),
           url("../static/login-bg.png");
         background-size: cover;
         background-position: center;

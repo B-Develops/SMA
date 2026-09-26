@@ -12,264 +12,335 @@
       rel="stylesheet"
     />
 
-    <link
-      rel="stylesheet"
-      href="{{ url_for('static', filename='settings.css') }}"
-    />
-    <link
-      rel="stylesheet"
-      href="{{ url_for('static', filename='header-navbar.css') }}"
-    />
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='4.css') }}" />
     {% include '_pwa_head.html' %}
   </head>
 
   <body>
     <a href="#main-content" class="skip-link">Skip to main content</a>
-    <main id="main-content">
-      <div class="content">
-        <section class="settings-page">
-          <!-- =========================================
-     PAGE HEADER
-========================================== -->
 
-          <div class="page-header">
-            <div class="page-header-left">
-              <h1>Settings</h1>
+    <!-- =====================================================
+         MAIN WRAPPER
+     ====================================================== -->
 
-              <p>
-                Manage your account preferences, security and personal
-                information.
-              </p>
-            </div>
-          </div>
+    <div class="main-wrapper">
+      <main id="main-content" class="auth-page">
+        <!-- BRAND PANEL -->
+        <section class="auth-brand" aria-label="Sarkin Mota Autos">
+          <div class="cover sec1">
+            <div class="brand-content">
+              <a href="{{ url_for('profiles.about') }}" class="brand-logo">
+                Sarkin Mota <span>Autos</span>
+              </a>
 
-          <div class="page-header"></div>
+              <div class="brand-message">
+                <span class="brand-label">TRUSTED NIGERIAN MARKETPLACE</span>
 
-          <!-- =========================================
-     ACCOUNT
-========================================= -->
+                <h2>
+                  Your account,<br />
+                  <span>all in one place.</span>
+                </h2>
 
-          <section class="settings-section">
-            <div class="card">
-              <div class="card-header">
-                <div>
-                  <h2>Account</h2>
-
-                  <p>Update your personal information and account security.</p>
-                </div>
-              </div>
-
-              <div class="settings-list">
-                <!-- Name -->
-
-                <div class="setting-row">
-                  <div class="setting-content">
-                    <h3>Full Name</h3>
-
-                    <p>{{ user.name if user and user.name else user.email }}</p>
-                  </div>
-
-                  <div class="setting-actions">
-                    <a
-                      href="{{ url_for('profiles.edit_profile') }}"
-                      class="setting-link"
-                    >
-                      Edit
-                    </a>
-                  </div>
-                </div>
-
-                <!-- Password -->
-
-                <div class="setting-row">
-                  <div class="setting-content">
-                    <h3>Password</h3>
-
-                    <p>Change your account password.</p>
-                  </div>
-
-                  <div class="setting-actions">
-                    <a
-                      href="{{ url_for('profiles.change_password') }}"
-                      class="setting-link"
-                    >
-                      Change
-                    </a>
-                  </div>
-                </div>
-
-                <!-- Email -->
-
-                <div class="setting-row">
-                  <div class="setting-content">
-                    <h3>Email Address</h3>
-
-                    <p>{{ user.email }}</p>
-                  </div>
-
-                  <div class="setting-actions">
-                    {% if user.email_verified %}
-
-                    <span class="status-badge success"> Verified ✓ </span>
-
-                    {% else %}
-
-                    <a
-                      href="{{ url_for('profiles.edit_profile') }}"
-                      class="setting-link"
-                    >
-                      Verify
-                    </a>
-
-                    {% endif %}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          <section class="settings-section"></section>
-
-          <!-- =========================================
-     NOTIFICATIONS
-========================================= -->
-
-          <section class="settings-section">
-            <div class="card">
-              <div class="card-header">
-                <div>
-                  <h2>Notifications</h2>
-
-                  <p>Control how you receive alerts from Sarkin Mota Autos.</p>
-                </div>
-              </div>
-
-              <div class="settings-list">
-                <div class="setting-row">
-                  <div class="setting-content">
-                    <h3>Notification Preferences</h3>
-
-                    <p>Manage email, push and in-app notifications.</p>
-                  </div>
-
-                  <div class="setting-actions">
-                    <a
-                      href="{{ url_for('profiles.notification_settings') }}"
-                      class="setting-link"
-                    >
-                      Manage
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          <section class="settings-section"></section>
-
-          <!-- =========================================
-     SESSION
-========================================= -->
-
-          <section class="settings-section">
-            <div class="card">
-              <div class="card-header">
-                <div>
-                  <h2>Session</h2>
-
-                  <p>Manage your current login session and account access.</p>
-                </div>
-              </div>
-
-              <div class="settings-list">
-                <div class="setting-row">
-                  <div class="setting-content">
-                    <h3>Current Session</h3>
-
-                    <p>You are currently signed in to your account.</p>
-                  </div>
-
-                  <div class="setting-actions">
-                    <a href="{{ url_for('auth.logout') }}" class="setting-link">
-                      Log Out
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          <section class="settings-section"></section>
-
-          <!-- =========================================
-     DANGER ZONE
-========================================= -->
-
-          <section class="settings-section">
-            <div class="card danger-card">
-              <div class="danger-header">
-                <div class="danger-icon">⚠</div>
-
-                <div>
-                  <h2>Danger Zone</h2>
-
-                  <p>Permanent actions that cannot be undone.</p>
-                </div>
-              </div>
-
-              <div class="warning-box">
                 <p>
-                  Deleting your account will permanently remove your profile,
-                  listings, bids, messages and all associated data. This action
-                  cannot be reversed.
+                  Manage your preferences, secure your account, and stay in
+                  control of your Sarkin Mota Autos experience.
                 </p>
               </div>
 
-              <form
-                method="POST"
-                action="{{ url_for('profiles.delete_account') }}"
-                class="delete-form"
-              >
-                <input
-                  type="hidden"
-                  name="csrf_token"
-                  value="{{ csrf_token() }}"
-                />
-
-                <div class="delete-confirm">
-                  <label for="confirmEmail">
-                    Type your email address to confirm
-                  </label>
-
-                  <input
-                    id="confirmEmail"
-                    name="confirm_email"
-                    type="email"
-                    placeholder="{{ user.email }}"
-                    required
-                  />
-                </div>
-
-                <div class="danger-actions">
-                  <button
-                    type="submit"
-                    class="btn btn-danger"
-                    onclick="
-                      return confirm(
-                        'This action is permanent. Are you sure you want to delete your account?',
-                      );
-                    "
-                  >
-                    Delete Account
-                  </button>
-                </div>
-              </form>
+              <div class="brand-footer">
+                <span>Founded in 2019</span>
+                <span>Abuja, Nigeria</span>
+              </div>
             </div>
-          </section>
-          <section class="settings-section"></section>
+          </div>
         </section>
-      </div>
-    </main>
+
+        <!-- SETTINGS PANEL -->
+        <section class="auth-panel" id="b">
+          <div id="main-content" class="auth-panel-content">
+            <!-- FLASH MESSAGES -->
+            <div class="flash-messages">
+              {% with messages = get_flashed_messages(with_categories=true) %}
+              {% if messages %} {% for category, message in messages %}
+              <div class="flash {{ category }}">{{ message }}</div>
+              {% endfor %} {% endif %} {% endwith %}
+            </div>
+
+            <!-- PAGE HERO -->
+            <section class="profile-hero">
+              <div class="profile-info">
+                <div class="profile-details">
+                  <h1>Settings</h1>
+
+                  <p>
+                    Manage your account preferences, security and personal
+                    information.
+                  </p>
+                </div>
+              </div>
+            </section>
+
+            <!-- ==========================================
+                 ACCOUNT
+            =========================================== -->
+
+            <section class="section">
+              <div class="card fade-up">
+                <div class="card-header">
+                  <div>
+                    <h2>Account</h2>
+
+                    <p>Update your personal information and account security.</p>
+                  </div>
+                </div>
+
+                <div class="form-section">
+                  <div class="settings-list">
+                    <!-- Full Name -->
+                    <div class="setting-row">
+                      <div class="setting-info">
+                        <div class="setting-icon">
+                          <i data-lucide="user"></i>
+                        </div>
+
+                        <div class="setting-content">
+                          <h3>Full Name</h3>
+
+                          <p>
+                            {{ user.name if user and user.name else user.email }}
+                          </p>
+                        </div>
+                      </div>
+
+                      <div class="setting-actions">
+                        <a
+                          href="{{ url_for('profiles.edit_profile') }}"
+                          class="setting-link"
+                        >
+                          Edit
+                        </a>
+                      </div>
+                    </div>
+
+                    <!-- Password -->
+                    <div class="setting-row">
+                      <div class="setting-info">
+                        <div class="setting-icon">
+                          <i data-lucide="lock"></i>
+                        </div>
+
+                        <div class="setting-content">
+                          <h3>Password</h3>
+
+                          <p>Change your account password.</p>
+                        </div>
+                      </div>
+
+                      <div class="setting-actions">
+                        <a
+                          href="{{ url_for('profiles.change_password') }}"
+                          class="setting-link"
+                        >
+                          Change
+                        </a>
+                      </div>
+                    </div>
+
+                    <!-- Email -->
+                    <div class="setting-row">
+                      <div class="setting-info">
+                        <div class="setting-icon">
+                          <i data-lucide="mail"></i>
+                        </div>
+
+                        <div class="setting-content">
+                          <h3>Email Address</h3>
+
+                          <p>{{ user.email }}</p>
+                        </div>
+                      </div>
+
+                      <div class="setting-actions">
+                        {% if user.email_verified %}
+                        <span class="status-badge success">Verified</span>
+                        {% else %}
+                        <a
+                          href="{{ url_for('profiles.edit_profile') }}"
+                          class="setting-link"
+                        >
+                          Verify
+                        </a>
+                        {% endif %}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- ==========================================
+                 NOTIFICATIONS
+            =========================================== -->
+
+            <section class="section">
+              <div class="card fade-up fade-delay-1">
+                <div class="card-header">
+                  <div>
+                    <h2>Notifications</h2>
+
+                    <p>
+                      Control how you receive alerts from Sarkin Mota Autos.
+                    </p>
+                  </div>
+                </div>
+
+                <div class="form-section">
+                  <div class="settings-list">
+                    <div class="setting-row">
+                      <div class="setting-info">
+                        <div class="setting-icon">
+                          <i data-lucide="bell"></i>
+                        </div>
+
+                        <div class="setting-content">
+                          <h3>Notification Preferences</h3>
+
+                          <p>
+                            Manage email, push and in-app notifications.
+                          </p>
+                        </div>
+                      </div>
+
+                      <div class="setting-actions">
+                        <a
+                          href="{{ url_for('profiles.notification_settings') }}"
+                          class="setting-link"
+                        >
+                          Manage
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- ==========================================
+                 SESSION
+            =========================================== -->
+
+            <section class="section">
+              <div class="card fade-up fade-delay-2">
+                <div class="card-header">
+                  <div>
+                    <h2>Session</h2>
+
+                    <p>
+                      Manage your current login session and account access.
+                    </p>
+                  </div>
+                </div>
+
+                <div class="form-section">
+                  <div class="settings-list">
+                    <div class="setting-row">
+                      <div class="setting-info">
+                        <div class="setting-icon">
+                          <i data-lucide="log-in"></i>
+                        </div>
+
+                        <div class="setting-content">
+                          <h3>Current Session</h3>
+
+                          <p>You are currently signed in to your account.</p>
+                        </div>
+                      </div>
+
+                      <div class="setting-actions">
+                        <a href="{{ url_for('auth.logout') }}" class="setting-link">
+                          Log Out
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- ==========================================
+                 DANGER ZONE
+            =========================================== -->
+
+            <section class="section">
+              <div class="card danger-card fade-up fade-delay-3">
+                <div class="danger-header">
+                  <div class="danger-icon">
+                    <i data-lucide="alert-triangle"></i>
+                  </div>
+
+                  <div>
+                    <h2>Danger Zone</h2>
+
+                    <p>Permanent actions that cannot be undone.</p>
+                  </div>
+                </div>
+
+                <div class="warning-box">
+                  <i data-lucide="alert-circle"></i>
+
+                  <p>
+                    Deleting your account will permanently remove your profile,
+                    listings, bids, messages and all associated data. This action
+                    cannot be reversed.
+                  </p>
+                </div>
+
+                <form
+                  method="POST"
+                  action="{{ url_for('profiles.delete_account') }}"
+                  class="delete-form"
+                >
+                  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+
+                  <div class="delete-confirm">
+                    <label for="confirmEmail">
+                      Type your email address to confirm
+                    </label>
+
+                    <input
+                      id="confirmEmail"
+                      name="confirm_email"
+                      type="email"
+                      placeholder="{{ user.email }}"
+                      required
+                    />
+                  </div>
+
+                  <div class="danger-actions">
+                    <button
+                      type="submit"
+                      class="btn btn-danger"
+                      onclick="
+                        return confirm(
+                          'This action is permanent. Are you sure you want to delete your account?'
+                        );
+                      "
+                    >
+                      Delete Account
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </section>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script>
+      lucide.createIcons();
+    </script>
   </body>
 </html>
-

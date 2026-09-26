@@ -1,24 +1,25 @@
-﻿/* ==========================================================
+/* ==========================================================
    ADMIN ANALYTICS
    Sarkin Mota Autos
 ========================================================== */
 
 :root {
-  --analytics-bg: #061224;
-  --analytics-panel: rgba(10, 27, 52, 0.72);
-  --analytics-panel-light: rgba(17, 37, 68, 0.62);
+  --analytics-bg: #1a1a1a;
+  --analytics-panel: rgba(26, 26, 26, 0.72);
+  --analytics-panel-light: rgba(42, 42, 42, 0.62);
 
-  --analytics-border: rgba(148, 163, 184, 0.14);
+  --analytics-border: rgba(161, 161, 161, 0.14);
   --analytics-border-light: rgba(255, 255, 255, 0.06);
 
   --analytics-text: #f5f7fb;
-  --analytics-muted: #9aa9bd;
-  --analytics-subtle: #718198;
+  --analytics-muted: #A7A7A7;
+  --analytics-subtle: #7F7F7F;
 
-  --analytics-red: #ef4444;
-  --analytics-gold: #d69e2e;
+--analytics-gold: #d69e2e;
+  --analytics-gold-dark: #b8860b;
+  --analytics-gold-soft: rgba(214, 158, 46, 0.1);
   --analytics-green: #35c985;
-  --analytics-blue: #5b8def;
+  --analytics-grey: #888888;
 
   --analytics-radius: 18px;
 }
@@ -40,13 +41,13 @@ body {
   margin: 0;
   font-family: "Inter", sans-serif;
   background:
-    radial-gradient(circle at 10% 0%, rgba(20, 55, 100, 0.28), transparent 35%),
+    radial-gradient(circle at 10% 0%, rgba(51, 51, 51, 0.28), transparent 35%),
     radial-gradient(
       circle at 90% 100%,
       rgba(214, 158, 46, 0.06),
       transparent 30%
     ),
-    linear-gradient(145deg, #071426, #020b18);
+    linear-gradient(145deg, #131313, #0A0A0A);
 }
 
 /* ==========================================================
@@ -106,7 +107,7 @@ body {
   padding: 0 16px;
 
   border: 1px solid var(--analytics-border);
-  border-radius: 10px;
+  border-radius: 5px;
 
   color: var(--analytics-text);
   background: rgba(255, 255, 255, 0.025);
@@ -131,7 +132,7 @@ body {
   background: var(--analytics-red);
   border-color: var(--analytics-red);
 
-  box-shadow: 0 8px 24px rgba(239, 68, 68, 0.18);
+  box-shadow: 0 8px 24px rgba(214, 158, 46, 0.18);
 }
 
 /* ==========================================================
@@ -153,12 +154,12 @@ body {
   padding: 20px;
 
   border: 1px solid var(--analytics-border);
-  border-radius: var(--analytics-radius);
+  border-radius: 5px;
 
   background: linear-gradient(
     145deg,
-    rgba(18, 40, 72, 0.65),
-    rgba(6, 19, 38, 0.68)
+    rgba(38, 38, 38, 0.65),
+    rgba(18, 18, 18, 0.68)
   );
 
   backdrop-filter: blur(18px) saturate(130%);
@@ -208,7 +209,7 @@ body {
   align-items: center;
   justify-content: center;
 
-  border-radius: 11px;
+  border-radius: 5px;
 
   background: rgba(255, 255, 255, 0.04);
 }
@@ -250,12 +251,12 @@ body {
 
 .analytics-card {
   border: 1px solid var(--analytics-border);
-  border-radius: var(--analytics-radius);
+  border-radius: 5px;
 
   background: linear-gradient(
     145deg,
-    rgba(16, 37, 67, 0.65),
-    rgba(6, 20, 40, 0.72)
+    rgba(35, 35, 35, 0.65),
+    rgba(18, 18, 18, 0.72)
   );
 
   backdrop-filter: blur(18px) saturate(130%);
@@ -537,7 +538,7 @@ body {
 
   border-radius: 50%;
 
-  background: #091a32;
+  background: #181818;
 }
 
 .donut-inner {
@@ -673,7 +674,7 @@ body {
   align-items: center;
   justify-content: center;
 
-  border-radius: 10px;
+  border-radius: 5px;
 
   background: rgba(255, 255, 255, 0.045);
 }
@@ -727,9 +728,9 @@ body {
 }
 
 .order-status.confirmed {
-  color: #75d9ff;
-  background: rgba(91, 141, 239, 0.1);
-  border: 1px solid rgba(91, 141, 239, 0.22);
+  color: #C6C6C6;
+  background: rgba(137, 137, 137, 0.1);
+  border: 1px solid rgba(137, 137, 137, 0.22);
 }
 
 .order-status.completed {
@@ -740,14 +741,14 @@ body {
 
 .order-status.pending {
   color: #e9bd55;
-  background: rgba(214, 158, 46, 0.1);
-  border: 1px solid rgba(214, 158, 46, 0.22);
+  background: rgba(128, 128, 128, 0.1);
+  border: 1px solid rgba(128, 128, 128, 0.22);
 }
 
 .order-status.cancelled {
-  color: #ff7777;
-  background: rgba(239, 68, 68, 0.1);
-  border: 1px solid rgba(239, 68, 68, 0.22);
+  color: #f0c65a;
+  background: rgba(214, 158, 46, 0.1);
+  border: 1px solid rgba(214, 158, 46, 0.22);
 }
 
 .empty-state {
@@ -780,7 +781,7 @@ body {
 
   padding: 20px;
 
-  border-radius: 13px;
+  border-radius: 5px;
 
   background: rgba(255, 255, 255, 0.025);
   border: 1px solid rgba(255, 255, 255, 0.04);
@@ -829,7 +830,7 @@ body {
 
   padding: 13px;
 
-  border-radius: 11px;
+  border-radius: 5px;
 
   background: rgba(255, 255, 255, 0.025);
 }
@@ -844,16 +845,16 @@ body {
   align-items: center;
   justify-content: center;
 
-  border-radius: 9px;
+  border-radius: 5px;
 
-  background: rgba(239, 68, 68, 0.08);
+  background: rgba(214, 158, 46, 0.08);
 
   color: var(--analytics-red);
 }
 
 .mini-icon.admin {
   color: var(--analytics-gold);
-  background: rgba(214, 158, 46, 0.08);
+  background: rgba(128, 128, 128, 0.08);
 }
 
 .mini-icon svg {
@@ -907,7 +908,7 @@ body {
 .inventory-stat {
   padding: 23px;
 
-  background: rgba(6, 20, 40, 0.82);
+  background: rgba(18, 18, 18, 0.82);
 }
 
 .inventory-number {
@@ -951,7 +952,7 @@ body {
 
   height: 100%;
 
-  border-radius: inherit;
+  border-radius: 5px;
 }
 
 .active-bar {
@@ -1036,7 +1037,7 @@ body {
   }
 
   .analytics-card {
-    border-radius: 15px;
+    border-radius: 5px;
   }
 
   .card-heading {
@@ -1234,7 +1235,7 @@ body::before {
   inset: 0;
 
   background:
-    linear-gradient(rgba(8, 20, 37, 0.671), rgba(2, 12, 27, 0.97)),
+    linear-gradient(rgba(19, 19, 19, 0.671), rgba(11, 11, 11, 0.97)),
     url("../static/login-bg.png") center/cover no-repeat;
 
   z-index: -2;

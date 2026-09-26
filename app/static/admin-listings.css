@@ -1,25 +1,25 @@
-﻿/* =========================================================
+/* =========================================================
    ADMIN LISTINGS
    USERS PAGE IS THE DESIGN STANDARD
 ========================================================= */
 
 :root {
-  --bg-main: #061326;
-  --bg-panel: rgba(7, 25, 48, 0.78);
-  --bg-card: rgba(13, 35, 65, 0.72);
-  --bg-input: rgba(18, 39, 67, 0.72);
+  --bg-main: #141414;
+  --bg-panel: rgba(30, 30, 30, 0.78);
+  --bg-card: rgba(42, 42, 42, 0.72);
+  --bg-input: rgba(52, 52, 52, 0.72);
 
-  --border: rgba(148, 174, 207, 0.14);
-  --border-strong: rgba(148, 174, 207, 0.2);
+  --border: rgba(171, 171, 171, 0.14);
+  --border-strong: rgba(171, 171, 171, 0.2);
 
   --text-primary: #f3f6fb;
-  --text-secondary: #9aaac0;
-  --text-muted: #71829a;
+  --text-secondary: #A8A8A8;
+  --text-muted: #808080;
 
-  --gold: #d6a52f;
-  --red: #f05252;
+  --gold: #d69e2e;
+  --red: #d69e2e;
   --green: #35c88a;
-  --blue: #6d9fff;
+  --blue: #a0a0a0;
 
   --radius-lg: 20px;
   --radius-md: 14px;
@@ -48,7 +48,7 @@ body {
   color: var(--text-primary);
 
   background:
-    linear-gradient(rgba(3, 15, 31, 0.84), rgba(3, 15, 31, 0.9)),
+    linear-gradient(rgba(14, 14, 14, 0.84), rgba(14, 14, 14, 0.9)),
     url("/static/images/admin-bg.jpg") center / cover fixed no-repeat;
 
   background-color: var(--bg-main);
@@ -72,12 +72,12 @@ body {
 
   background: linear-gradient(
     145deg,
-    rgba(10, 30, 55, 0.86),
-    rgba(5, 21, 40, 0.8)
+    rgba(28, 28, 28, 0.86),
+    rgba(19, 19, 19, 0.8)
   );
 
   border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
+  border-radius: 5px;
 
   box-shadow: var(--shadow-panel);
 
@@ -171,12 +171,12 @@ body {
 
   background: linear-gradient(
     145deg,
-    rgba(17, 43, 78, 0.7),
-    rgba(9, 29, 54, 0.65)
+    rgba(40, 40, 40, 0.7),
+    rgba(27, 27, 27, 0.65)
   );
 
   border: 1px solid var(--border);
-  border-radius: 15px;
+  border-radius: 5px;
 
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
@@ -209,7 +209,7 @@ body {
   align-items: center;
   justify-content: center;
 
-  border-radius: 10px;
+  border-radius: 5px;
 
   background: rgba(255, 255, 255, 0.055);
 }
@@ -274,10 +274,10 @@ body {
   margin-top: 16px;
   padding: 12px;
 
-  background: rgba(10, 30, 54, 0.58);
+  background: rgba(27, 27, 27, 0.58);
 
   border: 1px solid var(--border);
-  border-radius: 14px;
+  border-radius: 5px;
 
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
@@ -308,7 +308,7 @@ body {
   height: 40px;
 
   border: 1px solid var(--border);
-  border-radius: 9px;
+  border-radius: 5px;
 
   background: var(--bg-input);
 
@@ -335,7 +335,7 @@ body {
 .search-box input:focus,
 .toolbar select:focus {
   border-color: rgba(214, 165, 47, 0.45);
-  background: rgba(21, 45, 76, 0.8);
+  background: rgba(42, 42, 42, 0.8);
 }
 
 .search-box input::placeholder {
@@ -357,10 +357,10 @@ body {
 
   overflow: hidden;
 
-  background: rgba(7, 25, 47, 0.62);
+  background: rgba(23, 23, 23, 0.62);
 
   border: 1px solid var(--border);
-  border-radius: 16px;
+  border-radius: 5px;
 
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
@@ -384,11 +384,11 @@ body {
 
   padding: 0 16px;
 
-  background: rgba(18, 42, 70, 0.58);
+  background: rgba(39, 39, 39, 0.58);
 
   border-bottom: 1px solid var(--border);
 
-  color: #8798ae;
+  color: #969696;
 
   text-align: left;
 
@@ -404,7 +404,7 @@ body {
 
   padding: 10px 16px;
 
-  border-bottom: 1px solid rgba(148, 174, 207, 0.09);
+  border-bottom: 1px solid rgba(171, 171, 171, 0.09);
 
   color: var(--text-secondary);
 
@@ -443,10 +443,10 @@ body {
 
   object-fit: cover;
 
-  border-radius: 8px;
+  border-radius: 5px;
 
   border: 1px solid var(--border);
-  background: #101f32;
+  background: #1D1D1D;
 }
 
 .car-image.placeholder {
@@ -547,9 +547,9 @@ body {
 }
 
 .badge-sold {
-  color: #73a4ff;
-  background: rgba(82, 132, 221, 0.1);
-  border-color: rgba(82, 132, 221, 0.2);
+  color: #A0A0A0;
+  background: rgba(128, 128, 128, 0.1);
+  border-color: rgba(128, 128, 128, 0.2);
 }
 
 .badge-pending {
@@ -579,7 +579,7 @@ body {
 
   padding: 7px 12px;
 
-  border-radius: 8px;
+  border-radius: 5px;
 
   border: 1px solid var(--border);
 
@@ -607,16 +607,16 @@ body {
 }
 
 .btn-danger {
-  color: #ff6d76;
+  color: var(--gold);
 
-  background: rgba(240, 82, 82, 0.07);
+  background: rgba(214, 158, 46, 0.07);
 
-  border-color: rgba(240, 82, 82, 0.22);
+  border-color: rgba(214, 158, 46, 0.22);
 }
 
 .btn-danger:hover {
-  background: rgba(240, 82, 82, 0.14);
-  border-color: rgba(240, 82, 82, 0.35);
+  background: rgba(214, 158, 46, 0.14);
+  border-color: rgba(214, 158, 46, 0.35);
 }
 
 /* =========================================================
@@ -692,7 +692,7 @@ body {
     width: calc(100% - 16px);
     padding: 16px;
 
-    border-radius: 16px;
+    border-radius: 5px;
   }
 
   .page-header h1 {
@@ -729,19 +729,18 @@ body {
 ========================================================= */
 
 :root {
-  --bg-primary: #071426;
-  --bg-secondary: #020b18;
-  --panel: rgba(12, 31, 57, 0.62);
-  --panel-light: rgba(18, 40, 70, 0.5);
+  --bg-primary: #1a1a1a;
+  --bg-secondary: #0d0d0d;
+  --panel: rgba(26, 26, 26, 0.62);
+  --panel-light: rgba(42, 42, 42, 0.5);
   --text-primary: #f5f7fb;
-  --text-secondary: #a7b4c7;
-  --text-muted: #738299;
-  --red: #e53e3e;
-  --red-light: #fc8181;
-  --gold: #d69e2e;
+  --text-secondary: #B3B3B3;
+  --text-muted: #808080;
+--gold: #d69e2e;
   --gold-light: #f0c65a;
+  --gold-soft: rgba(214, 158, 46, 0.1);
   --green: #48bb78;
-  --blue: #5b8def;
+  --grey: #888888;
   --border: rgba(255, 255, 255, 0.08);
   --border-soft: rgba(255, 255, 255, 0.055);
   --radius: 18px;
@@ -758,7 +757,7 @@ body {
   min-height: 100vh;
   color: var(--text-primary);
   background:
-    radial-gradient(circle at 10% 0%, rgba(20, 55, 100, 0.28), transparent 35%),
+    radial-gradient(circle at 10% 0%, rgba(51, 51, 51, 0.28), transparent 35%),
     radial-gradient(
       circle at 90% 100%,
       rgba(214, 158, 46, 0.06),
@@ -774,7 +773,7 @@ body::before {
   inset: 0;
   z-index: -1;
   background:
-    linear-gradient(rgba(5, 18, 35, 0.72), rgba(2, 10, 22, 0.88)),
+    linear-gradient(rgba(16, 16, 16, 0.72), rgba(9, 9, 9, 0.88)),
     url("../static/login-bg.png") center / cover;
   opacity: 0.55;
 }
@@ -785,8 +784,8 @@ body::before {
   left: 20px;
   z-index: 1000;
   padding: 10px 16px;
-  border-radius: 8px;
-  background: var(--red);
+  border-radius: 5px;
+  background: var(--gold);
   color: #fff;
   font-weight: 700;
   text-decoration: none;
@@ -803,8 +802,8 @@ body::before {
   margin: 0 auto;
   padding: 30px;
   border: 1px solid rgba(255, 255, 255, 0.055);
-  border-radius: 24px;
-  background: rgba(7, 20, 38, 0.34);
+  border-radius: 5px;
+  background: rgba(19, 19, 19, 0.34);
   backdrop-filter: blur(18px) saturate(120%);
   -webkit-backdrop-filter: blur(18px) saturate(120%);
   box-shadow:
@@ -857,11 +856,11 @@ body::before {
   min-height: 125px;
   padding: 19px;
   border: 1px solid var(--border);
-  border-radius: var(--radius);
+  border-radius: 5px;
   background: linear-gradient(
     145deg,
-    rgba(17, 39, 70, 0.58),
-    rgba(8, 23, 44, 0.55)
+    rgba(37, 37, 37, 0.58),
+    rgba(21, 21, 21, 0.55)
   );
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
@@ -899,8 +898,8 @@ body::before {
   margin: 0 0 18px;
   padding: 14px;
   border: 1px solid var(--border);
-  border-radius: var(--radius);
-  background: rgba(10, 27, 50, 0.52);
+  border-radius: 5px;
+  background: rgba(25, 25, 25, 0.52);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
 }
@@ -913,7 +912,7 @@ body::before {
   min-height: 45px;
   padding: 0 13px;
   border: 1px solid var(--border);
-  border-radius: 11px;
+  border-radius: 5px;
   background: rgba(255, 255, 255, 0.035);
   transition: var(--transition);
 }
@@ -925,14 +924,14 @@ body::before {
   color: var(--text-muted);
 }
 .search-box:focus-within {
-  border-color: rgba(229, 62, 62, 0.55);
-  box-shadow: 0 0 0 3px rgba(229, 62, 62, 0.08);
+  border-color: rgba(214, 158, 46, 0.55);
+  box-shadow: 0 0 0 3px rgba(214, 158, 46, 0.08);
 }
 .search-box input,
 .toolbar select {
   height: auto;
   border: 0;
-  border-radius: 0;
+  border-radius: 5px;
   outline: 0;
   background: transparent;
   color: var(--text-primary);
@@ -951,24 +950,24 @@ body::before {
   height: 45px;
   padding: 0 12px;
   border: 1px solid var(--border);
-  border-radius: 11px;
+  border-radius: 5px;
   background: rgba(255, 255, 255, 0.035);
   cursor: pointer;
 }
 .toolbar-actions select:focus {
-  border-color: rgba(229, 62, 62, 0.55);
-  box-shadow: 0 0 0 3px rgba(229, 62, 62, 0.08);
+  border-color: rgba(214, 158, 46, 0.55);
+  box-shadow: 0 0 0 3px rgba(214, 158, 46, 0.08);
 }
 .toolbar-actions option {
-  background: #10233f;
+  background: #212121;
   color: #fff;
 }
 
 .table-card {
   margin: 0;
   border: 1px solid var(--border);
-  border-radius: 20px;
-  background: rgba(9, 25, 46, 0.58);
+  border-radius: 5px;
+  background: rgba(23, 23, 23, 0.58);
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
   box-shadow: 0 18px 45px rgba(0, 0, 0, 0.16);
@@ -1001,7 +1000,7 @@ body::before {
   height: 44px;
   flex: 0 0 56px;
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: 5px;
   background: rgba(255, 255, 255, 0.045);
 }
 .vehicle-name,
@@ -1031,13 +1030,13 @@ body::before {
   color: #8be0ae;
 }
 .badge-sold {
-  border-color: rgba(91, 141, 239, 0.2);
-  background: rgba(91, 141, 239, 0.08);
-  color: #8db2ff;
+  border-color: rgba(137, 137, 137, 0.2);
+  background: rgba(137, 137, 137, 0.08);
+  color: #B0B0B0;
 }
 .badge-pending {
-  border-color: rgba(214, 158, 46, 0.2);
-  background: rgba(214, 158, 46, 0.08);
+  border-color: rgba(128, 128, 128, 0.2);
+  background: rgba(128, 128, 128, 0.08);
   color: var(--gold-light);
 }
 .actions-cell {
@@ -1049,20 +1048,20 @@ body::before {
 }
 .btn {
   gap: 6px;
-  border-radius: 9px;
+  border-radius: 5px;
   border-color: transparent;
   font-size: 0.67rem;
   font-weight: 700;
   transition: var(--transition);
 }
 .btn-danger {
-  border-color: rgba(229, 62, 62, 0.2);
-  background: rgba(229, 62, 62, 0.08);
-  color: var(--red-light);
+  border-color: rgba(214, 158, 46, 0.2);
+  background: rgba(214, 158, 46, 0.08);
+  color: var(--gold-light);
 }
 .btn-danger:hover {
-  border-color: rgba(229, 62, 62, 0.4);
-  background: rgba(229, 62, 62, 0.16);
+  border-color: rgba(214, 158, 46, 0.4);
+  background: rgba(214, 158, 46, 0.16);
   transform: translateY(-1px);
 }
 .empty-state {
@@ -1080,7 +1079,7 @@ body::before {
   min-height: 38px;
   padding: 0 13px;
   border: 1px solid var(--border);
-  border-radius: 10px;
+  border-radius: 5px;
   background: rgba(255, 255, 255, 0.025);
   color: var(--text-secondary);
   text-decoration: none;
@@ -1129,7 +1128,7 @@ body::before {
   .page-container {
     width: 100%;
     padding: 16px;
-    border-radius: 18px;
+    border-radius: 5px;
   }
   .page-header h1 {
     font-size: 1.85rem;
@@ -1170,9 +1169,9 @@ body::before {
   align-items: center;
   gap: 7px;
   padding: 7px 11px;
-  border: 1px solid rgba(214, 158, 46, 0.18);
+  border: 1px solid rgba(128, 128, 128, 0.18);
   border-radius: 999px;
-  background: rgba(214, 158, 46, 0.06);
+  background: rgba(128, 128, 128, 0.06);
   color: var(--gold-light);
   font-size: 0.68rem;
   font-weight: 700;
@@ -1202,7 +1201,7 @@ body::before {
   min-width: 150px;
   padding: 15px 18px;
   border: 1px solid var(--border);
-  border-radius: 14px;
+  border-radius: 5px;
   background: rgba(255, 255, 255, 0.025);
   text-align: right;
 }
@@ -1224,7 +1223,7 @@ body::before {
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 13px;
+  border-radius: 5px;
   background: rgba(255, 255, 255, 0.045);
 }
 .stat-icon svg {
@@ -1232,12 +1231,12 @@ body::before {
   height: 21px;
 }
 .listings-icon {
-  color: var(--red-light);
-  background: rgba(229, 62, 62, 0.09);
+  color: var(--gold-light);
+  background: rgba(214, 158, 46, 0.09);
 }
 .active-icon {
   color: var(--gold-light);
-  background: rgba(214, 158, 46, 0.09);
+  background: rgba(128, 128, 128, 0.09);
 }
 .sold-icon {
   color: #8be0ae;
@@ -1315,7 +1314,7 @@ body::before {
   align-items: center;
   justify-content: center;
   margin-bottom: 14px;
-  border-radius: 15px;
+  border-radius: 5px;
   background: rgba(255, 255, 255, 0.04);
   color: var(--text-muted);
 }
@@ -1335,7 +1334,7 @@ body::before {
   min-height: 38px;
   padding: 0 13px;
   border: 1px solid var(--border);
-  border-radius: 10px;
+  border-radius: 5px;
   background: rgba(255, 255, 255, 0.025);
   color: var(--text-secondary);
   text-decoration: none;

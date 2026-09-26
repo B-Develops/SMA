@@ -8,17 +8,19 @@
 ========================================================== */
 :root {
   /* COLORS */
-  --color-bg-primary: #0a192f;
-  --color-bg-secondary: #020c1b;
+  --color-bg-primary: #1a1a1a;
+  --color-bg-secondary: #0d0d0d;
 
-  --color-card: #112240;
-  --color-card-hover: #17315e;
+  --color-card: #2a2a2a;
+  --color-card-hover: #333333;
 
-  --color-accent-red: #e53e3e;
-  --color-accent-red-hover: #c53030;
+--color-accent-gold: #d69e2e;
+  --color-accent-gold-hover: #b8860b;
+  --color-accent-red: #d69e2e;
+  --accent-red: #d69e2e;
 
   --color-accent-gold: #d69e2e;
-  --color-accent-red-strong: #dc2626;
+  --color-accent-gold-strong: #b8860b;
 
   /* GLASSMORPHISM */
   --glass-bg: rgba(255, 255, 255, 0.03);
@@ -27,11 +29,11 @@
 
   --color-success: #22c55e;
   --color-warning: #f59e0b;
-  --color-danger: #ef4444;
-  --color-info: #e53e3e;
+  --color-danger: #d69e2e;
+  --color-info: #d69e2e;
 
   --color-text-primary: #f7fafc;
-  --color-text-secondary: #a0aec0;
+  --color-text-secondary: #ACACAC;
 
   --border-soft: rgba(255, 255, 255, 0.08);
   --border-strong: rgba(255, 255, 255, 0.14);
@@ -125,15 +127,15 @@
 
   font-size: 25px;
 
-  border-radius: 18px;
+  border-radius: 5px;
 
   background: linear-gradient(
     135deg,
-    rgba(59, 130, 246, 0.28),
-    rgba(37, 99, 235, 0.08)
+    rgba(136, 136, 136, 0.28),
+    rgba(102, 102, 102, 0.08)
   );
 
-  border: 1px solid rgba(96, 165, 250, 0.25);
+  border: 1px solid rgba(170, 170, 170, 0.25);
 
   box-shadow: 0 12px 35px rgba(0, 0, 0, 0.18);
 }
@@ -195,7 +197,7 @@
 
   padding: 0 18px;
 
-  border-radius: 12px;
+  border-radius: 5px;
 
   font-size: 13px;
   font-weight: 650;
@@ -220,15 +222,15 @@
 
   background: linear-gradient(135deg, var(--color-info), var(--color-info));
 
-  border: 1px solid rgba(147, 197, 253, 0.35);
+  border: 1px solid rgba(190, 190, 190, 0.35);
 
-  box-shadow: 0 10px 25px #e53e3e50;
+  box-shadow: 0 10px 25px #66666650;
 }
 
 .listings-btn-primary:hover {
-  background: linear-gradient(135deg, #1d4ed8, #2563eb);
+  background: linear-gradient(135deg, #666666, #888888);
 
-  box-shadow: 0 14px 32px rgba(37, 99, 235, 0.3);
+  box-shadow: 0 14px 32px rgba(102, 102, 102, 0.3);
 }
 
 .listings-btn-secondary {
@@ -240,9 +242,9 @@
 }
 
 .listings-btn-secondary:hover {
-  background: rgba(59, 130, 246, 0.1);
+  background: rgba(136, 136, 136, 0.1);
 
-  border-color: rgba(96, 165, 250, 0.4);
+  border-color: rgba(170, 170, 170, 0.4);
 }
 
 /* ==========================================================
@@ -266,7 +268,7 @@
 
   padding: 14px 16px;
 
-  border-radius: 12px;
+  border-radius: 5px;
 
   font-size: 13px;
 
@@ -281,7 +283,7 @@
 
 .listings-flash-danger,
 .listings-flash-error {
-  border-color: rgba(229, 62, 62, 0.28);
+  border-color: rgba(128, 128, 128, 0.28);
 }
 
 .flash-icon {
@@ -313,7 +315,7 @@
 
   padding: 22px;
 
-  border-radius: var(--radius-lg);
+  border-radius: 5px;
   background: var(--glass-bg);
   backdrop-filter: blur(var(--glass-blur));
 
@@ -351,7 +353,7 @@
 .listing-stat-card:hover {
   transform: translateY(-4px);
 
-  border-color: rgba(96, 165, 250, 0.25);
+  border-color: rgba(170, 170, 170, 0.25);
 }
 
 .stat-top {
@@ -371,15 +373,15 @@
 
   flex-shrink: 0;
 
-  border-radius: 13px;
+  border-radius: 5px;
 
   font-size: 17px;
 }
 
 .stat-icon-blue {
-  background: rgba(59, 130, 246, 0.14);
+  background: rgba(136, 136, 136, 0.14);
 
-  border: 1px solid rgba(96, 165, 250, 0.18);
+  border: 1px solid rgba(170, 170, 170, 0.18);
 }
 
 .stat-icon-green {
@@ -391,18 +393,18 @@
 }
 
 .stat-icon-purple {
-  color: #a78bfa;
+  color: #999999;
 
-  background: rgba(139, 92, 246, 0.12);
+  background: rgba(113, 113, 113, 0.12);
 
-  border: 1px solid rgba(167, 139, 250, 0.18);
+  border: 1px solid rgba(153, 153, 153, 0.18);
 }
 
 .stat-label {
   font-size: 13px;
   font-weight: 600;
 
-  color: #94a3b8;
+  color: #A1A1A1;
 }
 
 .stat-value {
@@ -431,7 +433,7 @@
 .listings-panel {
   overflow: hidden;
 
-  border-radius: var(--radius-lg);
+  border-radius: 5px;
   background: var(--glass-bg);
   backdrop-filter: blur(var(--glass-blur));
 
@@ -453,7 +455,7 @@
 
   padding: 26px 28px;
 
-  border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+  border-bottom: 1px solid rgba(161, 161, 161, 0.1);
 }
 
 .listings-panel-header h2 {
@@ -488,9 +490,9 @@
 
   color: var(--color-info);
 
-  background: rgba(59, 130, 246, 0.08);
+  background: rgba(136, 136, 136, 0.08);
 
-  border: 1px solid rgba(96, 165, 250, 0.13);
+  border: 1px solid rgba(170, 170, 170, 0.13);
 }
 
 .indicator-dot {
@@ -501,7 +503,7 @@
 
   background: var(--color-info);
 
-  box-shadow: 0 0 10px rgba(59, 130, 246, 0.8);
+  box-shadow: 0 0 10px rgba(136, 136, 136, 0.8);
 }
 
 /* ==========================================================
@@ -556,7 +558,7 @@
 }
 
 .my-listings-table tbody tr:hover {
-  background: rgba(59, 130, 246, 0.035);
+  background: rgba(136, 136, 136, 0.035);
 }
 
 .actions-heading {
@@ -584,11 +586,11 @@
 
   overflow: hidden;
 
-  border-radius: var(--radius-sm);
+  border-radius: 5px;
 
   background: rgba(255, 255, 255, 0.04);
 
-  border: 1px solid rgba(148, 163, 184, 0.1);
+  border: 1px solid rgba(161, 161, 161, 0.1);
 }
 
 .vehicle-image-wrap img {
@@ -636,7 +638,7 @@
 
   border-radius: 50%;
 
-  background: #3b82f6;
+  background: #888888;
 }
 
 /* ==========================================================
@@ -722,15 +724,15 @@
 /* SOLD */
 
 .status-sold {
-  color: #93c5fd;
+  color: #BEBEBE;
 
-  background: rgba(59, 130, 246, 0.1);
+  background: rgba(136, 136, 136, 0.1);
 
-  border: 1px solid rgba(96, 165, 250, 0.15);
+  border: 1px solid rgba(170, 170, 170, 0.15);
 }
 
 .status-sold .status-dot {
-  background: #60a5fa;
+  background: #aaaaaa;
 }
 
 /* PENDING */
@@ -750,15 +752,15 @@
 /* INACTIVE */
 
 .status-inactive {
-  color: #94a3b8;
+  color: #A1A1A1;
 
-  background: rgba(148, 163, 184, 0.08);
+  background: rgba(161, 161, 161, 0.08);
 
-  border: 1px solid rgba(148, 163, 184, 0.12);
+  border: 1px solid rgba(161, 161, 161, 0.12);
 }
 
 .status-inactive .status-dot {
-  background: #64748b;
+  background: #727272;
 }
 
 /* ==========================================================
@@ -790,7 +792,7 @@
 
   padding: 0 11px;
 
-  border-radius: var(--radius-sm);
+  border-radius: 5px;
 
   border: 1px solid var(--border-soft);
 
@@ -817,11 +819,11 @@
 }
 
 .edit-action:hover {
-  color: #bfdbfe;
+  color: #D8D8D8;
 
-  background: rgba(59, 130, 246, 0.1);
+  background: rgba(136, 136, 136, 0.1);
 
-  border-color: rgba(96, 165, 250, 0.3);
+  border-color: rgba(170, 170, 170, 0.3);
 }
 
 .sold-action:hover {
@@ -833,11 +835,11 @@
 }
 
 .delete-action:hover {
-  color: var(--color-accent-red-strong);
+  color: var(--color-accent-gold-strong);
 
-  background: rgba(220, 38, 38, 0.08);
+  background: rgba(128, 128, 128, 0.08);
 
-  border-color: rgba(220, 38, 38, 0.22);
+  border-color: rgba(128, 128, 128, 0.22);
 }
 
 /* ==========================================================
@@ -857,7 +859,7 @@
 
   text-align: center;
 
-  border-radius: var(--radius-lg);
+  border-radius: 5px;
   background: var(--glass-bg);
   backdrop-filter: blur(var(--glass-blur));
 
@@ -876,11 +878,11 @@
 
   font-size: 34px;
 
-  border-radius: 24px;
+  border-radius: 5px;
 
-  background: rgba(59, 130, 246, 0.1);
+  background: rgba(136, 136, 136, 0.1);
 
-  border: 1px solid rgba(96, 165, 250, 0.16);
+  border: 1px solid rgba(170, 170, 170, 0.16);
 }
 
 .my-listings-empty-state h2 {
@@ -899,7 +901,7 @@
   font-size: 13px;
   line-height: 1.7;
 
-  color: #7f91aa;
+  color: #8F8F8F;
 }
 
 .empty-cta {
@@ -919,9 +921,9 @@
 }
 
 .listings-table-wrapper::-webkit-scrollbar-thumb {
-  border-radius: 10px;
+  border-radius: 5px;
 
-  background: rgba(59, 130, 246, 0.45);
+  background: rgba(136, 136, 136, 0.45);
 }
 
 /* ==========================================================
@@ -954,7 +956,7 @@
   .heading-icon {
     width: 46px;
     height: 46px;
-    border-radius: 14px;
+    border-radius: 5px;
     font-size: 20px;
   }
 
@@ -988,7 +990,7 @@
   .listing-stat-card {
     min-height: auto;
     padding: 18px;
-    border-radius: 18px;
+    border-radius: 5px;
   }
 
   .stat-value {
@@ -1002,7 +1004,7 @@
 
   /* PANEL */
   .listings-panel {
-    border-radius: 18px;
+    border-radius: 5px;
   }
 
   .listings-panel-header {
@@ -1071,7 +1073,7 @@
   .vehicle-image-wrap {
     width: 82px;
     height: 62px;
-    border-radius: 10px;
+    border-radius: 5px;
   }
 
   .vehicle-details {
@@ -1126,14 +1128,14 @@
   .my-listings-empty-state {
     margin: 20px auto;
     padding: 45px 20px;
-    border-radius: 18px;
+    border-radius: 5px;
   }
 
   .empty-icon {
     width: 70px;
     height: 70px;
     font-size: 28px;
-    border-radius: 20px;
+    border-radius: 5px;
   }
 
   .my-listings-empty-state h2 {
@@ -1218,7 +1220,7 @@
     width: 44px;
     height: 44px;
     font-size: 18px;
-    border-radius: 12px;
+    border-radius: 5px;
   }
 
   .listings-heading h1 {
@@ -1250,7 +1252,7 @@
   .listing-stat-card {
     min-height: 120px;
     padding: 18px;
-    border-radius: 16px;
+    border-radius: 5px;
   }
 
   .stat-value {
@@ -1261,7 +1263,7 @@
   /* LISTINGS PANEL */
   .listings-panel {
     width: 100%;
-    border-radius: 16px;
+    border-radius: 5px;
   }
 
   .listings-panel-header {
@@ -1414,7 +1416,7 @@
     width: 42px;
     height: 42px;
     min-width: 42px;
-    border-radius: 12px;
+    border-radius: 5px;
     font-size: 17px;
   }
 
@@ -1444,7 +1446,7 @@
     min-width: 0;
     min-height: 38px;
     padding: 0 8px;
-    border-radius: 9px;
+    border-radius: 5px;
     font-size: 11px;
     box-sizing: border-box;
   }
@@ -1463,7 +1465,7 @@
   .listing-stat-card {
     min-height: 91px;
     padding: 11px 9px;
-    border-radius: 13px;
+    border-radius: 5px;
   }
 
   .stat-top {
@@ -1476,7 +1478,7 @@
     width: 27px;
     height: 27px;
     min-width: 27px;
-    border-radius: 8px;
+    border-radius: 5px;
     font-size: 11px;
   }
 
@@ -1500,7 +1502,7 @@
     ====================================================== */
 
   .listings-panel {
-    border-radius: 14px;
+    border-radius: 5px;
   }
 
   .listings-panel-header {
@@ -1592,7 +1594,7 @@
     width: 86px;
     height: 64px;
     min-width: 86px;
-    border-radius: 10px;
+    border-radius: 5px;
   }
 
   .vehicle-details {
@@ -1667,7 +1669,7 @@
   .listing-actions-cell {
     margin-top: 7px;
     padding-top: 9px !important;
-    border-top: 1px solid rgba(148, 163, 184, 0.08) !important;
+    border-top: 1px solid rgba(161, 161, 161, 0.08) !important;
     text-align: left;
   }
 
@@ -1681,7 +1683,7 @@
   .listing-action-btn {
     min-height: 32px;
     padding: 0 10px;
-    border-radius: 7px;
+    border-radius: 5px;
     font-size: 9px;
   }
 
@@ -1692,7 +1694,7 @@
   .my-listings-empty-state {
     margin: 15px auto;
     padding: 38px 18px;
-    border-radius: 14px;
+    border-radius: 5px;
   }
 
   .empty-icon {
@@ -1700,7 +1702,7 @@
     height: 62px;
     margin-bottom: 16px;
     font-size: 25px;
-    border-radius: 18px;
+    border-radius: 5px;
   }
 
   .my-listings-empty-state h2 {
@@ -1720,5 +1722,5 @@
 .listing-stat-card,
 .listings-panel,
 .my-listings-empty-state {
-  background-color: #17315e41;
+  background-color: #2F2F2F41;
 }

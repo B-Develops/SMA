@@ -28,70 +28,10 @@
     {% include '_pwa_head.html' %}
   </head>
 
-  <body>
-    <!-- =====================================================
-         HEADER
-         ===================================================== -->
+  <body style="display: flex; justify-content: center; align-items: center">
+    <a href="#main-content" class="skip-link">Skip to main content</a>
 
-    <header role="banner">
-      <div class="container" id="navcon">
-        <nav aria-label="Main navigation">
-          <div class="logo">Sarkin Mota Autos</div>
-          <div class="dropdown">
-            <button class="dropbtn" onclick="toggleMenu()">
-              <i data-lucide="menu" class="munb"></i>
-            </button>
-
-            <div id="menu" class="dropdown-content">
-              {% if current_user.is_authenticated %}
-              <a href="{{ url_for('dashboard') }}">Dashboard</a>
-              <a href="{{ url_for('orders.my_orders') }}">My Orders</a>
-              <a href="{{ url_for('profiles.saved_cars') }}">Saved Cars</a>
-              <a href="{{ url_for('profiles.view_profile') }}">Profile</a>
-              <a href="{{ url_for('auth.logout') }}">Logout</a>
-              {% else %}
-              <a href="{{ url_for('auth.login') }}">Sign In</a>
-              <a href="{{ url_for('auth.signup') }}">Sign Up</a>
-              {% endif %}
-            </div>
-          </div>
-
-          <div class="nav-actions">
-            <a href="{{ url_for('profiles.about') }}" style="color: #fff"
-              >About</a
-            >
-            {% if current_user.is_authenticated %}
-            <a
-              href="{{ url_for('dashboard') }}"
-              style="color: #fff"
-              class="btn-auth"
-            >
-              Dashboard
-            </a>
-            {% else %}
-            <a
-              href="{{ url_for('auth.login') }}"
-              style="color: #fff"
-              class="btn-auth"
-              >Sign In</a
-            >
-            <a
-              href="{{ url_for('auth.signup') }}"
-              style="color: #fff"
-              class="btn-auth btn-signup"
-              >Sign Up</a
-            >
-            {% endif %}
-          </div>
-        </nav>
-      </div>
-    </header>
-
-    <!-- =====================================================
-         MAIN
-         ===================================================== -->
-
-    <main class="vehicle-page">
+    <main id="main-content" class="vehicle-page">
       <!-- =================================================
            VEHICLE HEADER
            ================================================= -->
@@ -337,7 +277,9 @@
           <a href="{{ url_for('auth.signup') }}" class="secondary-action">
             Create Account
           </a>
-
+          <a href="{{ url_for('cars.browse_cars') }}" class="secondary-action">
+            Back To Browsing
+          </a>
           {% endif %}
         </aside>
       </section>
@@ -429,85 +371,6 @@
       <!-- =================================================
            DESCRIPTION
            ================================================= -->
-
-      <section class="content-section description-section">
-        <div class="section-heading">
-          <div>
-            <span class="section-eyebrow"> About the vehicle </span>
-
-            <h2>Description</h2>
-          </div>
-        </div>
-
-        <p class="description-text">
-          {{ car.description | default('No description available.') }}
-        </p>
-      </section>
-
-      <!-- =================================================
-           SELLER
-           ================================================= -->
-
-      {% if seller %}
-
-      <section class="seller-section">
-        <div class="seller-section-heading">
-          <div>
-            <span class="section-eyebrow"> Listing information </span>
-
-            <h2>Seller</h2>
-          </div>
-
-          <div class="trust-badge">
-            <i data-lucide="shield-check"></i>
-
-            <span> Trusted Listing </span>
-          </div>
-        </div>
-
-        <div class="seller-card">
-          <div class="seller-avatar">
-            <i data-lucide="user"></i>
-          </div>
-
-          <div class="seller-main">
-            <strong> {{ seller.name }} </strong>
-
-            <span> Vehicle seller </span>
-          </div>
-
-          <div class="seller-contact">
-            {% if seller.location %}
-
-            <div>
-              <i data-lucide="map-pin"></i>
-              <span>{{ seller.location }}</span>
-            </div>
-
-            {% endif %} {% if seller.phone %}
-
-            <div>
-              <i data-lucide="phone"></i>
-              <span>{{ seller.phone }}</span>
-            </div>
-
-            {% endif %}
-          </div>
-        </div>
-      </section>
-
-      {% endif %}
-
-      <!-- =================================================
-           BOTTOM NAVIGATION
-           ================================================= -->
-
-      <div class="bottom-navigation">
-        <a href="{{ url_for('cars.browse_cars') }}" class="bottom-back">
-          <i data-lucide="arrow-left"></i>
-          Back to Browse Cars
-        </a>
-      </div>
     </main>
 
     <!-- =====================================================

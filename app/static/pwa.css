@@ -2,11 +2,11 @@
   position: fixed;
   bottom: 20px;
   right: 20px;
-  background: #1a1a2e;
-  border: 1px solid #2a2a4a;
+  background: #1a1a1a;
+  border: 1px solid #3a3a3a;
   color: #fff;
   padding: 1rem 1.25rem;
-  border-radius: 12px;
+  border-radius: 5px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
   z-index: 10000;
   max-width: 320px;
@@ -33,11 +33,11 @@
 }
 
 .install-prompt .install-btn {
-  background: #E53E3E;
+  background: #d69e2e;
   color: #fff;
   border: none;
   padding: 0.5rem 1rem;
-  border-radius: 6px;
+  border-radius: 5px;
   font-size: 0.875rem;
   cursor: pointer;
   margin-right: 0.5rem;
@@ -67,7 +67,7 @@
   align-items: center;
   justify-content: center;
   text-align: center;
-  background: #0a192f;
+  background: #1a1a1a;
   color: #fff;
   padding: 2rem;
 }
@@ -76,7 +76,7 @@
   width: 80px;
   height: 80px;
   margin-bottom: 1.5rem;
-  color: #E53E3E;
+  color: #D69E2E;
 }
 
 .offline-icon svg {
@@ -99,17 +99,17 @@
 
 .offline-container button {
   padding: 0.75rem 2rem;
-  background: #E53E3E;
+  background: #d69e2e;
   color: #fff;
   border: none;
-  border-radius: 8px;
+  border-radius: 5px;
   font-weight: 600;
   cursor: pointer;
   transition: background 0.2s;
 }
 
 .offline-container button:hover {
-  background: #C53030;
+  background: #b8860b;
 }
 
 @media (max-width: 768px) {

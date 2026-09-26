@@ -24,7 +24,7 @@
 
     padding: 0 1rem;
 
-    background: rgba(10, 25, 47, 0.72);
+    background: rgba(23, 23, 23, 0.72);
     backdrop-filter: blur(12px);
 
     border-bottom: 1px solid var(--border-soft);
@@ -37,7 +37,7 @@
   .mobile-topbar h2 {
     font-size: 1.05rem;
     margin: 0;
-    color: linear-gradient(135deg, #ef4444, #c53030);
+    color: linear-gradient(135deg, #d69e2e, #b8860b);
   }
 
   .menu-btn {
@@ -49,7 +49,7 @@
     justify-content: center;
 
     border: none;
-    border-radius: 12px;
+    border-radius: 5px;
 
     background: rgba(255, 255, 255, 0.06);
 
@@ -173,7 +173,7 @@
     width: 100vw;
     margin-top: 0;
     height: 65vh;
-    border-radius: 0px;
+    border-radius: 5px;
     border-left: none;
     border-right: none;
     border-top: none;
@@ -245,11 +245,11 @@
     margin: 0;
   }
   .car-card {
-    background: rgba(17, 34, 64, 0.72);
+    background: rgba(33, 33, 33, 0.72);
 
     border: 1px solid var(--border-soft);
 
-    border-radius: var(--radius-lg);
+    border-radius: 5px;
 
     overflow: hidden;
 

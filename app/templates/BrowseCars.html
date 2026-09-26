@@ -5,103 +5,110 @@
     <title>Sarkin Mota Autos – Trusted Nigerian Car Marketplace</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <!-- Google Font -->
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 
     {% include '_pwa_head.html' %}
-  </head>
-<link rel="stylesheet" href="../static/browse-cars.css">
-<link rel="stylesheet" href="../static/dropdown.css">
 
+    <style>
+      .skip-link {
+        position: absolute;
+        top: -40px;
+        left: 0;
+        background: #000;
+        color: #fff;
+        padding: 8px 16px;
+        z-index: 1000;
+        text-decoration: none;
+        font-weight: 600;
+        transition: top 0.3s;
+      }
+      .skip-link:focus {
+        top: 0;
+      }
+    </style>
+
+    <link rel="stylesheet" href="../static/browse-cars.css">
+    <link rel="stylesheet" href="../static/dropdown.css">
+  </head>
 
   <body>
-    <header role="banner">
-        <div class="container" id="navcon">
-          <nav aria-label="Main navigation">
-            <div class="logo">Sarkin Mota Autos</div>
-            <div class="dropdown">
-              <button class="dropbtn" onclick="toggleMenu()">
-                <i data-lucide="menu" class="munb"></i>
-              </button>
-
-              <div id="menu" class="dropdown-content">
-                {% if current_user.is_authenticated %}
-                <a href="{{ url_for('dashboard') }}">Dashboard</a>
-                <a href="{{ url_for('orders.my_orders') }}">My Orders</a>
-                <a href="{{ url_for('profiles.saved_cars') }}">Saved Cars</a>
-                <a href="{{ url_for('profiles.view_profile') }}">Profile</a>
-                <a href="{{ url_for('auth.logout') }}">Logout</a>
-                {% else %}
-                <a href="{{ url_for('auth.login') }}">Sign In</a>
-                <a href="{{ url_for('auth.signup') }}">Sign Up</a>
-                {% endif %}
-              </div>
-            </div>
-            <form action="{{ url_for('cars.browse_cars') }}" method="GET" class="pc">
-              <div class="filter-group pc2" style="flex: 1 1 100%; min-width: 100%;">
-                <input
-                  type="text"
-                  id="search"
-                  name="q"
-                  placeholder="Search by make, model, or keyword..."
-                  value="{{ filters.q or '' }}"
-                />
-              </div>
-            </form>
-            <div class="nav-actions">
-              <a href="{{ url_for('profiles.about') }}" style="color: #fff"
-                >About</a
-              >
+     <header role="banner">
+      <div class="container" id="navcon">
+        <nav aria-label="Main navigation" style="padding-left: 1rem;">
+          <div class="logo">
+            <img src="../static/SMLOGO.webp" alt="Sarkin Mota Autos" />
+          </div>
+          <div class="dropdown">
+            <button class="dropbtn" onclick="toggleMenu()">
+              <i data-lucide="menu" class="munb"></i>
+            </button>
+            <div id="menu" class="dropdown-content">
+              <a href="{{ url_for('profiles.about') }}">About</a>
               {% if current_user.is_authenticated %}
-              <a
-                href="{{ url_for('dashboard') }}"
-                style="color: #fff"
-                class="btn-auth"
-              >
-                Dashboard
-              </a>
+              <a href="{{ url_for('dashboard') }}">Dashboard</a>
               {% else %}
-              <a
-                href="{{ url_for('auth.login') }}"
-                style="color: #fff"
-                class="btn-auth"
-                >Sign In</a
-              >
-              <a
-                href="{{ url_for('auth.signup') }}"
-                style="color: #fff"
-                class="btn-auth btn-signup"
-                >Sign Up</a
-              >
+              <a href="{{ url_for('auth.login') }}">Sign In</a>
+              <a href="{{ url_for('auth.signup') }}">Sign Up</a>
               {% endif %}
             </div>
-          </nav>
-        </div>
-    </header>
-    <a href="#main-content" class="skip-link">Skip to main content</a>
-    <main id="main-content">
-
-      <!-- Filter Bar -->
-      <div class="filter-container">
-        <form action="{{ url_for('cars.browse_cars') }}" method="GET" class="filter-bar">
-          <div class="filter-group inp2" style="flex: 1 1 100%; min-width: 100%;">
-            <label>Search</label>
-            <input
-              type="text"
-              id="search"
-              name="q"
-              placeholder="Search by make, model, or keyword..."
-              value="{{ filters.q or '' }}"
-            />
           </div>
 
-          <div class="filter-group">
-            <label>Make</label>
-           <select name="make">
+          <div class="nav-search">
+            <form action="{{ url_for('cars.browse_cars') }}" method="GET" class="search-form">
+              <input style="border: none;" type="text" id="nav-search" name="q" placeholder="Search cars by make, model..." value="{{ filters.q or '' }}" />
+              <button type="submit"><i data-lucide="search"></i></button>
+            </form>
+          </div>
+          <div class="nav-actions">
+   
+            {% if current_user.is_authenticated %}
+            <a
+              href="{{ url_for('dashboard') }}"
+              style="color: #fff"
+              class="btn-auth"
+            >
+              Dashboard
+            </a>
+            {% else %}
+            <a
+              href="{{ url_for('auth.signup') }}"
+              style="color: #fff"
+              class="btn-auth btn-signup"
+              >Get started</a
+            >
+            {% endif %}
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <div class="section" style="margin-top: 0rem; padding-top:0;">
+      <main id="main-content" style="margin-top: 0rem; padding-top:0;" >
+
+      <!-- Filter Bar -->
+      <div class="filter-section" style="margin-top: 0rem;">
+        <div class="container">
+          <form action="{{ url_for('cars.browse_cars') }}" method="GET" class="filter-bar">
+            <div class="filter-group inp2 filter-search-hidden" style="flex: 1 1 100%; min-width: 100%;">
+              <label>Search</label>
+              <input
+                type="text"
+                id="search"
+                name="q"
+                placeholder="Search by make, model, or keyword..."
+                value="{{ filters.q or '' }}"
+              />
+            </div>
+
+            <div class="filter-group">
+              <label>Make</label>
+             <select name="make">
     <option value="">All Makes</option>
 
     {% for make in makes %}
@@ -113,41 +120,40 @@
     </option>
     {% endfor %}
 </select>
-          </div>
+            </div>
 
-          <div class="filter-group">
-            <label>Condition</label>
-            <select name="condition">
-              <option value="">All</option>
-              <option
-                value="new"
-                {{ 'selected' if filters.condition == 'new' else '' }}
-              >
-                New
-              </option>
-              <option
-                value="used"
-                {{ 'selected' if filters.condition == 'used' else '' }}
-              >
-                Used
-              </option>
-            </select>
-          </div>
+            <div class="filter-group">
+              <label>Condition</label>
+              <select name="condition">
+                <option value="">All</option>
+                <option
+                  value="new"
+                  {{ 'selected' if filters.condition == 'new' else '' }}
+                >
+                  New
+                </option>
+                <option
+                  value="used"
+                  {{ 'selected' if filters.condition == 'used' else '' }}
+                >
+                  Used
+                </option>
+              </select>
+            </div>
 
-      
-
-          <div class="filter-actions">
-            <button type="submit">Apply Filters</button>
-            <a href="{{ url_for('cars.browse_cars') }}">Clear All</a>
-          </div>
-        </form>
+            <div class="filter-actions">
+              <button type="submit">Apply Filters</button>
+              <a href="{{ url_for('cars.browse_cars') }}">Clear All</a>
+            </div>
+          </form>
+        </div>
       </div>
 
       <!-- Results Count -->
       {% if cars %}
       <div
         class="results-count"
-        style="max-width: 1200px; margin: 0 auto; padding: 0 1.25rem"
+        
       >
         Showing <strong>{{ cars|length }}</strong> car{% if cars|length != 1
         %}s{% endif %} {% if filters.q %} matching "{{ filters.q }}"{% endif %}
@@ -156,7 +162,7 @@
       <section class="grid section">
         {% for car in cars %}
         <article class="card">
-          <div class="image-wrap featured-main">
+          <div class="image-wrap">
             <span class="badge {{ car.condition }}"
               >{{ car.condition|capitalize }}</span
             >
@@ -164,15 +170,17 @@
             <img
               src="{{ url_for('static', filename=car.image_url) }}"
               alt="{{ car.year }} {{ car.make }} {{ car.model }}"
+              loading="lazy"
             />
             {% else %}
             <img
               src="{{ url_for('static', filename='Assets/images/' + car.make + '.png') }}"
               alt="{{ car.year }} {{ car.make }} {{ car.model }}"
+              loading="lazy"
             />
             {% endif %}
           </div>
-          <div class="card-body featured-overlay">
+          <div class="card-body">
             <a href="{{ url_for('cars.car_detail', car_id=car.id) }}" style="text-decoration: none; color: inherit;">
               <div class="car-name">
                 {{ car.year }} {{ car.make }} {{ car.model }}
@@ -211,124 +219,101 @@
         <a href="{{ url_for('cars.browse_cars') }}">View All Cars</a>
       </div>
       {% endif %}
-      
+
       {% if pagination and pagination.pages > 1 %}
       <div class="pagination">
         {% if pagination.has_prev %}
         <a href="{{ url_for('cars.browse_cars', page=pagination.prev_num, **request.args) }}">← Prev</a>
         {% endif %}
-        
+
         <span class="active">{{ pagination.page }}</span>
-        
+
         {% if pagination.has_next %}
         <a href="{{ url_for('cars.browse_cars', page=pagination.next_num, **request.args) }}">Next →</a>
         {% endif %}
       </div>
       {% endif %}
     </main>
-    <footer role="contentinfo">
-      <div class="container footer-inner">
-        <div>© 2019–2026 Sarkin Mota Autos. All rights reserved.</div>
-        <div>Founded by <span>Dr. Aliyu Mohammad (Sarkin Mota)</span></div>
-      </div>
-    </footer>
+    </div>
+
     <script src="https://unpkg.com/lucide@latest"></script>
     <script>
-    lucide.createIcons();
-    /**
-     * Relevance-based search filtering for car listings
-     * 
-     * Priority system (higher = more relevant):
-     * 4 - Make/brand starts with query
-     * 3 - Model starts with query
-     * 2 - Make contains query
-     * 1 - Model contains query
-     * 0 - No match
-     */
-    const searchInput = document.getElementById("search");
-    const gridSection = document.querySelector(".grid");
+      lucide.createIcons();
 
-    if (searchInput && gridSection) {
-      searchInput.addEventListener("input", function () {
-        const query = this.value.toLowerCase().trim();
-        const cards = Array.from(document.querySelectorAll(".card"));
+      function attachLiveSearch(inputEl) {
+        if (!inputEl) return;
+        const gridSection = document.querySelector(".grid");
+        if (!gridSection) return;
 
-        // Calculate relevance score for each card
-        const cardsWithScores = cards.map((card) => {
-          const carNameElement = card.querySelector(".car-name");
-          const carName = carNameElement ? carNameElement.textContent.toLowerCase() : "";
-          
-          // Extract make (first word) and model (remaining words)
-          const nameParts = carName.trim().split(/\s+/);
-          const make = nameParts.length > 0 ? nameParts.slice(0, -1).join(" ") : ""; // e.g., "Toyota"
-          const model = nameParts.length > 1 ? nameParts.slice(-1)[0] : ""; // e.g., "Camry"
+        inputEl.addEventListener("input", function () {
+          const query = this.value.toLowerCase().trim();
+          const cards = Array.from(document.querySelectorAll(".card"));
 
-          let score = 0;
+          const cardsWithScores = cards.map((card) => {
+            const carNameElement = card.querySelector(".car-name");
+            const carName = carNameElement ? carNameElement.textContent.toLowerCase() : "";
 
-          if (query.length > 0) {
-            // Priority 1: Make starts with query (score 4)
-            if (make.startsWith(query)) {
-              score = 4;
-            }
-            // Priority 2: Model starts with query (score 3)
-            else if (model.startsWith(query)) {
-              score = 3;
-            }
-            // Priority 3: Make contains query (score 2)
-            else if (make.includes(query)) {
-              score = 2;
-            }
-            // Priority 4: Model contains query (score 1)
-            else if (model.includes(query)) {
+            const nameParts = carName.trim().split(/\s+/);
+            const make = nameParts.length > 0 ? nameParts.slice(0, -1).join(" ") : "";
+            const model = nameParts.length > 1 ? nameParts.slice(-1)[0] : "";
+
+            let score = 0;
+
+            if (query.length > 0) {
+              if (make.startsWith(query)) {
+                score = 4;
+              }
+              else if (model.startsWith(query)) {
+                score = 3;
+              }
+              else if (make.includes(query)) {
+                score = 2;
+              }
+              else if (model.includes(query)) {
+                score = 1;
+              }
+            } else {
               score = 1;
             }
-          } else {
-            // No query: show all cards
-            score = 1;
-          }
 
-          return { card, score, make, model };
-        });
-
-        // Filter and sort by relevance
-        const filteredAndSorted = cardsWithScores
-          .filter((item) => item.score > 0)
-          .sort((a, b) => {
-            // Sort by: score (desc), then make (asc), then model (asc)
-            if (b.score !== a.score) return b.score - a.score;
-            if (a.make !== b.make) return a.make.localeCompare(b.make);
-            return a.model.localeCompare(b.model);
+            return { card, score, make, model };
           });
 
-        // Hide all cards first
-        cards.forEach((card) => {
-          card.style.display = "none";
-        });
+          const filteredAndSorted = cardsWithScores
+            .filter((item) => item.score > 0)
+            .sort((a, b) => {
+              if (b.score !== a.score) return b.score - a.score;
+              if (a.make !== b.make) return a.make.localeCompare(b.make);
+              return a.model.localeCompare(b.model);
+            });
 
-        // Show and reorder filtered cards
-        filteredAndSorted.forEach((item, index) => {
-          item.card.style.display = "flex";
-          // Move card to correct position in DOM
-          if (index === 0) {
-            gridSection.insertBefore(item.card, gridSection.firstChild);
-          } else {
-            gridSection.insertBefore(item.card, filteredAndSorted[index - 1].card.nextSibling);
+          cards.forEach((card) => {
+            card.style.display = "none";
+          });
+
+          filteredAndSorted.forEach((item, index) => {
+            item.card.style.display = "flex";
+            if (index === 0) {
+              gridSection.insertBefore(item.card, gridSection.firstChild);
+            } else {
+              gridSection.insertBefore(item.card, filteredAndSorted[index - 1].card.nextSibling);
+            }
+          });
+
+          const resultsCount = document.querySelector(".results-count");
+          if (resultsCount) {
+            const visibleCount = filteredAndSorted.length;
+            resultsCount.innerHTML = `Showing <strong>${visibleCount}</strong> car${visibleCount !== 1 ? "s" : ""}${query ? ` matching "${query}"` : ""}`;
           }
         });
+      }
 
-        // Update results count display
-        const resultsCount = document.querySelector(".results-count");
-        if (resultsCount) {
-          const visibleCount = filteredAndSorted.length;
-          resultsCount.innerHTML = `Showing <strong>${visibleCount}</strong> car${visibleCount !== 1 ? "s" : ""}${query ? ` matching "${query}"` : ""}`;
-        }
-      });
-    }
-    function toggleMenu() {
-    document.getElementById("menu").classList.toggle("show");
-}
-  </script>
+      attachLiveSearch(document.getElementById("search"));
+      attachLiveSearch(document.getElementById("nav-search"));
+
+      function toggleMenu() {
+        document.getElementById("menu").classList.toggle("show");
+      }
+    </script>
   </body>
- 
 </html>
-

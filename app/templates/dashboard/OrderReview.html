@@ -10,16 +10,19 @@
       rel="stylesheet"
     />
 
-    <link rel="stylesheet" href="{{ url_for('static', filename='dashboard.css') }}" />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='dashboard.css') }}"
+    />
 
     <style>
       :root {
-        --bg-main: #0a192f;
-        --bg-card: #112240;
-        --bg-header: #020c1b;
+        --bg-main: #1a1a1a;
+        --bg-card: #2a2a2a;
+        --bg-header: #0d0d0d;
         --text-main: #f7fafc;
-        --text-muted: #a0aec0;
-        --accent-red: #e53e3e;
+        --text-muted: #ACACAC;
+--accent-red: #d69e2e;
         --accent-gold: #d69e2e;
         --border-soft: rgba(255, 255, 255, 0.08);
       }
@@ -221,9 +224,9 @@
       }
 
       .btn-confirm:hover {
-        background: #c53030;
+        background: #b8860b;
         transform: translateY(-2px);
-        box-shadow: 0 12px 28px rgba(229, 62, 62, 0.35);
+        box-shadow: 0 12px 28px rgba(214, 158, 46, 0.35);
       }
 
       .btn-cancel {
@@ -311,16 +314,29 @@
         .payment-info-text {
           font-size: 0.9rem;
         }
-
-
+      }
+    </style>
     {% include '_pwa_head.html' %}
   </head>
 
   <body>
     <a href="#main-content" class="skip-link">Skip to main content</a>
     <style>
-      .skip-link{position:absolute;top:-40px;left:0;background:#e53e3e;color:white;padding:8px 16px;z-index:100;text-decoration:none;font-weight:600;transition:top .3s}
-      .skip-link:focus{top:0}
+      .skip-link {
+        position: absolute;
+        top: -40px;
+        left: 0;
+        background: #d69e2e;
+        color: white;
+        padding: 8px 16px;
+        z-index: 100;
+        text-decoration: none;
+        font-weight: 600;
+        transition: top 0.3s;
+      }
+      .skip-link:focus {
+        top: 0;
+      }
     </style>
     <main id="main-content">
       <h1>Review Your Order</h1>
@@ -370,9 +386,7 @@
 
         <div class="review-row">
           <span class="review-label">Listed Price</span>
-          <span class="review-value"
-            >{{ car.price | currency }}</span
-          >
+          <span class="review-value">{{ car.price | currency }}</span>
         </div>
 
         {% if order_amount|float < car.price|float %}
@@ -503,4 +517,3 @@
     </footer>
   </body>
 </html>
-

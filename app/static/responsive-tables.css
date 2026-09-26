@@ -1,15 +1,15 @@
 /* Shared responsive table -> card system for admin tables */
 :root {
-  --color-bg-primary: #0a192f;
-  --color-bg-secondary: #020c1b;
-  --color-card: #112240;
-  --color-card-hover: #17315e;
+  --color-bg-primary: #1a1a1a;
+  --color-bg-secondary: #0d0d0d;
+  --color-card: #2a2a2a;
+  --color-card-hover: #333333;
 
-  --color-accent-red: #e53e3e;
+--color-accent-red: #d69e2e;
   --color-accent-gold: #d69e2e;
 
   --color-text-primary: #f7fafc;
-  --color-text-secondary: #a0aec0;
+  --color-text-secondary: #ACACAC;
 
   --border-soft: rgba(255, 255, 255, 0.08);
   --border-strong: rgba(255, 255, 255, 0.14);
@@ -60,9 +60,9 @@ body {
     display: block;
     margin: 12px 0;
     padding: 12px;
-    border-radius: var(--radius-md);
+    border-radius: 5px;
     border: 1px solid var(--border-soft);
-    background: rgba(12, 28, 50, 0.62);
+    background: rgba(26, 26, 26, 0.62);
     box-shadow:
       0 8px 20px rgba(0, 0, 0, 0.35),
       inset 0 1px 0 rgba(255, 255, 255, 0.02);
@@ -73,11 +73,11 @@ body {
 
   /* Subtle brightness alternation */
   .admin-table tr:nth-child(odd) {
-    background: rgba(12, 28, 50, 0.62);
+    background: rgba(26, 26, 26, 0.62);
   }
 
   .admin-table tr:nth-child(even) {
-    background: rgba(20, 40, 70, 0.66);
+    background: rgba(38, 38, 38, 0.66);
   }
 
   /* Cells become rows within each card */
@@ -174,7 +174,7 @@ body {
     width: auto;
     height: auto;
     object-fit: cover;
-    border-radius: 8px;
+    border-radius: 5px;
     flex: 0 0 auto;
   }
 

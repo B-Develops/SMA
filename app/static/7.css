@@ -1,28 +1,31 @@
 :root {
-  --bg-main: #0a192f;
-  --bg-card: #112240;
-  --bg-header: #020c1b;
+  --bg-main: #1a1a1a;
+  --bg-card: #2a2a2a;
+  --bg-header: #0d0d0d;
   --text-main: #f7fafc;
-  --text-muted: #a0aec0;
-  --accent-red: #e53e3e;
+  --text-muted: #ACACAC;
+--accent-gold: #d69e2e;
+  --accent-red: #d69e2e;
+  --accent-red-dark: #b8860b;
+  --color-accent-red: #d69e2e;
   --border-soft: rgba(255, 255, 255, 0.08);
 }
 :root {
-  --color-bg-primary: #0a192f; /* Deep indigo */
-  --color-bg-secondary: #020c1b;
-  --color-accent-red: #e53e3e; /* Crimson red */
+  --color-bg-primary: #1a1a1a; /* Deep grey */
+  --color-bg-secondary: #0d0d0d;
+  --color-accent-gold: #d69e2e; /* Subtle gold */
   --color-accent-gold: #d69e2e; /* Subtle gold */
   --color-text-primary: #f7fafc;
-  --color-text-secondary: #a0aec0;
-  --color-card-bg: #112240;
+  --color-text-secondary: #ACACAC;
+  --color-card-bg: #2a2a2a;
   --max-width: 1200px;
   --transition-base: 0.3s ease;
-  --bg-main: #0a192f;
-  --bg-card: #112240;
-  --bg-header: #020c1b;
+  --bg-main: #1a1a1a;
+  --bg-card: #2a2a2a;
+  --bg-header: #0d0d0d;
   --text-main: #f7fafc;
-  --text-muted: #b7c2d3;
-  --accent-red: #e53e3e;
+  --text-muted: #C1C1C1;
+  --accent-gold: #d69e2e;
   --accent-gold: #d69e2e;
   --border-soft: rgba(255, 255, 255, 0.08);
 }
@@ -40,7 +43,7 @@ body {
 }
 
 header {
-  background-color: rgba(10, 25, 47, 0.95);
+  background-color: rgba(26, 26, 26, 0.95);
   position: sticky;
   top: 0;
   z-index: 999;
@@ -86,7 +89,7 @@ nav {
   border: 1px solid rgba(255, 255, 255, 0.1);
   color: var(--color-text-primary);
   padding: 0.5rem 0.75rem;
-  border-radius: 4px;
+  border-radius: 5px;
   font-size: 0.9rem;
 }
 .nav-actions {
@@ -103,7 +106,7 @@ nav {
 
 .btn-auth {
   padding: 0.45rem 0.9rem;
-  border-radius: 6px;
+  border-radius: 5px;
   font-weight: 600;
   border: 1px solid var(--border-soft);
 }
@@ -134,7 +137,7 @@ main {
   display: flex;
   flex-direction: column;
   background: var(--bg-card);
-  border-radius: 16px;
+  border-radius: 5px;
   padding: 2rem;
   border: 1px solid var(--border-soft);
   transition: all ease 0.1s;
@@ -142,7 +145,7 @@ main {
 .listing:hover,
 .side-card:hover,
 .reviews:hover {
-  border-radius: 16px;
+  border-radius: 5px;
   border: 1px solid var(--accent-red);
   transition: all ease 0.4s;
 }
@@ -184,7 +187,7 @@ main {
 
 .btn {
   padding: 0.75rem 1.25rem;
-  border-radius: 10px;
+  border-radius: 5px;
   font-weight: 600;
   border: 1px solid var(--border-soft);
   background: transparent;
@@ -201,13 +204,13 @@ main {
 }
 
 .btn.primary:hover {
-  background: #c53030;
+  background: #b8860b;
 }
 
 /* ===== RIGHT SIDEBAR ===== */
 .side-card {
   background: var(--bg-card);
-  border-radius: 16px;
+  border-radius: 5px;
   padding: 2rem;
   border: 1px solid var(--border-soft);
   margin-bottom: 1.5rem;
@@ -236,7 +239,7 @@ main {
   margin: 0 auto 4rem;
   padding: 2.5rem;
   background: var(--bg-card);
-  border-radius: 16px;
+  border-radius: 5px;
   border: 1px solid var(--border-soft);
 }
 @media (max-width: 1024px) {
@@ -287,7 +290,7 @@ footer {
        FOOTER
        ===================== */
 footer {
-  background-color: #020c1b;
+  background-color: #0d0d0d;
   padding: 2rem 0;
   font-size: 0.9rem;
   color: var(--color-text-secondary);
@@ -308,7 +311,7 @@ footer span {
   position: fixed;
   inset: 0;
   background-image:
-    linear-gradient(rgba(9, 23, 44, 0.85), rgba(2, 12, 27, 0.9)),
+    linear-gradient(rgba(20, 20, 20, 0.85), rgba(13, 13, 13, 0.9)),
     url("../static/login-bg.png");
   background-size: cover;
   background-position: center;
@@ -335,7 +338,7 @@ img {
 .listing:hover,
 .side-card:hover,
 .reviews:hover {
-  border-color: rgba(229, 62, 62, 0.45);
+  border-color: rgba(214, 158, 46, 0.45);
   box-shadow: 0 12px 35px rgba(0, 0, 0, 0.28);
   transform: translateY(-3px);
 }
@@ -346,15 +349,15 @@ img {
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
 }
 .btn.primary {
-  box-shadow: 0 8px 20px rgba(229, 62, 62, 0.2);
+  box-shadow: 0 8px 20px rgba(214, 158, 46, 0.2);
 }
 
 .btn.primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 12px 28px rgba(229, 62, 62, 0.35);
+  box-shadow: 0 12px 28px rgba(214, 158, 46, 0.35);
 }
 .listing img {
-  border-radius: 14px;
+  border-radius: 5px;
   transition: transform 0.4s ease;
 }
 
@@ -369,8 +372,8 @@ img {
   content: "";
   position: absolute;
   inset: -1px;
-  border-radius: inherit;
-  background: linear-gradient(135deg, rgba(229, 62, 62, 0.18), transparent 35%);
+  border-radius: 5px;
+  background: linear-gradient(135deg, rgba(214, 158, 46, 0.18), transparent 35%);
   z-index: -1;
   filter: blur(22px);
 }
@@ -391,7 +394,7 @@ img {
   }
 }
 .btn-auth:hover {
-  border-color: rgba(229, 62, 62, 0.4);
+  border-color: rgba(214, 158, 46, 0.4);
   background: rgba(255, 255, 255, 0.03);
 }
 
@@ -418,8 +421,8 @@ img {
 #orderForm select:focus {
   outline: none;
   border-color: var(--accent-red) !important;
-  background-color: #0f203f;
-  box-shadow: 0 0 0 3px rgba(229, 62, 62, 0.1);
+  background-color: #1F1F1F;
+  box-shadow: 0 0 0 3px rgba(214, 158, 46, 0.1);
 }
 
 #submitBtn {
@@ -436,7 +439,7 @@ img {
 
 #submitBtn:not(:disabled):hover {
   transform: translateY(-2px);
-  box-shadow: 0 12px 28px rgba(229, 62, 62, 0.35);
+  box-shadow: 0 12px 28px rgba(214, 158, 46, 0.35);
 }
 
 /* MOBILE OPTIMIZATION */

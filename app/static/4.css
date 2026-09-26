@@ -1,80 +1,40 @@
 /* =====================================================
-   1. DESIGN TOKENS
-===================================================== */
+   SARKIN MOTA AUTOS - EDIT PROFILE
+   ===================================================== */
+
+/* ---------- 1. Design Tokens ---------- */
 
 :root {
-  /* Colours */
-
-  --color-bg-primary: #0a192f;
-  --color-bg-secondary: #112240;
-
-  --color-card: rgba(17, 34, 64, 0.72);
-
-  --color-accent-red: #e53e3e;
+  --color-bg-primary: #1a1a1a;
+  --color-bg-secondary: #0d0d0d;
+  --color-card-bg: #2a2a2a;
   --color-accent-gold: #d69e2e;
-
+  --color-accent-gold: #d69e2e;
+  --color-accent-red: #d69e2e;
+  --accent-red: #d69e2e;
+  --accent-red-dark: #b8860b;
   --color-text-primary: #f7fafc;
-  --color-text-secondary: #a0aec0;
-
+  --color-text-secondary: #ACACAC;
   --color-success: #22c55e;
-  --color-warning: #f59e0b;
-  --color-danger: #ef4444;
-  --color-info: #3b82f6;
-
-  /* Borders */
-
+  --color-danger: #d69e2e;
   --border-soft: rgba(255, 255, 255, 0.08);
-  --border-strong: rgba(255, 255, 255, 0.18);
-
-  /* Radius */
-
-  --radius-sm: 0.75rem;
-  --radius-md: 1rem;
-  --radius-lg: 1.5rem;
-  --radius-pill: 999px;
-
-  /* Shadows */
-
-  --shadow-md: 0 16px 40px rgba(0, 0, 0, 0.28);
-  --shadow-lg: 0 24px 55px rgba(0, 0, 0, 0.38);
-
-  /* Layout */
-
-  --sidebar-width: 280px;
-
-  /* Spacing */
-
-  --space-1: 0.25rem;
-  --space-2: 0.5rem;
-  --space-3: 1rem;
-  --space-4: 1.5rem;
-  --space-5: 2rem;
-  --space-6: 3rem;
-
-  /* Typography */
-
-  --text-xs: 0.75rem;
-  --text-sm: 0.875rem;
-  --text-md: 1rem;
-  --text-lg: 1.125rem;
-  --text-xl: 1.35rem;
-  --text-2xl: 1.8rem;
-  --text-3xl: 2.5rem;
-
-  /* Animation */
-
+  --border-strong: rgba(255, 255, 255, 0.14);
+  --radius-sm: 8px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.15);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.25);
   --transition-base: 0.3s ease;
 }
-/* =====================================================
-   2. RESET & BASE STYLES
-===================================================== */
+
+/* ---------- 2. Reset & Base ---------- */
 
 *,
 *::before,
 *::after {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
 }
 
 html {
@@ -83,25 +43,24 @@ html {
 
 body {
   font-family: "Inter", sans-serif;
-
-  background:
-    linear-gradient(rgba(9, 23, 44, 0.9), rgba(2, 12, 27, 0.92)),
-    url("../static/login-bg.png");
-
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
-
+  font-size: 1rem;
+  line-height: 1.6;
   color: var(--color-text-primary);
-
+  background: var(--color-bg-secondary);
   min-height: 100vh;
-
-  display: flex;
 }
 
-img {
-  display: block;
-  max-width: 100%;
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(20, 20, 20, 0.72), rgba(13, 13, 13, 0.82)),
+    url("../static/login-bg.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: -2;
 }
 
 a {
@@ -116,135 +75,503 @@ select {
   font: inherit;
 }
 
-button {
-  cursor: pointer;
-
-  border: none;
-
-  background: none;
+img {
+  display: block;
+  max-width: 100%;
 }
 
-ul {
-  list-style: none;
+/* ---------- 3. Auth Layout ---------- */
+
+.auth-page {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 0.95fr 1.05fr;
 }
-/* =====================================================
-   3. MAIN LAYOUT
-===================================================== */
 
-.main-wrapper {
-  flex: 1;
+/* ---------- 4. Left Brand Panel ---------- */
 
+.auth-brand {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background-color: #1a1a1a38;
+  border-right: 1px solid var(--border-soft);
+  overflow: hidden;
+}
+
+.brand-content {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 580px;
+  margin: 0 auto;
+  min-height: 620px;
   display: flex;
   flex-direction: column;
-
-  min-width: 0;
+  justify-content: space-between;
 }
 
-main {
+.cover {
+  height: 100%;
   width: 100%;
-
-  max-width: 1400px;
-
-  margin: 0 auto;
-
-  padding: 2.5rem;
-
-  flex: 1;
-}
-
-/* Sections */
-
-.section {
-  margin-bottom: 2.5rem;
-}
-
-.section-heading {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-
-  margin-bottom: 1.5rem;
 }
 
-.section-heading h2 {
-  font-size: var(--text-2xl);
+.cover.sec1 {
+  background:
+    linear-gradient(rgba(20, 20, 20, 0.72), rgba(13, 13, 13, 0.82)),
+    url("../static/login-bg.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
 
+.brand-logo {
+  display: inline-block;
+  color: var(--color-text-primary);
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  text-decoration: none;
+}
+
+.brand-logo span {
+  color: var(--color-accent-gold);
+}
+
+.brand-message {
+  max-width: 520px;
+}
+
+.brand-label,
+.auth-label {
+  display: block;
+  margin-bottom: 1rem;
+  color: var(--color-accent-gold);
+  font-size: 0.7rem;
   font-weight: 700;
+  letter-spacing: 0.14em;
 }
 
-.section-heading p {
-  margin-top: 0.35rem;
+.brand-message h2 {
+  margin: 0;
+  max-width: 500px;
+  color: var(--color-text-primary);
+  font-size: clamp(2.7rem, 4vw, 4.4rem);
+  line-height: 1.02;
+  letter-spacing: -0.045em;
+}
 
+.brand-message h2 span {
+  display: block;
+  color: var(--color-accent-red);
+}
+
+.brand-message p {
+  max-width: 470px;
+  margin: 1.75rem 0 0;
   color: var(--color-text-secondary);
-} /* =====================================================
-   4. REUSABLE COMPONENTS
-===================================================== */
-
-/* ---------- Glass Card ---------- */
-
-.card {
-  background: rgba(17, 34, 64, 0.72);
-
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
-
-  border: 1px solid var(--border-soft);
-
-  border-radius: var(--radius-lg);
-
-  padding: 2rem;
-
-  box-shadow: var(--shadow-md);
-
-  transition: var(--transition-base);
+  font-size: 0.95rem;
+  line-height: 1.7;
 }
 
-.card:hover {
-  transform: none;
-}
-
-/* ---------- Card Header ---------- */
-
-.card-header {
+.brand-footer {
   display: flex;
-
-  justify-content: space-between;
-  align-items: center;
-
-  margin-bottom: 2rem;
-}
-
-.card-header h2 {
-  font-size: var(--text-xl);
-
-  font-weight: 700;
-}
-
-.card-header p {
-  margin-top: 0.35rem;
-
+  gap: 2rem;
   color: var(--color-text-secondary);
+  font-size: 0.75rem;
 }
 
-/* ---------- Buttons ---------- */
+/* ---------- 5. Right Form Panel ---------- */
 
-.btn {
-  display: inline-flex;
-
+.auth-panel {
+  display: flex;
   align-items: center;
   justify-content: center;
 
-  gap: 0.7rem;
+  padding: 0;
+}
 
-  padding: 0.9rem 1.6rem;
+.auth-wrapper {
+  width: 100%;
+  max-width: 460px;
+}
 
-  border-radius: 999px;
+.mobile-brand {
+  display: none;
+}
 
+.auth-header {
+  margin-bottom: 2rem;
+}
+
+.auth-header h1 {
+  margin: 0;
+  color: var(--color-text-primary);
+  font-size: clamp(1.8rem, 3vw, 2.4rem);
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+}
+
+.auth-header p {
+  margin: 0.65rem 0 0;
+  color: var(--color-text-secondary);
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+
+/* ---------- 6. Flash Messages ---------- */
+
+.flash-messages {
+  margin-bottom: 1.5rem;
+}
+
+.flash {
+  padding: 0.85rem 1rem;
+  border-radius: 5px;
+  font-size: 0.85rem;
+  margin-bottom: 0.5rem;
+  border: 1px solid transparent;
+}
+
+.flash.success {
+  background: rgba(34, 197, 94, 0.08);
+  border-color: rgba(34, 197, 94, 0.2);
+  color: var(--color-success);
+}
+
+.flash.error {
+  background: rgba(214, 158, 46, 0.08);
+  border-color: rgba(214, 158, 46, 0.2);
+  color: var(--color-danger);
+}
+
+/* ---------- 7. Form ---------- */
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-group label {
+  color: var(--color-text-primary);
+  font-size: 0.8rem;
   font-weight: 600;
+}
 
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.25rem;
+}
+
+.form-group.full-width {
+  grid-column: 1 / -1;
+}
+
+/* ---------- 8. Inputs ---------- */
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+  width: 100%;
+  height: 48px;
+  padding: 0 1rem;
+  border: 1px solid var(--border-soft);
+  border-radius: 5px;
+  background: var(--color-bg-secondary);
+  color: var(--color-text-primary);
+  font-family: inherit;
+  font-size: 0.9rem;
   transition: var(--transition-base);
+}
 
+.form-group textarea {
+  min-height: 120px;
+  padding: 0.85rem 1rem;
+  resize: vertical;
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+  color: var(--color-text-secondary);
+  opacity: 0.55;
+}
+
+.form-group input:hover,
+.form-group textarea:hover {
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: var(--color-accent-gold);
+  background: var(--color-bg-secondary);
+  box-shadow: 0 0 0 3px rgba(128, 128, 128, 0.08);
+}
+
+.form-group input:disabled,
+.form-group input[readonly] {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+/* ---------- 9. Buttons ---------- */
+
+.login-button {
+  width: 100%;
+  height: 48px;
+  margin-top: 0.5rem;
+  border: 0;
+  border-radius: 5px;
+  background: var(--color-accent-red);
+  color: var(--color-text-primary);
+  font-family: inherit;
+  font-size: 0.9rem;
+  font-weight: 700;
   cursor: pointer;
+  transition: var(--transition-base);
+}
+
+.login-button:hover {
+  background: #b8860b;
+  transform: translateY(-1px);
+}
+
+.auth-divider {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 1.5rem 0 1rem;
+  color: var(--color-text-secondary);
+  font-size: 0.75rem;
+}
+
+.auth-divider::before,
+.auth-divider::after {
+  content: "";
+  height: 1px;
+  flex: 1;
+  background: var(--border-soft);
+}
+
+.signup-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 48px;
+  border: 1px solid var(--border-soft);
+  border-radius: 5px;
+  background: transparent;
+  color: var(--color-text-primary);
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: var(--transition-base);
+}
+
+.signup-button:hover {
+  background: var(--color-card-bg);
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.security-note {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+  color: var(--color-text-secondary);
+  font-size: 0.7rem;
+}
+
+.security-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: rgba(128, 128, 128, 0.1);
+  color: var(--color-accent-gold);
+  font-size: 0.65rem;
+  font-weight: 700;
+}
+
+/* ---------- 10. Profile Photo ---------- */
+
+.profile-photo-group {
+  gap: 0.75rem;
+}
+
+.profile-photo-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.profile-avatar-wrap {
+  position: relative;
+  width: 64px;
+  height: 64px;
+  flex-shrink: 0;
+}
+
+.profile-avatar {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: linear-gradient(
+    135deg,
+    var(--color-accent-red),
+    var(--color-accent-gold)
+  );
+  color: white;
+}
+
+.profile-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  display: block;
+}
+
+.avatar-placeholder {
+  font-size: 1.75rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.avatar-edit {
+  position: absolute;
+  right: -2px;
+  bottom: -2px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--color-accent-red);
+  color: white;
+  border: 2px solid var(--color-bg-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: var(--transition-base);
+}
+
+.avatar-edit:hover {
+  transform: scale(1.1);
+}
+
+.avatar-edit svg {
+  width: 14px;
+  height: 14px;
+}
+
+.profile-photo-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.profile-photo-title {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.profile-photo-hint {
+  font-size: 0.78rem;
+  color: var(--color-text-secondary);
+}
+
+.profile-photo-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.btn-sm {
+  height: 36px;
+  padding: 0 1rem;
+  font-size: 0.8rem;
+  border-radius: 5px;
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--color-text-secondary);
+  border: none;
+  padding: 0;
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition-base);
+}
+
+.btn-ghost:hover {
+  color: var(--color-danger);
+}
+
+/* ---------- 11. Section Labels ---------- */
+
+.auth-section-label {
+  color: var(--color-accent-gold);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  margin: 1.75rem 0 1rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border-soft);
+}
+
+.auth-section-label:first-of-type {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: none;
+}
+
+/* ---------- 12. Action Buttons ---------- */
+
+.auth-actions {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  padding: 0.85rem 1.5rem;
+  border-radius: 5px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: var(--transition-base);
+  cursor: pointer;
+  border: none;
 }
 
 .btn svg {
@@ -253,883 +580,272 @@ main {
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, var(--color-accent-red), #c53030);
-
-  color: #fff;
+  background: var(--color-accent-red);
+  color: white;
 }
 
 .btn-primary:hover {
-  transform: translateY(-3px);
-
-  box-shadow: 0 12px 30px rgba(229, 62, 62, 0.35);
+  background: #b8860b;
+  transform: translateY(-1px);
 }
 
 .btn-secondary {
+  background: transparent;
   color: var(--color-text-primary);
-
-  background: rgba(255, 255, 255, 0.05);
-
   border: 1px solid var(--border-soft);
 }
 
 .btn-secondary:hover {
-  background: rgba(255, 255, 255, 0.08);
-
+  background: rgba(255, 255, 255, 0.05);
   border-color: var(--border-strong);
 }
 
-/* ---------- Button Groups ---------- */
-
-.btn-group {
-  display: flex;
-
-  justify-content: flex-end;
-
-  gap: 1rem;
-
-  margin-top: 2rem;
-
-  flex-wrap: wrap;
-}
-
-/* ---------- Divider ---------- */
-
-.divider {
-  height: 1px;
-
-  background: var(--border-soft);
-
-  margin: 2rem 0;
-}
-/* =====================================================
-   5. FORM COMPONENTS
-===================================================== */
-
-/* ---------- Form Layout ---------- */
-
-.form-grid {
-  display: grid;
-
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-
-  gap: 1.75rem;
-
-  margin-top: 2rem;
-}
-
-.form-group {
-  display: flex;
-
-  flex-direction: column;
-
-  gap: 0.65rem;
-}
-
-.form-group.full-width {
-  grid-column: 1 / -1;
-}
-
-/* ---------- Labels ---------- */
-
-.form-group label {
-  font-size: var(--text-sm);
-
-  font-weight: 600;
-
-  color: var(--color-text-secondary);
-
-  letter-spacing: 0.02em;
-}
-
-/* ---------- Inputs ---------- */
-
-.form-group input,
-.form-group textarea,
-.form-group select {
-  width: 100%;
-
-  padding: 1rem 1.1rem;
-
-  background: rgba(255, 255, 255, 0.04);
-
-  color: var(--color-text-primary);
-
-  border: 1px solid var(--border-soft);
-
-  border-radius: var(--radius-md);
-
-  transition: var(--transition-base);
-}
-
-.form-group textarea {
-  min-height: 160px;
-
-  resize: vertical;
-}
-
-.form-group input::placeholder,
-.form-group textarea::placeholder {
-  color: var(--text-muted);
-}
-
-/* ---------- Focus ---------- */
-
-.form-group input:focus,
-.form-group textarea:focus,
-.form-group select:focus {
-  outline: none;
-
-  border-color: var(--color-accent-red);
-
-  background: rgba(255, 255, 255, 0.06);
-
-  box-shadow: 0 0 0 4px rgba(229, 62, 62, 0.15);
-}
-
-/* ---------- Read Only ---------- */
-
-.form-group input:disabled,
-.form-group input[readonly] {
-  opacity: 0.75;
-
-  cursor: not-allowed;
-
-  background: rgba(255, 255, 255, 0.03);
-}
-
-/* ---------- Helper Text ---------- */
-
-.form-help {
-  font-size: 0.82rem;
-
-  color: var(--text-muted);
-
-  line-height: 1.5;
-}
-
-/* ---------- Validation ---------- */
-
-.input-error {
-  border-color: var(--color-danger) !important;
-}
-
-.error-text {
-  font-size: 0.82rem;
-
-  color: var(--color-danger);
-
-  margin-top: 0.35rem;
-}
-
-/* ---------- Success ---------- */
-
-.input-success {
-  border-color: var(--color-success) !important;
-}
-
-/* ---------- Character Counter ---------- */
-
-.character-count {
-  margin-top: 0.5rem;
-
-  text-align: right;
-
-  font-size: 0.8rem;
-
-  color: var(--text-muted);
-}
-
-/* ---------- Form Section ---------- */
-
-.form-section + .form-section {
-  margin-top: 3rem;
-
-  padding-top: 2rem;
-
-  border-top: 1px solid var(--border-soft);
-}
-/* =====================================================
-   6. PROFILE HERO & AVATAR
-===================================================== */
-
-.profile-hero {
-  position: relative;
-
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 3rem;
-
-  padding: 2.5rem;
-
-  margin-bottom: 2.5rem;
-
-  border-radius: var(--radius-lg);
-
-  background: linear-gradient(
-    135deg,
-    rgba(10, 25, 47, 0.92),
-    rgba(17, 34, 64, 0.82)
-  );
-
-  border: 1px solid var(--border-soft);
-
-  overflow: hidden;
-}
-
-.profile-hero::before {
-  content: "";
-
-  position: absolute;
-  inset: 0;
-
-  background: radial-gradient(
-    circle at top right,
-    rgba(214, 158, 46, 0.15),
-    transparent 45%
-  );
-
-  pointer-events: none;
-}
-
-/* ================================
-   Left Side
-================================ */
-
-.profile-info {
-  position: relative;
-
-  z-index: 2;
-
-  display: flex;
-
-  align-items: center;
-
-  gap: 2rem;
-}
-
-/* Avatar */
-
-.profile-avatar {
-  position: relative;
-
-  width: 120px;
-  height: 120px;
-
-  flex-shrink: 0;
-}
-
-.profile-avatar img {
-  width: 100%;
-  height: 100%;
-
-  object-fit: cover;
-
-  border-radius: 50%;
-
-  border: 4px solid rgba(255, 255, 255, 0.08);
-
-  box-shadow: var(--shadow-lg);
-}
-
-.avatar-placeholder {
-  width: 100%;
-  height: 100%;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  border-radius: 50%;
-
-  background: linear-gradient(
-    135deg,
-    var(--color-accent-red),
-    var(--color-accent-gold)
-  );
-
-  color: #fff;
-
-  font-size: 2.7rem;
-
-  font-weight: 700;
-}
-
-/* Camera Button */
-
-.avatar-edit {
-  position: absolute;
-
-  right: 0;
-  bottom: 0;
-
-  width: 38px;
-  height: 38px;
-
-  border-radius: 50%;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  background: var(--color-accent-red);
-
-  color: #fff;
-
-  border: 3px solid var(--color-bg-primary);
-
-  cursor: pointer;
-
-  transition: var(--transition-base);
-}
-
-.avatar-edit:hover {
-  transform: scale(1.08);
-}
-
-/* ================================
-   User Info
-================================ */
-
-.profile-details h1 {
-  font-size: var(--text-3xl);
-
-  margin-bottom: 0.4rem;
-}
-
-.profile-details p {
-  color: var(--color-text-secondary);
-
-  line-height: 1.7;
-
-  max-width: 520px;
-}
-
-.profile-meta {
-  display: flex;
-
-  flex-wrap: wrap;
-
-  gap: 1rem;
-
-  margin-top: 1.25rem;
-}
-
-.meta-item {
-  display: flex;
-
-  align-items: center;
-
-  gap: 0.5rem;
-
-  color: var(--color-text-secondary);
-
-  font-size: var(--text-sm);
-}
-
-.meta-item svg {
-  width: 16px;
-  height: 16px;
-
-  color: var(--color-accent-gold);
-}
-
-/* ================================
-   Right Side
-================================ */
-
-.profile-actions {
-  position: relative;
-
-  z-index: 2;
-
-  display: flex;
-
-  flex-direction: column;
-
-  gap: 1rem;
-
-  min-width: 220px;
-}
-
-.profile-actions .btn {
-  width: 100%;
-}
-
-/* List Cars visual treatment */
-.profile-hero {
-  min-height: 240px;
-  padding: 0;
-  border-radius: 18px;
-  background: rgba(17, 34, 64, 0.7);
-  border-color: rgba(148, 163, 184, 0.13);
-  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.35);
-  isolation: isolate;
-}
-
-.profile-hero::before {
-  background:
-    linear-gradient(rgba(2, 12, 27, 0.45), rgba(2, 12, 27, 0.65)),
-    url("../static/Screenshot 2026-05-31 161247.png") center/cover no-repeat;
-  filter: brightness(0.75) saturate(0.9);
-  z-index: -2;
-}
-
-.profile-hero::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    90deg,
-    rgba(2, 12, 27, 0.9),
-    rgba(2, 12, 27, 0.45),
-    rgba(2, 12, 27, 0.15)
-  );
-  z-index: -1;
-}
-
-.profile-info {
-  width: 100%;
-  padding: 48px;
-}
-
-.profile-details h1 {
-  font-size: 2.5rem;
-  letter-spacing: -0.5px;
-}
-
-.profile-details p {
-  color: rgba(248, 250, 252, 0.82);
-}
-
-.card {
-  border-radius: 18px;
-  padding: 0;
-  background: linear-gradient(145deg, #11224080, rgba(8, 17, 29, 0.541));
-  border-color: rgba(148, 163, 184, 0.13);
-  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.35);
-}
-
-.card-header {
-  margin-bottom: 0;
-  padding: 28px 30px;
-  border-bottom: 1px solid rgba(148, 163, 184, 0.13);
-}
-
-.card-header h2 {
-  font-size: 22px;
-}
-
-.card-header p,
-.form-help,
-.character-count {
-  font-size: 12px;
-}
-
-.form-section {
-  margin-top: 0;
-  padding: 27px 30px;
-}
-
-.card .form-section + .form-section {
-  margin-top: 0;
-  padding-top: 27px;
-  border-top: 0;
-}
-
-.form-grid {
-  gap: 17px;
-  margin-top: 0;
-}
-
-.form-group {
-  gap: 0.5rem;
-}
-
-.form-group label {
-  color: #cbd5e1;
-  font-size: 14px;
-}
-
-.form-group input,
-.form-group textarea,
-.form-group select {
-  padding: 0.8rem 1rem;
-  border-radius: 9px;
-  background: rgba(3, 10, 18, 0.65);
-  border-color: rgba(148, 163, 184, 0.13);
-  font-size: 15px;
-}
-
-.form-group input:focus,
-.form-group textarea:focus,
-.form-group select:focus {
-  border-color: rgba(239, 68, 68, 0.55);
-  background: rgba(3, 10, 18, 0.9);
-  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.07);
-}
-
-.btn-group {
-  justify-content: center;
-  gap: 1rem;
-  margin-top: 2rem;
-}
-
-.btn {
-  border-radius: 9px;
-  padding: 0.8rem 1.5rem;
-  font-size: 14px;
-}
-
-.btn-primary {
-  background: linear-gradient(135deg, #ef4444, #dc2626);
-}
+/* ---------- 13. Responsive ---------- */
 
 @media (max-width: 768px) {
-  .profile-info {
-    padding: 28px 22px;
-  }
-
-  .profile-hero {
+  .auth-page {
+    min-height: 100dvh;
     display: block;
   }
 
-  .card-header,
-  .form-section {
-    padding: 22px 18px;
-  }
-}
-/* =====================================================
-   7. SETTINGS COMPONENTS
-===================================================== */
-
-/* Settings Container */
-
-.settings-list {
-  display: flex;
-
-  flex-direction: column;
-
-  gap: 1rem;
-}
-
-/* Individual Setting */
-
-.setting-item {
-  display: flex;
-
-  justify-content: space-between;
-
-  align-items: center;
-
-  gap: 2rem;
-
-  padding: 1.25rem 0;
-
-  border-bottom: 1px solid var(--border-soft);
-}
-
-.setting-item:last-child {
-  border-bottom: none;
-}
-
-/* Left Side */
-
-.setting-info {
-  display: flex;
-
-  align-items: flex-start;
-
-  gap: 1rem;
-
-  flex: 1;
-}
-
-/* Icon */
-
-.setting-icon {
-  width: 48px;
-  height: 48px;
-
-  border-radius: 14px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  background: rgba(229, 62, 62, 0.12);
-
-  color: var(--color-accent-red);
-
-  flex-shrink: 0;
-}
-
-.setting-icon svg {
-  width: 22px;
-  height: 22px;
-}
-
-/* Text */
-
-.setting-info h4 {
-  margin-bottom: 0.35rem;
-
-  font-size: var(--text-lg);
-
-  font-weight: 600;
-}
-
-.setting-info p {
-  color: var(--color-text-secondary);
-
-  line-height: 1.6;
-
-  font-size: var(--text-sm);
-}
-
-/* =====================================================
-   TOGGLE SWITCH
-===================================================== */
-
-.switch {
-  position: relative;
-
-  width: 58px;
-  height: 32px;
-
-  flex-shrink: 0;
-}
-
-.switch input {
-  opacity: 0;
-
-  width: 0;
-  height: 0;
-}
-
-/* Slider */
-
-.slider {
-  position: absolute;
-
-  inset: 0;
-
-  cursor: pointer;
-
-  background: rgba(255, 255, 255, 0.08);
-
-  border: 1px solid var(--border-soft);
-
-  border-radius: 999px;
-
-  transition: var(--transition-base);
-}
-
-/* Circle */
-
-.slider::before {
-  content: "";
-
-  position: absolute;
-
-  left: 4px;
-  top: 3px;
-
-  width: 24px;
-  height: 24px;
-
-  border-radius: 50%;
-
-  background: white;
-
-  transition: var(--transition-base);
-}
-
-/* Checked */
-
-.switch input:checked + .slider {
-  background: linear-gradient(135deg, var(--color-accent-red), #c53030);
-
-  border-color: transparent;
-}
-
-.switch input:checked + .slider::before {
-  transform: translateX(26px);
-}
-
-/* Disabled */
-
-.switch input:disabled + .slider {
-  opacity: 0.55;
-
-  cursor: not-allowed;
-}
-
-/* Hover */
-
-.setting-item:hover {
-  background: rgba(255, 255, 255, 0.02);
-
-  border-radius: var(--radius-md);
-
-  padding-left: 1rem;
-  padding-right: 1rem;
-}
-/* =====================================================
-   8. RESPONSIVE DESIGN
-===================================================== */
-
-/* ---------- Large Tablets ---------- */
-
-@media (max-width: 1200px) {
-  main {
-    padding: 2rem;
-  }
-
-  .profile-hero {
-    padding: 2rem;
-
-    gap: 2rem;
-  }
-
-  .form-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-/* ---------- Tablets ---------- */
-
-@media (max-width: 992px) {
-  .profile-hero {
-    flex-direction: column;
-
-    align-items: flex-start;
-  }
-
-  .profile-info {
-    width: 100%;
-
-    flex-direction: column;
-
-    align-items: flex-start;
-  }
-
-  .profile-actions {
-    width: 100%;
-
-    flex-direction: row;
-
-    min-width: unset;
-  }
-
-  .profile-actions .btn {
-    flex: 1;
-  }
-
-  .setting-item {
-    flex-direction: column;
-
-    align-items: flex-start;
-  }
-
-  .switch {
-    margin-left: auto;
-  }
-}
-
-/* ---------- Mobile ---------- */
-
-@media (max-width: 768px) {
-  .sidebar {
+  .auth-brand {
     display: none;
   }
 
-  main {
-    padding: 1.5rem;
+  .auth-panel {
+    min-height: 100dvh;
+    display: flex;
+    align-items: flex-start;
+    padding: 0 1.25rem 2rem;
+    background: #0d0d0d91;
   }
 
-  .card {
-    padding: 1.5rem;
+  .mobile-brand {
+    display: block;
+    margin-bottom: 3rem;
   }
 
-  .profile-hero {
-    padding: 1.75rem;
+  .mobile-brand .brand-logo {
+    font-size: 1.1rem;
   }
 
-  .profile-avatar {
-    width: 90px;
-    height: 90px;
+  .auth-header {
+    margin-bottom: 1.75rem;
   }
 
-  .avatar-placeholder {
+  .auth-label {
+    font-size: 0.65rem;
+    margin-bottom: 0.55rem;
+  }
+
+  .auth-header h1 {
     font-size: 2rem;
   }
 
-  .profile-details h1 {
-    font-size: 2rem;
+  .auth-header p {
+    font-size: 0.82rem;
   }
 
-  .btn-group {
+  .login-form {
+    gap: 1rem;
+  }
+
+  .form-group input,
+  .form-group textarea {
+    height: 48px;
+  }
+
+  .auth-section-label {
+    margin: 1.5rem 0 0.75rem;
+    padding-top: 1.25rem;
+  }
+
+  .auth-actions {
     flex-direction: column;
   }
 
-  .btn {
+  .auth-actions .btn {
     width: 100%;
   }
-}
 
-/* ---------- Small Phones ---------- */
+  .profile-photo-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .profile-photo-actions {
+    width: 100%;
+  }
+
+  .profile-photo-actions .btn {
+    flex: 1;
+    justify-content: center;
+  }
+}
 
 @media (max-width: 480px) {
-  main {
-    padding: 1rem;
+  .auth-panel {
+    padding-inline: 1rem;
+    background: #0d0d0d91;
   }
 
-  .profile-hero {
-    padding: 1.5rem;
-
-    border-radius: var(--radius-md);
+  .auth-wrapper {
+    padding-top: 1.5rem;
   }
 
-  .card {
-    padding: 1.25rem;
+  .mobile-brand {
+    margin-bottom: 2.5rem;
   }
 
-  .profile-details h1 {
-    font-size: 1.7rem;
+  .auth-header h1 {
+    font-size: 1.75rem;
   }
 
-  .setting-icon {
-    width: 42px;
-    height: 42px;
+  .auth-header p {
+    font-size: 0.78rem;
   }
 
-  .setting-icon svg {
-    width: 18px;
-    height: 18px;
+  .form-group input,
+  .form-group textarea {
+    height: 46px;
   }
 
-  .avatar-edit {
-    width: 34px;
-    height: 34px;
+  .profile-avatar-wrap {
+    width: 56px;
+    height: 56px;
   }
 }
-/* =====================================================
-   9. FINAL POLISH
-===================================================== */
 
-/* ---------- Global Transitions ---------- */
-
-* {
-  transition:
-    background-color 0.25s ease,
-    border-color 0.25s ease,
-    color 0.25s ease,
-    transform 0.25s ease,
-    box-shadow 0.25s ease;
+/* Fixed auth shell with an independently scrolling form panel */
+html,
+body {
+  height: 100%;
+  overflow: hidden;
 }
 
-/* ---------- Scrollbar ---------- */
+body {
+  min-height: 100vh;
+}
+
+.main-wrapper {
+  width: 100%;
+  height: 100vh;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.main-wrapper > .auth-page {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  max-width: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.auth-brand,
+.auth-panel {
+  min-height: 0;
+  height: 100%;
+}
+
+.cover.sec1 {
+  height: 100%;
+}
+
+.brand-content {
+  min-height: 0;
+  height: 100%;
+  padding: 3rem;
+}
+
+.auth-panel {
+  align-items: flex-start;
+  justify-content: flex-start;
+  height: 100vh;
+  min-height: 0 !important;
+  max-height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior: contain;
+  background: #0d0d0d91 !important;
+  backdrop-filter: blur(14px) saturate(120%);
+  -webkit-backdrop-filter: blur(14px) saturate(120%);
+  border-left: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.auth-panel-content {
+  width: 100%;
+  min-height: 100%;
+  padding: 3rem clamp(1.5rem, 4vw, 4rem);
+}
+
+.auth-panel > .cover {
+  min-height: 0;
+  height: auto;
+  width: 100%;
+  align-items: flex-start;
+}
+
+.auth-wrapper {
+  width: min(100%, 760px);
+  max-width: none;
+  min-height: 100%;
+  padding: 3rem clamp(1.5rem, 4vw, 4rem);
+}
+
+@media (max-width: 768px) {
+  html,
+  body {
+    overflow: auto;
+  }
+
+  .main-wrapper {
+    height: auto;
+    min-height: 100vh;
+    overflow: visible;
+  }
+
+  .main-wrapper > .auth-page {
+    height: auto;
+    min-height: 100vh;
+    overflow: visible;
+  }
+
+  .auth-panel {
+    height: auto;
+    min-height: 100vh;
+    overflow: visible;
+    border-left: 0;
+  }
+
+  .auth-panel > .cover {
+    min-height: 100vh;
+  }
+
+  .brand-content {
+    padding: 2rem 1.25rem;
+  }
+
+  .auth-wrapper {
+    width: 100%;
+    padding: 2rem 1.25rem 3rem;
+  }
+
+  .auth-panel-content {
+    min-height: 100vh;
+    padding: 2rem 1.25rem 3rem;
+  }
+}
+@media (max-width: 480px) {
+  .avatar-placeholder {
+    font-size: 1.5rem;
+  }
+}
+
+/* ---------- 14. Final Polish ---------- */
 
 ::-webkit-scrollbar {
   width: 10px;
@@ -1141,223 +857,1893 @@ main {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.12);
   border-radius: 999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.28);
+  background: rgba(255, 255, 255, 0.25);
 }
-
-/* Firefox */
 
 * {
   scrollbar-width: thin;
   scrollbar-color: rgba(255, 255, 255, 0.15) transparent;
 }
 
-/* ---------- Text Selection ---------- */
-
 ::selection {
-  background: rgba(229, 53, 62, 0.35);
-  color: #fff;
+  background: rgba(214, 158, 46, 0.35);
+  color: white;
 }
 
-/* ---------- Focus ---------- */
-
 :focus-visible {
-  outline: 2px solid var(--color-accent-red);
-
+  outline: 2px solid var(--color-accent-gold);
   outline-offset: 3px;
 }
 
-/* ---------- Tables ---------- */
-
-table {
-  width: 100%;
-
-  border-collapse: collapse;
+.skip-link {
+  position: absolute;
+  top: -50px;
+  left: 1rem;
+  z-index: 9999;
+  padding: 0.7rem 1rem;
+  background: var(--color-accent-red);
+  color: var(--color-text-primary);
+  text-decoration: none;
+  font-weight: 600;
 }
 
-th,
-td {
-  padding: 1rem;
-
-  vertical-align: middle;
+.skip-link:focus {
+  top: 1rem;
 }
+/* =====================================================
+   RIGHT PANEL — PROFILE CONTENT IMPROVEMENTS
+   ===================================================== */
 
-/* ---------- Utility Classes ---------- */
+/* Main right panel */
+.auth-panel {
+  background:
+    radial-gradient(
+      circle at top right,
+      rgba(100, 100, 100, 0.12),
+      transparent 40%
+    ),
+    rgba(33, 33, 33, 0.55);
 
-.text-center {
-  text-align: center;
-}
-
-.text-right {
-  text-align: right;
-}
-
-.w-100 {
-  width: 100%;
-}
-
-.hidden {
-  display: none !important;
+  padding: 0;
 }
 
-.mt-1 {
-  margin-top: var(--space-1);
-}
-.mt-2 {
-  margin-top: var(--space-2);
-}
-.mt-3 {
-  margin-top: var(--space-3);
-}
-.mt-4 {
-  margin-top: var(--space-4);
-}
-.mt-5 {
-  margin-top: var(--space-5);
-}
-.mt-6 {
-  margin-top: var(--space-6);
+/* Better content positioning */
+.auth-wrapper {
+  width: min(100%, 680px);
+  margin: 0 auto;
+  min-height: auto;
+  padding: 3.5rem 2.5rem 5rem;
 }
 
-.mb-1 {
-  margin-bottom: var(--space-1);
-}
-.mb-2 {
-  margin-bottom: var(--space-2);
-}
-.mb-3 {
-  margin-bottom: var(--space-3);
-}
-.mb-4 {
-  margin-bottom: var(--space-4);
-}
-.mb-5 {
-  margin-bottom: var(--space-5);
-}
-.mb-6 {
-  margin-bottom: var(--space-6);
+/* =========================================
+   PROFILE IMAGE / HERO
+   ========================================= */
+
+/* Prevent large images inside the right panel */
+.auth-wrapper > img,
+.auth-wrapper img.profile-image,
+.profile-hero img {
+  width: 180px;
+  height: 180px;
+
+  max-width: 100%;
+
+  object-fit: cover;
+
+  border-radius: 50%;
+
+  margin: 0 auto 2rem;
+
+  border: 3px solid rgba(255, 255, 255, 0.1);
+
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+
+  display: block;
 }
 
-/* ---------- Fade Animation ---------- */
+/* If your large image is inside a hero container */
+.profile-hero {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
-@keyframes fadeUp {
-  from {
-    opacity: 0;
+  margin-bottom: 2rem;
+}
 
-    transform: translateY(20px);
+/* =========================================
+   HEADER
+   ========================================= */
+
+.auth-header {
+  margin-bottom: 2.5rem;
+}
+
+.auth-header h1 {
+  font-size: 2.1rem;
+  font-weight: 750;
+
+  letter-spacing: -0.04em;
+
+  margin-bottom: 0.5rem;
+}
+
+.auth-header p {
+  max-width: 520px;
+
+  color: rgba(212, 212, 212, 0.75);
+
+  font-size: 0.9rem;
+
+  line-height: 1.7;
+}
+
+/* =========================================
+   PROFILE INFO
+   ========================================= */
+
+.profile-info,
+.profile-details {
+  display: flex;
+  flex-direction: column;
+
+  gap: 0.75rem;
+
+  margin-bottom: 2.5rem;
+
+  padding: 1.25rem;
+
+  background: rgba(255, 255, 255, 0.035);
+
+  border: 1px solid rgba(255, 255, 255, 0.07);
+
+  border-radius: 5px;
+}
+
+/* Individual info rows */
+.profile-info-item,
+.profile-detail {
+  display: flex;
+
+  align-items: center;
+
+  gap: 0.75rem;
+
+  color: var(--color-text-secondary);
+
+  font-size: 0.88rem;
+}
+
+.profile-info-item svg,
+.profile-detail svg {
+  width: 18px;
+  height: 18px;
+
+  flex-shrink: 0;
+
+  color: var(--color-accent-gold);
+
+  opacity: 0.9;
+}
+
+/* =========================================
+   FORM SECTIONS
+   ========================================= */
+
+.auth-section-label {
+  display: flex;
+  align-items: center;
+
+  margin-top: 2.5rem;
+  margin-bottom: 1.25rem;
+
+  padding-top: 2rem;
+
+  color: var(--color-text-primary);
+
+  font-size: 1.1rem;
+
+  font-weight: 700;
+
+  letter-spacing: -0.01em;
+
+  text-transform: none;
+
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* First section shouldn't have excessive border spacing */
+.auth-section-label:first-of-type {
+  margin-top: 0;
+
+  padding-top: 0;
+
+  border-top: none;
+}
+
+/* =========================================
+   FORM CARD FEEL
+   ========================================= */
+
+.login-form {
+  gap: 1.1rem;
+
+  padding: 1.75rem;
+
+  background: rgba(11, 11, 11, 0.3);
+
+  border: 1px solid rgba(255, 255, 255, 0.06);
+
+  border-radius: 5px;
+
+  backdrop-filter: blur(10px);
+}
+
+/* Better labels */
+.form-group label {
+  margin-bottom: 0.15rem;
+
+  color: rgba(226, 232, 240, 0.9);
+
+  font-size: 0.78rem;
+
+  font-weight: 600;
+}
+
+/* Improved inputs */
+.form-group input,
+.form-group textarea,
+.form-group select {
+  background: rgba(11, 11, 11, 0.55);
+
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  border-radius: 5px;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+  border-color: var(--color-accent-gold);
+
+  background: rgba(11, 11, 11, 0.75);
+
+  box-shadow: 0 0 0 3px rgba(128, 128, 128, 0.08);
+}
+
+/* =========================================
+   ACTION BUTTONS
+   ========================================= */
+
+.auth-actions {
+  justify-content: flex-end;
+
+  margin-top: 2rem;
+
+  padding-top: 1.5rem;
+
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.btn {
+  min-width: 140px;
+
+  height: 46px;
+
+  border-radius: 5px;
+}
+
+/* =========================================
+   RESPONSIVE
+   ========================================= */
+
+@media (max-width: 768px) {
+  .auth-wrapper {
+    width: 100%;
+
+    padding: 2rem 1.25rem 3rem;
   }
 
-  to {
-    opacity: 1;
+  .login-form {
+    padding: 1.25rem;
+  }
 
-    transform: translateY(0);
+  .auth-wrapper > img,
+  .auth-wrapper img.profile-image,
+  .profile-hero img {
+    width: 130px;
+    height: 130px;
+  }
+
+  .auth-actions {
+    flex-direction: column-reverse;
+  }
+
+  .auth-actions .btn {
+    width: 100%;
   }
 }
+/* =====================================================
+   EDIT PROFILE — RIGHT PANEL REDESIGN
+   Add this at the END of the CSS
+===================================================== */
 
-.fade-up {
-  animation: fadeUp 0.6s ease both;
+/* ---------- RIGHT PANEL ---------- */
+
+.auth-panel {
+  background:
+    radial-gradient(circle at 100% 0%, rgba(100, 100, 100, 0.1), transparent 35%),
+    rgba(23, 23, 23, 0.88);
+
+  overflow-y: auto;
 }
 
-.fade-delay-1 {
-  animation-delay: 0.1s;
+.auth-panel-content {
+  width: min(100%, 900px);
+  margin: 0 auto;
+
+  padding: 3.5rem 3rem 5rem;
 }
 
-.fade-delay-2 {
-  animation-delay: 0.2s;
-}
+/* =====================================================
+   PROFILE HERO
+===================================================== */
 
-.fade-delay-3 {
-  animation-delay: 0.3s;
-}
-
-/* ---------- Card Performance ---------- */
-
-.card,
-.profile-hero,
-.form-group,
-.setting-item {
-  will-change: transform;
-}
-
-/* ---------- Prevent Layout Overflow ---------- */
-
-.main-wrapper,
-main,
-.card,
-.form-grid,
 .profile-hero {
-  min-width: 0;
+  margin-bottom: 2rem;
 }
 
-/* ---------- Disabled States ---------- */
+.profile-info {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
 
-.disabled,
-button:disabled,
-input:disabled {
-  opacity: 0.6;
+  padding: 1.5rem;
 
-  cursor: not-allowed;
+  background: rgba(255, 255, 255, 0.035);
+
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  border-radius: 5px;
+
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 
-/* ---------- Loading State ---------- */
+/* ---------- AVATAR ---------- */
 
-.loading {
-  pointer-events: none;
-
-  opacity: 0.7;
-}
-
-/* ---------- Glass Effect Enhancement ---------- */
-
-.card,
-.profile-hero {
+.profile-avatar {
   position: relative;
+
+  width: 96px;
+  height: 96px;
+
+  min-width: 96px;
+
+  border-radius: 50%;
+
+  overflow: visible;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: linear-gradient(135deg, #d69e2e, #b8860b);
+
+  border: 3px solid rgba(255, 255, 255, 0.12);
+
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+/* THIS fixes the huge/oval profile image */
+
+.profile-avatar img {
+  width: 100% !important;
+  height: 100% !important;
+
+  object-fit: cover;
+
+  border-radius: 50% !important;
+
+  display: block;
 
   overflow: hidden;
 }
 
-.card::after,
-.profile-hero::after {
-  content: "";
+/* Avatar initials */
 
+.avatar-placeholder {
+  font-size: 2rem;
+  font-weight: 700;
+
+  color: white;
+}
+
+/* Camera button */
+
+.avatar-edit {
   position: absolute;
 
-  inset: 0;
+  right: -3px;
+  bottom: -3px;
 
+  width: 32px;
+  height: 32px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: #d69e2e;
+
+  border: 3px solid #171717;
+
+  color: white;
+
+  cursor: pointer;
+
+  transition: 0.25s ease;
+}
+
+.avatar-edit:hover {
+  transform: scale(1.1);
+
+  background: #b8860b;
+}
+
+.avatar-edit svg {
+  width: 15px;
+  height: 15px;
+}
+
+/* =====================================================
+   PROFILE TEXT
+===================================================== */
+
+.profile-details {
+  flex: 1;
+  min-width: 0;
+}
+
+.profile-details h1 {
+  margin: 0;
+
+  font-size: clamp(1.7rem, 3vw, 2.2rem);
+
+  font-weight: 750;
+
+  line-height: 1.15;
+
+  letter-spacing: -0.04em;
+
+  color: var(--color-text-primary);
+}
+
+.profile-details > p {
+  margin: 0.45rem 0 1rem;
+
+  font-size: 0.9rem;
+
+  color: var(--color-text-secondary);
+
+  line-height: 1.6;
+}
+
+/* =====================================================
+   PROFILE META
+===================================================== */
+
+.profile-meta {
+  display: flex;
+  flex-wrap: wrap;
+
+  gap: 0.7rem 1.2rem;
+}
+
+.meta-item {
+  display: flex;
+  align-items: center;
+
+  gap: 0.45rem;
+
+  color: rgba(212, 212, 212, 0.8);
+
+  font-size: 0.8rem;
+}
+
+.meta-item svg {
+  width: 15px;
+  height: 15px;
+
+  color: #aaaaaa;
+
+  flex-shrink: 0;
+}
+
+/* =====================================================
+   SECTIONS
+===================================================== */
+
+.section {
+  margin-top: 1.5rem;
+}
+
+.card {
+  background: rgba(255, 255, 255, 0.035);
+
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  border-radius: 5px;
+
+  overflow: hidden;
+
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+
+  transition:
+    border-color 0.25s ease,
+    transform 0.25s ease;
+}
+
+.card:hover {
+  border-color: rgba(170, 170, 170, 0.18);
+}
+
+/* =====================================================
+   CARD HEADER
+===================================================== */
+
+.card-header {
+  padding: 1.5rem 1.75rem;
+
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+
+  background: rgba(255, 255, 255, 0.015);
+}
+
+.card-header h2 {
+  margin: 0;
+
+  font-size: 1.1rem;
+
+  font-weight: 700;
+
+  color: var(--color-text-primary);
+
+  letter-spacing: -0.02em;
+}
+
+.card-header p {
+  margin: 0.35rem 0 0;
+
+  font-size: 0.82rem;
+
+  color: var(--color-text-secondary);
+}
+
+/* =====================================================
+   FORM AREA
+===================================================== */
+
+.form-section {
+  padding: 1.75rem;
+}
+
+.form-grid {
+  display: grid;
+
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+
+  gap: 1.35rem;
+}
+
+.form-group {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 0.45rem;
+}
+
+.form-group.full-width {
+  grid-column: 1 / -1;
+}
+
+/* Labels */
+
+.form-group label {
+  color: rgba(241, 245, 249, 0.9);
+
+  font-size: 0.8rem;
+
+  font-weight: 600;
+}
+
+/* Inputs */
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+
+  border: 1px solid rgba(255, 255, 255, 0.09);
+
+  border-radius: 5px;
+
+  background: rgba(11, 11, 11, 0.55);
+
+  color: var(--color-text-primary);
+
+  transition: all 0.2s ease;
+}
+
+.form-group input {
+  height: 48px;
+
+  padding: 0 1rem;
+}
+
+.form-group textarea {
+  min-height: 130px;
+
+  padding: 0.9rem 1rem;
+
+  resize: vertical;
+}
+
+.form-group input:hover,
+.form-group textarea:hover {
+  border-color: rgba(255, 255, 255, 0.16);
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  outline: none;
+
+  border-color: #b8860b;
+
+  background: rgba(11, 11, 11, 0.8);
+
+  box-shadow: 0 0 0 3px rgba(136, 136, 136, 0.1);
+}
+
+/* Read-only email */
+
+.form-group input[readonly] {
+  opacity: 0.65;
+
+  cursor: not-allowed;
+
+  background: rgba(255, 255, 255, 0.025);
+}
+
+/* Help text */
+
+.form-help {
+  color: rgba(161, 161, 161, 0.7);
+
+  font-size: 0.72rem;
+
+  line-height: 1.4;
+}
+
+.character-count {
+  text-align: right;
+
+  color: rgba(161, 161, 161, 0.65);
+
+  font-size: 0.7rem;
+
+  margin-top: 0.2rem;
+}
+
+/* =====================================================
+   BUTTONS
+===================================================== */
+
+.btn-group {
+  display: flex;
+
+  justify-content: flex-end;
+
+  align-items: center;
+
+  gap: 0.75rem;
+
+  margin-top: 1.5rem;
+}
+
+.btn-group .btn {
+  min-width: 130px;
+
+  height: 46px;
+
+  border-radius: 5px;
+}
+
+/* Primary */
+
+.btn-primary {
+  background: #d69e2e;
+
+  color: white;
+
+  border: 1px solid #d69e2e;
+
+  box-shadow: 0 8px 20px rgba(102, 102, 102, 0.18);
+}
+
+.btn-primary:hover {
+  background: #b8860b;
+
+  border-color: #b8860b;
+
+  transform: translateY(-2px);
+}
+
+/* Secondary */
+
+.btn-secondary {
+  background: rgba(255, 255, 255, 0.03);
+
+  color: var(--color-text-primary);
+
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.07);
+
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media (max-width: 768px) {
+  .auth-panel-content {
+    padding: 2rem 1.25rem 3rem;
+  }
+
+  .profile-info {
+    flex-direction: column;
+
+    align-items: flex-start;
+
+    padding: 1.25rem;
+  }
+
+  .profile-avatar {
+    width: 80px;
+    height: 80px;
+
+    min-width: 80px;
+  }
+
+  .profile-meta {
+    flex-direction: column;
+
+    gap: 0.6rem;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .form-group.full-width {
+    grid-column: auto;
+  }
+
+  .form-section {
+    padding: 1.25rem;
+  }
+
+  .card-header {
+    padding: 1.25rem;
+  }
+
+  .btn-group {
+    flex-direction: column-reverse;
+  }
+
+  .btn-group .btn {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .profile-details h1 {
+    font-size: 1.65rem;
+  }
+
+  .profile-avatar {
+    width: 72px;
+    height: 72px;
+
+    min-width: 72px;
+  }
+}
+/* =====================================================
+   FINAL PROFILE LAYOUT FIXES
+===================================================== */
+
+/* Make the right-side content wider */
+.auth-panel-content {
+  width: 100%;
+  max-width: none;
+  margin: 0 auto;
+
+  padding: 2.5rem clamp(2rem, 4vw, 4rem) 4rem;
+}
+
+/* =====================================================
+   PROFILE HERO — SHORTER & WIDER
+===================================================== */
+
+.profile-hero {
+  width: 100%;
+  margin-bottom: 1.25rem;
+}
+
+/* Make the first card span the available width */
+.profile-info {
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+
+  gap: 1.25rem;
+
+  padding: 1.15rem 1.5rem;
+
+  min-height: 120px;
+
+  border-radius: 5px;
+}
+
+/* =====================================================
+   AVATAR — REMOVE BLUE CRESCENT
+===================================================== */
+
+.profile-avatar {
+  position: relative;
+
+  width: 88px;
+  height: 88px;
+
+  min-width: 88px;
+
+  /* Remove the blue background completely */
+  background: transparent !important;
+
+  /* The actual image must stay inside */
+  overflow: visible;
+
+  border: none;
+
+  box-shadow: none;
+
+  border-radius: 50%;
+}
+
+/* Create the actual circular clipping for the image */
+.profile-avatar img {
+  width: 88px !important;
+  height: 88px !important;
+
+  display: block;
+
+  object-fit: cover;
+
+  border-radius: 50% !important;
+
+  background: transparent !important;
+}
+
+/* If the user has no image */
+.avatar-placeholder {
+  width: 88px;
+  height: 88px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: #d69e2e;
+
+  color: white;
+
+  overflow: hidden;
+}
+
+/* =====================================================
+   CAMERA BUTTON
+===================================================== */
+
+.avatar-edit {
+  position: absolute;
+
+  right: -2px;
+  bottom: -2px;
+
+  width: 30px;
+  height: 30px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: #d69e2e;
+
+  color: white;
+
+  border: 3px solid #171717;
+
+  z-index: 5;
+
+  cursor: pointer;
+}
+
+.avatar-edit svg {
+  width: 14px;
+  height: 14px;
+}
+
+/* =====================================================
+   PROFILE DETAILS
+===================================================== */
+
+.profile-details {
+  flex: 1;
+}
+
+.profile-details h1 {
+  margin-bottom: 0.2rem;
+}
+
+.profile-details > p {
+  margin: 0.25rem 0 0.75rem;
+}
+
+/* Make contact information more compact */
+.profile-meta {
+  display: flex;
+
+  flex-direction: row;
+
+  flex-wrap: wrap;
+
+  gap: 0.5rem 1.25rem;
+}
+
+.meta-item {
+  font-size: 0.78rem;
+}
+
+/* =====================================================
+   MAKE OTHER CARDS USE FULL WIDTH TOO
+===================================================== */
+
+.section,
+.card {
+  width: 100%;
+}
+
+/* Reduce unnecessary vertical space */
+.card-header {
+  padding: 1.25rem 1.5rem;
+}
+
+.form-section {
+  padding: 1.5rem;
+}
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media (max-width: 768px) {
+  .auth-panel-content {
+    padding: 2rem 1.25rem 3rem;
+  }
+
+  .profile-info {
+    padding: 1.1rem;
+
+    min-height: auto;
+  }
+
+  .profile-avatar,
+  .profile-avatar img {
+    width: 76px !important;
+    height: 76px !important;
+
+    min-width: 76px;
+  }
+
+  .avatar-placeholder {
+    width: 76px;
+    height: 76px;
+  }
+}
+/* =====================================================
+   PROFILE HERO — HORIZONTAL CARD LAYOUT
+===================================================== */
+
+.profile-hero {
+  width: 100% !important;
+  max-width: none;
+
+  margin-bottom: 1.5rem;
+
+  display: block;
+
+  height: 240px;
+}
+
+/* OUTER CARD */
+
+.profile-info {
+  width: 100%;
+  max-width: none;
+  flex: none;
+  min-height: 150px;
+
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+
+  gap: 2rem;
+
+  padding: 1.5rem 2rem;
+
+  background: rgba(255, 255, 255, 0.035);
+
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  border-radius: 5px;
+
+  position: relative;
+  flex-direction: row;
+  align-self: center;
+  justify-self: center;
+  width: 100%;
+}
+
+/* INNER CONTENT — TRANSPARENT */
+
+.profile-details {
+  flex: 1;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  min-width: 0;
+
+  padding: 0;
+
+  background: transparent !important;
+
+  border: none !important;
+
+  border-radius: 0 !important;
+
+  box-shadow: none !important;
+}
+
+/* TITLE */
+
+.profile-details h1 {
+  margin: 0;
+
+  font-size: 2rem;
+  font-weight: 750;
+
+  line-height: 1.15;
+
+  letter-spacing: -0.04em;
+}
+
+/* DESCRIPTION */
+
+.profile-details > p {
+  margin: 0.45rem 0 1rem;
+
+  color: var(--color-text-secondary);
+
+  font-size: 0.9rem;
+
+  line-height: 1.6;
+}
+
+/* CONTACT DETAILS */
+
+.profile-meta {
+  display: flex;
+  flex-wrap: wrap;
+
+  gap: 0.75rem 1.5rem;
+}
+
+.meta-item {
+  display: flex;
+  align-items: center;
+
+  gap: 0.45rem;
+
+  color: rgba(212, 212, 212, 0.8);
+
+  font-size: 0.8rem;
+
+  white-space: nowrap;
+}
+
+.meta-item svg {
+  width: 16px;
+  height: 16px;
+
+  color: #aaaaaa;
+}
+
+/* =====================================================
+   AVATAR — RIGHT SIDE
+===================================================== */
+
+.profile-avatar {
+  order: 2;
+
+  position: relative;
+
+  /* Same approximate height as profile card content */
+  width: 150px;
+  height: 150px;
+
+  min-width: 150px;
+
+  align-self: center;
+
+  background: transparent !important;
+
+  border: none !important;
+
+  border-radius: 50%;
+
+  box-shadow: none !important;
+
+  overflow: visible;
+
+  display: block;
+}
+
+/* PROFILE IMAGE */
+
+.profile-avatar img {
+  width: 150px !important;
+  height: 150px !important;
+
+  display: block;
+
+  object-fit: cover;
+
+  border-radius: 50% !important;
+
+  border: 2px solid rgba(255, 255, 255, 0.12);
+
+  background: transparent !important;
+
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+/* AVATAR FALLBACK */
+
+.avatar-placeholder {
+  width: 150px;
+  height: 150px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: #d69e2e;
+
+  font-size: 3rem;
+
+  font-weight: 700;
+
+  color: white;
+}
+
+/* CAMERA BUTTON */
+
+.avatar-edit {
+  position: absolute;
+
+  right: 0;
+  bottom: 0;
+
+  width: 36px;
+  height: 36px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: #d69e2e;
+
+  color: white;
+
+  border: 3px solid #212121;
+
+  z-index: 10;
+
+  cursor: pointer;
+
+  transition: 0.25s ease;
+}
+
+.avatar-edit:hover {
+  transform: scale(1.1);
+
+  background: #b8860b;
+}
+
+.avatar-edit svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media (max-width: 768px) {
+  .profile-info {
+    flex-direction: column;
+
+    align-items: flex-start;
+
+    padding: 1.5rem;
+  }
+
+  .profile-avatar {
+    order: -1;
+
+    width: 110px;
+    height: 110px;
+
+    min-width: 110px;
+  }
+
+  .profile-avatar img,
+  .avatar-placeholder {
+    width: 110px !important;
+    height: 110px !important;
+  }
+
+  .profile-meta {
+    flex-direction: column;
+
+    gap: 0.6rem;
+  }
+}
+
+.sec1 {
+  background: none !important;
+}
+.auth-brand {
+  background-color: #1a1a1a73 !important;
+}
+
+/* ---------- Small helper text inside form-group ---------- */
+
+.form-group small {
+  color: var(--color-text-secondary);
+  font-size: 0.78rem;
+  line-height: 1.4;
+}
+
+/* ---------- Password Strength Indicator ---------- */
+
+.password-strength {
+  margin-top: 0.75rem;
+}
+
+.strength-bar {
+  height: 5px;
+  border-radius: 5px;
+  background: var(--color-bg-secondary);
+  overflow: hidden;
+  margin-bottom: 0.5rem;
+}
+
+.strength-bar-fill {
+  height: 100%;
+  width: 0%;
+  transition: var(--transition-base);
+  border-radius: 5px;
+}
+
+.strength-weak {
+  width: 33%;
+  background: #d69e2e;
+}
+
+.strength-medium {
+  width: 66%;
+  background: #d69e2e;
+}
+
+.strength-strong {
+  width: 100%;
+  background: #48bb78;
+}
+
+.strength-text {
+  font-size: 0.8rem;
+  color: var(--color-text-secondary);
+}
+
+/* ---------- Security Tips ---------- */
+
+.security-tips {
+  margin-top: 2rem;
+  padding: 1.25rem 1.5rem;
+  background: rgba(140, 140, 140, 0.1);
+  border: 1px solid rgba(140, 140, 140, 0.2);
+  border-radius: 5px;
+}
+
+.security-tips h4 {
+  margin: 0 0 0.75rem;
+  color: #8C8C8C;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.security-tips ul {
+  margin: 0;
+  padding-left: 1.25rem;
+  color: var(--color-text-secondary);
+  font-size: 0.85rem;
+  line-height: 1.6;
+}
+
+.security-tips li {
+  margin-bottom: 0.25rem;
+}
+
+/* =====================================================
+   SETTINGS PAGE
+   ===================================================== */
+
+.settings-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.setting-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  padding: 1.25rem 0;
+  border-bottom: 1px solid var(--border-soft);
+  transition: var(--transition-base);
+}
+
+.setting-row:last-child {
+  border-bottom: none;
+}
+
+.setting-row:hover {
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 5px;
+}
+
+.setting-info {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  flex: 1;
+}
+
+.setting-icon {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px;
+  background: rgba(214, 158, 46, 0.1);
+  color: var(--color-accent-red);
+  flex-shrink: 0;
+}
+
+.setting-icon svg {
+  width: 18px;
+  height: 18px;
+}
+
+.setting-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.setting-content h3 {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.setting-content p {
+  color: var(--color-text-secondary);
+  font-size: 0.85rem;
+  line-height: 1.6;
+}
+
+.setting-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-shrink: 0;
+}
+
+.setting-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-accent-red);
+  text-decoration: none;
+  transition: var(--transition-base);
+}
+
+.setting-link:hover {
+  color: #ff6b6b;
+  transform: translateX(3px);
+}
+
+.setting-link svg {
+  width: 14px;
+  height: 14px;
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+  padding: 0.4rem 0.85rem;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.status-badge.success {
+  background: rgba(34, 197, 94, 0.12);
+  color: var(--color-success);
+}
+
+.status-badge.warning {
+  background: rgba(245, 158, 11, 0.12);
+  color: var(--color-warning);
+}
+
+.status-badge.danger {
+  background: rgba(214, 158, 46, 0.12);
+  color: var(--color-danger);
+}
+
+.status-badge.info {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--color-text-secondary);
+}
+
+/* =====================================================
+   DANGER ZONE
+   ===================================================== */
+
+.danger-card {
+  position: relative;
+  border: 1px solid rgba(214, 158, 46, 0.25);
   background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.03),
+    180deg,
+    rgba(127, 29, 29, 0.18),
+    rgba(69, 10, 10, 0.12)
+  );
+  overflow: hidden;
+}
+
+.danger-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at top right,
+    rgba(214, 158, 46, 0.1),
     transparent 40%
   );
-
   pointer-events: none;
 }
 
-/* ---------- Print ---------- */
+.danger-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.75rem;
+}
 
-@media print {
-  .sidebar,
-  .btn,
-  .profile-actions,
-  .avatar-edit {
-    display: none !important;
+.danger-icon {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px;
+  background: rgba(214, 158, 46, 0.12);
+  color: var(--color-danger);
+  flex-shrink: 0;
+}
+
+.danger-icon svg {
+  width: 22px;
+  height: 22px;
+}
+
+.danger-header h2 {
+  color: var(--color-danger);
+  margin-bottom: 0.3rem;
+}
+
+.danger-header p {
+  color: var(--color-text-secondary);
+  font-size: 0.85rem;
+}
+
+.warning-box {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  padding: 1.25rem;
+  margin-bottom: 1.75rem;
+  border-radius: 5px;
+  background: rgba(214, 158, 46, 0.08);
+  border: 1px solid rgba(214, 158, 46, 0.18);
+}
+
+.warning-box svg {
+  width: 20px;
+  height: 20px;
+  color: var(--color-danger);
+  flex-shrink: 0;
+  margin-top: 0.1rem;
+}
+
+.warning-box p {
+  margin: 0;
+  color: var(--color-text-secondary);
+  line-height: 1.7;
+}
+
+.delete-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.delete-confirm {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.delete-confirm label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+}
+
+.delete-confirm input {
+  padding: 0.9rem 1rem;
+  border-radius: 5px;
+  border: 1px solid rgba(214, 158, 46, 0.25);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--color-text-primary);
+  transition: var(--transition-base);
+}
+
+.delete-confirm input:focus {
+  outline: none;
+  border-color: var(--color-danger);
+  box-shadow: 0 0 0 4px rgba(214, 158, 46, 0.15);
+}
+
+.danger-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+.btn-danger {
+  background: var(--color-danger);
+  color: #fff;
+}
+
+.btn-danger:hover {
+  background: #dc2626;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(214, 158, 46, 0.25);
+}
+
+/* =====================================================
+   RESPONSIVE — SETTINGS SPECIFIC
+   ===================================================== */
+
+@media (max-width: 768px) {
+  .auth-panel {
+    background: #0d0d0d91;
   }
 
-  body {
-    background: white;
-
-    color: black;
+  .setting-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
   }
 
-  .card {
-    border: 1px solid #ddd;
+  .setting-actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
 
-    box-shadow: none;
+  .danger-actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+}
 
-    background: white;
+@media (max-width: 480px) {
+  .auth-panel {
+    background: #0d0d0d91;
+  }
+
+  .setting-icon {
+    width: 40px;
+    height: 40px;
+  }
+
+  .setting-icon svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .setting-content h3 {
+    font-size: 0.85rem;
+  }
+
+  .setting-content p {
+    font-size: 0.8rem;
+  }
+
+  .status-badge {
+    font-size: 0.7rem;
+    padding: 0.35rem 0.7rem;
+  }
+
+  .danger-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .danger-actions {
+    flex-direction: column;
+  }
+
+  .danger-actions .btn-danger {
+    width: 100%;
+  }
+}
+
+/* =====================================================
+   NOTIFICATION SETTINGS
+   ===================================================== */
+
+.card h2 {
+  margin: 0 0 0.5rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+.card-description {
+  color: var(--color-text-secondary);
+  font-size: 0.85rem;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+.card .toggle-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.toggle-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--border-soft);
+}
+
+.toggle-item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.toggle-item:first-child {
+  padding-top: 0;
+}
+
+.toggle-info {
+  flex: 1;
+  padding-right: 1rem;
+}
+
+.toggle-label {
+  margin-bottom: 0.25rem;
+  color: var(--color-text-primary);
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.toggle-description {
+  font-size: 0.82rem;
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* Toggle Switch */
+
+.toggle-switch {
+  position: relative;
+  width: 52px;
+  height: 28px;
+  flex-shrink: 0;
+}
+
+.toggle-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--color-bg-secondary);
+  border: 1px solid var(--border-soft);
+  border-radius: 5px;
+  transition: var(--transition-base);
+}
+
+.toggle-slider::before {
+  position: absolute;
+  content: "";
+  height: 22px;
+  width: 22px;
+  left: 2px;
+  bottom: 2px;
+  background-color: var(--color-text-secondary);
+  border-radius: 50%;
+  transition: var(--transition-base);
+}
+
+.toggle-switch input:checked + .toggle-slider {
+  background-color: var(--color-accent-red);
+  border-color: var(--color-accent-red);
+}
+
+.toggle-switch input:checked + .toggle-slider::before {
+  transform: translateX(24px);
+  background-color: white;
+}
+
+.toggle-switch input:focus + .toggle-slider {
+  box-shadow: 0 0 0 3px rgba(214, 158, 46, 0.2);
+}
+
+/* Info Box */
+
+.info-box {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 1rem 1.25rem;
+  background: rgba(140, 140, 140, 0.1);
+  border: 1px solid rgba(140, 140, 140, 0.2);
+  border-radius: 5px;
+  margin-bottom: 1.75rem;
+}
+
+.info-box i {
+  flex-shrink: 0;
+  color: #8C8C8C;
+  margin-top: 0.1rem;
+}
+
+.info-box p {
+  margin: 0;
+  font-size: 0.88rem;
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+}
+
+/* Auth actions — full width buttons for notification settings */
+
+.auth-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+}
+
+.auth-actions .btn {
+  flex: 1;
+  min-width: 140px;
+  height: 46px;
+}
+
+/* Responsive — toggle switch stacks */
+
+@media (max-width: 768px) {
+  .toggle-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .toggle-switch {
+    align-self: flex-end;
+  }
+}
+
+@media (max-width: 480px) {
+  .info-box p {
+    font-size: 0.82rem;
+  }
+
+  .auth-actions {
+    flex-direction: column;
+  }
+
+  .auth-actions .btn {
+    width: 100%;
+    flex: none;
   }
 }

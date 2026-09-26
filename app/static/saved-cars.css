@@ -1,11 +1,11 @@
-﻿:root {
-  --color-bg-primary: #0a192f;
-  --color-bg-secondary: #020c1b;
-  --color-accent-red: #e53e3e;
+:root {
+  --color-bg-primary: #1a1a1a;
+  --color-bg-secondary: #0d0d0d;
+--color-accent-red: #d69e2e;
   --color-accent-gold: #d69e2e;
   --color-text-primary: #f7fafc;
-  --color-text-secondary: #a0aec0;
-  --color-card-bg: #112240;
+  --color-text-secondary: #ACACAC;
+  --color-card-bg: #2a2a2a;
   --border-soft: rgba(255, 255, 255, 0.08);
 }
 
@@ -53,7 +53,7 @@ h1 {
 
 .nav-tab {
   padding: 0.75rem 1.25rem;
-  border-radius: 0.7rem;
+  border-radius: 5px;
   background: transparent;
   border: 1px solid var(--border-soft);
   color: var(--color-text-secondary);
@@ -83,7 +83,7 @@ h1 {
 
 .car-card {
   background: var(--color-card-bg);
-  border-radius: 1rem;
+  border-radius: 5px;
   overflow: hidden;
   border: 1px solid var(--border-soft);
   backdrop-filter: blur(6px) saturate(120%);
@@ -139,7 +139,7 @@ h1 {
 /* Buttons */
 .btn {
   padding: 0.75rem 1.5rem;
-  border-radius: 6px;
+  border-radius: 5px;
   border: 1px solid var(--border-soft);
   background: transparent;
   color: var(--color-text-secondary);
@@ -156,13 +156,13 @@ h1 {
 }
 
 .btn-danger {
-  background: rgba(229, 62, 62, 0.2);
-  border-color: rgba(229, 62, 62, 0.5);
-  color: #fc8181;
+  background: rgba(214, 158, 46, 0.2);
+  border-color: rgba(214, 158, 46, 0.5);
+  color: #f0c65a;
 }
 
 .btn-danger:hover {
-  background: rgba(229, 62, 62, 0.3);
+  background: rgba(214, 158, 46, 0.3);
 }
 
 .btn-sm {
@@ -203,7 +203,7 @@ h1 {
 .pagination a,
 .pagination span {
   padding: 0.5rem 1rem;
-  border-radius: 0.5rem;
+  border-radius: 5px;
   border: 1px solid var(--border-soft);
   color: var(--color-text-secondary);
   text-decoration: none;
@@ -225,7 +225,7 @@ body::before {
   position: fixed;
   inset: 0;
   background-image:
-    linear-gradient(rgba(9, 23, 44, 0.72), rgba(2, 12, 27, 0.82)),
+    linear-gradient(rgba(22, 22, 22, 0.72), rgba(11, 11, 11, 0.82)),
     url("../static/login-bg.png");
   background-size: cover;
   background-position: center;
@@ -235,9 +235,9 @@ body::before {
 
 .container {
   margin-top: 1rem;
-  background: rgba(17, 34, 64, 0.18);
+  background: rgba(33, 33, 33, 0.18);
   border: 1px solid rgba(255, 255, 255, 0.05);
-  border-radius: 20px;
+  border-radius: 5px;
   backdrop-filter: blur(10px);
 }
 

@@ -11,18 +11,33 @@
 
     <!-- Google Fonts -->
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="../static/index.css" />
     <link rel="stylesheet" href="../static/dropdown.css" />
     <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+      function toggleMenu() {
+        const menu = document.getElementById('menu');
+        menu.classList.toggle('show');
+      }
+      
+      // Close menu when clicking outside
+      document.addEventListener('click', function(event) {
+        const dropdown = document.querySelector('.dropdown');
+        const menu = document.getElementById('menu');
+        if (!dropdown.contains(event.target) && menu.classList.contains('show')) {
+          menu.classList.remove('show');
+        }
+      });
+    </script>
     <style>
       .skip-link {
         position: absolute;
         top: -40px;
         left: 0;
-        background: #e53e3e;
+        background: #d69e2e;
         color: white;
         padding: 8px 16px;
         z-index: 100;
@@ -41,8 +56,10 @@
     <div id="bg-overlay"></div>
     <header role="banner">
       <div class="container" id="navcon">
-        <nav aria-label="Main navigation">
-          <div class="logo">Sarkin Mota Autos</div>
+        <nav aria-label="Main navigation" style="padding-left: 1rem;">
+          <div class="logo">
+            <img src="../static/SMLOGO.webp" alt="Sarkin Mota Autos" />
+          </div>
           <div class="dropdown">
             <button class="dropbtn" onclick="toggleMenu()">
               <i data-lucide="menu" class="munb"></i>
@@ -58,10 +75,26 @@
             </div>
           </div>
 
-          <div class="nav-actions">
-            <a href="{{ url_for('profiles.about') }}" style="color: #fff"
-              >About</a
+          <div class="nav-actions cbar" >
+            <a href="#home" style="color: #fff"  class="pagelink active">Home </a>
+            <a href="#listings" style="color: #fff" class="pagelink "
+              >Featured</a
             >
+            <a href="#about" style="color: #fff" class="pagelink "
+              >Contact</a
+            >
+
+            <a
+              href="#testimonials"
+              style="color: #fff"
+              class="pagelink "
+            >
+              Testimonial
+            </a>
+
+          </div>
+          <div class="nav-actions">
+   
             {% if current_user.is_authenticated %}
             <a
               href="{{ url_for('dashboard') }}"
@@ -72,16 +105,10 @@
             </a>
             {% else %}
             <a
-              href="{{ url_for('auth.login') }}"
-              style="color: #fff"
-              class="btn-auth"
-              >Sign In</a
-            >
-            <a
               href="{{ url_for('auth.signup') }}"
               style="color: #fff"
               class="btn-auth btn-signup"
-              >Sign Up</a
+              >Get started</a
             >
             {% endif %}
           </div>
@@ -91,15 +118,23 @@
 
     <main id="main-content">
       <!-- HERO -->
-      <section class="hero section reveal-section">
+      <section class="hero section reveal-section is-visible" id="home">
+        <!--
         <video class="section-video" autoplay muted loop playsinline preload="auto">
           <source src="../static/Bagged M2 Competition [4K].mp4" type="video/mp4" />
         </video>
+        -->
 
+        <div class="hero-slides" aria-hidden="true">
+          <div class="hero-slide is-active"></div>
+          <div class="hero-slide"></div>
+          <div class="hero-slide"></div>
+          <div class="hero-slide"></div>
+        </div>
         <div class="video-overlay"></div>
 
         <div class="container hero-content">
-          <h1>Trusted Car Sales Across Nigeria</h1>
+          <h1>FIND THE PERFECT CAR FOR YOUR NEXT JOURNEY</h1>
           <p>
             Buy and sell verified used cars with confidence. Direct ordering,
             professional inspections, and nationwide delivery — powered by
@@ -109,9 +144,93 @@
             <a href="{{ url_for('cars.browse_cars') }}" class="btn btn-primary"
               >Browse Cars</a
             >
-            <a href="{{ url_for('dashboard') }}" class="btn btn-secondary"
-              >List Your Car</a
+            <a href="{{ url_for('auth.login') }}" class="btn btn-secondary"
+              >Jump Back In</a
             >
+          </div>
+        </div>
+        <div class="slidercont" aria-label="Hero background slides">
+          <button class="slider is-active" type="button" aria-label="Show slide 1" aria-current="true"></button>
+          <button class="slider" type="button" aria-label="Show slide 2" aria-current="false"></button>
+          <button class="slider" type="button" aria-label="Show slide 3" aria-current="false"></button>
+          <button class="slider" type="button" aria-label="Show slide 4" aria-current="false"></button>
+        </div>
+      </section>
+
+      <!-- HOW TO USE -->
+
+      <!-- LISTINGS -->
+      <section class="listings section reveal-section" id="listings">
+        <div class="container" id="listing">
+          <div class="listings-header">
+    <div>
+        <p class="section-label">Featured Vehicles</p>
+        <h2>Discover Premium Selections</h2>
+        <p class="listings-subtitle">
+            Vehicles selected for their quality, condition and value.
+        </p>
+    </div>
+
+    <a href="{{ url_for('cars.browse_cars') }}" class="listings-view-all">
+        View All Vehicles →
+    </a>
+</div>
+
+          <div class="featured-layout">
+            <!-- Mercedes Hero Card -->
+            <a href="{{ url_for('cars.car_detail', car_id=1) }}" class="featured-hero-card">
+              <img
+                src="/static/Mercedes.png"
+                alt="Mercedes-Benz C300 Featured Vehicle"
+                class="featured-hero-image"
+              />
+              <div class="featured-hero-overlay">
+                <div class="featured-hero-content">
+                  <span class="featured-hero-tag">FEATURED VEHICLE</span>
+                  <h2 class="featured-hero-title">Mercedes-Benz C300</h2>
+                  <p class="featured-hero-specs">2.0L Turbo • 38,000 KM</p>
+                  <div class="featured-hero-price">₦18,200,000</div>
+                </div>
+                <div class="featured-hero-action">
+                  <span class="featured-hero-link">View Vehicle →</span>
+                </div>
+              </div>
+            </a>
+
+            <!-- Supporting Vehicles Grid -->
+            <div class="featured-supporting-grid">
+              <!-- Toyota Card -->
+              <a href="{{ url_for('cars.car_detail', car_id=2) }}" class="featured-supporting-card">
+                <img
+                  src="/static/Toyota.png"
+                  alt="Toyota Camry - ₦12,500,000"
+                  class="supporting-card-image"
+                />
+                <div class="supporting-card-overlay">
+                  <div class="supporting-card-content">
+                    <h3 class="supporting-card-title">Toyota Camry</h3>
+                    <div class="supporting-card-price">₦12,500,000</div>
+                    <span class="supporting-card-arrow">View Vehicle →</span>
+                  </div>
+                </div>
+              </a>
+
+              <!-- Honda Card -->
+              <a href="{{ url_for('cars.car_detail', car_id=3) }}" class="featured-supporting-card">
+                <img
+                  src="/static/Honda.png"
+                  alt="Honda Accord - ₦10,800,000"
+                  class="supporting-card-image"
+                />
+                <div class="supporting-card-overlay">
+                  <div class="supporting-card-content">
+                    <h3 class="supporting-card-title">Honda Accord</h3>
+                    <div class="supporting-card-price">₦10,800,000</div>
+                    <span class="supporting-card-arrow">View Vehicle →</span>
+                  </div>
+                </div>
+              </a>
+            </div>
           </div>
         </div>
       </section>
@@ -125,7 +244,7 @@
                 class="feature-icon"
                 viewBox="0 0 24 24"
                 fill="none"
-                stroke="#E53E3E"
+                stroke="#D69E2E"
                 stroke-width="2"
                 aria-hidden="true"
               >
@@ -155,7 +274,7 @@
                 class="feature-icon"
                 viewBox="0 0 24 24"
                 fill="none"
-                stroke="#38A169"
+                stroke="#D69E2E"
                 stroke-width="2"
                 aria-hidden="true"
               >
@@ -168,96 +287,134 @@
         </div>
       </section>
 
-      <!-- HOW TO USE -->
+      <!-- CONTACTS -->
+      <section class="contacts section reveal-section" id="about">
+        <div class="container">
+          <!-- Contact Header -->
+          <div class="contacts-header">
+          <p class="section-label">Get in Touch</p>
 
-      <!-- LISTINGS -->
-      <section class="listings section reveal-section">
-        <div class="container" id="listing">
-          <div class="listings-header">
-            <h2>Featured Listings</h2>
-            <a
-              href="{{ url_for('cars.browse_cars') }}"
-              class="btn btn-secondary"
-              >View All</a
-            >
-          </div>
-          <div class="featured-layout">
-            <div class="featured-main">
-              <img
-                src="/static/Mercedes.png"
-                alt="Mercedes-Benz C300 Featured Vehicle"
-              />
+          <h2>We'd Love to Hear From You</h2>
 
-              <div class="featured-overlay">
-                <span class="featured-tag"> Featured Vehicle </span>
+          <p class="contacts-subtitle">
+            Whether you're looking to buy, sell, or simply have a question — our
+            team is one message or call away.
+          </p>
+        </div>
 
-                <h2>Mercedes-Benz C300</h2>
+        <!-- Contact Content -->
+        <div class="contacts-layout">
+          <!-- Sarkin Mota -->
+          <article class="sarkinmota-card">
+            <div class="sarkinmota-image">
+              <img src="../static/ChatGPT Image Aug 24, 2026, 03_06_03 PM.png" alt="Sarkin Mota" />
+            </div>
 
-                <p>2.0L Turbo • 38,000 KM</p>
+            <div class="sarkinmota-content">
+              <span class="sarkinmota-label"> Meet the Founder </span>
 
-                <div class="listing-price">₦18,200,000</div>
+              <h3>Dr. Aliyu Mohammad</h3>
 
-                <a href="#" class="btn btn-primary"> View Details </a>
+              <p class="sarkinmota-title">Sarkin Mota</p>
+
+              <p class="sarkinmota-description">
+                The founder of Sarkin Mota Autos, committed to making buying and
+                selling vehicles across Nigeria more transparent, reliable, and
+                stress-free.
+              </p>
+            </div>
+          </article>
+
+          <!-- Contact Information -->
+          <div class="contacts-grid">
+            <!-- Phone -->
+            <div class="contact-card">
+              <div class="contact-card-icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path
+                    d="M22 16.92v3a2 2 0 0 1-2.18 2
+              19.79 19.79 0 0 1-8.63-3.07
+              19.5 19.5 0 0 1-6-6
+              19.79 19.79 0 0 1-3.07-8.67
+              A2 2 0 0 1 4.11 2h3a2 2 0 0 1
+              2 1.72c.127.96.361 1.903.7 2.81
+              a2 2 0 0 1-.45 2.11L8.09 9.91
+              a16 16 0 0 0 6 6l1.27-1.27
+              a2 2 0 0 1 2.11-.45
+              c.907.339 1.85.573 2.81.7
+              A2 2 0 0 1 22 16.92z"
+                  ></path>
+                </svg>
+              </div>
+
+              <div>
+                <h3>Call or WhatsApp</h3>
+
+                <p>
+                  <a href="tel:+234901234567"> +234 901 234 567 </a><br />
+
+                  <a href="tel:+234809876543"> +234 809 876 543 </a>
+                </p>
               </div>
             </div>
 
-            <div class="featured-side">
-              <article
-                class="listing-card"
-                style="
-                  backdrop-filter: blur(12px) saturate(120%);
-                  -webkit-backdrop-filter: blur(12px) saturate(120%);
-                  background: linear-gradient(
-                    transparent,
-                    rgba(7, 28, 59, 0.253)
-                  );
-                "
-              >
-                <div class="listing-image">
-                  <img
-                    src="/static/Toyota.png"
-                    alt="Toyota Camry - ₦12,500,000"
-                  />
-                </div>
+            <!-- Email -->
+            <div class="contact-card">
+              <div class="contact-card-icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path
+                    d="M4 4h16c1.1 0 2 .9 2 2v12
+              c0 1.1-.9 2-2 2H4
+              c-1.1 0-2-.9-2-2V6
+              c0-1.1.9-2 2-2z"
+                  ></path>
 
-                <div class="listing-content">
-                  <h3>Toyota Camry</h3>
+                  <polyline points="22,6 12,13 2,6"></polyline>
+                </svg>
+              </div>
 
-                  <div class="listing-price">₦12,500,000</div>
-                </div>
-              </article>
+              <div>
+                <h3>Email Us</h3>
 
-              <article
-                class="listing-card"
-                style="
-                  backdrop-filter: blur(12px) saturate(120%);
-                  -webkit-backdrop-filter: blur(12px) saturate(120%);
-                  background: linear-gradient(
-                    transparent,
-                    rgba(7, 28, 59, 0.253)
-                  );
-                "
-              >
-                <div class="listing-image">
-                  <img
-                    src="/static/Honda.png"
-                    alt="Honda Accord - ₦10,800,000"
-                  />
-                </div>
+                <p>
+                  <a href="mailto:info@sarkinmotaautos.com">
+                    info@sarkinmotaautos.com </a
+                  ><br />
 
-                <div class="listing-content">
-                  <h3>Honda Accord</h3>
+                  <a href="mailto:sales@sarkinmotaautos.com">
+                    sales@sarkinmotaautos.com
+                  </a>
+                </p>
+              </div>
+            </div>
 
-                  <div class="listing-price">₦10,800,000</div>
-                </div>
-              </article>
+            <!-- Hours -->
+            <div class="contact-card">
+              <div class="contact-card-icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <polyline points="12 6 12 12 16 14"></polyline>
+                </svg>
+              </div>
+
+              <div>
+                <h3>Business Hours</h3>
+
+                <p>
+                  Monday – Friday: 8:00 AM – 6:00 PM<br />
+                  Saturday: 9:00 AM – 4:00 PM<br />
+                  Sunday: Closed
+                </p>
+              </div>
             </div>
           </div>
+          </div>
         </div>
+      </div>
       </section>
 
       <!-- TESTIMONIALS -->
-      <section class="testimonials section reveal-section">
+      <section class="testimonials section reveal-section" id="testimonials">
         <div class="container">
           <div class="testimonials-header">
             <p class="section-label">Testimonials</p>
@@ -397,131 +554,6 @@
         </div>
       </section>
 
-      <!-- CONTACTS -->
-      <section class="contacts section reveal-section">
-        <div class="container">
-          <!-- Contact Header -->
-          <div class="contacts-header">
-          <p class="section-label">Get in Touch</p>
-
-          <h2>We'd Love to Hear From You</h2>
-
-          <p class="contacts-subtitle">
-            Whether you're looking to buy, sell, or simply have a question — our
-            team is one message or call away.
-          </p>
-        </div>
-
-        <!-- Contact Content -->
-        <div class="contacts-layout">
-          <!-- Sarkin Mota -->
-          <article class="sarkinmota-card">
-            <div class="sarkinmota-image">
-              <img src="../static/ChatGPT Image Aug 24, 2026, 03_06_03 PM.png" alt="Sarkin Mota" />
-            </div>
-
-            <div class="sarkinmota-content">
-              <span class="sarkinmota-label"> Meet the Founder </span>
-
-              <h3>Dr. Aliyu Mohammad</h3>
-
-              <p class="sarkinmota-title">Sarkin Mota</p>
-
-              <p class="sarkinmota-description">
-                The founder of Sarkin Mota Autos, committed to making buying and
-                selling vehicles across Nigeria more transparent, reliable, and
-                stress-free.
-              </p>
-            </div>
-          </article>
-
-          <!-- Contact Information -->
-          <div class="contacts-grid">
-            <!-- Phone -->
-            <div class="contact-card">
-              <div class="contact-card-icon">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <path
-                    d="M22 16.92v3a2 2 0 0 1-2.18 2
-              19.79 19.79 0 0 1-8.63-3.07
-              19.5 19.5 0 0 1-6-6
-              19.79 19.79 0 0 1-3.07-8.67
-              A2 2 0 0 1 4.11 2h3a2 2 0 0 1
-              2 1.72c.127.96.361 1.903.7 2.81
-              a2 2 0 0 1-.45 2.11L8.09 9.91
-              a16 16 0 0 0 6 6l1.27-1.27
-              a2 2 0 0 1 2.11-.45
-              c.907.339 1.85.573 2.81.7
-              A2 2 0 0 1 22 16.92z"
-                  ></path>
-                </svg>
-              </div>
-
-              <div>
-                <h3>Call or WhatsApp</h3>
-
-                <p>
-                  <a href="tel:+234901234567"> +234 901 234 567 </a><br />
-
-                  <a href="tel:+234809876543"> +234 809 876 543 </a>
-                </p>
-              </div>
-            </div>
-
-            <!-- Email -->
-            <div class="contact-card">
-              <div class="contact-card-icon">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <path
-                    d="M4 4h16c1.1 0 2 .9 2 2v12
-              c0 1.1-.9 2-2 2H4
-              c-1.1 0-2-.9-2-2V6
-              c0-1.1.9-2 2-2z"
-                  ></path>
-
-                  <polyline points="22,6 12,13 2,6"></polyline>
-                </svg>
-              </div>
-
-              <div>
-                <h3>Email Us</h3>
-
-                <p>
-                  <a href="mailto:info@sarkinmotaautos.com">
-                    info@sarkinmotaautos.com </a
-                  ><br />
-
-                  <a href="mailto:sales@sarkinmotaautos.com">
-                    sales@sarkinmotaautos.com
-                  </a>
-                </p>
-              </div>
-            </div>
-
-            <!-- Hours -->
-            <div class="contact-card">
-              <div class="contact-card-icon">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <circle cx="12" cy="12" r="10"></circle>
-                  <polyline points="12 6 12 12 16 14"></polyline>
-                </svg>
-              </div>
-
-              <div>
-                <h3>Business Hours</h3>
-
-                <p>
-                  Monday – Friday: 8:00 AM – 6:00 PM<br />
-                  Saturday: 9:00 AM – 4:00 PM<br />
-                  Sunday: Closed
-                </p>
-              </div>
-            </div>
-          </div>
-          </div>
-        </div>
-      </div>
-      </section>
       <section class="cta-banner reveal-section">
         <h2>Ready to Find Your Perfect Car?</h2>
         <p>
@@ -562,6 +594,46 @@
           window.matchMedia("(prefers-reduced-motion: reduce)").matches
         ) {
           video.pause();
+        }
+
+        const slides = document.querySelectorAll(".hero-slide");
+        const slideControls = document.querySelectorAll(".slider");
+        let currentSlide = 0;
+        let slideshowTimer;
+
+        function showSlide(index) {
+          currentSlide = (index + slides.length) % slides.length;
+
+          slides.forEach((slide, slideIndex) => {
+            slide.classList.toggle("is-active", slideIndex === currentSlide);
+          });
+
+          slideControls.forEach((control, controlIndex) => {
+            const isActive = controlIndex === currentSlide;
+            control.classList.toggle("is-active", isActive);
+            control.setAttribute("aria-current", isActive ? "true" : "false");
+          });
+        }
+
+        function nextSlide() {
+          showSlide(currentSlide + 1);
+        }
+
+        function resetSlideshowTimer() {
+          window.clearInterval(slideshowTimer);
+          slideshowTimer = window.setInterval(nextSlide, 5000);
+        }
+
+        slideControls.forEach((control, index) => {
+          control.addEventListener("click", () => {
+            showSlide(index);
+            resetSlideshowTimer();
+          });
+        });
+
+        if (slides.length === 4 && slideControls.length === 4) {
+          showSlide(0);
+          resetSlideshowTimer();
         }
       });
 
@@ -620,12 +692,12 @@
 
       const config = {
         colors: [
-          { color: "#0A192F", enabled: true },
-          { color: "#020C1B", enabled: true },
-          { color: "#112240", enabled: true },
-          { color: "#193058", enabled: true },
-          { color: "#2A4365", enabled: true },
-          { color: "#0A192F", enabled: true },
+          { color: "#1a1a1a", enabled: true },
+          { color: "#0d0d0d", enabled: true },
+          { color: "#2a2a2a", enabled: true },
+          { color: "#333333", enabled: true },
+          { color: "#444444", enabled: true },
+          { color: "#1a1a1a", enabled: true },
         ],
 
         speed: 1,
@@ -640,7 +712,7 @@
         colorSaturation: 7,
         wireframe: false,
         colorBlending: 8,
-        backgroundColor: "#003FFF",
+        backgroundColor: "#3F3F3F",
         backgroundAlpha: 1,
         grainScale: 0,
         grainSparsity: 0,
@@ -700,6 +772,61 @@
       window.addEventListener("resize", () => {
         gradient.resize();
       });
+    </script>
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+  const links = document.querySelectorAll('.nav-actions .pagelink');
+  
+  // 1. Grab all sections that correspond to your navbar links
+  const sections = [];
+  links.forEach(link => {
+    const targetId = link.getAttribute('href');
+    if (targetId.startsWith('#')) {
+      const section = document.querySelector(targetId);
+      if (section) sections.push(section);
+    }
+  });
+
+  // Helper function to update the active class in the navbar
+  function setActiveLink(targetId) {
+    links.forEach(link => {
+      if (link.getAttribute('href') === `#${targetId}`) {
+        link.classList.add('active');
+      } else {
+        link.classList.remove('active');
+      }
+    });
+  }
+
+  // 2. Click Handling (Instant update when user clicks a link)
+  links.forEach(link => {
+    link.addEventListener('click', function() {
+      const targetId = this.getAttribute('href').substring(1);
+      setActiveLink(targetId);
+    });
+  });
+
+  // 3. Scroll Handling using Intersection Observer
+  // threshold: 0.6 means trigger when 60% of the section is visible
+  const observerOptions = {
+    root: null,
+    rootMargin: '0px',
+    threshold: 0.6 
+  };
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      // If a section enters the viewport, update the navbar
+      if (entry.isIntersecting) {
+        setActiveLink(entry.target.id);
+      }
+    });
+  }, observerOptions);
+
+  // Tell the observer to watch each of your page sections
+  sections.forEach(section => observer.observe(section));
+});
+
     </script>
   </body>
 </html>

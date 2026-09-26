@@ -432,7 +432,7 @@ def browse_cars():
     cars_pagination = query.paginate(page=page, per_page=per_page, error_out=False)
     cars = cars_pagination.items
     
-    makes = db.session.query(Car.make.distinct()).filter(
+    makes = db.session.query(Car.make.distinct().label('make')).filter(
         Car.status == 'active',
         Car.make.isnot(None)
     ).order_by(Car.make.asc()).all()

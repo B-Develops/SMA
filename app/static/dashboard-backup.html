@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -19,11 +19,11 @@
          ROOT VARIABLES — CHANGE GLOBAL COLORS / SIZES HERE
       ========================================================== */
       :root {
-        --bg-dark: #182f5a;
-        --bg-card: #111827;
+        --bg-dark: #2D2D2D;
+        --bg-card: #181818;
         --primary-red: #e63946;
         --text-light: #e5e7eb;
-        --text-muted: #9ca3af;
+        --text-muted: #A2A2A2;
         --border-soft: rgba(255, 255, 255, 0.06);
 
         /* === MAIN CONTENT WIDTH (CHANGE 1200px HERE IF NEEDED) === */
@@ -34,16 +34,16 @@
         --radius-lg: 1.2rem;
         --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.35);
 
-        --color-bg-secondary: #112240;
-        --color-text-secondary: #a0aec0;
-        --color-accent-gold: #d69e2e;
-        --color-bg-primary: #0a192f;
-        --color-bg-secondary: #020c1b;
+        --color-bg-secondary: #212121;
+        --color-text-secondary: #ACACAC;
+        --color-accent-gold: #666;
+        --color-bg-primary: #171717;
+        --color-bg-secondary: #0B0B0B;
         --color-accent-red: #e53e3e;
-        --color-accent-gold: #d69e2e;
+        --color-accent-gold: #666;
         --color-text-primary: #f7fafc;
-        --color-text-secondary: #a0aec0ab;
-        --color-card-bg: #112240;
+        --color-text-secondary: #ACACACab;
+        --color-card-bg: #212121;
         --border-soft: rgba(255, 255, 255, 0.08);
         --accent-red: #e53e3e;
       }
@@ -66,7 +66,7 @@
         position: fixed;
         inset: 0;
         background-image:
-          linear-gradient(rgba(9, 23, 44, 0.85), rgba(2, 12, 27, 0.9)),
+          linear-gradient(rgba(22, 22, 22, 0.85), rgba(11, 11, 11, 0.9)),
           url("static/login-bg.png");
         background-size: cover;
         background-position: center;
@@ -82,7 +82,7 @@
       ========================================================== */
       aside.sidebar {
         width: 280px; /* ← CHANGE SIDEBAR WIDTH HERE */
-        background: #0a192fa6;
+        background: #171717a6;
         border-right: 1px solid var(--border-soft);
         padding: 2rem 1.5rem;
         position: sticky;
@@ -132,7 +132,7 @@
       }
 
       header.topbar {
-        background: #0b1220;
+        background: #121212;
         border-bottom: 1px solid var(--border-soft);
       }
 
@@ -263,7 +263,7 @@
         margin-left: 16px;
       }
       header {
-        background-color: rgba(10, 25, 47, 0.95);
+        background-color: rgba(23, 23, 23, 0.95);
         position: sticky;
         top: 0;
         z-index: 999;
@@ -345,22 +345,22 @@
       }
 
       :root {
-        --color-bg-primary: #081527; /* Deep indigo */
-        --color-bg-secondary: #020c1b;
+        --color-bg-primary: #141414; /* Deep indigo */
+        --color-bg-secondary: #0B0B0B;
         --color-accent-red: #e53e3e; /* Crimson red */
-        --color-accent-gold: #d69e2e; /* Subtle gold */
+        --color-accent-gold: #666; /* Subtle gold */
         --color-text-primary: #f7fafc;
-        --color-text-secondary: #a0aec0;
-        --color-card-bg: #112240;
+        --color-text-secondary: #ACACAC;
+        --color-card-bg: #212121;
         --max-width: 1200px;
         --transition-base: 0.3s ease;
-        --bg-main: #0a192f;
-        --bg-card: #112240;
-        --bg-header: #020c1b;
+        --bg-main: #171717;
+        --bg-card: #212121;
+        --bg-header: #0B0B0B;
         --text-main: #f7fafc;
-        --text-muted: #a0aec0;
+        --text-muted: #ACACAC;
         --accent-red: #e53e3e;
-        --accent-gold: #d69e2e;
+        --accent-gold: #666;
         --border-soft: rgba(255, 255, 255, 0.08);
       }
 
@@ -515,7 +515,7 @@
         font-weight: 600;
       }
       footer {
-        background-color: #020c1b;
+        background-color: #0B0B0B;
         padding: 2rem 0;
         font-size: 0.9rem;
         color: var(--color-text-secondary);
@@ -642,7 +642,7 @@
       <a
         href="/admin"
         class="nav-item"
-        style="background: rgba(214, 158, 46, 0.2); color: #f6e05e"
+        style="background: rgba(128, 128, 128, 0.2); color: #f6e05e"
       >
         <i data-lucide="shield"></i> Admin
       </a>
@@ -767,7 +767,7 @@
             {% endfor %}
           </table>
           {% else %}
-          <p style="color: #9ca3af; text-align: center; padding: 2rem">
+          <p style="color: #A2A2A2; text-align: center; padding: 2rem">
             No orders yet.
             <a href="{{ url_for('cars.browse_cars') }}" style="color: #e63946"
               >Browse cars</a
@@ -839,7 +839,7 @@
             {% endfor %}
           </div>
           {% else %}
-          <p style="color: #9ca3af; text-align: center; padding: 2rem">
+          <p style="color: #A2A2A2; text-align: center; padding: 2rem">
             No saved cars yet.
             <a href="{{ url_for('cars.browse_cars') }}" style="color: #e63946"
               >Browse cars</a

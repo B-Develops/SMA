@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Notification Settings – Sarkin Mota Autos</title>
 
+    <!-- Google Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -12,575 +13,298 @@
       rel="stylesheet"
     />
 
-    <link rel="stylesheet" href="{{ url_for('static', filename='dashboard.css') }}" />
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
 
-    <style>
-      /* =====================================================
-         ROOT VARIABLES - Consistent with other dashboard pages
-      ===================================================== */
-      :root {
-        --bg-primary: #0a192f;
-        --bg-secondary: #020c1b;
-        --bg-card: #112240;
-        --accent-red: #e53e3e;
-        --accent-gold: #d69e2e;
-        --text-primary: #f7fafc;
-        --text-secondary: #a0aec0;
-        --text-muted: #94a3b8;
-        --border-soft: rgba(255, 255, 255, 0.08);
-        --radius: 12px;
-        --max-width: 1200px;
-        --transition: 0.3s ease;
-      }
-
-      * {
-        box-sizing: border-box;
-      }
-
-      body {
-        margin: 0;
-        font-family: "Inter", system-ui, sans-serif;
-        background: linear-gradient(
-          180deg,
-          var(--bg-primary),
-          var(--bg-secondary)
-        );
-        color: var(--text-primary);
-        min-height: 100vh;
-        display: flex;
-        flex-direction: column;
-      }
-
-      /* =====================================================
-         HEADER
-      ===================================================== */
-      header {
-        position: sticky;
-        top: 0;
-        z-index: 10;
-        backdrop-filter: blur(10px);
-        background: rgba(10, 25, 47, 0.9);
-        border-bottom: 1px solid var(--border-soft);
-      }
-
-      .topbar {
-        max-width: var(--max-width);
-        margin: 0 auto;
-        padding: 0 1.5rem;
-        height: 72px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-      }
-
-      .logo {
-        font-weight: 800;
-        font-size: 1.3rem;
-        color: var(--accent-red);
-        letter-spacing: 0.04em;
-      }
-
-      .back-link {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        color: var(--text-secondary);
-        text-decoration: none;
-        font-size: 0.95rem;
-        font-weight: 500;
-        transition: var(--transition);
-      }
-
-      .back-link:hover {
-        color: var(--text-primary);
-      }
-
-      /* =====================================================
-         MAIN LAYOUT
-      ===================================================== */
-      main {
-        flex: 1;
-        width: 100%;
-        display: flex;
-        justify-content: center;
-        padding: 3rem 1.5rem 4rem;
-      }
-
-      .content {
-        width: 100%;
-        max-width: 700px;
-        margin: 0 auto;
-      }
-
-      .page-header {
-        margin-bottom: 2rem;
-      }
-
-      .page-header h1 {
-        font-size: 2rem;
-        margin: 0 0 0.5rem;
-        font-weight: 800;
-      }
-
-      .page-header p {
-        color: var(--text-secondary);
-        margin: 0;
-      }
-
-      /* =====================================================
-         CARD STYLES
-      ===================================================== */
-      .card {
-        background: rgba(17, 34, 64, 0.65);
-        border: 1px solid var(--border-soft);
-        border-radius: var(--radius);
-        padding: 2rem;
-        backdrop-filter: blur(12px);
-        margin-bottom: 1.5rem;
-      }
-
-      .card h2 {
-        font-size: 1.25rem;
-        margin: 0 0 0.25rem;
-        font-weight: 700;
-      }
-
-      .card-description {
-        color: var(--text-muted);
-        font-size: 0.9rem;
-        margin-bottom: 1.5rem;
-      }
-
-      /* =====================================================
-         TOGGLE SWITCH STYLES
-      ===================================================== */
-      .toggle-group {
-        display: flex;
-        flex-direction: column;
-      }
-
-      .toggle-item {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 1rem 0;
-        border-bottom: 1px solid var(--border-soft);
-      }
-
-      .toggle-item:last-child {
-        border-bottom: none;
-        padding-bottom: 0;
-      }
-
-      .toggle-item:first-child {
-        padding-top: 0;
-      }
-
-      .toggle-info {
-        flex: 1;
-        padding-right: 1rem;
-      }
-
-      .toggle-label {
-        font-weight: 500;
-        color: var(--text-primary);
-        margin-bottom: 0.25rem;
-      }
-
-      .toggle-description {
-        font-size: 0.85rem;
-        color: var(--text-muted);
-        margin: 0;
-      }
-
-      /* Toggle Switch CSS */
-      .toggle-switch {
-        position: relative;
-        width: 52px;
-        height: 28px;
-        flex-shrink: 0;
-      }
-
-      .toggle-switch input {
-        opacity: 0;
-        width: 0;
-        height: 0;
-      }
-
-      .toggle-slider {
-        position: absolute;
-        cursor: pointer;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background-color: var(--bg-secondary);
-        border: 1px solid var(--border-soft);
-        border-radius: 28px;
-        transition: var(--transition);
-      }
-
-      .toggle-slider:before {
-        position: absolute;
-        content: "";
-        height: 22px;
-        width: 22px;
-        left: 2px;
-        bottom: 2px;
-        background-color: var(--text-muted);
-        border-radius: 50%;
-        transition: var(--transition);
-      }
-
-      .toggle-switch input:checked + .toggle-slider {
-        background-color: var(--accent-red);
-        border-color: var(--accent-red);
-      }
-
-      .toggle-switch input:checked + .toggle-slider:before {
-        transform: translateX(24px);
-        background-color: white;
-      }
-
-      .toggle-switch input:focus + .toggle-slider {
-        box-shadow: 0 0 0 3px rgba(229, 62, 62, 0.2);
-      }
-
-      /* =====================================================
-         BUTTONS
-      ===================================================== */
-      .btn {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        padding: 0.875rem 2rem;
-        border-radius: 8px;
-        font-weight: 600;
-        font-size: 1rem;
-        cursor: pointer;
-        transition: var(--transition);
-        text-decoration: none;
-        border: none;
-      }
-
-      .btn-primary {
-        background: var(--accent-red);
-        color: white;
-        width: 100%;
-      }
-
-      .btn-primary:hover {
-        background: #c53030;
-        transform: translateY(-1px);
-      }
-
-      .btn-secondary {
-        background: transparent;
-        color: var(--text-secondary);
-        border: 1px solid var(--border-soft);
-        margin-top: 0.75rem;
-        width: 100%;
-      }
-
-      .btn-secondary:hover {
-        background: rgba(255, 255, 255, 0.06);
-        color: var(--text-primary);
-      }
-
-      /* =====================================================
-         FLASH MESSAGES
-      ===================================================== */
-      .flash-messages {
-        margin-bottom: 1.5rem;
-      }
-
-      .flash {
-        padding: 1rem;
-        border-radius: 8px;
-        margin-bottom: 0.5rem;
-        font-weight: 500;
-      }
-
-      .flash.success {
-        background: rgba(72, 187, 120, 0.1);
-        border: 1px solid rgba(72, 187, 120, 0.3);
-        color: #48bb78;
-      }
-
-      .flash.error {
-        background: rgba(229, 62, 62, 0.1);
-        border: 1px solid rgba(229, 62, 62, 0.3);
-        color: var(--accent-red);
-      }
-
-      .flash.info {
-        background: rgba(66, 153, 225, 0.1);
-        border: 1px solid rgba(66, 153, 225, 0.3);
-        color: #4299e1;
-      }
-
-      /* =====================================================
-         INFO BOX
-      ===================================================== */
-      .info-box {
-        display: flex;
-        align-items: flex-start;
-        gap: 0.75rem;
-        padding: 1rem;
-        background: rgba(66, 153, 225, 0.1);
-        border: 1px solid rgba(66, 153, 225, 0.2);
-        border-radius: 8px;
-        margin-bottom: 1.5rem;
-      }
-
-      .info-box svg {
-        flex-shrink: 0;
-        color: #4299e1;
-      }
-
-      .info-box p {
-        margin: 0;
-        font-size: 0.9rem;
-        color: var(--text-secondary);
-        line-height: 1.5;
-      }
-
-      /* =====================================================
-         RESPONSIVE DESIGN
-      ===================================================== */
-      @media (max-width: 600px) {
-        .card {
-          padding: 1.5rem;
-        }
-
-        .toggle-item {
-          flex-direction: column;
-          align-items: flex-start;
-          gap: 1rem;
-        }
-
-        .toggle-switch {
-          align-self: flex-end;
-        }
-
-        .btn {
-          font-size: 1rem;
-        }
-
-
+    <!-- CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='4.css') }}" />
     {% include '_pwa_head.html' %}
   </head>
 
   <body>
     <a href="#main-content" class="skip-link">Skip to main content</a>
-    <style>
-      .skip-link{position:absolute;top:-40px;left:0;background:#e53e3e;color:white;padding:8px 16px;z-index:100;text-decoration:none;font-weight:600;transition:top .3s}
-      .skip-link:focus{top:0}
-    </style>
-    <main id="main-content">
-      <div class="content">
-        <div class="page-header">
-          <h1>Notification Settings</h1>
-          <p>Choose how you want to receive updates about your activity</p>
-        </div>
 
-        <!-- Flash Messages Section -->
-        <div class="flash-messages">
-          {% with messages = get_flashed_messages(with_categories=true) %} {% if
-          messages %} {% for category, message in messages %}
-          <div class="flash {{ category }}">{{ message }}</div>
-          {% endfor %} {% endif %} {% endwith %}
-        </div>
+    <!-- =====================================================
+         MAIN WRAPPER
+     ====================================================== -->
 
-        <!-- Info Box -->
-        <div class="info-box">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="20"
-            height="20"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <circle cx="12" cy="12" r="10"></circle>
-            <line x1="12" y1="16" x2="12" y2="12"></line>
-            <line x1="12" y1="8" x2="12.01" y2="8"></line>
-          </svg>
-          <p>
-            You can customize which notifications you receive via email and
-            push. Important account-related alerts cannot be disabled for
-            security reasons.
-          </p>
-        </div>
+    <div class="main-wrapper">
+      <main id="main-content" class="auth-page">
+        <!-- BRAND PANEL -->
+        <section class="auth-brand" aria-label="Sarkin Mota Autos">
+          <div class="cover sec1">
+            <div class="brand-content">
+              <a href="{{ url_for('profiles.about') }}" class="brand-logo">
+                Sarkin Mota <span>Autos</span>
+              </a>
 
-         <form method="POST" action="{{ url_for('profiles.notification_settings') }}">
-           <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-          <!-- Email Notifications -->
-          <div class="card">
-            <h2>Email Notifications</h2>
-            <p class="card-description">
-              Receive updates about your activity via email
-            </p>
+              <div class="brand-message">
+                <span class="brand-label">ACCOUNT SETTINGS</span>
 
-            <div class="toggle-group">
-               <div class="toggle-item">
-                 <div class="toggle-info">
-                   <div class="toggle-label">New Orders on Your Listings</div>
-                   <p class="toggle-description">
-                     Get notified when someone places an order on a car you're selling
-                   </p>
-                 </div>
-                 <label class="toggle-switch">
-                   <input
-                     type="checkbox"
-                     name="email_order_notifications"
-                     {% if settings.email_order_notifications %}checked{% endif %}
-                   />
-                   <span class="toggle-slider"></span>
-                 </label>
-               </div>
+                <h2>
+                  Notification Preferences.
+                  <span>Stay in the loop.</span>
+                </h2>
 
-              <div class="toggle-item">
-                <div class="toggle-info">
-                  <div class="toggle-label">Messages</div>
-                  <p class="toggle-description">
-                    Receive email notifications for new messages
-                  </p>
-                </div>
-                <label class="toggle-switch">
-                  <input
-                    type="checkbox"
-                    name="email_message_notifications"
-                    {%
-                    if
-                    settings.email_message_notifications
-                    %}checked{%
-                    endif
-                    %}
-                  />
-                  <span class="toggle-slider"></span>
-                </label>
+                <p>
+                  Choose how you want to receive updates about your activity on
+                  Sarkin Mota Autos.
+                </p>
               </div>
 
-               <div class="toggle-item">
-                 <div class="toggle-info">
-                   <div class="toggle-label">Order Accepted</div>
-                   <p class="toggle-description">
-                     Get notified when your order is accepted by the seller
-                   </p>
-                 </div>
-                 <label class="toggle-switch">
-                   <input
-                     type="checkbox"
-                     name="email_order_accepted"
-                     {% if settings.email_order_accepted %}checked{% endif %}
-                   />
-                   <span class="toggle-slider"></span>
-                 </label>
-               </div>
-
-              <div class="toggle-item">
-                <div class="toggle-info">
-                  <div class="toggle-label">Price Drop Alerts</div>
-                  <p class="toggle-description">
-                    Get notified when a saved car's price is reduced
-                  </p>
-                </div>
-                <label class="toggle-switch">
-                  <input
-                    type="checkbox"
-                    name="email_price_drop"
-                    {%
-                    if
-                    settings.email_price_drop
-                    %}checked{%
-                    endif
-                    %}
-                  />
-                  <span class="toggle-slider"></span>
-                </label>
+              <div class="brand-footer">
+                <span>Founded in 2019</span>
+                <span>Abuja, Nigeria</span>
               </div>
             </div>
           </div>
+        </section>
 
-          <!-- Push Notifications -->
-          <div class="card">
-            <h2>Push Notifications</h2>
-            <p class="card-description">
-              Receive real-time alerts in your browser
-            </p>
+        <!-- NOTIFICATIONS PANEL -->
+        <section class="auth-panel" id="b">
+          <div id="main-content" class="auth-panel-content">
+            <div class="mobile-brand">
+              <a href="{{ url_for('profiles.about') }}" class="brand-logo"
+                >Sarkin Mota <span>Autos</span></a
+              >
+            </div>
 
-            <div class="toggle-group">
-               <div class="toggle-item">
-                 <div class="toggle-info">
-                   <div class="toggle-label">New Orders</div>
-                   <p class="toggle-description">
-                     Browser notification for new orders on your listings
-                   </p>
-                 </div>
-                 <label class="toggle-switch">
-                   <input
-                     type="checkbox"
-                     name="push_new_orders"
-                     {% if settings.push_new_orders %}checked{% endif %}
-                   />
-                   <span class="toggle-slider"></span>
-                 </label>
-               </div>
+            <!-- ==========================================
+                 AUTH HEADER
+            =========================================== -->
 
-              <div class="toggle-item">
-                <div class="toggle-info">
-                  <div class="toggle-label">Messages</div>
-                  <p class="toggle-description">
-                    Browser notification for new messages
-                  </p>
+            <div class="auth-header">
+              <span class="auth-label">NOTIFICATIONS</span>
+              <h1>Notification Settings</h1>
+              <p>Choose how you want to receive updates about your activity</p>
+            </div>
+
+            <!-- ==========================================
+                 FLASH MESSAGES
+            =========================================== -->
+
+            <div class="flash-messages">
+              {% with messages = get_flashed_messages(with_categories=true) %}
+              {% if messages %} {% for category, message in messages %}
+              <div class="flash {{ category }}">{{ message }}</div>
+              {% endfor %} {% endif %} {% endwith %}
+            </div>
+
+            <!-- ==========================================
+                 INFO BOX
+            =========================================== -->
+
+            <div class="info-box">
+              <i data-lucide="info"></i>
+              <p>
+                You can customize which notifications you receive via email and
+                push. Important account-related alerts cannot be disabled for
+                security reasons.
+              </p>
+            </div>
+
+            <!-- ==========================================
+                 NOTIFICATION FORM
+            =========================================== -->
+
+            <form
+              method="POST"
+              action="{{ url_for('profiles.notification_settings') }}"
+            >
+              <input
+                type="hidden"
+                name="csrf_token"
+                value="{{ csrf_token() }}"
+              />
+
+              <!-- Email Notifications -->
+              <div class="card">
+                <h2>Email Notifications</h2>
+                <p class="card-description">
+                  Receive updates about your activity via email
+                </p>
+
+                <div class="toggle-group">
+                  <div class="toggle-item">
+                    <div class="toggle-info">
+                      <div class="toggle-label">New Orders on Your Listings</div>
+                      <p class="toggle-description">
+                        Get notified when someone places an order on a car
+                        you're selling
+                      </p>
+                    </div>
+                    <label class="toggle-switch">
+                      <input
+                        type="checkbox"
+                        name="email_order_notifications"
+                        {% if
+                        settings.email_order_notifications
+                        %}checked{%
+                        endif
+                        %}
+                      />
+                      <span class="toggle-slider"></span>
+                    </label>
+                  </div>
+
+                  <div class="toggle-item">
+                    <div class="toggle-info">
+                      <div class="toggle-label">Messages</div>
+                      <p class="toggle-description">
+                        Receive email notifications for new messages
+                      </p>
+                    </div>
+                    <label class="toggle-switch">
+                      <input
+                        type="checkbox"
+                        name="email_message_notifications"
+                        {% if
+                        settings.email_message_notifications
+                        %}checked{%
+                        endif
+                        %}
+                      />
+                      <span class="toggle-slider"></span>
+                    </label>
+                  </div>
+
+                  <div class="toggle-item">
+                    <div class="toggle-info">
+                      <div class="toggle-label">Order Accepted</div>
+                      <p class="toggle-description">
+                        Get notified when your order is accepted by the seller
+                      </p>
+                    </div>
+                    <label class="toggle-switch">
+                      <input
+                        type="checkbox"
+                        name="email_order_accepted"
+                        {% if
+                        settings.email_order_accepted
+                        %}checked{%
+                        endif
+                        %}
+                      />
+                      <span class="toggle-slider"></span>
+                    </label>
+                  </div>
+
+                  <div class="toggle-item">
+                    <div class="toggle-info">
+                      <div class="toggle-label">Price Drop Alerts</div>
+                      <p class="toggle-description">
+                        Get notified when a saved car's price is reduced
+                      </p>
+                    </div>
+                    <label class="toggle-switch">
+                      <input
+                        type="checkbox"
+                        name="email_price_drop"
+                        {% if
+                        settings.email_price_drop
+                        %}checked{%
+                        endif
+                        %}
+                      />
+                      <span class="toggle-slider"></span>
+                    </label>
+                  </div>
                 </div>
-                <label class="toggle-switch">
-                  <input
-                    type="checkbox"
-                    name="push_messages"
-                    {%
-                    if
-                    settings.push_messages
-                    %}checked{%
-                    endif
-                    %}
-                  />
-                  <span class="toggle-slider"></span>
-                </label>
               </div>
 
-               <div class="toggle-item">
-                 <div class="toggle-info">
-                   <div class="toggle-label">Order Accepted</div>
-                   <p class="toggle-description">
-                     Browser notification when your order is accepted
-                   </p>
-                 </div>
-                 <label class="toggle-switch">
-                   <input
-                     type="checkbox"
-                     name="push_order_accepted"
-                     {% if settings.push_order_accepted %}checked{% endif %}
-                   />
-                   <span class="toggle-slider"></span>
-                 </label>
-               </div>
-            </div>
+              <!-- Push Notifications -->
+              <div class="card">
+                <h2>Push Notifications</h2>
+                <p class="card-description">
+                  Receive real-time alerts in your browser
+                </p>
+
+                <div class="toggle-group">
+                  <div class="toggle-item">
+                    <div class="toggle-info">
+                      <div class="toggle-label">New Orders</div>
+                      <p class="toggle-description">
+                        Browser notification for new orders on your listings
+                      </p>
+                    </div>
+                    <label class="toggle-switch">
+                      <input
+                        type="checkbox"
+                        name="push_new_orders"
+                        {% if
+                        settings.push_new_orders
+                        %}checked{%
+                        endif
+                        %}
+                      />
+                      <span class="toggle-slider"></span>
+                    </label>
+                  </div>
+
+                  <div class="toggle-item">
+                    <div class="toggle-info">
+                      <div class="toggle-label">Messages</div>
+                      <p class="toggle-description">
+                        Browser notification for new messages
+                      </p>
+                    </div>
+                    <label class="toggle-switch">
+                      <input
+                        type="checkbox"
+                        name="push_messages"
+                        {% if
+                        settings.push_messages
+                        %}checked{%
+                        endif
+                        %}
+                      />
+                      <span class="toggle-slider"></span>
+                    </label>
+                  </div>
+
+                  <div class="toggle-item">
+                    <div class="toggle-info">
+                      <div class="toggle-label">Order Accepted</div>
+                      <p class="toggle-description">
+                        Browser notification when your order is accepted
+                      </p>
+                    </div>
+                    <label class="toggle-switch">
+                      <input
+                        type="checkbox"
+                        name="push_order_accepted"
+                        {% if
+                        settings.push_order_accepted
+                        %}checked{%
+                        endif
+                        %}
+                      />
+                      <span class="toggle-slider"></span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Action Buttons -->
+              <div class="auth-actions">
+                <a
+                  href="{{ url_for('profiles.settings') }}"
+                  class="btn btn-secondary"
+                >
+                  Cancel
+                </a>
+                <button type="submit" class="btn btn-primary">
+                  Save Preferences
+                </button>
+              </div>
+            </form>
           </div>
+        </section>
+      </main>
+    </div>
 
-          <!-- Submit Button -->
-          <button type="submit" class="btn btn-primary">
-            Save Preferences
-          </button>
-
-          <a href="{{ url_for('profiles.settings') }}" class="btn btn-secondary"> Cancel </a>
-        </form>
-      </div>
-    </main>
+    <script>
+      lucide.createIcons();
+    </script>
   </body>
 </html>
-

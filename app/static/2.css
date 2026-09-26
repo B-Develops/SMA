@@ -2,14 +2,14 @@
          ROOT VARIABLES - Consistent with other dashboard pages
       ===================================================== */
 :root {
-  --bg-primary: #0a192f;
-  --bg-secondary: #020c1b;
-  --bg-card: #112240;
-  --accent-red: #e53e3e;
+  --bg-primary: #1a1a1a;
+  --bg-secondary: #0d0d0d;
+  --bg-card: #2a2a2a;
+--accent-red: #d69e2e;
   --accent-gold: #d69e2e;
   --text-primary: #f7fafc;
-  --text-secondary: #a0aec0;
-  --text-muted: #94a3b8;
+  --text-secondary: #ACACAC;
+  --text-muted: #A1A1A1;
   --border-soft: rgba(255, 255, 255, 0.08);
   --radius: 12px;
   --max-width: 1200px;
@@ -38,7 +38,7 @@ header {
   top: 0;
   z-index: 10;
   backdrop-filter: blur(10px);
-  background: rgba(10, 25, 47, 0.9);
+  background: rgba(26, 26, 26, 0.9);
   border-bottom: 1px solid var(--border-soft);
 }
 
@@ -111,9 +111,9 @@ main {
          CARD STYLES
       ===================================================== */
 .card {
-  background: rgba(17, 34, 64, 0.65);
+  background: rgba(42, 42, 42, 0.65);
   border: 1px solid var(--border-soft);
-  border-radius: var(--radius);
+  border-radius: 5px;
   padding: 2.5rem;
   backdrop-filter: blur(12px);
 }
@@ -135,7 +135,7 @@ main {
 .form-group input {
   width: 100%;
   padding: 0.875rem 1rem;
-  border-radius: 8px;
+  border-radius: 5px;
   border: 1px solid var(--border-soft);
   background: var(--bg-secondary);
   color: var(--text-primary);
@@ -147,7 +147,7 @@ main {
 .form-group input:focus {
   outline: none;
   border-color: var(--accent-red);
-  box-shadow: 0 0 0 3px rgba(229, 62, 62, 0.1);
+  box-shadow: 0 0 0 3px rgba(214, 158, 46, 0.1);
 }
 
 .form-group input::placeholder {
@@ -171,7 +171,7 @@ main {
 
 .strength-bar {
   height: 4px;
-  border-radius: 2px;
+  border-radius: 5px;
   background: var(--bg-secondary);
   overflow: hidden;
   margin-bottom: 0.5rem;
@@ -181,12 +181,12 @@ main {
   height: 100%;
   width: 0%;
   transition: var(--transition);
-  border-radius: 2px;
+  border-radius: 5px;
 }
 
 .strength-weak {
   width: 33%;
-  background: #e53e3e;
+  background: #d69e2e;
 }
 .strength-medium {
   width: 66%;
@@ -210,7 +210,7 @@ main {
   align-items: center;
   justify-content: center;
   padding: 0.875rem 2rem;
-  border-radius: 8px;
+  border-radius: 5px;
   font-weight: 600;
   font-size: 1rem;
   cursor: pointer;
@@ -226,7 +226,7 @@ main {
 }
 
 .btn-primary:hover {
-  background: #c53030;
+  background: #b8860b;
   transform: translateY(-1px);
 }
 
@@ -257,7 +257,7 @@ main {
 
 .flash {
   padding: 1rem;
-  border-radius: 8px;
+  border-radius: 5px;
   margin-bottom: 0.5rem;
   font-weight: 500;
 }
@@ -269,31 +269,31 @@ main {
 }
 
 .flash.error {
-  background: rgba(229, 62, 62, 0.1);
-  border: 1px solid rgba(229, 62, 62, 0.3);
+  background: rgba(214, 158, 46, 0.1);
+  border: 1px solid rgba(214, 158, 46, 0.3);
   color: var(--accent-red);
 }
 
 .flash.info {
-  background: rgba(66, 153, 225, 0.1);
-  border: 1px solid rgba(66, 153, 225, 0.3);
-  color: #4299e1;
+  background: rgba(136, 136, 136, 0.1);
+  border: 1px solid rgba(136, 136, 136, 0.3);
+  color: #aaaaaa;
 }
 
 /* =====================================================
-         SECURITY TIPS SECTION
-      ===================================================== */
+       SECURITY TIPS SECTION
+     ===================================================== */
 .security-tips {
   margin-top: 2rem;
   padding: 1.25rem;
-  background: rgba(66, 153, 225, 0.1);
-  border: 1px solid rgba(66, 153, 225, 0.2);
-  border-radius: 8px;
+  background: rgba(136, 136, 136, 0.1);
+  border: 1px solid rgba(136, 136, 136, 0.2);
+  border-radius: 5px;
 }
 
 .security-tips h4 {
   margin: 0 0 0.75rem;
-  color: #4299e1;
+  color: #aaaaaa;
   font-size: 0.9rem;
   font-weight: 600;
 }

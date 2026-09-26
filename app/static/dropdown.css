@@ -26,12 +26,12 @@
   min-width: 220px;
   padding: 6px;
 
-  background: rgba(11, 24, 46, 0.95);
+  background: rgba(20, 20, 20, 0.95);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
 
   border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 10px;
+  border-radius: 5px;
 
   box-shadow: 0 16px 35px rgba(0, 0, 0, 0.35);
 
@@ -47,7 +47,7 @@
   display: block;
   opacity: 1;
   visibility: visible;
-  transform: translateY(2vh) !important;
+  transform: translateY(0);
 }
 
 .dropdown:hover .dropdown-content {
@@ -64,7 +64,7 @@
   text-decoration: none;
   font-size: 0.88rem;
 
-  border-radius: 7px;
+  border-radius: 5px;
 
   transition:
     background 0.2s ease,
@@ -86,7 +86,7 @@
 
   background: transparent;
   border: 1px solid transparent;
-  border-radius: 8px;
+  border-radius: 5px;
 
   color: white;
   cursor: pointer;
@@ -105,4 +105,39 @@
   width: 24px;
   height: 24px;
   color: white;
+}
+
+/* Mobile-specific dropdown improvements */
+@media (max-width: 768px) {
+  .dropdown-content {
+    min-width: 250px;
+    right: -1rem;
+    border: 1px solid rgba(214, 158, 46, 0.2);
+  }
+  
+  .dropdown-content a {
+    padding: 14px 16px;
+    font-size: 0.95rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  }
+  
+  .dropdown-content a:hover {
+    background: rgba(214, 158, 46, 0.1);
+    color: #d69e2e;
+  }
+  
+  .dropdown-content a:last-child {
+    border-bottom: none;
+  }
+  
+  .dropbtn {
+    min-width: 44px;
+    min-height: 44px;
+  }
+  
+  .munb {
+    width: 26px;
+    height: 26px;
+    color: #d69e2e;
+  }
 }

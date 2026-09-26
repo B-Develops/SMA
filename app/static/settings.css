@@ -1,13 +1,13 @@
-﻿/* =====================================================
+/* =====================================================
     1. ROOT VARIABLES
 ===================================================== */
 
 :root {
   /* Colors */
 
-  --color-bg-primary: #0a192f;
-  --color-bg-secondary: #020c1b;
-  --color-card-bg: #112240;
+  --color-bg-primary: #1a1a1a;
+  --color-bg-secondary: #0d0d0d;
+  --color-card-bg: #2a2a2a;
 }
 
 /* Skip Link */
@@ -15,7 +15,7 @@
   position: absolute;
   top: -40px;
   left: 0;
-  background: #e53e3e;
+background: #d69e2e;
   color: white;
   padding: 8px 16px;
   z-index: 100;
@@ -27,16 +27,19 @@
   top: 0;
 }
 
-  --color-accent-red: #e53e3e;
+--color-accent-gold: #d69e2e;
   --color-accent-gold: #d69e2e;
+  --color-accent-red: #d69e2e;
+  --accent-red: #d69e2e;
+  --accent-red-dark: #b8860b;
 
   --color-text-primary: #f7fafc;
-  --color-text-secondary: #a0aec0;
-  --text-muted: #94a3b8;
+  --color-text-secondary: #ACACAC;
+  --text-muted: #A1A1A1;
 
   --color-success: #22c55e;
   --color-warning: #f59e0b;
-  --color-danger: #ef4444;
+  --color-danger: #d69e2e;
 
   /* Borders */
 
@@ -138,7 +141,7 @@ body::before {
     ),
     radial-gradient(
       circle at bottom left,
-      rgba(229, 62, 62, 0.08),
+      rgba(214, 158, 46, 0.08),
       transparent 35%
     );
 
@@ -224,7 +227,7 @@ select {
 /* ---------- Selection ---------- */
 
 ::selection {
-  background: rgba(229, 62, 62, 0.35);
+  background: rgba(214, 158, 46, 0.35);
 
   color: #fff;
 }
@@ -404,13 +407,13 @@ main {
 
   background: linear-gradient(
     180deg,
-    rgba(17, 34, 64, 0.88),
-    rgba(12, 28, 53, 0.82)
+    rgba(33, 33, 33, 0.88),
+    rgba(26, 26, 26, 0.82)
   );
 
   border: 1px solid var(--border-soft);
 
-  border-radius: var(--radius-lg);
+  border-radius: 5px;
 
   padding: 2rem;
 
@@ -446,7 +449,7 @@ main {
 .card:hover {
   transform: translateY(-4px);
 
-  border-color: rgba(229, 62, 62, 0.25);
+  border-color: rgba(214, 158, 46, 0.25);
 
   box-shadow: var(--shadow-lg);
 }
@@ -488,9 +491,9 @@ main {
 
   justify-content: center;
 
-  border-radius: 16px;
+  border-radius: 5px;
 
-  background: rgba(229, 62, 62, 0.12);
+  background: rgba(214, 158, 46, 0.12);
 
   color: var(--color-accent-red);
 
@@ -600,7 +603,7 @@ main {
 }
 
 .card-badge.danger {
-  background: rgba(239, 68, 68, 0.12);
+  background: rgba(214, 158, 46, 0.12);
 
   color: var(--color-danger);
 }
@@ -645,7 +648,7 @@ main {
 
   background: rgba(255, 255, 255, 0.02);
 
-  border-radius: var(--radius-md);
+  border-radius: 5px;
 }
 
 /* =====================================================
@@ -675,9 +678,9 @@ main {
 
   justify-content: center;
 
-  border-radius: 14px;
+  border-radius: 5px;
 
-  background: rgba(229, 62, 62, 0.1);
+  background: rgba(214, 158, 46, 0.1);
 
   color: var(--color-accent-red);
 
@@ -781,7 +784,7 @@ main {
 /* Danger */
 
 .status-badge.danger {
-  background: rgba(239, 68, 68, 0.12);
+  background: rgba(214, 158, 46, 0.12);
 
   color: var(--color-danger);
 }
@@ -864,7 +867,7 @@ main {
 
   padding: 1rem 1.1rem;
 
-  border-radius: var(--radius-md);
+  border-radius: 5px;
 
   border: 1px solid var(--border-soft);
 
@@ -897,7 +900,7 @@ main {
 
   background: rgba(255, 255, 255, 0.06);
 
-  box-shadow: 0 0 0 4px rgba(229, 62, 62, 0.15);
+  box-shadow: 0 0 0 4px rgba(214, 158, 46, 0.15);
 }
 
 /* ---------- Read Only ---------- */
@@ -934,7 +937,7 @@ main {
 
   padding: 0.9rem 1.5rem;
 
-  border-radius: var(--radius-md);
+  border-radius: 5px;
 
   font-size: var(--text-sm);
 
@@ -958,7 +961,7 @@ main {
 }
 
 .btn-primary:hover {
-  background: #c53030;
+  background: #b8860b;
 
   transform: translateY(-2px);
 }
@@ -1018,7 +1021,7 @@ main {
 }
 
 .btn-outline:hover {
-  background: rgba(229, 62, 62, 0.12);
+  background: rgba(214, 158, 46, 0.12);
 }
 
 /* Small */
@@ -1063,7 +1066,7 @@ main {
 .danger-card {
   position: relative;
 
-  border: 1px solid rgba(239, 68, 68, 0.25);
+  border: 1px solid rgba(214, 158, 46, 0.25);
 
   background: linear-gradient(
     180deg,
@@ -1083,7 +1086,7 @@ main {
 
   background: radial-gradient(
     circle at top right,
-    rgba(239, 68, 68, 0.1),
+    rgba(214, 158, 46, 0.1),
     transparent 40%
   );
 
@@ -1113,9 +1116,9 @@ main {
 
   justify-content: center;
 
-  border-radius: 16px;
+  border-radius: 5px;
 
-  background: rgba(239, 68, 68, 0.12);
+  background: rgba(214, 158, 46, 0.12);
 
   color: var(--color-danger);
 
@@ -1153,11 +1156,11 @@ main {
 
   margin-bottom: 2rem;
 
-  border-radius: var(--radius-md);
+  border-radius: 5px;
 
-  background: rgba(239, 68, 68, 0.08);
+  background: rgba(214, 158, 46, 0.08);
 
-  border: 1px solid rgba(239, 68, 68, 0.18);
+  border: 1px solid rgba(214, 158, 46, 0.18);
 }
 
 .warning-box svg {
@@ -1209,9 +1212,9 @@ main {
 .delete-confirm input {
   padding: 1rem;
 
-  border-radius: var(--radius-md);
+  border-radius: 5px;
 
-  border: 1px solid rgba(239, 68, 68, 0.25);
+  border: 1px solid rgba(214, 158, 46, 0.25);
 
   background: rgba(255, 255, 255, 0.03);
 
@@ -1225,7 +1228,7 @@ main {
 
   border-color: var(--color-danger);
 
-  box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.15);
+  box-shadow: 0 0 0 4px rgba(214, 158, 46, 0.15);
 }
 
 /* ---------- Actions ---------- */
@@ -1241,7 +1244,7 @@ main {
 
   padding-top: 1.5rem;
 
-  border-top: 1px solid rgba(239, 68, 68, 0.15);
+  border-top: 1px solid rgba(214, 158, 46, 0.15);
 }
 
 /* ---------- Delete Button ---------- */
@@ -1257,7 +1260,7 @@ main {
 
   transform: translateY(-2px);
 
-  box-shadow: 0 8px 18px rgba(239, 68, 68, 0.25);
+  box-shadow: 0 8px 18px rgba(214, 158, 46, 0.25);
 } /* =====================================================
    7. DANGER ZONE
 ===================================================== */
@@ -1285,9 +1288,9 @@ main {
 
   justify-content: center;
 
-  border-radius: 16px;
+  border-radius: 5px;
 
-  background: rgba(239, 68, 68, 0.12);
+  background: rgba(214, 158, 46, 0.12);
 
   color: var(--color-danger);
 
@@ -1325,11 +1328,11 @@ main {
 
   margin-bottom: 2rem;
 
-  border-radius: var(--radius-md);
+  border-radius: 5px;
 
-  background: rgba(239, 68, 68, 0.08);
+  background: rgba(214, 158, 46, 0.08);
 
-  border: 1px solid rgba(239, 68, 68, 0.18);
+  border: 1px solid rgba(214, 158, 46, 0.18);
 }
 
 .warning-box svg {
@@ -1381,9 +1384,9 @@ main {
 .delete-confirm input {
   padding: 1rem;
 
-  border-radius: var(--radius-md);
+  border-radius: 5px;
 
-  border: 1px solid rgba(239, 68, 68, 0.25);
+  border: 1px solid rgba(214, 158, 46, 0.25);
 
   background: rgba(255, 255, 255, 0.03);
 
@@ -1397,7 +1400,7 @@ main {
 
   border-color: var(--color-danger);
 
-  box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.15);
+  box-shadow: 0 0 0 4px rgba(214, 158, 46, 0.15);
 }
 
 /* ---------- Actions ---------- */
@@ -1413,7 +1416,7 @@ main {
 
   padding-top: 1.5rem;
 
-  border-top: 1px solid rgba(239, 68, 68, 0.15);
+  border-top: 1px solid rgba(214, 158, 46, 0.15);
 }
 
 /* ---------- Delete Button ---------- */
@@ -1429,7 +1432,7 @@ main {
 
   transform: translateY(-2px);
 
-  box-shadow: 0 8px 18px rgba(239, 68, 68, 0.25);
+  box-shadow: 0 8px 18px rgba(214, 158, 46, 0.25);
 }
 /* =====================================================
    8. RESPONSIVE DESIGN
@@ -1551,7 +1554,7 @@ main {
   .card {
     padding: 1.25rem;
 
-    border-radius: var(--radius-md);
+    border-radius: 5px;
   }
 
   .setting-row {
@@ -1562,7 +1565,7 @@ main {
     width: 42px;
     height: 42px;
 
-    border-radius: 12px;
+    border-radius: 5px;
   }
 
   .setting-icon svg {
@@ -1643,7 +1646,7 @@ main {
 /* ---------- Text Selection ---------- */
 
 ::selection {
-  background: rgba(229, 62, 62, 0.35);
+  background: rgba(214, 158, 46, 0.35);
   color: #fff;
 }
 
@@ -1843,13 +1846,13 @@ main,
 /* More compact cards */
 .card {
   padding: 1.5rem;
-  border-radius: 16px;
+  border-radius: 5px;
   transition: all 0.25s ease;
 }
 
 .card:hover {
   transform: translateY(-3px);
-  border-color: rgba(229, 62, 62, 0.2);
+  border-color: rgba(214, 158, 46, 0.2);
   box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
 }
 
@@ -1943,7 +1946,7 @@ main,
 
 /* Danger Zone */
 .danger-card {
-  border: 1px solid rgba(229, 62, 62, 0.25);
+  border: 1px solid rgba(214, 158, 46, 0.25);
 }
 
 .danger-header {
@@ -1957,7 +1960,7 @@ main,
   width: 48px;
   height: 48px;
   border-radius: 50%;
-  background: rgba(229, 62, 62, 0.12);
+  background: rgba(214, 158, 46, 0.12);
   color: var(--accent-red);
   display: flex;
   align-items: center;
@@ -1967,9 +1970,9 @@ main,
 }
 
 .warning-box {
-  background: rgba(229, 62, 62, 0.08);
-  border: 1px solid rgba(229, 62, 62, 0.18);
-  border-radius: 12px;
+  background: rgba(214, 158, 46, 0.08);
+  border: 1px solid rgba(214, 158, 46, 0.18);
+  border-radius: 5px;
   padding: 1rem;
   margin-bottom: 1.5rem;
 }
@@ -2002,7 +2005,7 @@ main,
   width: 100%;
   max-width: 420px;
   padding: 0.85rem 1rem;
-  border-radius: 10px;
+  border-radius: 5px;
   border: 1px solid var(--border-soft);
   background: rgba(0, 0, 0, 0.25);
   color: var(--text-primary);
@@ -2012,7 +2015,7 @@ main,
 .delete-confirm input:focus {
   outline: none;
   border-color: var(--accent-red);
-  box-shadow: 0 0 0 3px rgba(229, 62, 62, 0.15);
+  box-shadow: 0 0 0 3px rgba(214, 158, 46, 0.15);
 }
 
 .danger-actions {
@@ -2023,7 +2026,7 @@ main,
 .btn-danger {
   padding: 0.8rem 1.5rem;
   border: none;
-  border-radius: 10px;
+  border-radius: 5px;
   background: var(--accent-red);
   color: #fff;
   font-weight: 600;
@@ -2032,7 +2035,7 @@ main,
 }
 
 .btn-danger:hover {
-  background: #c53030;
+  background: #b8860b;
   transform: translateY(-2px);
 }
 
@@ -2064,22 +2067,22 @@ main,
 
 .card {
   padding: 0;
-  border-radius: 18px;
-  background: linear-gradient(145deg, #11224080, rgba(8, 17, 29, 0.541));
-  border-color: rgba(148, 163, 184, 0.13);
+  border-radius: 5px;
+  background: linear-gradient(145deg, #2a2a2a80, rgba(20, 20, 20, 0.541));
+  border-color: rgba(161, 161, 161, 0.13);
   box-shadow: 0 25px 80px rgba(0, 0, 0, 0.35);
 }
 
 .card:hover {
   transform: none;
-  border-color: rgba(148, 163, 184, 0.13);
+  border-color: rgba(161, 161, 161, 0.13);
   box-shadow: 0 25px 80px rgba(0, 0, 0, 0.35);
 }
 
 .card-header {
   margin-bottom: 0;
   padding: 28px 30px;
-  border-bottom: 1px solid rgba(148, 163, 184, 0.13);
+  border-bottom: 1px solid rgba(161, 161, 161, 0.13);
 }
 
 .card-header h2 {
@@ -2101,7 +2104,7 @@ main,
 .setting-row {
   min-height: 76px;
   padding: 20px 0;
-  border-bottom: 1px solid rgba(148, 163, 184, 0.13);
+  border-bottom: 1px solid rgba(161, 161, 161, 0.13);
 }
 
 .setting-row:last-child {
@@ -2127,9 +2130,9 @@ main,
   justify-content: center;
   min-width: 90px;
   padding: 0.65rem 1rem;
-  border: 1px solid rgba(239, 68, 68, 0.25);
-  border-radius: 9px;
-  background: rgba(239, 68, 68, 0.08);
+  border: 1px solid rgba(214, 158, 46, 0.25);
+  border-radius: 5px;
+  background: rgba(214, 158, 46, 0.08);
   color: #f87171;
   font-size: 14px;
   font-weight: 700;
@@ -2137,7 +2140,7 @@ main,
 
 .setting-link:hover {
   color: #fff;
-  background: #ef4444;
+  background: #d69e2e;
 }
 
 .status-badge {
@@ -2145,7 +2148,7 @@ main,
 }
 
 .danger-card {
-  border-color: rgba(239, 68, 68, 0.25);
+  border-color: rgba(214, 158, 46, 0.25);
 }
 
 .danger-header,
@@ -2184,28 +2187,28 @@ main,
 
 /* Shared page palette */
 :root {
-  --color-bg-primary: #0a192f;
-  --color-bg-secondary: #08111d;
-  --color-card-bg: rgba(17, 34, 64, 0.72);
+  --color-bg-primary: #1a1a1a;
+  --color-bg-secondary: #0d0d0d;
+  --color-card-bg: rgba(42, 42, 42, 0.72);
   --color-text-primary: #f8fafc;
-  --color-text-secondary: #94a3b8;
-  --text-muted: #64748b;
-  --color-accent-red: #ef4444;
+  --color-text-secondary: #A1A1A1;
+  --text-muted: #727272;
+--color-accent-gold: #d69e2e;
   --color-accent-gold: #d69e2e;
-  --border-soft: rgba(148, 163, 184, 0.13);
+  --border-soft: rgba(161, 161, 161, 0.13);
 }
 
 body {
   background:
-    radial-gradient(circle at 80% 0%, rgba(239, 68, 68, 0.07), transparent 28%),
-    radial-gradient(circle at 10% 30%, rgba(30, 64, 175, 0.05), transparent 30%),
+    radial-gradient(circle at 80% 0%, rgba(214, 158, 46, 0.07), transparent 28%),
+    radial-gradient(circle at 10% 30%, rgba(100, 100, 100, 0.05), transparent 30%),
     var(--color-bg-primary);
   color: var(--color-text-primary);
 }
 
 body::before {
   background:
-    linear-gradient(rgba(8, 20, 37, 0.68), rgba(2, 12, 27, 0.96)),
+    linear-gradient(rgba(20, 20, 20, 0.68), rgba(13, 13, 13, 0.96)),
     url("../static/login-bg.png") center / cover no-repeat;
 }
 
@@ -2218,7 +2221,7 @@ p,
 }
 
 .card {
-  background: linear-gradient(145deg, #11224080, rgba(8, 17, 29, 0.541));
+  background: linear-gradient(145deg, #2a2a2a80, rgba(20, 20, 20, 0.541));
   border-color: var(--border-soft);
 }
 
@@ -2234,18 +2237,18 @@ p,
 
 .setting-link {
   color: #f87171;
-  border-color: rgba(239, 68, 68, 0.25);
-  background: rgba(239, 68, 68, 0.08);
+  border-color: rgba(214, 158, 46, 0.25);
+  background: rgba(214, 158, 46, 0.08);
 }
 
 .setting-link:hover {
   color: #fff;
-  background: #ef4444;
+  background: #d69e2e;
 }
 
 .warning-box {
-  background: rgba(239, 68, 68, 0.08);
-  border-color: rgba(239, 68, 68, 0.18);
+  background: rgba(214, 158, 46, 0.08);
+  border-color: rgba(214, 158, 46, 0.18);
 }
 
 .settings-back-link {

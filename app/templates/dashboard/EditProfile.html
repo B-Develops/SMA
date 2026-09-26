@@ -31,28 +31,49 @@
   <body>
     <a href="#main-content" class="skip-link">Skip to main content</a>
     <style>
-      .skip-link {
-        position: absolute;
-        top: -40px;
-        left: 0;
-        background: #e53e3e;
-        color: white;
-        padding: 8px 16px;
-        z-index: 100;
-        text-decoration: none;
-        font-weight: 600;
-        transition: top 0.3s;
-      }
-      .skip-link:focus {
-        top: 0;
-      }
+
     </style>
     <!-- =====================================================
          MAIN WRAPPER
     ====================================================== -->
 
     <div class="main-wrapper">
-      <main id="main-content">
+
+
+      <main id="main-content" class="auth-page">
+        <!-- BRAND PANEL -->
+        <section class="auth-brand" aria-label="Sarkin Mota Autos">
+          <div class="cover sec1">
+            <div class="brand-content">
+              <a href="{{ url_for('profiles.about') }}" class="brand-logo">
+                Sarkin Mota <span>Autos</span>
+              </a>
+
+              <div class="brand-message">
+                <span class="brand-label">TRUSTED NIGERIAN MARKETPLACE</span>
+
+                <h2>
+                 Make your profile yours.
+                  <span>Keep it updated.</span>
+                </h2>
+
+                <p>
+                  Browse verified vehicles, manage your listings, track orders,
+                  and enjoy a simpler way to buy and sell cars.
+                </p>
+              </div>
+
+              <div class="brand-footer">
+                <span>Founded in 2019</span>
+                <span>Abuja, Nigeria</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- LOGIN PANEL -->
+        <section class="auth-panel" id="b">
+          <div id="main-content" class="auth-panel-content">
         <!-- ==========================================
                  FLASH MESSAGES
             =========================================== -->
@@ -129,7 +150,7 @@
             </div>
           </div>
 
-          <div class="profile-actions">
+          <div class="profile-actions" style="opacity: 0; pointer-events: none">
             <label class="btn btn-primary" for="avatar-upload">
               <i data-lucide="upload"></i>
 
@@ -160,7 +181,7 @@
             id="avatar-upload"
             name="avatar"
             accept="image/*"
-            style="position: absolute; opacity: 0; width: 0; height: 0;"
+            style="position: absolute; opacity: 0; width: 0; height: 0"
           /><!-- =====================================================
      PERSONAL INFORMATION
 ===================================================== -->
@@ -378,7 +399,7 @@
             <button type="submit" class="btn btn-primary">Save Changes</button>
           </div>
         </form>
-      </main>
+          </div>
     </div>
 
     <script>
