@@ -1,0 +1,91 @@
+# Render blueprint for SarkinMota.
+#
+# One-click deploy: push this file, then in Render choose
+#   New -> Blueprint -> select this repository.
+# Render creates the database and web service, wires DATABASE_URL between
+# them, and generates SECRET_KEY for you.
+#
+# The Docker runtime is required, not optional: app/blueprints/*/routes.py
+# imports `magic` at module level, and python-magic wraps libmagic, which does
+# not exist on Render's native Python runtime. The Dockerfile installs
+# libmagic-dev, so the container boots cleanly.
+#
+# Reference: https://render.com/docs/blueprint-spec
+
+databases:
+  - name: sarkinmota-db
+    databaseName: sarkinmota
+    user: sarkinmota
+    # !! The free Postgres plan is DESTROYED 30 days after creation.
+    # Before taking real orders change this to: basic-256mb
+    plan: free
+    postgresMajorVersion: "16"
+    # region: frankfurt   # closest Render region to Lagos; oregon is the default
+
+services:
+  - type: web
+    name: sarkinmota
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    # !! Free services have no persistent disk, so uploaded car photos are
+    # DELETED on every deploy. Before taking real orders change this to
+    # `starter` and uncomment the `disk:` block below, then set UPLOAD_DIR.
+    plan: free
+    healthCheckPath: /health
+    autoDeploy: true
+
+    # Uncomment together with `plan: starter` above. UPLOAD_DIR must then be
+    # set to the mountPath so the app symlinks app/static/uploads at it.
+    #
+    # disk:
+    #   name: uploads
+    #   mountPath: /var/data/uploads
+    #   sizeGB: 1
+
+    envVars:
+      # Internal connection string, same region as the service. No SSL needed
+      # because traffic never leaves Render's private network.
+      - key: DATABASE_URL
+        fromDatabase:
+          name: sarkinmota-db
+          property: connectionString
+
+      # Render generates a random value and stores it. It stays stable across
+      # deploys, so sessions survive restarts. Do not set this yourself.
+      - key: SECRET_KEY
+        generateValue: true
+
+      # Enables the production SECRET_KEY requirement and secure cookies.
+      - key: FLASK_ENV
+        value: production
+
+      # Must match the service name above.
+      - key: BASE_URL
+        value: https://sarkinmota.onrender.com
+
+      - key: FORCE_HTTPS
+        value: "True"
+      - key: HSTS
+        value: "True"
+
+      # Optional: without REDIS_URL the app uses an in-process cache and sends
+      # email synchronously. Add a Render Redis instance and uncomment.
+      # - key: REDIS_URL
+      #   fromService:
+      #     type: redis
+      #     name: sarkinmota-cache
+
+      # `sync: false` makes Render prompt for these during the deploy instead
+      # of storing a placeholder. MAIL_PASSWORD is a Gmail App Password:
+      # https://myaccount.google.com/apppasswords
+      - key: MAIL_SERVER
+        value: smtp.gmail.com
+      - key: MAIL_PORT
+        value: "587"
+      - key: MAIL_USE_TLS
+        value: "True"
+      - key: MAIL_USERNAME
+        sync: false
+      - key: MAIL_PASSWORD
+        sync: false
