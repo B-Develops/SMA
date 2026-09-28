@@ -73,29 +73,42 @@ import rq
 
 # SarkinMota runs on PostgreSQL only. There is no SQLite code path left, so the
 # dev default and every deployment must point at a real PostgreSQL server.
-DEFAULT_DATABASE_URL = "postgresql://postgres:postgres@localhost:5432/sarkinmota"
+DEFAULT_DATABASE_URL = (
+    "postgresql+psycopg2://postgres:postgres@localhost:5432/sarkinmota"
+)
 
-POSTGRES_SCHEMES = ("postgresql://", "postgres://")
+# The driver is pinned explicitly in the URL rather than left to SQLAlchemy's
+# default. SQLAlchemy 2.1 changed the default driver for a bare
+# `postgresql://` URL from psycopg2 to psycopg3, so an unpinned dependency
+# silently made the app require `psycopg` (psycopg3), which is not installed
+# and fails only at worker boot with a bare ModuleNotFoundError. Naming the
+# driver makes the connection independent of the library's default.
+POSTGRES_SCHEMES = ("postgresql://", "postgres://", "postgresql+psycopg2://")
 
 
 def normalize_database_url(url):
-    """Return a canonical ``postgresql://`` URL or raise if it is not Postgres.
+    """Return a canonical ``postgresql+psycopg2://`` URL, or raise.
 
     ``postgres://`` is a widely used alias (Heroku, Render) that SQLAlchemy does
-    not accept, so it is rewritten. Any other scheme means the deployment is
-    still configured against a dropped backend, which would otherwise fail much
-    later with an opaque driver error.
+    not accept, so it is rewritten. A bare ``postgresql://`` gains an explicit
+    psycopg2 driver. Any other scheme means the deployment is still configured
+    against a dropped backend, or against a driver that is not installed, which
+    would otherwise fail much later with an opaque driver error.
     """
     if not url or not url.strip():
         return DEFAULT_DATABASE_URL
     url = url.strip()
     if url.startswith("postgres://"):
         url = "postgresql://" + url[len("postgres://"):]
-    if not url.startswith("postgresql://"):
+    if url.startswith("postgresql://"):
+        url = "postgresql+psycopg2://" + url[len("postgresql://"):]
+    if not url.startswith("postgresql+psycopg2://"):
         raise RuntimeError(
-            "SarkinMota requires PostgreSQL. DATABASE_URL must start with "
-            f"'postgresql://', got {url.split(':', 1)[0]!r}. Update your .env "
-            "file or environment variables."
+            "SarkinMota requires PostgreSQL over psycopg2. DATABASE_URL must start "
+            f"with 'postgresql://' or 'postgresql+psycopg2://', got "
+            f"{url.split(':', 1)[0]!r}. Use a bare 'postgresql://' URL; the "
+            f"driver is selected automatically. Update your .env file or "
+            f"environment variables."
         )
     return url
 

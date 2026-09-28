@@ -31,7 +31,9 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
-POSTGRES_SCHEMES = ("postgresql://", "postgres://")
+# Includes the explicit psycopg2 form, because the app normalises DATABASE_URL
+# to postgresql+psycopg2:// and a user may copy that into their environment.
+POSTGRES_SCHEMES = ("postgresql://", "postgres://", "postgresql+psycopg2://")
 
 
 class PostgresConnectionError(RuntimeError):

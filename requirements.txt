@@ -1,5 +1,10 @@
 Flask==3.0.0
 Flask-SQLAlchemy==3.1.1
+# SQLAlchemy 2.1 flipped the default driver for a bare postgresql:// URL from
+# psycopg2 to psycopg3. The app now pins the driver in the URL itself
+# (postgresql+psycopg2://), so it is not affected, but the ceiling is kept so
+# a fresh container resolves the same versions that were tested.
+SQLAlchemy>=2.0.16,<2.1
 Flask-Login==0.6.3
 Flask-Bcrypt==1.0.1
 Flask-WTF==1.2.0
