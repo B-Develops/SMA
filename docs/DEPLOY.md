@@ -36,7 +36,6 @@ see [Known gaps](#known-gaps).
 | `DB_POOL_SIZE`, `DB_MAX_OVERFLOW`, ... | optional | See [`POSTGRES.md`](POSTGRES.md#connection-pool). |
 
 ### SECRET_KEY is mandatory in production
-
 The app will **not start** in production without it, and deliberately ignores a
 `.secret_key` file if one exists. A file-based key is copied into the Docker
 image by `COPY . .` and regenerates on every deploy, which silently logs out
@@ -71,6 +70,33 @@ flask create-admin --email you@example.com --name "Site Admin" --password "..."
 
 `create-admin` is idempotent — re-running it promotes an existing account
 instead of failing.
+
+### If your platform has no shell
+
+Render's free tier does not provide a shell, so `flask create-admin` cannot be
+run there. Instead, set these two env vars and the app creates the first admin
+itself on the first boot:
+
+```
+ADMIN_EMAIL      you@example.com
+ADMIN_PASSWORD   a-strong-password
+```
+
+The bootstrap is deliberately conservative, because it runs unattended on every
+deploy:
+
+- It does nothing unless **both** variables are set, so a deploy cannot mint an
+  account with a blank password.
+- It does nothing once any admin exists, so a redeploy never creates a second
+  account and **never resets an existing password**.
+- It never resets the password of a user who already signed up with that email
+  through the UI; it only promotes them to admin.
+- Passwords under 8 characters, and malformed addresses, are refused with a log
+  line instead of creating a broken account.
+
+After signing in and changing the password, **delete `ADMIN_PASSWORD`** from the
+platform's dashboard so the credential is no longer stored. `ADMIN_EMAIL` can
+stay.
 
 ### Migrations on deploy
 

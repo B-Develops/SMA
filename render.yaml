@@ -89,3 +89,17 @@ services:
         sync: false
       - key: MAIL_PASSWORD
         sync: false
+
+      # First admin, created on first boot. Render's free tier has no shell,
+      # so `flask create-admin` cannot be run, and a fresh database has no
+      # users for `flask promote-admin` to promote. The app creates the account
+      # the first time it starts and does nothing on any later deploy, so it
+      # will never duplicate the account or reset the password.
+      #
+      # After you have signed in and changed the password, delete
+      # ADMIN_PASSWORD from the Render dashboard so the credential is no longer
+      # stored by the platform. ADMIN_EMAIL can stay.
+      - key: ADMIN_EMAIL
+        sync: false
+      - key: ADMIN_PASSWORD
+        sync: false

@@ -22,21 +22,27 @@ from app import create_app, db, bcrypt
 
 
 def _test_database_url():
-    url = os.environ.get("TEST_DATABASE_URL") or os.environ.get("DATABASE_URL")
+    # No fallback to DATABASE_URL. This suite drops the public schema on
+    # every run, so it must never be able to infer a destructive target from
+    # the application's own connection string.
+    url = os.environ.get("TEST_DATABASE_URL")
     if not url:
         pytest.skip(
             "TEST_DATABASE_URL is not set. The test suite requires a real "
-            "PostgreSQL server; see docs/POSTGRES.md."
+            "PostgreSQL server; see docs/POSTGRES.md. It is deliberately not "
+            "read from DATABASE_URL, because the suite drops the public schema."
         )
     if not url.startswith("postgresql"):
         pytest.fail(
             f"TEST_DATABASE_URL must be a postgresql:// URL, got {url.split(':', 1)[0]!r}. "
             "SarkinMota no longer supports SQLite."
         )
-    if "sarkinmota" not in url.rsplit("/", 1)[-1]:
+    name = url.rsplit("/", 1)[-1].split("?", 1)[0].lower()
+    if "test" not in name:
         pytest.fail(
-            "Refusing to run: the test database name must contain 'sarkinmota' so a "
-            "production URL cannot be destroyed by mistake."
+            f"Refusing to run against database {name!r}: the name must contain "
+            "'test'. This suite drops the public schema, so pointing it at a "
+            "production database would destroy the application data."
         )
     return url
 

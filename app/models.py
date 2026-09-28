@@ -1,8 +1,7 @@
-from app import db
+from app import db, bcrypt
 from datetime import datetime
 from decimal import Decimal
 from flask_login import UserMixin
-from werkzeug.security import generate_password_hash, check_password_hash
 
 # Money is stored as NUMERIC(14, 2) in PostgreSQL. A double-precision column
 # cannot represent kobo exactly, so summing order amounts drifts by fractions
@@ -43,10 +42,21 @@ class User(UserMixin, db.Model):
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     def set_password(self, password):
-        self.password = generate_password_hash(password)
+        """Hash a password with bcrypt.
+
+        bcrypt is the single hashing scheme used across the app: signup, login,
+        password reset and the profile password change all use Flask-Bcrypt's
+        generate/check pair, because they are the only paths a real user takes.
+        These helpers previously used Werkzeug, whose default is scrypt. A
+        scrypt hash cannot be verified by Flask-Bcrypt, so any account created
+        through set_password -- the admin CLI and the startup bootstrap --
+        produced a hash that login rejected with ValueError: Invalid salt, a
+        500 rather than a failed login.
+        """
+        self.password = bcrypt.generate_password_hash(password).decode("utf-8")
 
     def check_password(self, password):
-        return check_password_hash(self.password, password)
+        return bcrypt.check_password_hash(self.password, password)
 
     def get_verification_percentage(self):
         verified_count = sum([
