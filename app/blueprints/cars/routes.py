@@ -4,6 +4,7 @@ from ...models import User, Car, Order, SavedCar, Payment
 from ... import db, bcrypt
 from ...utils import send_order_confirmation_email, create_order_notification
 from datetime import datetime
+from decimal import Decimal, InvalidOperation
 from sqlalchemy import text, func
 import os
 import json
@@ -11,6 +12,22 @@ from werkzeug.utils import secure_filename
 import magic
 from ...payment_utils import generate_payment_reference
 from . import cars_bp
+
+# PostgreSQL stores money as NUMERIC(14, 2) and hands it back as Decimal, so
+# user input is parsed as Decimal too. Going through float() would reintroduce
+# the binary rounding error the column type exists to avoid.
+MAX_PRICE = Decimal("100000000")
+MIN_ORDER_AMOUNT = Decimal("1000")
+
+
+def parse_money(value, field_name="amount"):
+    """Parse a user-supplied money string into a 2dp Decimal, or None."""
+    if value is None or str(value).strip() == "":
+        return None
+    try:
+        return Decimal(str(value).strip()).quantize(Decimal("0.01"))
+    except (InvalidOperation, ValueError, ArithmeticError):
+        raise ValueError(f"{field_name} is not a valid amount")
 
 
 def _get_active_car_or_abort(car_id):
@@ -115,7 +132,7 @@ def list_car():
         
         try:
             year = int(year) if year else None
-            price = float(price)
+            price = parse_money(price, "price")
             mileage = int(mileage) if mileage else None
         except ValueError:
             flash("Invalid number format for year, price, or mileage", "error")
@@ -130,7 +147,7 @@ def list_car():
         if price <= 0:
             flash("Price must be greater than zero.", "error")
             return redirect(url_for("cars.list_car"))
-        if price > 100000000:  # ₦100,000,000 maximum
+        if price > MAX_PRICE:  # ₦100,000,000 maximum
             flash("Price cannot exceed ₦100,000,000.", "error")
             return redirect(url_for("cars.list_car"))
         
@@ -274,7 +291,7 @@ def edit_car(car_id):
         
         try:
             year = int(year) if year else None
-            price = float(price)
+            price = parse_money(price, "price")
             mileage = int(mileage) if mileage else None
         except ValueError:
             flash("Invalid number format", "error")
@@ -289,7 +306,7 @@ def edit_car(car_id):
         if price <= 0:
             flash("Price must be greater than zero.", "error")
             return redirect(url_for("cars.edit_car", car_id=car_id))
-        if price > 100000000:  # ₦100,000,000 maximum
+        if price > MAX_PRICE:  # ₦100,000,000 maximum
             flash("Price cannot exceed ₦100,000,000.", "error")
             return redirect(url_for("cars.edit_car", car_id=car_id))
         
@@ -386,16 +403,14 @@ def browse_cars():
     min_price = request.args.get('min_price', '').strip()
     if min_price:
         try:
-            min_price_float = float(min_price)
-            query = query.filter(Car.price >= min_price_float)
+            query = query.filter(Car.price >= parse_money(min_price, "min_price"))
         except ValueError:
             pass
     
     max_price = request.args.get('max_price', '').strip()
     if max_price:
         try:
-            max_price_float = float(max_price)
-            query = query.filter(Car.price <= max_price_float)
+            query = query.filter(Car.price <= parse_money(max_price, "max_price"))
         except ValueError:
             pass
     
@@ -476,11 +491,13 @@ def place_order(car_id):
         return redirect(url_for("cars.car_detail", car_id=car_id))
 
     try:
-        order_amount_float = float(order_amount)
-        if order_amount_float < 1000:
+        order_amount_dec = parse_money(order_amount, "order amount")
+        if order_amount_dec is None:
+            raise ValueError("Order amount is required")
+        if order_amount_dec < MIN_ORDER_AMOUNT:
             flash("Order amount must be at least ₦1,000.", "error")
             return redirect(url_for("cars.car_detail", car_id=car_id))
-        if order_amount_float > 100000000:
+        if order_amount_dec > MAX_PRICE:
             flash("Order amount cannot exceed ₦100,000,000.", "error")
             return redirect(url_for("cars.car_detail", car_id=car_id))
     except ValueError:
@@ -504,13 +521,13 @@ def place_order(car_id):
         return redirect(url_for('profiles.edit_profile'))
 
     try:
-        listed_price_float = float(car.price)
+        listed_price = parse_money(car.price, "listed price")
 
         new_order = Order(
             buyer_id=current_user.id,
             car_id=car_id,
-            order_amount=order_amount_float,
-            listed_price=listed_price_float,
+            order_amount=order_amount_dec,
+            listed_price=listed_price,
             payment_method=payment_method,
             delivery_address=delivery_address if delivery_address else None,
             notes=notes if notes else None,
@@ -523,7 +540,7 @@ def place_order(car_id):
             order_id=new_order.id,
             user_id=current_user.id,
             car_id=car_id,
-            amount=order_amount_float,
+            amount=order_amount_dec,
             currency='NGN',
             provider='unset',
             provider_reference=generate_payment_reference(),
@@ -545,7 +562,7 @@ def place_order(car_id):
                 order_id=new_order.id,
                 event_type="order_received",
                 title="New Order Received",
-                message=f"{buyer_label} placed an order of ₦{order_amount_float:,.0f} on your {car.year} {car.make} {car.model}.",
+                message=f"{buyer_label} placed an order of ₦{order_amount_dec:,.0f} on your {car.year} {car.make} {car.model}.",
                 link=f"/admin/orders"
             )
         except Exception:
@@ -571,7 +588,7 @@ def place_order(car_id):
                 user_name=current_user.name,
                 order_id=new_order.id,
                 car=car,
-                order_amount=order_amount_float
+                order_amount=order_amount_dec
             )
         except Exception:
             pass
@@ -628,9 +645,14 @@ def review_order_post(car_id):
         return redirect(url_for('profiles.edit_profile'))
 
     try:
-        order_amount = float(request.form.get("order_amount", "") or car.price)
-        if order_amount < 1000:
+        order_amount = parse_money(
+            request.form.get("order_amount", "") or car.price, "order amount"
+        )
+        if order_amount is None or order_amount < MIN_ORDER_AMOUNT:
             flash("Order amount must be at least ₦1,000.", "error")
+            return redirect(url_for("cars.car_detail", car_id=car_id))
+        if order_amount > MAX_PRICE:
+            flash("Order amount cannot exceed ₦100,000,000.", "error")
             return redirect(url_for("cars.car_detail", car_id=car_id))
     except (ValueError, TypeError):
         flash("Invalid order amount.", "error")
@@ -646,8 +668,10 @@ def review_order_post(car_id):
 
     session_key = f"order_review_{current_user.id}_{car_id}"
     from flask import session
+    # Decimal is JSON-unfriendly, so the pending amount travels through the
+    # session as a string and is parsed back to Decimal when the order is made.
     session[session_key] = {
-        "order_amount": order_amount,
+        "order_amount": str(order_amount),
         "payment_method": payment_method,
         "delivery_address": delivery_address,
         "notes": notes,

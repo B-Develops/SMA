@@ -8,17 +8,17 @@ SarkinMota uses automated database backups to prevent data loss and enable disas
 
 ### Automated Backups
 
-Backups are created using `scripts/backup_db.py`, which supports both **SQLite** (default) and **PostgreSQL** (production) databases.
+Backups are created using `scripts/backup_db.py`. **PostgreSQL is the only
+supported database**, so the script is PostgreSQL-only.
 
-#### SQLite (Development / Default)
-
-- Uses SQLite's native `backup()` API for consistent, non-blocking copies
-- Backup file format: `sarkin_mota_YYYYMMDD_HHMMSS.bak`
-
-#### PostgreSQL (Production)
-
-- Uses `pg_dump` in custom format (`-F c`) for efficient, compressed backups
+- Uses `pg_dump` in custom format (`-Fc`) for compressed backups
+- Taken inside a single transaction, so an archive is never a torn snapshot
+- Dumped with `--no-owner --no-acl`, so an archive can be restored as a
+  different role
 - Backup file format: `<dbname>_YYYYMMDD_HHMMSS.dump`
+- Requires the PostgreSQL client tools (`pg_dump`) on `PATH`
+
+See [`POSTGRES.md`](POSTGRES.md) for installation and connection setup.
 
 ### Scheduling
 
@@ -76,16 +76,25 @@ scp backups/<file> user@backup-server:/path/to/backups/
 ### Full Database Restore
 
 ```bash
-# SQLite
-python scripts/restore_db.py backups/sarkin_mota_20240101_120000.bak
+# Inspect the archive first
+python scripts/restore_db.py backups/sarkinmota_20260927_120000.dump --list
 
-# PostgreSQL
-python scripts/restore_db.py backups/sarkinmota_20240101_120000.dump
+# Restore into the database named by DATABASE_URL
+python scripts/restore_db.py backups/sarkinmota_20260927_120000.dump
 ```
 
-### Point-in-Time Recovery (PostgreSQL Only)
+A restore over a database that already has tables is **refused** unless you pass
+`--force`, because `pg_restore --clean` drops the existing objects. To restore
+into a scratch database instead:
 
-For PostgreSQL, use WAL (Write-Ahead Logging) archiving for point-in-time recovery:
+```bash
+python scripts/restore_db.py backups/sarkinmota_20260927_120000.dump \
+    --db-url postgresql://temp_user:pass@localhost/temp_restore
+```
+
+### Point-in-Time Recovery
+
+Use WAL (Write-Ahead Logging) archiving for point-in-time recovery:
 
 ```sql
 -- Enable WAL archiving in postgresql.conf
@@ -96,7 +105,7 @@ archive_command = 'cp %p /path/to/wal_archive/%f'
 
 ### Partial Restore
 
-To restore a single table or subset of data from a PostgreSQL dump:
+To restore a single table or subset of data from a dump:
 
 ```bash
 # List contents of dump
@@ -111,23 +120,23 @@ pg_restore -d sarkinmota -t users backups/sarkinmota.dump
 ### Verify Backup Integrity
 
 ```bash
-# SQLite - open and check tables
-sqlite3 backups/sarkin_mota_20240101_120000.bak "SELECT count(*) FROM users;"
+# Validate the archive can be read and list its contents
+python scripts/restore_db.py backups/sarkinmota.dump --list
 
-# PostgreSQL - validate dump
+# Or with the client tool directly
 pg_restore --list backups/sarkinmota.dump
 ```
+
+`backup_db.py` also fails if `pg_dump` produced a zero-byte file, so an empty
+archive can never be reported as a successful backup.
 
 ### Test Restore Procedure
 
 Run a restore to a temporary database monthly to verify backups are usable:
 
 ```bash
-# SQLite
-python scripts/restore_db.py backups/latest.bak --force
-
-# PostgreSQL
-python scripts/restore_db.py backups/latest.dump --db-url postgresql://temp_user:pass@localhost/temp_restore
+python scripts/restore_db.py backups/latest.dump \
+    --db-url postgresql://temp_user:pass@localhost/temp_restore
 ```
 
 ## Monitoring
@@ -164,10 +173,11 @@ Trigger alerts when:
 ### Scenario 2: Database Corruption
 
 1. Stop the application
-2. Attempt SQLite integrity check: `PRAGMA integrity_check;`
-3. If corrupted, restore from most recent valid backup
-4. If PostgreSQL, check `pg_stat_database` and `pg_locks`
-5. Restore from backup
+2. Check server-side state: `SELECT * FROM pg_stat_database;` and
+   `SELECT * FROM pg_locks WHERE NOT granted;`
+3. If the data is unreadable, restore from the most recent valid backup
+4. If only some tables are affected, restore those individually with
+   `pg_restore -t <table>`
 
 ### Scenario 3: Complete Server Failure
 
@@ -182,11 +192,13 @@ Trigger alerts when:
 ```
 sarkinmota/
 ├── scripts/
-│   ├── backup_db.py      # Database backup script
-│   └── restore_db.py     # Database restore script
+│   ├── backup_db.py      # PostgreSQL backup script (pg_dump)
+│   ├── restore_db.py     # PostgreSQL restore script (pg_restore)
+│   └── schedule_backup.py # Windows Task Scheduler wrapper
 ├── backups/              # Backup storage (gitignored)
 ├── docs/
-│   └── BACKUP.md         # This document
+│   ├── BACKUP.md         # This document
+│   └── POSTGRES.md       # PostgreSQL setup and operations
 └── logs/
     └── backup.log        # Backup execution logs
 ```

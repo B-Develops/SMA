@@ -1,18 +1,42 @@
 #!/usr/bin/env python3
-"""
-Database restore script for SarkinMota.
-Supports SQLite and PostgreSQL backups created by backup_db.py.
+"""Restore a PostgreSQL database from a backup created by backup_db.py.
+
 Usage:
-    python scripts/restore_db.py backups/sarkin_mota_20240101_120000.bak
-    python scripts/restore_db.py backups/sarkinmota_20240101_120000.dump --db-url postgresql://...
+    python scripts/restore_db.py backups/sarkinmota_20260927_120000.dump
+    python scripts/restore_db.py backup.dump --db-url postgresql://user:pass@host/db
+    python scripts/restore_db.py backup.dump --target-db sarkinmota_staging
+
+By default the restore is refused if the target already has tables, because
+pg_restore --clean drops existing objects. Pass --force to restore over a
+populated database, and --list to inspect an archive without touching anything.
 """
 
-import os
-import sys
-import sqlite3
 import argparse
 import logging
-from pathlib import Path
+import os
+import subprocess
+import sys
+
+# Import the shared helpers under one canonical module name. When run as
+# `python scripts/restore_db.py` only the scripts/ directory is on sys.path, so
+# fall back to a top-level import. Mixing the two would load backup_db.py twice
+# and create two distinct PostgresConnectionError classes, so a caller catching
+# one would miss errors raised from the other.
+try:
+    from scripts.backup_db import (
+        PostgresConnectionError,
+        _pg_env,
+        _run_pg_tool,
+        parse_postgres_url,
+    )
+except ImportError:  # executed as a script
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    from backup_db import (  # type: ignore[no-redef]
+        PostgresConnectionError,
+        _pg_env,
+        _run_pg_tool,
+        parse_postgres_url,
+    )
 
 logging.basicConfig(
     level=logging.INFO,
@@ -21,113 +45,111 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 
-def restore_sqlite(backup_path: str, db_path: str) -> bool:
-    """Restore an SQLite database from a backup file."""
-    try:
-        if not os.path.exists(backup_path):
-            logger.error(f"Backup file not found: {backup_path}")
-            return False
-
-        os.makedirs(os.path.dirname(db_path) if os.path.dirname(db_path) else ".", exist_ok=True)
-
-        # Verify backup integrity first
-        conn_check = sqlite3.connect(backup_path)
-        conn_check.execute("SELECT name FROM sqlite_master WHERE type='table'")
-        conn_check.close()
-
-        # Restore by copying the backup file over the target
-        shutil.copy2(backup_path, db_path)
-
-        logger.info(f"SQLite database restored: {db_path}")
-        return True
-    except Exception as e:
-        logger.error(f"SQLite restore failed: {e}")
-        return False
+def _list_tables(conn):
+    """Return the user tables present in the target database."""
+    result = _run_pg_tool(
+        "psql",
+        conn,
+        [
+            "-tAc",
+            "SELECT tablename FROM pg_tables "
+            "WHERE schemaname = current_schema() AND tablename <> 'alembic_version'",
+        ],
+        "psql",
+    )
+    return [line.strip() for line in result.stdout.splitlines() if line.strip()]
 
 
-def restore_postgresql(backup_path: str, database_url: str) -> bool:
-    """Restore a PostgreSQL database from a custom-format dump."""
-    try:
-        if not os.path.exists(backup_path):
-            logger.error(f"Backup file not found: {backup_path}")
-            return False
+def inspect_backup(backup_path):
+    """Print the archive contents (equivalent to ``pg_restore -l``)."""
+    if not os.path.exists(backup_path):
+        raise PostgresConnectionError(f"Backup file not found: {backup_path}")
 
-        from urllib.parse import urlparse
-        parsed = urlparse(database_url)
+    result = subprocess.run(
+        ["pg_restore", "-l", backup_path], capture_output=True, text=True
+    )
+    if result.returncode != 0:
+        raise PostgresConnectionError(
+            f"pg_restore could not read {backup_path}: "
+            f"{(result.stderr or result.stdout).strip()}"
+        )
+    print(result.stdout)
+    return True
 
-        if parsed.scheme not in ("postgresql", "postgres"):
-            logger.error(f"Unsupported database scheme: {parsed.scheme}")
-            return False
 
-        env = os.environ.copy()
-        env["PGPASSWORD"] = parsed.password or ""
+def restore_postgresql(backup_path, database_url, force=False):
+    """Restore ``backup_path`` into the database named by ``database_url``."""
+    if not os.path.exists(backup_path):
+        raise PostgresConnectionError(f"Backup file not found: {backup_path}")
 
-        cmd = [
-            "pg_restore",
-            "-h", parsed.hostname or "localhost",
-            "-p", str(parsed.port or 5432),
-            "-U", parsed.username or "postgres",
-            "-d", parsed.path.lstrip("/"),
-            "-c",
-            backup_path,
-        ]
+    conn = parse_postgres_url(database_url)
 
-        import subprocess
-        result = subprocess.run(cmd, env=env, capture_output=True, text=True)
+    existing = _list_tables(conn)
+    if existing and not force:
+        raise PostgresConnectionError(
+            f"Target database {conn['database']!r} already contains "
+            f"{len(existing)} table(s) (e.g. {', '.join(existing[:3])}). "
+            "Restoring would drop them. Re-run with --force to overwrite."
+        )
 
-        if result.returncode != 0:
-            logger.error(f"pg_restore failed: {result.stderr}")
-            return False
+    # --clean --if-exists drops each object only if it is present, so a restore
+    # works against both an empty and a populated database.
+    _run_pg_tool(
+        "pg_restore",
+        conn,
+        [
+            "--clean",
+            "--if-exists",
+            "--no-owner",
+            "--no-acl",
+            "--single-transaction",
+            os.path.abspath(backup_path),
+        ],
+        "pg_restore",
+    )
 
-        logger.info(f"PostgreSQL database restored from: {backup_path}")
-        return True
-    except FileNotFoundError:
-        logger.error("pg_restore not found. Install PostgreSQL client tools.")
-        return False
-    except Exception as e:
-        logger.error(f"PostgreSQL restore failed: {e}")
-        return False
+    logger.info("PostgreSQL database restored from: %s", backup_path)
+    return True
 
 
 def main():
-    parser = argparse.ArgumentParser(description="SarkinMota Database Restore")
-    parser.add_argument("backup_file", help="Path to backup file")
+    parser = argparse.ArgumentParser(description="SarkinMota PostgreSQL Restore")
+    parser.add_argument("backup_file", help="Path to a .dump backup file")
     parser.add_argument(
-        "--db-url",
-        default=None,
-        help="Database URL (default: from DATABASE_URL env or SQLite fallback)"
+        "--db-url", default=None, help="Database URL (default: $DATABASE_URL)"
     )
     parser.add_argument(
-        "--force",
-        action="store_true",
-        help="Skip confirmation prompt"
+        "--force", action="store_true", help="Restore over a populated database"
+    )
+    parser.add_argument(
+        "--list", action="store_true", dest="list_only", help="Show archive contents and exit"
     )
     args = parser.parse_args()
 
-    database_url = args.db_url or os.environ.get("DATABASE_URL", "sqlite:///sarkin_mota.db")
+    try:
+        if args.list_only:
+            sys.exit(0 if inspect_backup(args.backup_file) else 1)
 
-    if not args.force:
-        confirm = input(
-            f"WARNING: This will overwrite the current database.\n"
-            f"Backup: {args.backup_file}\n"
-            f"Target: {database_url}\n"
-            "Type 'yes' to confirm: "
-        )
-        if confirm.strip().lower() != "yes":
-            logger.info("Restore cancelled by user")
-            sys.exit(0)
+        database_url = args.db_url or os.environ.get("DATABASE_URL")
+        if not database_url:
+            logger.error("No database URL. Set DATABASE_URL or pass --db-url.")
+            sys.exit(1)
 
-    if database_url.startswith("postgresql://") or database_url.startswith("postgres://"):
-        success = restore_postgresql(args.backup_file, database_url)
-    else:
-        db_file = database_url.replace("sqlite:///", "").replace("sqlite://", "")
-        if not os.path.isabs(db_file):
-            base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-            db_file = os.path.join(base_dir, db_file)
-        success = restore_sqlite(args.backup_file, db_file)
+        if not args.force:
+            conn = parse_postgres_url(database_url)
+            confirm = input(
+                f"WARNING: this overwrites the contents of "
+                f"{conn['host']}/{conn['database']}.\n"
+                f"Backup: {args.backup_file}\n"
+                "Type 'yes' to continue: "
+            )
+            if confirm.strip().lower() != "yes":
+                logger.info("Restore cancelled.")
+                sys.exit(0)
 
-    if not success:
-        logger.error("Restore failed")
+        restore_postgresql(args.backup_file, database_url, force=args.force)
+    except PostgresConnectionError as exc:
+        logger.error("%s", exc)
         sys.exit(1)
 
     logger.info("Restore completed successfully")

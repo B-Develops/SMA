@@ -1,13 +1,68 @@
-"""Pytest setup and shared fixtures."""
+"""Pytest setup and shared fixtures.
+
+The suite runs against a real PostgreSQL server, not SQLite, so that the tests
+exercise the same engine, types and constraints production uses. Money columns
+are NUMERIC and boolean-ish flags are server-defaulted integers, and neither of
+those behaves like SQLite, so a SQLite-backed suite would not catch real bugs.
+
+Point TEST_DATABASE_URL at a throwaway database:
+
+    TEST_DATABASE_URL=postgresql://postgres:postgres@localhost:5432/sarkinmota_test
+
+The fixture drops and recreates the schema around every test, so that database
+is destroyed -- never point this at production.
+"""
 import os
+from decimal import Decimal
+
 import pytest
+from sqlalchemy import text
+
 from app import create_app, db, bcrypt
 
 
-@pytest.fixture
-def app():
+def _test_database_url():
+    url = os.environ.get("TEST_DATABASE_URL") or os.environ.get("DATABASE_URL")
+    if not url:
+        pytest.skip(
+            "TEST_DATABASE_URL is not set. The test suite requires a real "
+            "PostgreSQL server; see docs/POSTGRES.md."
+        )
+    if not url.startswith("postgresql"):
+        pytest.fail(
+            f"TEST_DATABASE_URL must be a postgresql:// URL, got {url.split(':', 1)[0]!r}. "
+            "SarkinMota no longer supports SQLite."
+        )
+    if "sarkinmota" not in url.rsplit("/", 1)[-1]:
+        pytest.fail(
+            "Refusing to run: the test database name must contain 'sarkinmota' so a "
+            "production URL cannot be destroyed by mistake."
+        )
+    return url
+
+
+@pytest.fixture(scope="session")
+def _drop_public_schema():
+    """Delete the public schema once per session.
+
+    Postgres has no "drop all tables" that behaves the same across versions, so
+    dropping and recreating the schema is the reliable way to guarantee a clean
+    slate. CASCADE takes the schema's objects with it.
+    """
+    os.environ["DATABASE_URL"] = _test_database_url()
     os.environ["SECRET_KEY"] = "test-secret-key"
-    os.environ["DATABASE_URL"] = "sqlite://"
+    app = create_app()
+    with app.app_context():
+        db.session.execute(text("DROP SCHEMA public CASCADE"))
+        db.session.execute(text("CREATE SCHEMA public"))
+        db.session.commit()
+    yield
+
+
+@pytest.fixture
+def app(_drop_public_schema):
+    os.environ["SECRET_KEY"] = "test-secret-key"
+    os.environ["DATABASE_URL"] = _test_database_url()
     os.environ["MAIL_USERNAME"] = ""
     os.environ["REDIS_URL"] = ""
 
@@ -18,11 +73,13 @@ def app():
     app.rq_queue = type('Queue', (), {'enqueue': lambda *a, **k: None})()
 
     with app.app_context():
+        assert db.engine.dialect.name == "postgresql", "tests must run on PostgreSQL"
         db.create_all()
 
     yield app
 
     with app.app_context():
+        db.session.rollback()
         db.session.remove()
         db.drop_all()
 
@@ -55,7 +112,7 @@ def _create_car(app, seller_id, **kwargs):
             make=kwargs.get("make", "Toyota"),
             model=kwargs.get("model", "Corolla"),
             year=kwargs.get("year", 2020),
-            price=kwargs.get("price", 1500000.0),
+            price=kwargs.get("price", Decimal("1500000.00")),
             mileage=kwargs.get("mileage", 50000),
             transmission=kwargs.get("transmission", "Automatic"),
             condition=kwargs.get("condition", "Used"),
@@ -146,7 +203,7 @@ def active_listing(app, seller_id):
             make="Toyota",
             model="Camry",
             year=2022,
-            price=2500000.0,
+            price=Decimal("2500000.00"),
             status="active",
         )
         db.session.add(car)

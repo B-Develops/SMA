@@ -4,25 +4,35 @@ services:
     ports:
       - "8000:8000"
     environment:
-      - DATABASE_URL=postgresql://user:pass@db:5432/sarkinmota
+      # Uses the POSTGRES_* values below; override in .env for anything but local dev.
+      - DATABASE_URL=postgresql://${POSTGRES_USER:-sarkinmota}:${POSTGRES_PASSWORD:-sarkinmota}@db:5432/${POSTGRES_DB:-sarkinmota}
       - REDIS_URL=redis://redis:6379/0
       - SECRET_KEY=${SECRET_KEY}
       - MAIL_USERNAME=${MAIL_USERNAME}
       - MAIL_PASSWORD=${MAIL_PASSWORD}
       - BASE_URL=${BASE_URL}
     depends_on:
-      - db
-      - redis
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_started
     restart: unless-stopped
 
   db:
     image: postgres:16-alpine
     environment:
-      - POSTGRES_USER=user
-      - POSTGRES_PASSWORD=pass
-      - POSTGRES_DB=sarkinmota
+      - POSTGRES_USER=${POSTGRES_USER:-sarkinmota}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-sarkinmota}
+      - POSTGRES_DB=${POSTGRES_DB:-sarkinmota}
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      # Without this the web container starts before Postgres finishes its
+      # first-run initdb and the startup migration dies against a dead socket.
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-sarkinmota} -d ${POSTGRES_DB:-sarkinmota}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
     restart: unless-stopped
 
   redis:

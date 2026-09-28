@@ -1,6 +1,7 @@
 import os
 import secrets
 import logging
+import click
 from logging.handlers import RotatingFileHandler
 from pathlib import Path
 from flask import Flask, render_template, redirect, url_for
@@ -25,6 +26,20 @@ except ImportError:
 
 from .monitoring import setup_production_logging, RequestLoggingMiddleware, metrics
 
+
+def env_bool(name, default=False):
+    """Read a boolean environment variable.
+
+    os.environ only ever yields strings, and the non-empty string "False" is
+    truthy in Python. Comparing against a known set of true values is the only
+    way to let a platform config actually switch something off.
+    """
+    raw = os.environ.get(name)
+    if raw is None:
+        return default
+    return raw.strip().lower() in ("1", "true", "yes", "on")
+
+
 # Initialize extensions (but do not bind to app yet)
 db = SQLAlchemy()
 login_manager = LoginManager()
@@ -37,8 +52,8 @@ limiter = Limiter(
 )
 migrate = Migrate()
 talisman = Talisman(
-    force_https=os.environ.get("FORCE_HTTPS", "False") == "True",
-    strict_transport_security=os.environ.get("HSTS", "False") == "True",
+    force_https=env_bool("FORCE_HTTPS", False),
+    strict_transport_security=env_bool("HSTS", False),
     frame_options='SAMEORIGIN',
     content_security_policy={
         'default-src': "'self'",
@@ -56,12 +71,93 @@ cache = Cache()
 
 import rq
 
+# SarkinMota runs on PostgreSQL only. There is no SQLite code path left, so the
+# dev default and every deployment must point at a real PostgreSQL server.
+DEFAULT_DATABASE_URL = "postgresql://postgres:postgres@localhost:5432/sarkinmota"
+
+POSTGRES_SCHEMES = ("postgresql://", "postgres://")
+
+
+def normalize_database_url(url):
+    """Return a canonical ``postgresql://`` URL or raise if it is not Postgres.
+
+    ``postgres://`` is a widely used alias (Heroku, Render) that SQLAlchemy does
+    not accept, so it is rewritten. Any other scheme means the deployment is
+    still configured against a dropped backend, which would otherwise fail much
+    later with an opaque driver error.
+    """
+    if not url or not url.strip():
+        return DEFAULT_DATABASE_URL
+    url = url.strip()
+    if url.startswith("postgres://"):
+        url = "postgresql://" + url[len("postgres://"):]
+    if not url.startswith("postgresql://"):
+        raise RuntimeError(
+            "SarkinMota requires PostgreSQL. DATABASE_URL must start with "
+            f"'postgresql://', got {url.split(':', 1)[0]!r}. Update your .env "
+            "file or environment variables."
+        )
+    return url
+
+
+def _build_engine_options():
+    """Connection-pool options for the PostgreSQL engine.
+
+    Tunables are read from the environment so a small VPS can run the app
+    without exhausting PostgreSQL's default max_connections (100): each
+    gunicorn worker opens its own pool, so pool_size is multiplied by the
+    worker count.
+    """
+    return {
+        "pool_pre_ping": True,
+        # Recycle below the usual 1h idle timeout imposed by proxies and by
+        # managed providers (Neon, Supabase) so we never hand out a dead socket.
+        "pool_recycle": int(os.environ.get("DB_POOL_RECYCLE", 1800)),
+        "pool_size": int(os.environ.get("DB_POOL_SIZE", 5)),
+        "max_overflow": int(os.environ.get("DB_MAX_OVERFLOW", 10)),
+        "pool_timeout": int(os.environ.get("DB_POOL_TIMEOUT", 30)),
+        "connect_args": {
+            "application_name": os.environ.get("DB_APPLICATION_NAME", "sarkinmota"),
+            # Abort anything that runs longer than this instead of pinning a
+            # pooled connection forever behind a runaway report query.
+            "options": "-c statement_timeout=%d" % int(
+                os.environ.get("DB_STATEMENT_TIMEOUT_MS", 30000)
+            ),
+        },
+    }
+
+
 def _get_or_create_secret_key():
+    """Return the session signing key.
+
+    In production SECRET_KEY must be supplied by the environment. Falling back to
+    a generated key on an ephemeral filesystem means a new key on every deploy,
+    which silently invalidates every user session and CSRF token, so refuse to
+    start instead.
+    """
     key_file = Path(__file__).parent.parent.parent / ".secret_key"
+
+    # Checked before the file fallback on purpose: a stale .secret_key must not
+    # let a production deployment start without an explicit SECRET_KEY.
+    if os.environ.get("FLASK_ENV") == "production":
+        raise RuntimeError(
+            "SECRET_KEY is not set. In production the signing key must come from "
+            "the environment, not a generated file: a file-based key is baked "
+            "into the image and rotates on every deploy, which invalidates all "
+            "sessions. Generate one with: "
+            "python -c \"import secrets; print(secrets.token_hex(32))\""
+        )
+
     if key_file.exists():
         return key_file.read_text().strip()
+
     key = secrets.token_hex(32)
-    key_file.write_text(key)
+    try:
+        key_file.write_text(key)
+    except OSError:
+        # Read-only working directory is fine for local dev; the key just will
+        # not survive a restart.
+        pass
     return key
 
 
@@ -145,26 +241,17 @@ def create_app(config_name=None):
 
     # Configuration
     app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY") or _get_or_create_secret_key()
-    app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get(
-        "DATABASE_URL", 
-        "sqlite:///database.db"
+    app.config["SQLALCHEMY_DATABASE_URI"] = normalize_database_url(
+        os.environ.get("DATABASE_URL")
     )
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-    app.config["DEBUG"] = os.environ.get("FLASK_DEBUG", "False") == "True"
-    engine_options = {"pool_pre_ping": True, "pool_recycle": 3600}
-    db_url = app.config["SQLALCHEMY_DATABASE_URI"]
-    if db_url and not db_url.startswith("sqlite"):
-        engine_options.update({
-            "pool_size": 5,
-            "max_overflow": 10,
-            "pool_timeout": 30,
-        })
-    app.config["SQLALCHEMY_ENGINE_OPTIONS"] = engine_options
+    app.config["DEBUG"] = env_bool("FLASK_DEBUG", False)
+    app.config["SQLALCHEMY_ENGINE_OPTIONS"] = _build_engine_options()
     app.config["MAX_CONTENT_LENGTH"] = int(os.environ.get("MAX_UPLOAD_SIZE_MB", 16)) * 1024 * 1024  # Configurable via env, default 16 MB
     
     # Security configurations
     app.config["PERMANENT_SESSION_LIFETIME"] = int(os.environ.get("SESSION_TIMEOUT_MINUTES", 30)) * 60  # Convert to seconds
-    force_https = os.environ.get("FORCE_HTTPS", "False") == "True"
+    force_https = env_bool("FORCE_HTTPS", False)
     app.config["SESSION_COOKIE_SECURE"] = force_https
     app.config["SESSION_COOKIE_HTTPONLY"] = True
     app.config["SESSION_COOKIE_SAMESITE"] = "Lax"
@@ -176,7 +263,7 @@ def create_app(config_name=None):
     # Email Configuration
     app.config["MAIL_SERVER"] = os.environ.get("MAIL_SERVER", "smtp.gmail.com")
     app.config["MAIL_PORT"] = int(os.environ.get("MAIL_PORT", 587))
-    app.config["MAIL_USE_TLS"] = os.environ.get("MAIL_USE_TLS", True)
+    app.config["MAIL_USE_TLS"] = env_bool("MAIL_USE_TLS", True)
     app.config["MAIL_USERNAME"] = os.environ.get("MAIL_USERNAME")
     app.config["MAIL_PASSWORD"] = os.environ.get("MAIL_PASSWORD")
     app.config["MAIL_DEFAULT_SENDER"] = os.environ.get("MAIL_DEFAULT_SENDER", "noreply@sarkinmotaautos.com")
@@ -393,8 +480,14 @@ def create_app(config_name=None):
         db_start = time.perf_counter()
         try:
             db.session.execute(text("SELECT 1"))
+            server_version = db.session.execute(text("SHOW server_version")).scalar()
             db_latency_ms = round((time.perf_counter() - db_start) * 1000, 2)
-            status["checks"]["database"] = {"status": "connected", "latency_ms": db_latency_ms}
+            status["checks"]["database"] = {
+                "status": "connected",
+                "engine": "postgresql",
+                "server_version": server_version,
+                "latency_ms": db_latency_ms,
+            }
             metrics.gauge("health.db.latency_ms", db_latency_ms)
         except Exception as e:
             status["checks"]["database"] = {"status": "error", "error": str(e)}
@@ -480,9 +573,50 @@ def create_app(config_name=None):
         user = User.query.filter_by(email=email).first()
         if not user:
             print(f"No user found with email: {email}")
+            print("If this is a fresh deployment, create the first admin with:")
+            print("  flask create-admin")
             return
         user.role = "admin"
         db.session.commit()
         print(f"{email} is now an admin.")
+
+    @app.cli.command("create-admin")
+    @click.option("--email", prompt=True, help="Admin email address")
+    @click.option("--name", prompt=True, default="Admin", help="Display name")
+    @click.option(
+        "--password",
+        prompt=True,
+        hide_input=True,
+        confirmation_prompt=True,
+        help="Admin password (at least 8 characters)",
+    )
+    def create_admin(email, name, password):
+        """Create the first admin user.
+
+        A fresh deployment has no users, so `promote-admin` has nothing to
+        promote. This bootstraps the first admin without going through the UI.
+        Safe to re-run: an existing account is promoted instead of duplicated.
+        """
+        email = email.strip().lower()
+        if "@" not in email:
+            print(f"Not a valid email address: {email}")
+            return
+        if len(password) < 8:
+            print("Password must be at least 8 characters.")
+            return
+
+        existing = User.query.filter_by(email=email).first()
+        if existing:
+            existing.role = "admin"
+            db.session.commit()
+            print(f"{email} already existed; promoted to admin.")
+            return
+
+        user = User(email=email, name=name, role="admin", email_verified=1)
+        user.set_password(password)
+        db.session.add(user)
+        db.session.commit()
+        print(f"Admin created: {email}")
+        print("Change this password after the first sign-in.")
 
     return app

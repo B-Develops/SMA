@@ -1,6 +1,6 @@
 # Sarkin Mota Autos - Features Overview
 
-A comprehensive car marketplace web application built with Flask, SQLite, and vanilla JavaScript.
+A comprehensive car marketplace web application built with Flask, PostgreSQL, and vanilla JavaScript.
 
 ## 🌟 Core Features
 
@@ -91,7 +91,7 @@ A comprehensive car marketplace web application built with Flask, SQLite, and va
 ## 🛠️ Technology Stack
 
 - **Backend**: Flask (Python)
-- **Database**: SQLite
+- **Database**: PostgreSQL 16+ (via SQLAlchemy; money stored as `NUMERIC(14,2)`)
 - **Authentication**: Flask-Login
 - **Frontend**: HTML5, CSS3, Vanilla JavaScript
 - **Icons**: Lucide Icons
@@ -107,7 +107,7 @@ SarkinMota/
 ├── app.py                  # Main Flask application
 ├── init_db.py             # Database initialization
 ├── requirements.txt       # Python dependencies
-├── database.db            # SQLite database
+├── .env                   # DATABASE_URL and secrets (gitignored)
 ├── static/               # Static assets
 │   ├── *.css            # Stylesheets
 │   └── Assets/          # Images and media

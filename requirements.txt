@@ -7,7 +7,7 @@ Flask-Limiter==3.5.0
 Flask-Mail==0.9.1
 Flask-Talisman==1.1.0
 Werkzeug==3.0.1
-psycopg2-binary>=2.9.9
+psycopg2-binary>=2.9.9  # PostgreSQL driver; no other database backend is supported
 Flask-Migrate>=4.0.0
 python-dotenv>=1.0.0
 gunicorn>=21.0.0

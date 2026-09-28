@@ -8,11 +8,10 @@ def _run_pending_migrations():
 
     Render's Free plan has no pre-deploy command, so the schema has to be
     brought up to head here. Alembic is idempotent, so a no-op run is cheap;
-    we still gate it behind a short lock to avoid two gunicorn workers racing
-    on the same SQLite/Postgres metadata. Runs after the app is fully built
-    so the shell context and models are available.
+    we still gate it behind a short lock so two gunicorn workers cannot race
+    each other applying the same revisions to the PostgreSQL metadata. Runs
+    after the app is fully built so the shell context and models are available.
     """
-    import os
     import threading
 
     lock = threading.Lock()
