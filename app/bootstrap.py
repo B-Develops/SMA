@@ -25,6 +25,50 @@ from app.models import User
 logger = logging.getLogger("sarkinmota.bootstrap")
 
 MIN_PASSWORD_LENGTH = 8
+DEFAULT_DEMO_ACCOUNTS = (
+    ("admin@sarkinmota.com", "AdminPass1!", "Administrator", "admin"),
+    ("seller@sarkinmota.com", "SellerPass1!", "Demo Seller", "user"),
+    ("buyer@sarkinmota.com", "BuyerPass1!", "Demo Buyer", "user"),
+)
+
+
+def ensure_default_demo_accounts(app=None):
+    """Ensure the known demo accounts exist, even on a fresh database.
+
+    These are the default login identities the app expects while running locally
+    or in a freshly initialized environment. If a user already exists for an
+    email, we keep the record and only update password/role flags when needed so
+    the app remains stable for real deployments.
+    """
+    if app is None:
+        from flask import current_app
+
+        app = current_app._get_current_object()
+
+    with app.app_context():
+        for email, password, name, role in DEFAULT_DEMO_ACCOUNTS:
+            user = User.query.filter_by(email=email).first()
+            if user is None:
+                user = User(email=email, name=name, role=role, email_verified=1)
+                user.set_password(password)
+                db.session.add(user)
+                logger.info("Created default %s account (%s).", role, email)
+                continue
+
+            changed = False
+            if user.role != role:
+                user.role = role
+                changed = True
+            if not user.email_verified:
+                user.email_verified = 1
+                changed = True
+            if not user.password or not user.check_password(password):
+                user.set_password(password)
+                changed = True
+            if changed:
+                db.session.add(user)
+
+        db.session.commit()
 
 
 def bootstrap_admin_from_env(app=None):

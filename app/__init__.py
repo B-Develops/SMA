@@ -287,12 +287,25 @@ def create_app(config_name=None):
     
     # Cache configuration
     redis_url = os.environ.get("REDIS_URL")
+    cache_usable = False
     if redis_url:
+        try:
+            import redis
+            cache_usable = redis.from_url(redis_url).ping()
+        except Exception:
+            cache_usable = False
+            app.logger.warning(
+                "Redis is not reachable at %s; falling back to in-memory cache.",
+                redis_url,
+            )
+
+    if redis_url and cache_usable:
         app.config["CACHE_TYPE"] = "redis"
         app.config["CACHE_REDIS_URL"] = redis_url
         app.config["CACHE_DEFAULT_TIMEOUT"] = 300
     else:
         app.config["CACHE_TYPE"] = "simple"
+        app.config["CACHE_DEFAULT_TIMEOUT"] = 300
     
     # Initialize extensions with app
     db.init_app(app)

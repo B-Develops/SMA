@@ -85,6 +85,28 @@ class TestLogin:
         response = client.get("/auth/login")
         assert response.status_code == 200
 
+    def test_default_demo_accounts_are_bootstrapped_when_db_is_empty(self, app):
+        from app.bootstrap import ensure_default_demo_accounts
+
+        with app.app_context():
+            User.query.delete()
+            db.session.commit()
+
+        ensure_default_demo_accounts(app)
+
+        with app.app_context():
+            admin = User.query.filter_by(email="admin@sarkinmota.com").first()
+            buyer = User.query.filter_by(email="buyer@sarkinmota.com").first()
+            seller = User.query.filter_by(email="seller@sarkinmota.com").first()
+
+            assert admin is not None
+            assert admin.role == "admin"
+            assert admin.check_password("AdminPass1!")
+            assert buyer is not None
+            assert buyer.check_password("BuyerPass1!")
+            assert seller is not None
+            assert seller.check_password("SellerPass1!")
+
     def test_login_success(self, client, app):
         email = "login_success@example.com"
         _create_user(app, email, "CorrectPass1!", "Login User")

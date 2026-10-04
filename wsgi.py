@@ -33,10 +33,11 @@ def _startup_tasks():
                 return
 
             try:
-                from app.bootstrap import bootstrap_admin_from_env
+                from app.bootstrap import bootstrap_admin_from_env, ensure_default_demo_accounts
                 # The app is passed explicitly: this runs on a bare thread with
                 # no application context, so current_app is not usable.
                 bootstrap_admin_from_env(app)
+                ensure_default_demo_accounts(app)
             except Exception as exc:  # pragma: no cover - defensive
                 app.logger.error("Admin bootstrap failed: %s", exc)
 
