@@ -22,7 +22,7 @@
         const menu = document.getElementById('menu');
         menu.classList.toggle('show');
       }
-      
+
       // Close menu when clicking outside
       document.addEventListener('click', function(event) {
         const dropdown = document.querySelector('.dropdown');
@@ -811,7 +811,7 @@
   const observerOptions = {
     root: null,
     rootMargin: '0px',
-    threshold: 0.6 
+    threshold: 0.6
   };
 
   const observer = new IntersectionObserver((entries) => {
