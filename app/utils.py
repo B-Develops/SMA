@@ -105,7 +105,7 @@ def send_order_confirmation_email(user_email, user_name, order_id, car, order_am
 def _send_password_reset_email_direct(user_email, user_name, token, base_url):
     try:
         subject = "Reset your password - Sarkin Mota Autos"
-        reset_url = f"{base_url}/reset-password/{token}"
+        reset_url = f"{base_url}/auth/reset-password/{token}"
 
         html_body = render_template(
             'email/password_reset.html',
