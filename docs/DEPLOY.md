@@ -143,6 +143,37 @@ Without it, `FORCE_HTTPS` causes an infinite redirect loop. The app trusts
 exactly one proxy hop — if you have two (e.g. CDN + load balancer) you must
 raise those counts or `X-Forwarded-Proto` will be ignored.
 
+### New paid Render service
+
+[`../render.production.yaml`](../render.production.yaml) defines a separate
+paid stack: a Starter web service, a Basic 256 MB PostgreSQL 16 database, and a
+1 GB persistent disk for uploaded photos. It is separate from `render.yaml`,
+which remains the free-tier blueprint.
+
+To create the paid stack without changing the existing free service:
+
+1. Push a branch containing `render.production.yaml` to GitHub.
+2. In Render, create a **new Blueprint** from the repository and select
+   `render.production.yaml` as its blueprint file.
+3. Supply `BASE_URL`, `MAIL_USERNAME`, `MAIL_PASSWORD`, `ADMIN_EMAIL`, and
+   `ADMIN_PASSWORD` when prompted. Use the exact URL Render assigns to the new
+   service for `BASE_URL`; correct it in the service environment settings if
+   the assigned hostname differs.
+4. Wait for the deployment and check `/health` reports `"status": "healthy"`.
+   Sign in as the bootstrapped administrator, change its password, then remove
+   `ADMIN_PASSWORD` from the service environment.
+5. Upload a test photo and verify it survives a redeploy. Confirm email links
+   use the new hostname before enabling email-dependent account flows.
+6. Keep the free service available until the paid service passes these checks.
+   This is a fresh database: users, listings, orders, and other existing
+   database records are not copied. Do not delete the old service until you
+   have confirmed you no longer need its data.
+
+The blueprint pins both resources to Frankfurt. Review Render's current plan
+availability and pricing before creating the stack. Set up and test a database
+backup/restore process before relying on the new database for real customer
+data.
+
 ---
 
 ## Backups before you take traffic
