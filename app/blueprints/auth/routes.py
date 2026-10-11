@@ -244,11 +244,8 @@ def forgot_password():
         db.session.add(reset_token)
         db.session.commit()
 
-        try:
-            from flask import current_app
-            base_url = current_app.config.get('BASE_URL', request.host_url.rstrip('/'))
-        except RuntimeError:
-            base_url = request.host_url.rstrip('/')
+        from app.utils import get_base_url
+        base_url = get_base_url()
 
         send_password_reset_email(
             user_email=user.email,

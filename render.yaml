@@ -60,9 +60,17 @@ services:
       - key: FLASK_ENV
         value: production
 
-      # Must match the service name above.
+      # Must be the real, live hostname. Render appends a suffix to service
+      # names when the plain name is taken globally, so `sarkinmota` actually
+      # deployed as `sarkinmota-842i`. Get the exact hostname from the service
+      # page; do not assume it matches `name:` above.
+      #
+      # This value builds the links in every verification and password-reset
+      # email. If it is wrong, mail still sends but every link is a dead URL,
+      # and nothing else in the app complains. The app logs a warning when
+      # BASE_URL and the serving host disagree.
       - key: BASE_URL
-        value: https://sarkinmota.onrender.com
+        value: https://sarkinmota-842i.onrender.com
 
       - key: FORCE_HTTPS
         value: "True"

@@ -1,17 +1,59 @@
-from flask import render_template, current_app
+from flask import render_template, current_app, request, url_for
 from . import mail
 from flask_mail import Message
 import os
 import logging
+from urllib.parse import urlsplit
 
 logger = logging.getLogger(__name__)
+
+# Emit each misconfiguration warning at most once per process, so a
+# per-request helper cannot flood the logs.
+_warned_base_url = set()
+
+
+def get_base_url():
+    """The configured BASE_URL, used to build absolute links in emails.
+
+    Verification and password-reset links are only useful if they point at the
+    host that is actually serving the site. Render assigns a suffix to service
+    names (sarkinmota becomes sarkinmota-842i), so a hand-written BASE_URL is
+    easy to get wrong, and the failure is silent: emails still send, they just
+    lead to a dead domain.
+
+    The configured value stays authoritative rather than being derived from the
+    request, because a spoofed Host or X-Forwarded-Host header would otherwise
+    let an attacker choose the host embedded in outgoing mail, which is a
+    ready-made phishing vector. A mismatch is logged instead.
+    """
+    configured = (current_app.config.get("BASE_URL") or "http://127.0.0.1:5000").rstrip("/")
+
+    try:
+        serving_host = request.host
+    except RuntimeError:
+        # No request context, e.g. a send from a background thread. There is
+        # nothing to compare against, and nothing to do about it either way.
+        return configured
+
+    configured_host = urlsplit(configured).netloc
+    if configured_host and serving_host and configured_host != serving_host:
+        key = (configured_host, serving_host)
+        if key not in _warned_base_url:
+            _warned_base_url.add(key)
+            logger.warning(
+                "BASE_URL is %r but the request is being served by %r. Every "
+                "verification and password-reset email will link to the wrong "
+                "host. Set BASE_URL to https://%s in the platform's environment.",
+                configured_host, serving_host, serving_host,
+            )
+    return configured
 
 
 def _send_verification_email_direct(user_email, user_name, token):
     try:
         subject = "Verify your email - Sarkin Mota Autos"
-        base_url = current_app.config.get("BASE_URL", "http://127.0.0.1:5000")
-        verification_url = f"{base_url}/auth/verify-email/{token}"
+        base_url = get_base_url()
+        verification_url = f"{base_url}{url_for('auth.verify_email', token=token)}"
 
         html_body = render_template(
             'email/verification.html',
@@ -40,7 +82,7 @@ def _send_verification_email_direct(user_email, user_name, token):
 def _send_order_confirmation_email_direct(user_email, user_name, order_id, car, order_amount):
     try:
         subject = f"Order Confirmed - Sarkin Mota Autos (Order #{order_id})"
-        base_url = current_app.config.get("BASE_URL", "http://127.0.0.1:5000")
+        base_url = get_base_url()
 
         html_body = render_template(
             'email/order_confirmation.html',
@@ -105,7 +147,11 @@ def send_order_confirmation_email(user_email, user_name, order_id, car, order_am
 def _send_password_reset_email_direct(user_email, user_name, token, base_url):
     try:
         subject = "Reset your password - Sarkin Mota Autos"
-        reset_url = f"{base_url}/auth/reset-password/{token}"
+        # Built with url_for so the blueprint prefix cannot drift away from the
+        # link in the email. This was hardcoded as /reset-password/<token>,
+        # but the route is /auth/reset-password/<token>, so every reset email
+        # led to a 404.
+        reset_url = f"{base_url}{url_for('auth.reset_password', token=token)}"
 
         html_body = render_template(
             'email/password_reset.html',
