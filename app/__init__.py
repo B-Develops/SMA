@@ -390,7 +390,22 @@ def create_app(config_name=None):
     # Landing page route
     @app.route("/")
     def index():
-        return render_template("Index.html")
+        from sqlalchemy.exc import SQLAlchemyError
+        from .models import Car
+
+        try:
+            featured_cars = (
+                Car.query.filter_by(status="active")
+                .order_by(Car.id.desc())
+                .limit(3)
+                .all()
+            )
+        except SQLAlchemyError as exc:
+            db.session.rollback()
+            app.logger.warning("Unable to load homepage featured cars: %s", exc)
+            featured_cars = []
+
+        return render_template("Index.html", featured_cars=featured_cars)
 
     @app.route("/offline")
     def offline():

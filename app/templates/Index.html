@@ -176,62 +176,61 @@
     </a>
 </div>
 
-          <div class="featured-layout">
-            <!-- Mercedes Hero Card -->
-            <a href="{{ url_for('cars.car_detail', car_id=1) }}" class="featured-hero-card">
+          {% if featured_cars %}
+          <div class="featured-layout{% if featured_cars|length == 1 %} featured-layout-single{% endif %}">
+            {% set hero_car = featured_cars[0] %}
+            <a href="{{ url_for('cars.car_detail', car_id=hero_car.id) }}" class="featured-hero-card">
+              {% if hero_car.image_url %}
               <img
-                src="/static/Mercedes.png"
-                alt="Mercedes-Benz C300 Featured Vehicle"
+                src="{{ url_for('static', filename=hero_car.image_url) }}"
+                alt="{{ hero_car.year or '' }} {{ hero_car.make }} {{ hero_car.model }}"
                 class="featured-hero-image"
               />
+              {% endif %}
               <div class="featured-hero-overlay">
                 <div class="featured-hero-content">
                   <span class="featured-hero-tag">FEATURED VEHICLE</span>
-                  <h2 class="featured-hero-title">Mercedes-Benz C300</h2>
-                  <p class="featured-hero-specs">2.0L Turbo • 38,000 KM</p>
-                  <div class="featured-hero-price">₦18,200,000</div>
+                  <h2 class="featured-hero-title">{{ hero_car.year or '' }} {{ hero_car.make }} {{ hero_car.model }}</h2>
+                  <p class="featured-hero-specs">{{ hero_car.condition or 'Quality vehicle' }}{% if hero_car.mileage %} | {{ "{:,}".format(hero_car.mileage) }} KM{% endif %}</p>
+                  <div class="featured-hero-price">{{ hero_car.price|currency }}</div>
                 </div>
                 <div class="featured-hero-action">
-                  <span class="featured-hero-link">View Vehicle →</span>
+                  <span class="featured-hero-link">View Vehicle &rarr;</span>
                 </div>
               </div>
             </a>
 
-            <!-- Supporting Vehicles Grid -->
-            <div class="featured-supporting-grid">
-              <!-- Toyota Card -->
-              <a href="{{ url_for('cars.car_detail', car_id=2) }}" class="featured-supporting-card">
+            {% if featured_cars|length > 1 %}
+            <div class="featured-supporting-grid{% if featured_cars|length == 2 %} featured-supporting-grid-single{% endif %}">
+              {% for car in featured_cars[1:] %}
+              <a href="{{ url_for('cars.car_detail', car_id=car.id) }}" class="featured-supporting-card">
+                {% if car.image_url %}
                 <img
-                  src="/static/Toyota.png"
-                  alt="Toyota Camry - ₦12,500,000"
+                  src="{{ url_for('static', filename=car.image_url) }}"
+                  alt="{{ car.year or '' }} {{ car.make }} {{ car.model }}"
                   class="supporting-card-image"
                 />
+                {% endif %}
                 <div class="supporting-card-overlay">
                   <div class="supporting-card-content">
-                    <h3 class="supporting-card-title">Toyota Camry</h3>
-                    <div class="supporting-card-price">₦12,500,000</div>
-                    <span class="supporting-card-arrow">View Vehicle →</span>
+                    <h3 class="supporting-card-title">{{ car.year or '' }} {{ car.make }} {{ car.model }}</h3>
+                    <div class="supporting-card-price">{{ car.price|currency }}</div>
+                    <span class="supporting-card-arrow">View Vehicle &rarr;</span>
                   </div>
                 </div>
               </a>
-
-              <!-- Honda Card -->
-              <a href="{{ url_for('cars.car_detail', car_id=3) }}" class="featured-supporting-card">
-                <img
-                  src="/static/Honda.png"
-                  alt="Honda Accord - ₦10,800,000"
-                  class="supporting-card-image"
-                />
-                <div class="supporting-card-overlay">
-                  <div class="supporting-card-content">
-                    <h3 class="supporting-card-title">Honda Accord</h3>
-                    <div class="supporting-card-price">₦10,800,000</div>
-                    <span class="supporting-card-arrow">View Vehicle →</span>
-                  </div>
-                </div>
-              </a>
+              {% endfor %}
             </div>
+            {% endif %}
           </div>
+          {% else %}
+          <div class="featured-empty-state">
+            <h3>No vehicles listed yet</h3>
+            <p>New listings will appear here as soon as they are available.</p>
+            <a href="{{ url_for('cars.browse_cars') }}" class="listings-view-all">Browse all vehicles &rarr;</a>
+          </div>
+          {% endif %}
+
         </div>
       </section>
 
